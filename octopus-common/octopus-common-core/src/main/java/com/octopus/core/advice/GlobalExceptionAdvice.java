@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  * @Description: 针对controller层统一的异常拦截
  */
 @RestControllerAdvice
-public class ControllerExceptionAdvice {
+public class GlobalExceptionAdvice {
 
     @ExceptionHandler({BindException.class})
     public ResponseVo MethodArgumentNotValidExceptionHandler(BindException e) {

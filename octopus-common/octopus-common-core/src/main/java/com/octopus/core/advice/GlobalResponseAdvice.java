@@ -20,7 +20,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
  * @Description: 统一响应封装 对返回值是ResponseVo类型，或者使用了NotControllerResponseAdvice注解的都不进行包装
  */
 @RestControllerAdvice
-public class ControllerResponseAdvice implements ResponseBodyAdvice<Object> {
+public class GlobalResponseAdvice implements ResponseBodyAdvice<Object> {
     @Override
     public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
         // response是ResponseVo类型，或者注释了NotControllerResponseAdvice都不进行包装
