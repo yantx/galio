@@ -10,6 +10,11 @@
     <version>0.0.1-SNAPSHOT</version>
     <modules>
         <module>../octopus-common/octopus-common-core</module>
+        <module>../octopus-auth</module>
+        <module>../octopus-system</module>
+        <module>../octopus-common/octopus-common-redis</module>
+        <module>../octopus-common/octopus-common-satoken</module>
+        <module>../octopus-gateway</module>
     </modules>
 
     <properties>
@@ -18,11 +23,14 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring-cloud.version>2022.0.0-RC2</spring-cloud.version>
         <spring-boot.version>3.0.0</spring-boot.version>
-        <spring-cloud-alibaba.version>2021.0.4.0</spring-cloud-alibaba.version>
+        <spring-cloud-alibaba.version>2022.0.0.0-RC1</spring-cloud-alibaba.version>
         <nacos.client.version>2.1.1</nacos.client.version>
         <nacos.config.version>2.0.4</nacos.config.version>
         <lombok.version>1.18.22</lombok.version>
-        <guava.version>31.1-jre</guava.version>
+        <satoken.version>1.33.0</satoken.version>
+        <spring-boot.mybatis>3.0.1</spring-boot.mybatis>
+        <mybatis.version>3.5.11</mybatis.version>
+        <mybatis-plus.version>3.5.3.1</mybatis-plus.version>
     </properties>
 
     <dependencyManagement>
@@ -78,6 +86,54 @@
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>com.octopus</groupId>
+                <artifactId>octopus-common-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.octopus</groupId>
+                <artifactId>octopus-common-redis</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.octopus</groupId>
+                <artifactId>octopus-system-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cn.dev33</groupId>
+                <artifactId>sa-token-core</artifactId>
+                <version>${satoken.version}</version>
+            </dependency>
+
+            <!-- Mybatis 依赖引入 -->
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>${spring-boot.mybatis}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis</artifactId>
+                <version>${mybatis.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-annotation</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 

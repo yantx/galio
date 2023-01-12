@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 
 /**
  * @Author: octopus
@@ -34,6 +35,10 @@ public class JsonUtil {
         OBJECT_MAPPER.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS,false);
         //忽略 在json字符串中存在，但是在java对象中不存在对应属性的情况。防止错误
         OBJECT_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
+        //序列化的时候序列对象的所有属性
+        OBJECT_MAPPER.setSerializationInclusion(JsonInclude.Include.ALWAYS);
+        //取消时间的转化格式,默认是时间戳,可以取消,同时需要设置要表现的时间格式
+        OBJECT_MAPPER.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
     }
 
     /**

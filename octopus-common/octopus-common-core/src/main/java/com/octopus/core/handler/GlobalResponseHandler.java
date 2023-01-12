@@ -1,4 +1,4 @@
-package com.octopus.core.advice;
+package com.octopus.core.handler;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,7 +20,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
  * @Description: 统一响应封装 对返回值是ResponseVo类型，或者使用了NotControllerResponseAdvice注解的都不进行包装
  */
 @RestControllerAdvice
-public class GlobalResponseAdvice implements ResponseBodyAdvice<Object> {
+public class GlobalResponseHandler implements ResponseBodyAdvice<Object> {
     @Override
     public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
         // response是ResponseVo类型，或者注释了NotControllerResponseAdvice都不进行包装
@@ -37,7 +37,7 @@ public class GlobalResponseAdvice implements ResponseBodyAdvice<Object> {
                 // 将数据包装在ResponseVo里后转换为json串进行返回
                 return objectMapper.writeValueAsString(new ResponseVo(body));
             } catch (JsonProcessingException e) {
-                throw new ApiException(ResponseCodeEnum.RESPONSE_PACK_ERROR);
+                throw new ApiException(ResponseCodeEnum.JSON_PROCESSING_EXCEPTION);
             }
         }
         // 否则直接包装成ResponseVo返回
