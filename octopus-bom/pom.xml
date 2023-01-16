@@ -31,6 +31,8 @@
         <spring-boot.mybatis>3.0.1</spring-boot.mybatis>
         <mybatis.version>3.5.11</mybatis.version>
         <mybatis-plus.version>3.5.3.1</mybatis-plus.version>
+        <redisson.version>3.19.1</redisson.version>
+        <lock4j.version>2.2.3</lock4j.version>
     </properties>
 
     <dependencyManagement>
@@ -99,6 +101,11 @@
             </dependency>
             <dependency>
                 <groupId>com.octopus</groupId>
+                <artifactId>octopus-common-satoken</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.octopus</groupId>
                 <artifactId>octopus-system-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -134,6 +141,29 @@
                 <version>${mybatis-plus.version}</version>
             </dependency>
 
+            <!--redisson-->
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson-spring-boot-starter</artifactId>
+                <version>${redisson.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.redisson</groupId>
+                        <artifactId>redisson-spring-data-30</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson-spring-data-27</artifactId>
+                <version>${redisson.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>lock4j-redisson-spring-boot-starter</artifactId>
+                <version>${lock4j.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

@@ -1,9 +1,11 @@
-package utils;
+package com.octopus.redis.util;
 
-import com.octopus.core.utils.SpringUtil;
+import com.octopus.core.utils.SpringUtils;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import org.redisson.api.RMap;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
-import org.springframework.cache.caffeine.CaffeineCache;
 
 import java.util.Set;
 
@@ -12,9 +14,11 @@ import java.util.Set;
  * @createTime: 2022-12-08
  * @Description: 缓存工具类
  */
-public class CacheUtil {
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@SuppressWarnings(value = {"unchecked"})
+public class CacheUtils {
 
-    private static final CacheManager CACHE_MANAGER = SpringUtil.getBean(CacheManager.class);
+    private static final CacheManager CACHE_MANAGER = SpringUtils.getBean(CacheManager.class);
 
     /**
      * 获取缓存组内所有的KEY
@@ -22,9 +26,8 @@ public class CacheUtil {
      * @param cacheNames 缓存组名称
      */
     public static Set<Object> keys(String cacheNames) {
-        CaffeineCache caffeineCache = (CaffeineCache) CACHE_MANAGER.getCache(cacheNames);
-        com.github.benmanes.caffeine.cache.Cache<Object, Object> nativeCache = caffeineCache.getNativeCache();
-        return nativeCache.asMap().keySet();
+        RMap<Object, Object> rmap = (RMap<Object, Object>) CACHE_MANAGER.getCache(cacheNames).getNativeCache();
+        return rmap.keySet();
     }
 
     /**
