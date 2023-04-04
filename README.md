@@ -1,2 +1,2 @@
-# octopus
-octopus平台
+# galio
+加里奥平台

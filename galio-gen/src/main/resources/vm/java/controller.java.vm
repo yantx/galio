@@ -1,0 +1,91 @@
+package ${packageName}.controller;
+
+import cn.dev33.satoken.annotation.SaCheckPermission;
+import com.galio.core.model.ResponseVo;
+import com.galio.core.validate.AddGroup;
+import com.galio.core.validate.EditGroup;
+import com.galio.core.validate.QueryGroup;
+import com.galio.mybatis.page.PageDto;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+import ${packageName}.model.vo.${ClassName}Vo;
+import ${packageName}.model.dto.${ClassName}Dto;
+import ${packageName}.service.${ClassName}Service;
+
+import java.util.List;
+import java.util.Arrays;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.servlet.http.HttpServletResponse;
+
+/**
+ * @Author: ${author}
+ * @Date: ${datetime}
+ * @Description: ${tableName}接口控制器
+ * 前端访问路由地址为:/${moduleName}/${businessName}
+ */
+@Validated
+@RequiredArgsConstructor
+@RestController
+@RequestMapping("/${businessName}")
+public class ${ClassName}Controller {
+
+    private final ${ClassName}Service ${className}Service;
+
+    /**
+     * 查询${functionName}列表
+     */
+    @SaCheckPermission("${permissionPrefix}:list")
+    @GetMapping("/list")
+#if($table.crud || $table.sub)
+    public ${ClassName}Vo list(${ClassName}Dto dto, PageDto pageDto) {
+        return ${className}Service.queryPageList(dto, pageDto);
+    }
+#elseif($table.tree)
+    public List<${ClassName}Vo> list(${ClassName}Dto dto) {
+        return ${className}Service.queryList(dto);;
+    }
+#end
+
+    /**
+     * 获取${functionName}详细信息
+     *
+     * @param ${pkColumn.javaField} 主键
+     */
+    @SaCheckPermission("${permissionPrefix}:query")
+    @GetMapping("/{${pkColumn.javaField}}")
+    public ${ClassName}Vo getInfo(@NotNull(message = "主键不能为空") @PathVariable ${pkColumn.javaType} ${pkColumn.javaField}) {
+        return ${className}Service.queryById(${pkColumn.javaField});
+    }
+
+    /**
+     * 新增${functionName}
+     */
+    @SaCheckPermission("${permissionPrefix}:add")
+    @PostMapping()
+    public Object add(@Validated(AddGroup.class) @RequestBody ${ClassName}Dto dto) {
+        return ${className}Service.insertByDto(dto);
+    }
+
+    /**
+     * 修改${functionName}
+     */
+    @SaCheckPermission("${permissionPrefix}:edit")
+    @PutMapping()
+    public Object edit(@Validated(EditGroup.class) @RequestBody ${ClassName}Dto dto) {
+        return ${className}Service.updateByDto(dto);
+    }
+
+    /**
+     * 删除${functionName}
+     *
+     * @param ${pkColumn.javaField}s 主键串
+     */
+    @SaCheckPermission("${permissionPrefix}:remove")
+    @DeleteMapping("/{${pkColumn.javaField}s}")
+    public Object remove(@NotEmpty(message = "主键不能为空") @PathVariable ${pkColumn.javaType}[] ${pkColumn.javaField}s) {
+        return ${className}Service.deleteWithValidByIds(Arrays.asList(${pkColumn.javaField}s), true);
+    }
+}

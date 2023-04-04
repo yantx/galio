@@ -1,0 +1,35 @@
+package ${packageName}.model.vo;
+
+#foreach ($import in $importList)
+import ${import};
+#end
+import lombok.Data;
+import java.util.Date;
+
+/**
+ * @Author: ${author}
+ * @Date: ${datetime}
+ * @Description: ${tableName}视图对象
+ */
+@Data
+public class ${ClassName}Vo {
+
+    private static final long serialVersionUID = 1L;
+
+#foreach ($column in $columns)
+#if($column.isList)
+    /**
+     * $column.columnComment
+     */
+#set($parentheseIndex=$column.columnComment.indexOf("（"))
+#if($parentheseIndex != -1)
+#set($comment=$column.columnComment.substring(0, $parentheseIndex))
+#else
+#set($comment=$column.columnComment)
+#end
+    private $column.javaType $column.javaField;
+
+#end
+#end
+
+}

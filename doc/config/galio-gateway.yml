@@ -1,0 +1,70 @@
+
+# 安全配置
+security:
+  # 验证码
+  captcha:
+    # 是否开启验证码
+    enabled: false
+    # 验证码类型 math 数组计算 char 字符验证
+    type: MATH
+    # line 线段干扰 circle 圆圈干扰 shear 扭曲干扰
+    category: CIRCLE
+    # 数字验证码位数
+    numberLength: 1
+    # 字符验证码长度
+    charLength: 4
+  # 防止XSS攻击
+  xss:
+    enabled: true
+    excludeUrls:
+      - /system/notice
+  # 不校验白名单
+  ignore:
+    whites:
+      - /code
+      - /auth/logout
+      - /auth/login
+      - /*/v3/api-docs
+      - /csrf
+
+spring:
+  cloud:
+    # 网关配置
+    gateway:
+      # 打印请求日志(自定义)
+      requestLog: true
+      discovery:
+        locator:
+          lowerCaseServiceId: true
+          enabled: true
+      routes:
+        # 认证中心
+        - id: galio-auth
+          uri: lb://galio-auth
+          predicates:
+            - Path=/auth/**
+          filters:
+            # 验证码处理
+#            - ValidateCodeFilter
+            - StripPrefix=1
+        # 代码生成
+        - id: galio-gen
+          uri: lb://galio-gen
+          predicates:
+            - Path=/code/**
+          filters:
+            - StripPrefix=1
+        # 系统模块
+        - id: galio-system
+          uri: lb://galio-system
+          predicates:
+            - Path=/system/**
+          filters:
+            - StripPrefix=1
+        # 资源服务
+        - id: galio-file
+          uri: lb://galio-file
+          predicates:
+            - Path=/file/**
+          filters:
+            - StripPrefix=1

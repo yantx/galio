@@ -1,3 +1,0 @@
-com.octopus.common.security.handler.SaExceptionHandler
-com.octopus.common.security.config.SaTokenConfigure
-com.octopus.common.security.permission.SaPermissionImpl

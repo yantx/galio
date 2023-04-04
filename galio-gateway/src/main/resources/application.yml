@@ -1,0 +1,60 @@
+server:
+  port: 9000
+spring:
+  application:
+    name: galio-gateway
+  profiles:
+    active: dev
+
+---
+# nacos 配置
+spring:
+  cloud:
+    nacos:
+      server-addr: ${nacos.server-addr}
+      discovery:
+        group: ${nacos.discovery.group}
+        namespace: ${nacos.discovery.namespace}
+      config:
+        group: ${nacos.config.group}
+        namespace: ${nacos.config.namespace}
+        server-addr: ${nacos.server-addr}
+  config:
+    import:
+      - optional:nacos:application-common.yml
+      - optional:nacos:datasource.yml
+      - optional:nacos:${spring.application.name}.yml
+
+---
+# dev环境
+spring:
+  config:
+    activate:
+      on-profile: dev
+  cloud:
+    inetutils:
+      # 择符合前缀的IP作为服务注册IP
+      preferred-networks: 221.218.136
+nacos:
+  server-addr: 123.249.127.25:8848
+  discovery:
+    group: DEFAULT_GROUP
+    namespace: dev
+  config:
+    group: DEFAULT_GROUP
+    namespace: dev
+
+---
+# test环境
+spring:
+  config:
+    activate:
+      on-profile: test
+nacos:
+  server-addr: 123.249.127.25:8848
+  discovery:
+    group: DEFAULT_GROUP
+    namespace: test
+  config:
+    group: DEFAULT_GROUP
+    namespace: test

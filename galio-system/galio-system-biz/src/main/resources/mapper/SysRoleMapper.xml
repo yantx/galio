@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="generator.mapper.SysRoleMapper">
+
+    <resultMap id="BaseResultMap" type="generator.domain.SysRole">
+            <id property="roleId" column="role_id" jdbcType="BIGINT"/>
+            <result property="roleName" column="role_name" jdbcType="VARCHAR"/>
+            <result property="roleKey" column="role_key" jdbcType="VARCHAR"/>
+            <result property="orderNum" column="order_num" jdbcType="OTHER"/>
+            <result property="dataScope" column="data_scope" jdbcType="CHAR"/>
+            <result property="functionCheckStrictly" column="function_check_strictly" jdbcType="CHAR"/>
+            <result property="orgCheckStrictly" column="org_check_strictly" jdbcType="CHAR"/>
+            <result property="status" column="status" jdbcType="CHAR"/>
+            <result property="deleteFlag" column="delete_flag" jdbcType="CHAR"/>
+            <result property="createBy" column="create_by" jdbcType="BIGINT"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateBy" column="update_by" jdbcType="BIGINT"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="remark" column="remark" jdbcType="VARCHAR"/>
+            <result property="appId" column="app_id" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        role_id,role_name,role_key,
+        order_num,data_scope,function_check_strictly,
+        org_check_strictly,status,delete_flag,
+        create_by,create_time,update_by,
+        update_time,remark,app_id
+    </sql>
+</mapper>

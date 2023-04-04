@@ -1,0 +1,18 @@
+datasource:
+  system-postgres:
+      url: jdbc:postgresql://localhost:5432/galio-sys?useUnicode=true&characterEncoding=utf8&useSSL=true&autoReconnect=true&reWriteBatchedInserts=true
+      username: root
+      password: password
+  gen:
+    url: jdbc:postgresql://localhost:3306/galio-sys?useUnicode=true&characterEncoding=utf8&useSSL=true&autoReconnect=true&reWriteBatchedInserts=true
+    username: root
+    password: password
+
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      # 池中维护的最小空闲连接数，默认为 10 个。
+      minimum-idle: 20
+      # 池中最大连接数，包括闲置和使用中的连接，默认为 10 个。
+      maximum-pool-size: 20

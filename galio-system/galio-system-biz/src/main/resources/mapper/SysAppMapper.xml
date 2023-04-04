@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="generator.mapper.SysAppMapper">
+
+    <resultMap id="BaseResultMap" type="generator.domain.SysApp">
+            <id property="appId" column="app_id" jdbcType="BIGINT"/>
+            <result property="appName" column="app_name" jdbcType="VARCHAR"/>
+            <result property="appCode" column="app_code" jdbcType="VARCHAR"/>
+            <result property="appIcon" column="app_icon" jdbcType="VARCHAR"/>
+            <result property="isFixed" column="is_fixed" jdbcType="CHAR"/>
+            <result property="status" column="status" jdbcType="CHAR"/>
+            <result property="remark" column="remark" jdbcType="VARCHAR"/>
+            <result property="createBy" column="create_by" jdbcType="BIGINT"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateBy" column="update_by" jdbcType="BIGINT"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        app_id,app_name,app_code,
+        app_icon,is_fixed,status,
+        remark,create_by,create_time,
+        update_by,update_time
+    </sql>
+</mapper>

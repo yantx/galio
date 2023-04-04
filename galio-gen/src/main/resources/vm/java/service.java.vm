@@ -1,0 +1,51 @@
+package ${packageName}.service;
+
+import ${packageName}.model.${ClassName};
+import ${packageName}.model.vo.${ClassName}Vo;
+import ${packageName}.model.dto.${ClassName}Dto;
+#if($table.crud || $table.sub)
+import com.galio.mybatis.page.PageDto;
+#end
+
+import java.util.Collection;
+import java.util.List;
+
+/**
+ * @Author: ${author}
+ * @Date: ${datetime}
+ * @Description: ${functionName}Service接口
+ */
+public interface ${ClassName}Service {
+
+    /**
+     * 查询${functionName}
+     */
+    ${ClassName}Vo queryById(${pkColumn.javaType} ${pkColumn.javaField});
+
+#if($table.crud || $table.sub)
+    /**
+     * 查询${functionName}列表
+     */
+    Page<${ClassName}Vo> queryPageList(${ClassName}Dto dto, PageDto pageDto);
+#end
+
+    /**
+     * 查询${functionName}列表
+     */
+    List<${ClassName}Vo> queryList(${ClassName}Dto dto);
+
+    /**
+     * 修改${functionName}
+     */
+    Boolean insertByBo(${ClassName}Dto dto);
+
+    /**
+     * 修改${functionName}
+     */
+    Boolean updateByDto(${ClassName}Dto dto);
+
+    /**
+     * 校验并批量删除${functionName}信息
+     */
+    Boolean deleteWithValidByIds(Collection<${pkColumn.javaType}> ids, Boolean isValid);
+}

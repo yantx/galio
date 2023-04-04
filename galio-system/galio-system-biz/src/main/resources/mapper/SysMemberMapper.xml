@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="generator.mapper.SysMemberMapper">
+
+    <resultMap id="BaseResultMap" type="generator.domain.SysMember">
+            <id property="memberId" column="member_id" jdbcType="BIGINT"/>
+            <result property="employeeId" column="employee_id" jdbcType="BIGINT"/>
+            <result property="appId" column="app_id" jdbcType="BIGINT"/>
+            <result property="username" column="username" jdbcType="VARCHAR"/>
+            <result property="password" column="password" jdbcType="VARCHAR"/>
+            <result property="memberType" column="member_type" jdbcType="VARCHAR"/>
+            <result property="email" column="email" jdbcType="VARCHAR"/>
+            <result property="mobileNumber" column="mobile_number" jdbcType="OTHER"/>
+            <result property="avatar" column="avatar" jdbcType="VARCHAR"/>
+            <result property="deleteFlag" column="delete_flag" jdbcType="CHAR"/>
+            <result property="loginIp" column="login_ip" jdbcType="VARCHAR"/>
+            <result property="loginDate" column="login_date" jdbcType="TIMESTAMP"/>
+            <result property="enableDate" column="enable_date" jdbcType="TIMESTAMP"/>
+            <result property="disableDate" column="disable_date" jdbcType="TIMESTAMP"/>
+            <result property="remark" column="remark" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="createBy" column="create_by" jdbcType="BIGINT"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="updateBy" column="update_by" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        member_id,employee_id,app_id,
+        username,password,member_type,
+        email,mobile_number,avatar,
+        delete_flag,login_ip,login_date,
+        enable_date,disable_date,remark,
+        create_time,create_by,update_time,
+        update_by
+    </sql>
+</mapper>
