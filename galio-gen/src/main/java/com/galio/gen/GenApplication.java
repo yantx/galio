@@ -9,7 +9,7 @@ import org.springframework.boot.context.metrics.buffering.BufferingApplicationSt
  * @Date: 2023-03-19 21:01:55
  * @Description: 代码生成器
  */
-@SpringBootApplication(scanBasePackages = "com.galio.*.handler")
+@SpringBootApplication(scanBasePackages = "com.galio")
 public class GenApplication {
     public static void main(String[] args) {
         SpringApplication application = new SpringApplication(GenApplication.class);

@@ -1,15 +1,11 @@
 package com.galio.gen.controller;
 
-import com.galio.core.enums.ResponseCodeEnum;
-import com.galio.core.exception.CustomException;
 import com.galio.core.text.Convert;
-import com.galio.gen.enums.GenExceptionResponseEnum;
 import com.galio.gen.model.GenTable;
 import com.galio.gen.model.GenTableColumn;
 import com.galio.gen.service.IGenTableColumnService;
 import com.galio.gen.service.IGenTableService;
 import com.galio.mybatis.page.PageDto;
-import com.galio.system.entity.SysOrg;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
@@ -32,6 +28,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping("/generate")
 @RestController
+@Tag(name = "代码生成器接口")
 public class GenController{
 
     private final IGenTableService genTableService;
@@ -42,6 +39,7 @@ public class GenController{
      * 查询代码生成列表
      */
     @PostMapping("/list")
+    @Operation(summary = "查询代码生成列表")
     public Object genList(GenTable genTable, PageDto pageQuery) {
         return genTableService.selectPageGenTableList(genTable, pageQuery);
     }
@@ -52,6 +50,7 @@ public class GenController{
      * @param tableId 表主键
      */
     @GetMapping(value = "/{tableId}")
+    @Operation(summary = "修改代码生成业务")
     public Object getInfo(@PathVariable Long tableId) {
         GenTable table = genTableService.selectGenTableById(tableId);
         List<GenTable> tables = genTableService.selectGenTableAll();
@@ -67,6 +66,7 @@ public class GenController{
      * 查询数据库列表
      */
     @GetMapping("/db/list")
+    @Operation(summary = "查询数据库列表")
     public Object dataList(GenTable genTable, PageDto pageQuery) {
         return genTableService.selectPageDbTableList(genTable, pageQuery);
     }
@@ -77,6 +77,7 @@ public class GenController{
      * @param tableId 表主键
      */
     @GetMapping("/column/list")
+    @Operation(summary = "查询数据表字段列表")
     public Object columnList(Long tableId) {
         List<GenTableColumn> list = genTableColumnService.selectGenTableColumnListByTableId(tableId);
         return list;
@@ -88,6 +89,7 @@ public class GenController{
      * @param tables 表名串
      */
     @PostMapping("/importTable")
+    @Operation(summary = "导入表结构")
     public void importTableSave(String tables){
         String[] tableNames = Convert.toStrArray(tables);
         // 查询表信息
@@ -103,6 +105,7 @@ public class GenController{
      * 修改保存代码生成业务
      */
     @PutMapping
+    @Operation(summary = "修改保存代码生成业务")
     public Object editSave(@Validated @RequestBody GenTable genTable) {
         genTableService.validateEdit(genTable);
         genTableService.updateGenTable(genTable);
@@ -115,6 +118,7 @@ public class GenController{
      * @param tableIds 表主键串
      */
     @DeleteMapping("/{tableIds}")
+    @Operation(summary = "删除代码生成")
     public Object remove(@PathVariable Long[] tableIds) {
         genTableService.deleteGenTableByIds(tableIds);
         return null;
@@ -126,6 +130,7 @@ public class GenController{
      * @param tableId 表主键
      */
     @GetMapping("/preview/{tableId}")
+    @Operation(summary = "预览代码")
     public Object preview(@PathVariable("tableId") Long tableId) throws IOException {
         Map<String, String> dataMap = genTableService.previewCode(tableId);
         return dataMap;
@@ -137,6 +142,7 @@ public class GenController{
      * @param tableName 表名
      */
     @GetMapping("/download/{tableName}")
+    @Operation(summary = "生成代码下载")
     public void download(HttpServletResponse response, @PathVariable("tableName") String tableName) throws IOException {
         byte[] data = genTableService.downloadCode(tableName);
         genCode(response, data);
@@ -148,6 +154,7 @@ public class GenController{
      * @param tableName 表名
      */
     @GetMapping("/genCode/{tableName}")
+    @Operation(summary = "自定义路径生成代码")
     public void genCode(@PathVariable("tableName") String tableName) {
         genTableService.generatorCode(tableName);
     }
@@ -158,6 +165,7 @@ public class GenController{
      * @param tableName 表名
      */
     @GetMapping("/synchDb/{tableName}")
+    @Operation(summary = "同步数据库")
     public void synchDb(@PathVariable("tableName") String tableName) {
         genTableService.syncDb(tableName);
     }
@@ -168,6 +176,7 @@ public class GenController{
      * @param tables 表名串
      */
     @GetMapping("/batchGenCode")
+    @Operation(summary = "批量生成代码")
     public void batchGenCode(HttpServletResponse response, String tables) throws IOException {
         String[] tableNames = Convert.toStrArray(tables);
         byte[] data = genTableService.downloadCode(tableNames);

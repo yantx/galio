@@ -10,9 +10,17 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @Description: mvc配置
  *
  */
-public class WebMvcConfig implements WebMvcConfigurer {
+@AutoConfiguration
+public class SpringDocWebConfig implements WebMvcConfigurer {
     /**
      * spring.web.resources.add-mappings=false  为静态资源设置默认处理
      * @param registry
      */
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/doc.html")
+                .addResourceLocations("classpath:/META-INF/resources/","/static","/public");
+        registry.addResourceHandler("/webjars/**")
+                .addResourceLocations("classpath:/META-INF/resources/webjars/");
+    }
 }

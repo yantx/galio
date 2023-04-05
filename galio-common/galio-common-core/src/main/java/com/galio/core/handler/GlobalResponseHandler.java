@@ -26,8 +26,15 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
  * @Description: 统一响应封装 对返回值是ResponseVo类型，或者使用了NotControllerResponseAdvice注解的都不进行包装
  */
 @Slf4j
-@RestControllerAdvice
+@RestControllerAdvice(basePackages = {"${controller.advice.basePackages}"})
 public class GlobalResponseHandler implements ResponseBodyAdvice<Object> {
+
+    /**
+     * 判断是否执行beforeBodyWrite方法， true为执行 false为不执行
+     * @param returnType
+     * @param converterType
+     * @return
+     */
     @Override
     public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
         // response是ResponseVo类型，或者注释了NotControllerResponseAdvice都不进行包装
@@ -35,6 +42,16 @@ public class GlobalResponseHandler implements ResponseBodyAdvice<Object> {
                 || returnType.hasMethodAnnotation(NotControllerResponseAdvice.class));
     }
 
+    /**
+     * 对 response 封装处理
+     * @param body
+     * @param returnType
+     * @param selectedContentType
+     * @param selectedConverterType
+     * @param request
+     * @param response
+     * @return
+     */
     @Override
     public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
         // String类型不能直接包装

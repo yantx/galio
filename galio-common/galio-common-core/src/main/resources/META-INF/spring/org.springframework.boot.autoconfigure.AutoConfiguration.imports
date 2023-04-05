@@ -1,4 +1,3 @@
 com.galio.core.utils.SpringUtils
 com.galio.core.utils.JsonUtils
 com.galio.core.config.ValidatorConfig
-com.galio.doc.config.SpringDocConfig

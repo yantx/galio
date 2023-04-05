@@ -45,7 +45,7 @@ public class SaTokenConfiguration implements WebMvcConfigurer {
         return new SaServletFilter()
                 .addInclude("/**")
                 // 静态资源,knife4j接口文档相关资源放行
-                .addExclude("/actuator/**","/*.html","/webjars/**","/favicon.ico","/v3/**","/generate/**")
+                .addExclude("/actuator/**","/*.html","/webjars/**","/favicon.ico","/**/api-docs/**","/generate/**")
                 .setAuth(obj -> SaSameUtil.checkCurrentRequestToken())
                 .setError(e -> SaResult.error("认证失败，Token无效无法访问系统资源").setCode(HttpStatus.UNAUTHORIZED.value()));
     }
