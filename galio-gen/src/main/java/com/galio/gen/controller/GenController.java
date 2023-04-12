@@ -40,8 +40,8 @@ public class GenController{
      */
     @PostMapping("/list")
     @Operation(summary = "查询代码生成列表")
-    public Object genList(GenTable genTable, PageDto pageQuery) {
-        return genTableService.selectPageGenTableList(genTable, pageQuery);
+    public Object genList(@RequestBody PageDto pageQuery) {
+        return genTableService.selectPageGenTableList(pageQuery);
     }
 
     /**
@@ -65,10 +65,10 @@ public class GenController{
     /**
      * 查询数据库列表
      */
-    @GetMapping("/db/list")
+    @PostMapping("/db/list")
     @Operation(summary = "查询数据库列表")
-    public Object dataList(GenTable genTable, PageDto pageQuery) {
-        return genTableService.selectPageDbTableList(genTable, pageQuery);
+    public Object dataList(@RequestBody PageDto pageQuery) {
+        return genTableService.selectPageDbTableList(pageQuery);
     }
 
     /**
@@ -93,12 +93,8 @@ public class GenController{
     public void importTableSave(String tables){
         String[] tableNames = Convert.toStrArray(tables);
         // 查询表信息
-//        List<GenTable> tableList = genTableService.selectDbTableListByNames(tableNames);
-//        genTableService.importGenTable(tableList);
-        String str = null;
-        System.out.println(str.equals(""));
-
-//        throw new CustomException(GenExceptionResponseEnum.GEN_TABLE_IMPORT_ERROR);
+        List<GenTable> tableList = genTableService.selectDbTableListByNames(tableNames);
+        genTableService.importGenTable(tableList);
     }
 
     /**

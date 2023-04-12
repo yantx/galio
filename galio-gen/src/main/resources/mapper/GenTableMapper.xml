@@ -20,11 +20,40 @@
             <result property="functionAuthor" column="function_author" jdbcType="VARCHAR"/>
             <result property="genType" column="gen_type" jdbcType="CHAR"/>
             <result property="genPath" column="gen_path" jdbcType="VARCHAR"/>
+            <result property="remark" column="remark" jdbcType="VARCHAR"/>
+            <result property="orderNum" column="order_num" jdbcType="VARCHAR"/>
             <result property="options" column="options" jdbcType="VARCHAR"/>
             <result property="createBy" column="create_by" jdbcType="BIGINT"/>
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
             <result property="updateBy" column="update_by" jdbcType="BIGINT"/>
             <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <collection  property="columns"  javaType="java.util.List"  resultMap="GenTableColumnResult" />
+    </resultMap>
+
+    <resultMap id="GenTableColumnResult" type="com.galio.gen.model.GenTableColumn">
+        <id property="columnId" column="column_id" jdbcType="BIGINT"/>
+        <result property="tableId" column="table_id" jdbcType="BIGINT"/>
+        <result property="columnName" column="column_name" jdbcType="VARCHAR"/>
+        <result property="columnComment" column="column_comment" jdbcType="VARCHAR"/>
+        <result property="columnType" column="column_type" jdbcType="VARCHAR"/>
+        <result property="javaType" column="java_type" jdbcType="VARCHAR"/>
+        <result property="javaField" column="java_field" jdbcType="VARCHAR"/>
+        <result property="isPk" column="is_pk" jdbcType="CHAR"/>
+        <result property="isIncrement" column="is_increment" jdbcType="CHAR"/>
+        <result property="isRequired" column="is_required" jdbcType="CHAR"/>
+        <result property="isInsert" column="is_insert" jdbcType="CHAR"/>
+        <result property="isEdit" column="is_edit" jdbcType="CHAR"/>
+        <result property="isList" column="is_list" jdbcType="CHAR"/>
+        <result property="isQuery" column="is_query" jdbcType="CHAR"/>
+        <result property="queryType" column="query_type" jdbcType="VARCHAR"/>
+        <result property="htmlType" column="html_type" jdbcType="VARCHAR"/>
+        <result property="dictType" column="dict_type" jdbcType="VARCHAR"/>
+        <result property="orderNum" column="order_num" jdbcType="INTEGER"/>
+        <result property="appId" column="app_id" jdbcType="BIGINT"/>
+        <result property="createBy" column="create_by" jdbcType="BIGINT"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateBy" column="update_by" jdbcType="BIGINT"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -69,17 +98,15 @@
             order by create_time desc
         </if>
         <if test="_databaseId == 'postgresql'">
-            select table_name, table_comment, create_time, update_time
+            select table_name, table_comment
             from (
             SELECT c.relname AS table_name,
-            obj_description(c.oid) AS table_comment,
-            CURRENT_TIMESTAMP AS create_time,
-            CURRENT_TIMESTAMP AS update_time
+            obj_description(c.oid) AS table_comment
             FROM pg_class c
             LEFT JOIN pg_namespace n ON n.oid = c.relnamespace
             WHERE (c.relkind = ANY (ARRAY ['r'::"char", 'p'::"char"]))
             AND c.relname != 'spatial_%'::text
-            AND n.nspname = 'public'::name
+            AND n.nspname = 'galio_sys'::name
             AND n.nspname <![CDATA[ <> ]]> ''::name
             ) list_table
             where table_name NOT LIKE 'gen_%'
@@ -117,17 +144,15 @@
             </foreach>
         </if>
         <if test="_databaseId == 'postgresql'">
-            select table_name, table_comment, create_time, update_time
+            select table_name, table_comment
             from (
             SELECT c.relname AS table_name,
-            obj_description(c.oid) AS table_comment,
-            CURRENT_TIMESTAMP AS create_time,
-            CURRENT_TIMESTAMP AS update_time
+            obj_description(c.oid) AS table_comment
             FROM pg_class c
             LEFT JOIN pg_namespace n ON n.oid = c.relnamespace
             WHERE (c.relkind = ANY (ARRAY ['r'::"char", 'p'::"char"]))
             AND c.relname != 'spatial_%'::text
-            AND n.nspname = 'public'::name
+            AND n.nspname = 'galio_sys'::name
             AND n.nspname <![CDATA[ <> ]]> ''::name
             ) list_table
             where table_name NOT LIKE 'gen_%'
@@ -155,17 +180,15 @@
             and lower(dt.table_name) = #{tableName}
         </if>
         <if test="_databaseId == 'postgresql'">
-            select table_name, table_comment, create_time, update_time
+            select table_name, table_comment
             from (
             SELECT c.relname AS table_name,
-            obj_description(c.oid) AS table_comment,
-            CURRENT_TIMESTAMP AS create_time,
-            CURRENT_TIMESTAMP AS update_time
+            obj_description(c.oid) AS table_comment
             FROM pg_class c
             LEFT JOIN pg_namespace n ON n.oid = c.relnamespace
             WHERE (c.relkind = ANY (ARRAY ['r'::"char", 'p'::"char"]))
             AND c.relname != 'spatial_%'::text
-            AND n.nspname = 'public'::name
+            AND n.nspname = 'galio_sys'::name
             AND n.nspname <![CDATA[ <> ]]> ''::name
             ) list_table
             where table_name NOT LIKE 'gen_%'
@@ -175,25 +198,25 @@
 
     <select id="selectGenTableById" parameterType="Long" resultMap="BaseResultMap">
         SELECT t.table_id, t.table_name, t.table_comment, t.sub_table_name, t.sub_table_fk_name, t.class_name, t.tpl_category, t.package_name, t.module_name, t.business_name, t.function_name, t.function_author, t.gen_type, t.gen_path, t.options, t.remark,
-               c.column_id, c.column_name, c.column_comment, c.column_type, c.java_type, c.java_field, c.is_pk, c.is_increment, c.is_required, c.is_insert, c.is_edit, c.is_list, c.is_query, c.query_type, c.html_type, c.dict_type, c.sort
+               c.column_id, c.column_name, c.column_comment, c.column_type, c.java_type, c.java_field, c.is_pk, c.is_increment, c.is_required, c.is_insert, c.is_edit, c.is_list, c.is_query, c.query_type, c.html_type, c.dict_type, c.order_num
         FROM gen_table t
                  LEFT JOIN gen_table_column c ON t.table_id = c.table_id
-        where t.table_id = #{tableId} order by c.sort
+        where t.table_id = #{tableId} order by c.order_num
     </select>
 
     <select id="selectGenTableByName" parameterType="String" resultMap="BaseResultMap">
         SELECT t.table_id, t.table_name, t.table_comment, t.sub_table_name, t.sub_table_fk_name, t.class_name, t.tpl_category, t.package_name, t.module_name, t.business_name, t.function_name, t.function_author, t.gen_type, t.gen_path, t.options, t.remark,
-               c.column_id, c.column_name, c.column_comment, c.column_type, c.java_type, c.java_field, c.is_pk, c.is_increment, c.is_required, c.is_insert, c.is_edit, c.is_list, c.is_query, c.query_type, c.html_type, c.dict_type, c.sort
+               c.column_id, c.column_name, c.column_comment, c.column_type, c.java_type, c.java_field, c.is_pk, c.is_increment, c.is_required, c.is_insert, c.is_edit, c.is_list, c.is_query, c.query_type, c.html_type, c.dict_type, c.order_num
         FROM gen_table t
                  LEFT JOIN gen_table_column c ON t.table_id = c.table_id
-        where t.table_name = #{tableName} order by c.sort
+        where t.table_name = #{tableName} order by c.order_num
     </select>
 
     <select id="selectGenTableAll" parameterType="String" resultMap="BaseResultMap">
         SELECT t.table_id, t.table_name, t.table_comment, t.sub_table_name, t.sub_table_fk_name, t.class_name, t.tpl_category, t.package_name, t.module_name, t.business_name, t.function_name, t.function_author, t.options, t.remark,
-               c.column_id, c.column_name, c.column_comment, c.column_type, c.java_type, c.java_field, c.is_pk, c.is_increment, c.is_required, c.is_insert, c.is_edit, c.is_list, c.is_query, c.query_type, c.html_type, c.dict_type, c.sort
+               c.column_id, c.column_name, c.column_comment, c.column_type, c.java_type, c.java_field, c.is_pk, c.is_increment, c.is_required, c.is_insert, c.is_edit, c.is_list, c.is_query, c.query_type, c.html_type, c.dict_type, c.order_num
         FROM gen_table t
                  LEFT JOIN gen_table_column c ON t.table_id = c.table_id
-        order by c.sort
+        order by c.order_num
     </select>
 </mapper>

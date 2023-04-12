@@ -1,6 +1,7 @@
 package com.galio.core.handler;
 
 import com.galio.core.enums.ResponseCodeEnum;
+import com.galio.core.exception.CustomException;
 import com.galio.core.model.ResponseVo;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -66,11 +67,9 @@ public class GlobalExceptionHandler {
     /**
      * 拦截未知的运行时异常
      */
-    @ExceptionHandler(CommunicationException.class)
-    public ResponseVo handleCommunicationException(CommunicationException e, HttpServletRequest request) {
-        String requestURI = request.getRequestURI();
-        log.error("请求地址'{}',发生未知异常.", requestURI, e);
-        return ResponseVo.createFail(ResponseCodeEnum.FAILED);
+    @ExceptionHandler(CustomException.class)
+    public ResponseVo handleCommunicationException(CustomException e, HttpServletRequest request) {
+        return ResponseVo.createFail(e.getCode(),e.getMsg());
     }
 
     /**

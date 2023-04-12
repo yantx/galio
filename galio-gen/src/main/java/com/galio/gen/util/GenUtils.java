@@ -21,14 +21,14 @@ public class GenUtils {
     /**
      * 初始化表信息
      */
-    public static void initTable(GenTable genTable, String operName) {
+    public static void initTable(GenTable genTable, Long memberId) {
         genTable.setClassName(convertClassName(genTable.getTableName()));
         genTable.setPackageName(GenConfig.getPackageName());
         genTable.setModuleName(getModuleName(GenConfig.getPackageName()));
         genTable.setBusinessName(getBusinessName(genTable.getTableName()));
         genTable.setFunctionName(replaceText(genTable.getTableComment()));
         genTable.setFunctionAuthor(GenConfig.getAuthor());
-        genTable.setCreateBy(operName);
+        genTable.setCreateBy(memberId);
     }
 
     /**
@@ -169,7 +169,7 @@ public class GenUtils {
             String[] searchList = StringUtil.split(tablePrefix, ",");
             tableName = replaceFirst(tableName, searchList);
         }
-        return StringUtil.lineToHump(tableName);
+        return StringUtil.lineToHumpCapitalize(tableName);
     }
 
     /**

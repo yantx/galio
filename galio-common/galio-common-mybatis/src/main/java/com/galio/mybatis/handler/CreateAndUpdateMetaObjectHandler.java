@@ -3,14 +3,13 @@ package com.galio.mybatis.handler;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.galio.core.exception.CustomException;
 import com.galio.core.model.BaseEntity;
+import com.galio.core.utils.DateUtil;
 import com.galio.core.utils.ObjectUtil;
-import com.galio.core.utils.StringUtil;
 import com.galio.satoken.utils.LoginHelper;
-import com.galio.system.dto.LoginMemberDto;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.reflection.MetaObject;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * @Author: galio
@@ -25,16 +24,18 @@ public class CreateAndUpdateMetaObjectHandler implements MetaObjectHandler {
         try {
             if (ObjectUtil.isNotNull(metaObject) && metaObject.getOriginalObject() instanceof BaseEntity) {
                 BaseEntity baseEntity = (BaseEntity) metaObject.getOriginalObject();
-                Date current = ObjectUtil.isNotNull(baseEntity.getCreateTime())
-                        ? baseEntity.getCreateTime() : new Date();
+                LocalDateTime current = ObjectUtil.isNotNull(baseEntity.getCreateTime())
+                        ? baseEntity.getCreateTime() : LocalDateTime.now().withNano(0);
                 baseEntity.setCreateTime(current);
                 baseEntity.setUpdateTime(current);
-                String username = StringUtil.isNotBlank(baseEntity.getCreateBy())
-                        ? baseEntity.getCreateBy() : getUsername();
+                Long memberId = ObjectUtil.isNotNull(baseEntity.getCreateBy())
+                        ? baseEntity.getCreateBy() : getMemberId();
                 // 当前已登录 且 创建人为空 则填充
-                baseEntity.setCreateBy(username);
+                baseEntity.setCreateBy(memberId);
                 // 当前已登录 且 更新人为空 则填充
-                baseEntity.setUpdateBy(username);
+                baseEntity.setUpdateBy(memberId);
+
+                baseEntity.setAppId(1L);
             }
         } catch (Exception e) {
             throw new CustomException(4401,"自动注入异常 => " + e.getMessage());
@@ -46,13 +47,13 @@ public class CreateAndUpdateMetaObjectHandler implements MetaObjectHandler {
         try {
             if (ObjectUtil.isNotNull(metaObject) && metaObject.getOriginalObject() instanceof BaseEntity) {
                 BaseEntity baseEntity = (BaseEntity) metaObject.getOriginalObject();
-                Date current = new Date();
+                LocalDateTime current = LocalDateTime.now().withNano(0);
                 // 更新时间填充(不管为不为空)
                 baseEntity.setUpdateTime(current);
-                String username = getUsername();
+                Long memberId = getMemberId();
                 // 当前已登录 更新人填充(不管为不为空)
-                if (StringUtil.isNotBlank(username)) {
-                    baseEntity.setUpdateBy(username);
+                if (ObjectUtil.isNotNull(memberId)) {
+                    baseEntity.setUpdateBy(memberId);
                 }
             }
         } catch (Exception e) {
@@ -61,17 +62,10 @@ public class CreateAndUpdateMetaObjectHandler implements MetaObjectHandler {
     }
 
     /**
-     * 获取登录用户名
+     * 获取登录账号ID
      */
-    private String getUsername() {
-        LoginMemberDto loginMember;
-        try {
-            loginMember = LoginHelper.getLoginMember();
-        } catch (Exception e) {
-            log.warn("自动注入警告 => 用户未登录");
-            return null;
-        }
-        return loginMember.getUsername();
+    private Long getMemberId() {
+        return LoginHelper.getMemberId();
     }
 
 }

@@ -81,7 +81,6 @@ public class VelocityUtils {
     public static void setMenuVelocityContext(VelocityContext context, GenTable genTable) {
         String options = genTable.getOptions();
         LinkedHashMap<String, Object> paramsObj = JsonUtils.toObject(options, LinkedHashMap.class);
-        String treeName = JsonUtils.toString(paramsObj.get(GenConstants.TREE_NAME));
         String parentMenuId = getParentMenuId(paramsObj);
         context.put("parentMenuId", parentMenuId);
     }
@@ -130,7 +129,7 @@ public class VelocityUtils {
     public static List<String> getTemplateList(String tplCategory) {
         List<String> templates = new ArrayList<String>();
         templates.add("vm/java/entity.java.vm");
-        templates.add("vm/java/bo.java.vm");
+        templates.add("vm/java/dto.java.vm");
         templates.add("vm/java/vo.java.vm");
         templates.add("vm/java/mapper.java.vm");
         templates.add("vm/java/service.java.vm");
@@ -175,21 +174,21 @@ public class VelocityUtils {
         String mybatisPath = MYBATIS_PATH + "/" + moduleName;
         String vuePath = "vue";
 
-        if (template.contains("model.java.vm")) {
+        if (template.contains("entity.java.vm")) {
             fileName = StringUtil.format("{}/model/{}.java", javaPath, className);
         }
         if (template.contains("vo.java.vm")) {
-            fileName = StringUtil.format("{}/domain/vo/{}Vo.java", javaPath, className);
+            fileName = StringUtil.format("{}/model/vo/{}Vo.java", javaPath, className);
         }
         if (template.contains("dto.java.vm")) {
-            fileName = StringUtil.format("{}/domain/bo/{}Dto.java", javaPath, className);
+            fileName = StringUtil.format("{}/model/dto/{}Dto.java", javaPath, className);
         }
         if (template.contains("sub-entity.java.vm") && StringUtil.equals(GenConstants.TPL_SUB, genTable.getTplCategory())) {
             fileName = StringUtil.format("{}/model/{}.java", javaPath, genTable.getSubTable().getClassName());
         } else if (template.contains("mapper.java.vm")) {
             fileName = StringUtil.format("{}/mapper/{}Mapper.java", javaPath, className);
         } else if (template.contains("service.java.vm")) {
-            fileName = StringUtil.format("{}/service/I{}Service.java", javaPath, className);
+            fileName = StringUtil.format("{}/service/{}Service.java", javaPath, className);
         } else if (template.contains("serviceImpl.java.vm")) {
             fileName = StringUtil.format("{}/service/impl/{}ServiceImpl.java", javaPath, className);
         } else if (template.contains("controller.java.vm")) {

@@ -3,6 +3,7 @@ package com.galio.core.handler;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.galio.core.annotation.NotControllerResponseAdvice;
+import com.galio.core.constant.CommonConstants;
 import com.galio.core.enums.ResponseCodeEnum;
 import com.galio.core.exception.CustomException;
 import com.galio.core.model.ResponseVo;
@@ -26,7 +27,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
  * @Description: 统一响应封装 对返回值是ResponseVo类型，或者使用了NotControllerResponseAdvice注解的都不进行包装
  */
 @Slf4j
-@RestControllerAdvice(basePackages = {"${controller.advice.basePackages}"})
+@RestControllerAdvice(basePackages = {CommonConstants.BASE_PACKAGES})
 public class GlobalResponseHandler implements ResponseBodyAdvice<Object> {
 
     /**

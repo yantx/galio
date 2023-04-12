@@ -91,4 +91,8 @@ public interface CommonConstants {
      * 排序标识 逆序
      */
     String ORDER_DESC = "desc";
+    /**
+     * 基础包名
+     */
+    String BASE_PACKAGES = "com.galio";
 }

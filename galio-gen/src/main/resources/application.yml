@@ -76,6 +76,3 @@ spring:
   web:
     resources:
       add-mappings: false
-controller:
-  advice:
-    basePackages: "com.galio"

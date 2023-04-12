@@ -19,7 +19,9 @@ public class SpringDocWebConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/doc.html")
-                .addResourceLocations("classpath:/META-INF/resources/","/static","/public");
+                .addResourceLocations("classpath:/META-INF/resources/","/static","/public","/META-INF/img/");
+        registry.addResourceHandler("/favicon.ico")
+                .addResourceLocations("classpath:/META-INF/resources/");
         registry.addResourceHandler("/webjars/**")
                 .addResourceLocations("classpath:/META-INF/resources/webjars/");
     }

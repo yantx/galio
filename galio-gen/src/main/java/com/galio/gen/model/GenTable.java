@@ -1,5 +1,6 @@
 package com.galio.gen.model;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -26,13 +27,8 @@ public class GenTable extends BaseEntity {
     /**
      * 主键
      */
-    @TableId("table_id")
+    @TableId(value = "table_id", type = IdType.ASSIGN_ID)
     private Long tableId;
-
-    /**
-     * 应用ID
-     */
-    private Long appId;
 
     /**
      * 代码生成表
@@ -103,6 +99,10 @@ public class GenTable extends BaseEntity {
      * 其它生成选项
      */
     private String options;
+
+
+    private String remark;
+    private Integer orderNum;
 
     /**
      * 树编码字段

@@ -101,7 +101,7 @@
             LEFT JOIN pg_type t ON a.atttypid = t.oid
             WHERE (c.relkind = ANY (ARRAY ['r'::"char", 'p'::"char"]))
             AND a.attnum > 0
-            AND n.nspname = 'public'::name
+            AND n.nspname = 'galio_sys'::name
             ORDER BY c.relname, a.attnum
             ) temp
             WHERE table_name = (#{tableName})

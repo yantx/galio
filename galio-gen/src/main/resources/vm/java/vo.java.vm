@@ -4,7 +4,6 @@ package ${packageName}.model.vo;
 import ${import};
 #end
 import lombok.Data;
-import java.util.Date;
 
 /**
  * @Author: ${author}

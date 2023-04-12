@@ -20,6 +20,7 @@ import com.galio.gen.util.GenUtils;
 import com.galio.gen.util.VelocityInitializer;
 import com.galio.gen.util.VelocityUtils;
 import com.galio.mybatis.page.PageDto;
+import com.galio.mybatis.page.PageVo;
 import com.galio.satoken.utils.LoginHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -71,9 +72,8 @@ public class IGenTableServiceImpl implements IGenTableService {
     }
 
     @Override
-    public Page<GenTable> selectPageGenTableList(GenTable genTable, PageDto pageQuery) {
-        Page<GenTable> page = genTableMapper.selectPage(pageQuery.build(), this.buildGenTableQueryWrapper(genTable));
-        return page;
+    public PageVo<GenTable> selectPageGenTableList(PageDto pageQuery) {
+        return PageVo.build(genTableMapper.selectPage(pageQuery.build(),buildGenTableQueryWrapper(new GenTable())));
     }
 
     private QueryWrapper<GenTable> buildGenTableQueryWrapper(GenTable genTable) {
@@ -88,9 +88,8 @@ public class IGenTableServiceImpl implements IGenTableService {
 
 
     @Override
-    public Page<GenTable> selectPageDbTableList(GenTable genTable, PageDto pageQuery) {
-        Page<GenTable> page = genTableMapper.selectPageDbTableList(pageQuery.build(), genTable);
-        return page;
+    public PageVo<GenTable> selectPageDbTableList(PageDto pageQuery) {
+        return PageVo.build(genTableMapper.selectPageDbTableList(pageQuery.build(), new GenTable()));
     }
 
     /**
@@ -158,7 +157,7 @@ public class IGenTableServiceImpl implements IGenTableService {
         try {
             for (GenTable table : tableList) {
                 String tableName = table.getTableName();
-                GenUtils.initTable(table, "admin");
+                GenUtils.initTable(table, 1L);
                 int row = genTableMapper.insert(table);
                 if (row > 0) {
                     // 保存列信息
@@ -174,7 +173,7 @@ public class IGenTableServiceImpl implements IGenTableService {
                 }
             }
         } catch (Exception e) {
-            log.error("gen table import error: {}", e.getMessage());
+            log.error("gen table import error: ", e);
             throw new CustomException(GenExceptionResponseEnum.GEN_TABLE_IMPORT_ERROR);
         }
     }

@@ -40,8 +40,8 @@ public class ${ClassName}Controller {
     @SaCheckPermission("${permissionPrefix}:list")
     @GetMapping("/list")
 #if($table.crud || $table.sub)
-    public ${ClassName}Vo list(${ClassName}Dto dto, PageDto pageDto) {
-        return ${className}Service.queryPageList(dto, pageDto);
+    public ${ClassName}Vo list(@RequestBody PageDto pageDto) {
+        return ${className}Service.queryPageList(pageDto);
     }
 #elseif($table.tree)
     public List<${ClassName}Vo> list(${ClassName}Dto dto) {

@@ -1,5 +1,6 @@
 package com.galio.gen.model;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -22,7 +23,7 @@ public class GenTableColumn extends BaseEntity {
     /**
      * 主键
      */
-    @TableId(value = "column_id")
+    @TableId(value = "column_id",type = IdType.ASSIGN_ID)
     private Long columnId;
 
     /**
@@ -109,11 +110,6 @@ public class GenTableColumn extends BaseEntity {
      * 排序
      */
     private Object orderNum;
-
-    /**
-     * 应用id
-     */
-    private Long appId;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

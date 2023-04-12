@@ -4,6 +4,7 @@ import ${packageName}.model.${ClassName};
 import ${packageName}.model.vo.${ClassName}Vo;
 import ${packageName}.model.dto.${ClassName}Dto;
 #if($table.crud || $table.sub)
+import com.galio.mybatis.page.PageVo;
 import com.galio.mybatis.page.PageDto;
 #end
 
@@ -26,7 +27,7 @@ public interface ${ClassName}Service {
     /**
      * 查询${functionName}列表
      */
-    Page<${ClassName}Vo> queryPageList(${ClassName}Dto dto, PageDto pageDto);
+    PageVo<${ClassName}Vo> queryPageList(PageDto pageDto);
 #end
 
     /**

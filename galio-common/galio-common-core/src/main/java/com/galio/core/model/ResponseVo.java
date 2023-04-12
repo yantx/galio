@@ -42,7 +42,7 @@ public class ResponseVo<T> {
         return createResponse(ResponseCodeEnum.FAILED.getCode(), msg, null);
     }
     public static <T> ResponseVo<T> createFail(int code, String msg) {
-        return createResponse(ResponseCodeEnum.FAILED.getCode(), msg, null);
+        return createResponse(code, msg, null);
     }
     public static <T> ResponseVo<T> createFail(StatusCode statusCode) {
         return createResponse(statusCode.getCode(), statusCode.getMsg(), null);
