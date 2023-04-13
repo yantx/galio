@@ -12,15 +12,15 @@ import java.util.Date;
 import ${import};
 #end
 #if($table.crud || $table.sub)
-import com.galio.core.web.domain.BaseEntity;
+import com.galio.core.model.BaseEntity;
 #elseif($table.tree)
-import com.galio.core.web.domain.TreeEntity;
+import com.galio.core.model.TreeEntity;
 #end
 
 /**
  * @Author: ${author}
  * @Date: ${datetime}
- * @Description: ${tableName}业务对象
+ * @Description: ${functionName}业务对象
  */
 #if($table.crud || $table.sub)
 #set($Entity="BaseEntity")

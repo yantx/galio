@@ -127,7 +127,7 @@ public class GenController{
      */
     @GetMapping("/preview/{tableId}")
     @Operation(summary = "预览代码")
-    public Object preview(@PathVariable("tableId") Long tableId) throws IOException {
+    public Object preview(@PathVariable("tableId") Long tableId){
         Map<String, String> dataMap = genTableService.previewCode(tableId);
         return dataMap;
     }

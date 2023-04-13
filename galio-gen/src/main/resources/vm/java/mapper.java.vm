@@ -7,7 +7,7 @@ import ${packageName}.model.vo.${ClassName}Vo;
 /**
  * @Author: ${author}
  * @Date: ${datetime}
- * @Description: ${tableName}Mapper接口
+ * @Description: ${functionName}Mapper接口
  */
 public interface ${ClassName}Mapper extends BaseMapperPlus<${ClassName}Mapper, ${ClassName}, ${ClassName}Vo> {
 

@@ -12,15 +12,15 @@ import java.math.BigDecimal;
 import ${import};
 #end
 #if($table.crud || $table.sub)
-import com.galio.core.web.model.BaseEntity;
+import com.galio.core.model.BaseEntity;
 #elseif($table.tree)
-import com.galio.core.web.model.TreeEntity;
+import com.galio.core.model.TreeEntity;
 #end
 
 /**
  * @Author: ${author}
  * @Date: ${datetime}
- * @Description: ${tableName}对象
+ * @Description: ${functionName}对象
  */
 #if($table.crud || $table.sub)
 #set($Entity="BaseEntity")

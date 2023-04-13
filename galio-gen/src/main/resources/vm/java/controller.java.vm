@@ -23,7 +23,7 @@ import jakarta.servlet.http.HttpServletResponse;
 /**
  * @Author: ${author}
  * @Date: ${datetime}
- * @Description: ${tableName}接口控制器
+ * @Description: ${functionName}接口
  * 前端访问路由地址为:/${moduleName}/${businessName}
  */
 @Validated

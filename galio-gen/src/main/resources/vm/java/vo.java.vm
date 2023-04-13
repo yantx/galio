@@ -8,7 +8,7 @@ import lombok.Data;
 /**
  * @Author: ${author}
  * @Date: ${datetime}
- * @Description: ${tableName}视图对象
+ * @Description: ${functionName}视图对象
  */
 @Data
 public class ${ClassName}Vo {
