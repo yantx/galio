@@ -1,6 +1,5 @@
 package ${packageName}.service;
 
-import ${packageName}.model.${ClassName};
 import ${packageName}.model.vo.${ClassName}Vo;
 import ${packageName}.model.dto.${ClassName}Dto;
 #if($table.crud || $table.sub)
@@ -38,7 +37,7 @@ public interface ${ClassName}Service {
     /**
      * 修改${functionName}
      */
-    Boolean insertByBo(${ClassName}Dto dto);
+    Boolean insertByDto(${ClassName}Dto dto);
 
     /**
      * 修改${functionName}

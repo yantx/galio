@@ -234,7 +234,11 @@ public class VelocityUtils {
         for (GenTableColumn column : columns) {
             if (!column.isSuperColumn() && GenConstants.TYPE_DATE.equals(column.getJavaType())) {
                 importList.add("java.util.Date");
-            } else if (!column.isSuperColumn() && GenConstants.TYPE_BIGDECIMAL.equals(column.getJavaType())) {
+            }else if (!column.isSuperColumn() && GenConstants.TYPE_LOCALDATETIME.equals(column.getJavaType())) {
+                importList.add("java.time.LocalDateTime");
+            }else if (!column.isSuperColumn() && GenConstants.TYPE_LOCALDATE.equals(column.getJavaType())) {
+                importList.add("java.time.LocalDate");
+            }else if (!column.isSuperColumn() && GenConstants.TYPE_BIGDECIMAL.equals(column.getJavaType())) {
                 importList.add("java.math.BigDecimal");
             }
         }

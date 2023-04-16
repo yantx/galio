@@ -1,13 +1,12 @@
 package ${packageName}.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
-import com.galio.core.model.ResponseVo;
-import com.galio.core.validate.AddGroup;
-import com.galio.core.validate.EditGroup;
-import com.galio.core.validate.QueryGroup;
+import com.galio.core.validate.InsertGroup;
+import com.galio.core.validate.UpdateGroup;
+import com.galio.core.validate.SelectGroup;
 import com.galio.mybatis.page.PageDto;
+import com.galio.mybatis.page.PageVo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ${packageName}.model.vo.${ClassName}Vo;
@@ -18,7 +17,6 @@ import java.util.List;
 import java.util.Arrays;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * @Author: ${author}
@@ -40,7 +38,7 @@ public class ${ClassName}Controller {
     @SaCheckPermission("${permissionPrefix}:list")
     @GetMapping("/list")
 #if($table.crud || $table.sub)
-    public ${ClassName}Vo list(@RequestBody PageDto pageDto) {
+    public PageVo list(@RequestBody PageDto pageDto) {
         return ${className}Service.queryPageList(pageDto);
     }
 #elseif($table.tree)
@@ -65,7 +63,7 @@ public class ${ClassName}Controller {
      */
     @SaCheckPermission("${permissionPrefix}:add")
     @PostMapping()
-    public Object add(@Validated(AddGroup.class) @RequestBody ${ClassName}Dto dto) {
+    public Object add(@Validated(InsertGroup.class) @RequestBody ${ClassName}Dto dto) {
         return ${className}Service.insertByDto(dto);
     }
 
@@ -74,7 +72,7 @@ public class ${ClassName}Controller {
      */
     @SaCheckPermission("${permissionPrefix}:edit")
     @PutMapping()
-    public Object edit(@Validated(EditGroup.class) @RequestBody ${ClassName}Dto dto) {
+    public Object edit(@Validated(UpdateGroup.class) @RequestBody ${ClassName}Dto dto) {
         return ${className}Service.updateByDto(dto);
     }
 

@@ -49,7 +49,7 @@ public interface GenConstants {
     /**
      * 数据库字符串类型
      */
-    String[] COLUMNTYPE_STR = {"char", "varchar", "nvarchar", "varchar2"};
+    String[] COLUMNTYPE_STR = {"char", "varchar", "nvarchar", "varchar2", "character varying","character"};
 
     /**
      * 数据库文本类型
@@ -59,7 +59,17 @@ public interface GenConstants {
     /**
      * 数据库时间类型
      */
-    String[] COLUMNTYPE_TIME = {"datetime", "time", "date", "timestamp"};
+    String[] COLUMNTYPE_DATETIME = {"datetime", "timestamp", "timestamp without time zone"};
+
+    /**
+     * 数据库时间类型 hh:mm:ss
+     */
+    String COLUMNTYPE_TIME = "time";
+
+    /**
+     * 数据库日期类型 yyyy-MM-dd
+     */
+    String COLUMNTYPE_DATE = "date";
 
     /**
      * 数据库数字类型
@@ -127,9 +137,13 @@ public interface GenConstants {
     String HTML_CHECKBOX = "checkbox";
 
     /**
-     * 日期控件
+     * 日期控件 yyyy-MM-dd hh:mm:ss
      */
     String HTML_DATETIME = "datetime";
+    /**
+     * 日期控件 yyyy-MM-dd
+     */
+    String HTML_DATE = "datetime";
 
     /**
      * 图片上传控件
@@ -175,6 +189,18 @@ public interface GenConstants {
      * 时间类型
      */
     String TYPE_DATE = "Date";
+    /**
+     * java8 引入时间类型 yyyy-MM-dd hh:mm:ss
+     */
+    String TYPE_LOCALDATETIME = "LocalDateTime";
+    /**
+     * java8 引入日期类型 yyyy-MM-dd
+     */
+    String TYPE_LOCALDATE = "LocalDate";
+    /**
+     * java8 引入时间类型 hh:mm:ss
+     */
+    String TYPE_LOCALTIME = "LocalTime";
 
     /**
      * 模糊查询

@@ -50,10 +50,13 @@ public class GenUtils {
             Integer columnLength = getColumnLength(column.getColumnType());
             String htmlType = columnLength >= 500 || arraysContains(GenConstants.COLUMNTYPE_TEXT, dataType) ? GenConstants.HTML_TEXTAREA : GenConstants.HTML_INPUT;
             column.setHtmlType(htmlType);
-        } else if (arraysContains(GenConstants.COLUMNTYPE_TIME, dataType)) {
-            column.setJavaType(GenConstants.TYPE_DATE);
+        } else if (arraysContains(GenConstants.COLUMNTYPE_DATETIME, dataType)) {
+            column.setJavaType(GenConstants.TYPE_LOCALDATETIME);
             column.setHtmlType(GenConstants.HTML_DATETIME);
-        } else if (arraysContains(GenConstants.COLUMNTYPE_NUMBER, dataType)) {
+        }  else if (dataType.equals(GenConstants.COLUMNTYPE_DATE)) {
+            column.setJavaType(GenConstants.TYPE_LOCALDATE);
+            column.setHtmlType(GenConstants.HTML_DATE);
+        }  else if (arraysContains(GenConstants.COLUMNTYPE_NUMBER, dataType)) {
             column.setHtmlType(GenConstants.HTML_INPUT);
 
             // 如果是浮点型 统一用BigDecimal
@@ -197,7 +200,7 @@ public class GenUtils {
      * @return 替换后的名字
      */
     public static String replaceText(String text) {
-        return RegExUtils.replaceAll(text, "(?:表|若依)", "");
+        return RegExUtils.replaceAll(text, "(?:表)", "");
     }
 
     /**

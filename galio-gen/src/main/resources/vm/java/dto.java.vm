@@ -1,12 +1,9 @@
 package ${packageName}.model.dto;
 
-import com.galio.core.validate.AddGroup;
-import com.galio.core.validate.EditGroup;
+import com.galio.core.validate.InsertGroup;
+import com.galio.core.validate.UpdateGroup;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import jakarta.validation.constraints.*;
-
-import java.util.Date;
 
 #foreach ($import in $importList)
 import ${import};
@@ -37,11 +34,11 @@ public class ${ClassName}Dto extends ${Entity} {
      * $column.columnComment
      */
 #if($column.isInsert && $column.isEdit)
-#set($Group="AddGroup.class, EditGroup.class")
+#set($Group="InsertGroup.class, UpdateGroup.class")
 #elseif($column.isInsert)
-#set($Group="AddGroup.class")
+#set($Group="InsertGroup.class")
 #elseif($column.isEdit)
-#set($Group="EditGroup.class")
+#set($Group="UpdateGroup.class")
 #end
 #if($column.isRequired == 1)
 #if($column.javaType == 'String')

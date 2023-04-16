@@ -1,11 +1,11 @@
 package ${packageName}.service.impl;
 
-import cn.hutool.core.bean.BeanUtil;
-import com.galio.core.utils.StringUtils;
+import com.galio.core.utils.StringUtil;
+import com.galio.core.utils.ObjectUtil;
     #if($table.crud || $table.sub)
     import com.galio.mybatis.page.PageDto;
     import com.galio.mybatis.page.PageVo;
-    import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+    import com.baomidou.mybatisplus.core.metadata.IPage;
     #end
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -47,8 +47,8 @@ public class ${ClassName}ServiceImpl implements ${ClassName}Service {
         @Override
         public PageVo<${ClassName}Vo> queryPageList(PageDto pageDto) {
             LambdaQueryWrapper<${ClassName}> lqw = Wrappers.lambdaQuery();
-            PageVo<${ClassName}Vo> result = PageVo.build(${className}Mapper.selectVoPage(pageDto.build(), lqw));
-            return result;
+            IPage<${ClassName}Vo> pageData = ${className}Mapper.selectVoPage(pageDto.build(), lqw);
+            return PageVo.build(pageData);
         }
     #end
 
@@ -62,7 +62,7 @@ public class ${ClassName}ServiceImpl implements ${ClassName}Service {
     }
 
     private LambdaQueryWrapper<${ClassName}> buildQueryWrapper(${ClassName}Dto dto) {
-        Map<String, Object> params = bo.getParams();
+        Map<String, Object> params = dto.getParams();
         LambdaQueryWrapper<${ClassName}> lqw = Wrappers.lambdaQuery();
         #foreach($column in $columns)
             #if($column.query)
@@ -74,11 +74,11 @@ public class ${ClassName}ServiceImpl implements ${ClassName}Service {
                 #set($mpMethod=$column.queryType.toLowerCase())
                 #if($queryType != 'BETWEEN')
                     #if($javaType == 'String')
-                        #set($condition='StringUtils.isNotBlank(bo.get'+$AttrName+'())')
+                        #set($condition='StringUtil.isNotBlank(dto.get'+$AttrName+'())')
                     #else
-                        #set($condition='bo.get'+$AttrName+'() != null')
+                        #set($condition='dto.get'+$AttrName+'() != null')
                     #end
-                    lqw.$mpMethod($condition, ${ClassName}::get$AttrName, bo.get$AttrName());
+                    lqw.$mpMethod($condition, ${ClassName}::get$AttrName, dto.get$AttrName());
                 #else
                     lqw.between(params.get("begin$AttrName") != null && params.get("end$AttrName") != null,
                         ${ClassName}::get$AttrName , params.get("begin$AttrName"), params.get("end$AttrName"));
@@ -92,13 +92,13 @@ public class ${ClassName}ServiceImpl implements ${ClassName}Service {
      * 新增${functionName}
      */
     @Override
-    public Boolean insertByBo(${ClassName}Dto dto) {
-        ${ClassName} add = BeanUtil.toBean(dto, ${ClassName}. class);
+    public Boolean insertByDto(${ClassName}Dto dto) {
+        ${ClassName} add = ObjectUtil.copyObject(dto, ${ClassName}. class);
         validEntityBeforeSave(add);
         boolean flag = ${className}Mapper.insert(add) > 0;
         #set($pk=$pkColumn.javaField.substring(0,1).toUpperCase() + ${pkColumn.javaField.substring(1)})
         if (flag) {
-            bo.set$pk(add.get$pk());
+            dto.set$pk(add.get$pk());
         }
         return flag;
     }
@@ -108,7 +108,7 @@ public class ${ClassName}ServiceImpl implements ${ClassName}Service {
      */
     @Override
     public Boolean updateByDto(${ClassName}Dto dto) {
-        ${ClassName} update = BeanUtil.toBean(dto, ${ClassName}. class);
+        ${ClassName} update = ObjectUtil.copyObject(dto, ${ClassName}. class);
         validEntityBeforeSave(update);
         return ${className}Mapper.updateById(update) > 0;
     }
