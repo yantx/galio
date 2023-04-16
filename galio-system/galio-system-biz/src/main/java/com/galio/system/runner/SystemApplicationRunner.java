@@ -1,7 +1,7 @@
 package com.galio.system.runner;
 
-import com.galio.system.service.ISysConfigService;
-import com.galio.system.service.ISysDictService;
+import com.galio.system.service.ConfigService;
+import com.galio.system.service.DictService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
@@ -18,8 +18,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class SystemApplicationRunner implements ApplicationRunner {
 
-    private final ISysConfigService configService;
-    private final ISysDictService dictService;
+    private final ConfigService configService;
+    private final DictService dictService;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {

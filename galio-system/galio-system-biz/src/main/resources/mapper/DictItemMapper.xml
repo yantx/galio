@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.galio.system.mapper.DictItemMapper">
+
+    <resultMap type="com.galio.system.model.DictItem" id="DictItemResult">
+    <result property="dictItemId" column="dict_item_id"/>
+    <result property="orderNum" column="order_num"/>
+    <result property="label" column="label"/>
+    <result property="value" column="value"/>
+    <result property="dictId" column="dict_id"/>
+    <result property="cssClass" column="css_class"/>
+    <result property="listClass" column="list_class"/>
+    <result property="isDefault" column="is_default"/>
+    <result property="status" column="status"/>
+    <result property="createBy" column="create_by"/>
+    <result property="createTime" column="create_time"/>
+    <result property="updateBy" column="update_by"/>
+    <result property="updateTime" column="update_time"/>
+    <result property="remark" column="remark"/>
+    <result property="appId" column="app_id"/>
+    </resultMap>
+
+
+</mapper>
