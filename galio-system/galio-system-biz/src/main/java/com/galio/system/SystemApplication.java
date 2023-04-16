@@ -1,15 +1,20 @@
 package com.galio.system;
 
+import com.galio.core.constant.CommonConstants;
+import com.galio.mybatis.config.MybatisPlusConfiguration;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.metrics.buffering.BufferingApplicationStartup;
+import org.springframework.context.annotation.Import;
 
 /**
  * @Author: galio
  * @Date: 2023-02-14
  * @Description: 系统模块
  */
-@SpringBootApplication
+@MapperScan("${mybatis-plus.mapperPackage}")
+@SpringBootApplication(scanBasePackages = {CommonConstants.BASE_PACKAGES})
 public class SystemApplication {
     public static void main(String[] args) {
         SpringApplication application = new SpringApplication(SystemApplication.class);

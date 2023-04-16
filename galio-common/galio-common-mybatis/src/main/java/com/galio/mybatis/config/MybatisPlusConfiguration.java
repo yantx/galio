@@ -29,7 +29,6 @@ import java.util.Properties;
  */
 @AutoConfiguration
 @EnableTransactionManagement(proxyTargetClass = true)
-@MapperScan("${mybatis-plus.mapperPackage}")
 public class MybatisPlusConfiguration {
 
     @Bean
