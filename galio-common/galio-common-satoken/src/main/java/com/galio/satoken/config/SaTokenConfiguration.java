@@ -6,6 +6,9 @@ import cn.dev33.satoken.jwt.StpLogicJwtForSimple;
 import cn.dev33.satoken.same.SaSameUtil;
 import cn.dev33.satoken.stp.StpLogic;
 import cn.dev33.satoken.util.SaResult;
+import com.galio.core.enums.ResponseCodeEnum;
+import com.galio.core.model.ResponseVo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
@@ -17,6 +20,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @Date: 2023-01-09
  * @Description: Sa-Token 配置
  */
+@Slf4j
 @AutoConfiguration
 public class SaTokenConfiguration implements WebMvcConfigurer {
 
@@ -45,9 +49,12 @@ public class SaTokenConfiguration implements WebMvcConfigurer {
         return new SaServletFilter()
                 .addInclude("/**")
                 // 静态资源,knife4j接口文档相关资源放行
-                .addExclude("/actuator/**","/*.html","/webjars/**","/favicon.ico","/**/api-docs/**","/generate/**")
+                .addExclude("/actuator/**","/*.html","/webjars/**","/favicon.ico","/auth/**","/**/api-docs/**","/generate/**","/member/**","/remote/**")
                 .setAuth(obj -> SaSameUtil.checkCurrentRequestToken())
-                .setError(e -> SaResult.error("认证失败，Token无效无法访问系统资源").setCode(HttpStatus.UNAUTHORIZED.value()));
+                .setError(e -> {
+                    log.error(e.getMessage(),e);
+                    return ResponseVo.createFail(ResponseCodeEnum.NO_TOKEN);
+                });
     }
 
 }
