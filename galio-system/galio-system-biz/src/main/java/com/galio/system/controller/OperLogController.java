@@ -1,14 +1,17 @@
 package com.galio.system.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import com.galio.core.utils.ObjectUtil;
 import com.galio.core.validate.InsertGroup;
 import com.galio.core.validate.UpdateGroup;
 import com.galio.core.validate.SelectGroup;
 import com.galio.mybatis.page.PageDto;
 import com.galio.mybatis.page.PageVo;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import com.galio.system.model.OperLog;
 import com.galio.system.model.vo.OperLogVo;
 import com.galio.system.model.dto.OperLogDto;
 import com.galio.system.service.OperLogService;
@@ -20,7 +23,7 @@ import jakarta.validation.constraints.NotNull;
 
 /**
  * @Author: galio
- * @Date: 2023-04-16
+ * @Date: 2023-04-25
  * @Description: 操作日志记录接口
  * 前端访问路由地址为:/system/operLog
  */
@@ -35,10 +38,11 @@ public class OperLogController {
     /**
      * 查询操作日志记录列表
      */
-    @SaCheckPermission("system:operLog:list")
-    @GetMapping("/list")
-    public PageVo list(@RequestBody PageDto pageDto) {
-        return operLogService.queryPageList(pageDto);
+    @SaCheckPermission("system:operLog:page")
+    @PostMapping("/page")
+    public PageVo page(@RequestBody PageDto pageDto) {
+        IPage<OperLog> pageData = operLogService.queryPageList(pageDto);
+        return PageVo.build(pageData);
     }
 
     /**
@@ -49,7 +53,8 @@ public class OperLogController {
     @SaCheckPermission("system:operLog:query")
     @GetMapping("/{operId}")
     public OperLogVo getInfo(@NotNull(message = "主键不能为空") @PathVariable Long operId) {
-        return operLogService.queryById(operId);
+        OperLog operLog = operLogService.queryById(operId);
+        return ObjectUtil.copyObject(operLog, OperLogVo.class);
     }
 
     /**

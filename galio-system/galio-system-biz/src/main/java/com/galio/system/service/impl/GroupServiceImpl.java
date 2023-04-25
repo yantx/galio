@@ -1,18 +1,14 @@
 package com.galio.system.service.impl;
 
-import com.galio.core.utils.ObjectUtil;
 import com.galio.core.utils.StringUtil;
-    import com.galio.mybatis.page.PageDto;
-    import com.galio.mybatis.page.PageVo;
-    import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.galio.core.utils.ObjectUtil;
+import com.galio.mybatis.page.PageDto;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.galio.system.model.dto.GroupDto;
-import com.galio.system.model.vo.GroupVo;
 import com.galio.system.model.Group;
-import com.galio.system.mapper.GroupMapper;
+import com.galio.system.repository.GroupRepository;
 import com.galio.system.service.GroupService;
 
 import java.util.List;
@@ -21,51 +17,39 @@ import java.util.Collection;
 
 /**
  * @Author: galio
- * @Date: 2023-04-16
+ * @Date: 2023-04-25
  * @Description: 群组信息Service业务层处理
  */
 @RequiredArgsConstructor
 @Service
 public class GroupServiceImpl implements GroupService {
 
-    private final GroupMapper groupMapper;
+    private final GroupRepository groupRepository;
 
     /**
      * 查询群组信息
      */
     @Override
-    public GroupVo queryById(Long groupId) {
-        return groupMapper.selectVoById(groupId);
+    public Group queryById(Long groupId) {
+        return groupRepository.selectById(groupId);
     }
 
         /**
          * 查询群组信息列表
          */
         @Override
-        public PageVo<GroupVo> queryPageList(PageDto pageDto) {
-            LambdaQueryWrapper<Group> lqw = Wrappers.lambdaQuery();
-            IPage<GroupVo> pageData = groupMapper.selectVoPage(pageDto.build(), lqw);
-            return PageVo.build(pageData);
+        public Page<Group> queryPageList(PageDto pageDto) {
+            return groupRepository.selectPage(pageDto.build());
         }
 
     /**
      * 查询群组信息列表
      */
     @Override
-    public List<GroupVo> queryList(GroupDto dto) {
-        LambdaQueryWrapper<Group> lqw = buildQueryWrapper(dto);
-        return groupMapper.selectVoList(lqw);
-    }
-
-    private LambdaQueryWrapper<Group> buildQueryWrapper(GroupDto dto) {
+    public List<Group> queryList(GroupDto dto) {
+        Group entity = ObjectUtil.copyObject(dto, Group.class);
         Map<String, Object> params = dto.getParams();
-        LambdaQueryWrapper<Group> lqw = Wrappers.lambdaQuery();
-                    lqw.eq(dto.getGroupCode() != null, Group::getGroupCode, dto.getGroupCode());
-                    lqw.like(StringUtil.isNotBlank(dto.getGroupName()), Group::getGroupName, dto.getGroupName());
-                    lqw.eq(dto.getOrderNum() != null, Group::getOrderNum, dto.getOrderNum());
-                    lqw.eq(StringUtil.isNotBlank(dto.getStatus()), Group::getStatus, dto.getStatus());
-                    lqw.eq(dto.getAppId() != null, Group::getAppId, dto.getAppId());
-        return lqw;
+        return groupRepository.selectList(entity,params);
     }
 
     /**
@@ -73,9 +57,9 @@ public class GroupServiceImpl implements GroupService {
      */
     @Override
     public Boolean insertByDto(GroupDto dto) {
-        Group add = ObjectUtil.copyObject(dto, Group. class);
+        Group add = ObjectUtil.copyObject(dto, Group.class);
         validEntityBeforeSave(add);
-        boolean flag = groupMapper.insert(add) > 0;
+        boolean flag = groupRepository.insert(add) > 0;
         if (flag) {
             dto.setGroupId(add.getGroupId());
         }
@@ -87,9 +71,9 @@ public class GroupServiceImpl implements GroupService {
      */
     @Override
     public Boolean updateByDto(GroupDto dto) {
-        Group update = ObjectUtil.copyObject(dto, Group. class);
+        Group update = ObjectUtil.copyObject(dto, Group.class);
         validEntityBeforeSave(update);
-        return groupMapper.updateById(update) > 0;
+        return groupRepository.updateById(update) > 0;
     }
 
     /**
@@ -107,6 +91,6 @@ public class GroupServiceImpl implements GroupService {
         if (isValid) {
             //TODO 做一些业务上的校验,判断是否需要校验
         }
-        return groupMapper.deleteBatchIds(ids) > 0;
+        return groupRepository.deleteBatchIds(ids) > 0;
     }
 }

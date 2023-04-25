@@ -8,7 +8,7 @@ import com.galio.core.model.BaseEntity;
 
 /**
  * @Author: galio
- * @Date: 2023-04-16
+ * @Date: 2023-04-25
  * @Description: 通知公告对象
  */
 @Data

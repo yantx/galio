@@ -2,19 +2,15 @@ package ${packageName}.service.impl;
 
 import com.galio.core.utils.StringUtil;
 import com.galio.core.utils.ObjectUtil;
-    #if($table.crud || $table.sub)
-    import com.galio.mybatis.page.PageDto;
-    import com.galio.mybatis.page.PageVo;
-    import com.baomidou.mybatisplus.core.metadata.IPage;
-    #end
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+#if($table.crud || $table.sub)
+import com.galio.mybatis.page.PageDto;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+#end
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ${packageName}.model.dto.${ClassName}Dto;
-import ${packageName}.model.vo.${ClassName}Vo;
 import ${packageName}.model.${ClassName};
-import ${packageName}.mapper.${ClassName}Mapper;
+import ${packageName}.repository.${ClassName}Repository;
 import ${packageName}.service.${ClassName}Service;
 
 import java.util.List;
@@ -30,14 +26,14 @@ import java.util.Collection;
 @Service
 public class ${ClassName}ServiceImpl implements ${ClassName}Service {
 
-    private final ${ClassName}Mapper ${className}Mapper;
+    private final ${ClassName}Repository ${className}Repository;
 
     /**
      * 查询${functionName}
      */
     @Override
-    public ${ClassName}Vo queryById(${pkColumn.javaType} ${pkColumn.javaField}) {
-        return ${className}Mapper.selectVoById(${pkColumn.javaField});
+    public ${ClassName} queryById(${pkColumn.javaType} ${pkColumn.javaField}) {
+        return ${className}Repository.selectById(${pkColumn.javaField});
     }
 
     #if($table.crud || $table.sub)
@@ -45,10 +41,8 @@ public class ${ClassName}ServiceImpl implements ${ClassName}Service {
          * 查询${functionName}列表
          */
         @Override
-        public PageVo<${ClassName}Vo> queryPageList(PageDto pageDto) {
-            LambdaQueryWrapper<${ClassName}> lqw = Wrappers.lambdaQuery();
-            IPage<${ClassName}Vo> pageData = ${className}Mapper.selectVoPage(pageDto.build(), lqw);
-            return PageVo.build(pageData);
+        public Page<${ClassName}> queryPageList(PageDto pageDto) {
+            return ${className}Repository.selectPage(pageDto.build());
         }
     #end
 
@@ -56,36 +50,10 @@ public class ${ClassName}ServiceImpl implements ${ClassName}Service {
      * 查询${functionName}列表
      */
     @Override
-    public List<${ClassName}Vo> queryList(${ClassName}Dto dto) {
-        LambdaQueryWrapper<${ClassName}> lqw = buildQueryWrapper(dto);
-        return ${className}Mapper.selectVoList(lqw);
-    }
-
-    private LambdaQueryWrapper<${ClassName}> buildQueryWrapper(${ClassName}Dto dto) {
+    public List<${ClassName}> queryList(${ClassName}Dto dto) {
+        ${ClassName} entity = ObjectUtil.copyObject(dto, ${ClassName}.class);
         Map<String, Object> params = dto.getParams();
-        LambdaQueryWrapper<${ClassName}> lqw = Wrappers.lambdaQuery();
-        #foreach($column in $columns)
-            #if($column.query)
-                #set($queryType=$column.queryType)
-                #set($javaField=$column.javaField)
-                #set($javaType=$column.javaType)
-                #set($columnName=$column.columnName)
-                #set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
-                #set($mpMethod=$column.queryType.toLowerCase())
-                #if($queryType != 'BETWEEN')
-                    #if($javaType == 'String')
-                        #set($condition='StringUtil.isNotBlank(dto.get'+$AttrName+'())')
-                    #else
-                        #set($condition='dto.get'+$AttrName+'() != null')
-                    #end
-                    lqw.$mpMethod($condition, ${ClassName}::get$AttrName, dto.get$AttrName());
-                #else
-                    lqw.between(params.get("begin$AttrName") != null && params.get("end$AttrName") != null,
-                        ${ClassName}::get$AttrName , params.get("begin$AttrName"), params.get("end$AttrName"));
-                #end
-            #end
-        #end
-        return lqw;
+        return ${className}Repository.selectList(entity,params);
     }
 
     /**
@@ -93,9 +61,9 @@ public class ${ClassName}ServiceImpl implements ${ClassName}Service {
      */
     @Override
     public Boolean insertByDto(${ClassName}Dto dto) {
-        ${ClassName} add = ObjectUtil.copyObject(dto, ${ClassName}. class);
+        ${ClassName} add = ObjectUtil.copyObject(dto, ${ClassName}.class);
         validEntityBeforeSave(add);
-        boolean flag = ${className}Mapper.insert(add) > 0;
+        boolean flag = ${className}Repository.insert(add) > 0;
         #set($pk=$pkColumn.javaField.substring(0,1).toUpperCase() + ${pkColumn.javaField.substring(1)})
         if (flag) {
             dto.set$pk(add.get$pk());
@@ -108,9 +76,9 @@ public class ${ClassName}ServiceImpl implements ${ClassName}Service {
      */
     @Override
     public Boolean updateByDto(${ClassName}Dto dto) {
-        ${ClassName} update = ObjectUtil.copyObject(dto, ${ClassName}. class);
+        ${ClassName} update = ObjectUtil.copyObject(dto, ${ClassName}.class);
         validEntityBeforeSave(update);
-        return ${className}Mapper.updateById(update) > 0;
+        return ${className}Repository.updateById(update) > 0;
     }
 
     /**
@@ -128,6 +96,6 @@ public class ${ClassName}ServiceImpl implements ${ClassName}Service {
         if (isValid) {
             //TODO 做一些业务上的校验,判断是否需要校验
         }
-        return ${className}Mapper.deleteBatchIds(ids) > 0;
+        return ${className}Repository.deleteBatchIds(ids) > 0;
     }
 }

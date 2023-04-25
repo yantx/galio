@@ -9,7 +9,7 @@ import com.galio.core.utils.ServletUtils;
 import com.galio.redis.util.RedisUtils;
 import com.galio.satoken.utils.LoginHelper;
 import com.galio.system.dto.LoginMemberDto;
-import com.galio.system.entity.MemberOnline;
+import com.galio.system.model.MemberOnline;
 import eu.bitwalker.useragentutils.UserAgent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

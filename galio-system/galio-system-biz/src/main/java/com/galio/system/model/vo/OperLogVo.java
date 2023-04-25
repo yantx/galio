@@ -5,7 +5,7 @@ import lombok.Data;
 
 /**
  * @Author: galio
- * @Date: 2023-04-16
+ * @Date: 2023-04-25
  * @Description: 操作日志记录视图对象
  */
 @Data

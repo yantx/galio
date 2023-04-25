@@ -1,14 +1,17 @@
 package com.galio.system.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import com.galio.core.utils.ObjectUtil;
 import com.galio.core.validate.InsertGroup;
 import com.galio.core.validate.UpdateGroup;
 import com.galio.core.validate.SelectGroup;
 import com.galio.mybatis.page.PageDto;
 import com.galio.mybatis.page.PageVo;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import com.galio.system.model.Group;
 import com.galio.system.model.vo.GroupVo;
 import com.galio.system.model.dto.GroupDto;
 import com.galio.system.service.GroupService;
@@ -20,7 +23,7 @@ import jakarta.validation.constraints.NotNull;
 
 /**
  * @Author: galio
- * @Date: 2023-04-16
+ * @Date: 2023-04-25
  * @Description: 群组信息接口
  * 前端访问路由地址为:/system/group
  */
@@ -35,10 +38,11 @@ public class GroupController {
     /**
      * 查询群组信息列表
      */
-    @SaCheckPermission("system:group:list")
-    @GetMapping("/list")
-    public PageVo list(@RequestBody PageDto pageDto) {
-        return groupService.queryPageList(pageDto);
+    @SaCheckPermission("system:group:page")
+    @PostMapping("/page")
+    public PageVo page(@RequestBody PageDto pageDto) {
+        IPage<Group> pageData = groupService.queryPageList(pageDto);
+        return PageVo.build(pageData);
     }
 
     /**
@@ -49,7 +53,8 @@ public class GroupController {
     @SaCheckPermission("system:group:query")
     @GetMapping("/{groupId}")
     public GroupVo getInfo(@NotNull(message = "主键不能为空") @PathVariable Long groupId) {
-        return groupService.queryById(groupId);
+        Group group = groupService.queryById(groupId);
+        return ObjectUtil.copyObject(group, GroupVo.class);
     }
 
     /**

@@ -1,16 +1,16 @@
 package com.galio.system.service;
 
-import com.galio.system.model.vo.NoticeVo;
 import com.galio.system.model.dto.NoticeDto;
-import com.galio.mybatis.page.PageVo;
+import com.galio.system.model.Notice;
 import com.galio.mybatis.page.PageDto;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import java.util.Collection;
 import java.util.List;
 
 /**
  * @Author: galio
- * @Date: 2023-04-16
+ * @Date: 2023-04-25
  * @Description: 通知公告Service接口
  */
 public interface NoticeService {
@@ -18,17 +18,17 @@ public interface NoticeService {
     /**
      * 查询通知公告
      */
-    NoticeVo queryById(Long noticeId);
+    Notice queryById(Long noticeId);
 
     /**
      * 查询通知公告列表
      */
-    PageVo<NoticeVo> queryPageList(PageDto pageDto);
+    Page<Notice> queryPageList(PageDto pageDto);
 
     /**
      * 查询通知公告列表
      */
-    List<NoticeVo> queryList(NoticeDto dto);
+    List<Notice> queryList(NoticeDto dto);
 
     /**
      * 修改通知公告

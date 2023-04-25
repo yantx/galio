@@ -1,14 +1,17 @@
 package com.galio.system.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import com.galio.core.utils.ObjectUtil;
 import com.galio.core.validate.InsertGroup;
 import com.galio.core.validate.UpdateGroup;
 import com.galio.core.validate.SelectGroup;
 import com.galio.mybatis.page.PageDto;
 import com.galio.mybatis.page.PageVo;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import com.galio.system.model.DictItem;
 import com.galio.system.model.vo.DictItemVo;
 import com.galio.system.model.dto.DictItemDto;
 import com.galio.system.service.DictItemService;
@@ -20,7 +23,7 @@ import jakarta.validation.constraints.NotNull;
 
 /**
  * @Author: galio
- * @Date: 2023-04-16
+ * @Date: 2023-04-25
  * @Description: 字典项接口
  * 前端访问路由地址为:/system/dictItem
  */
@@ -35,10 +38,11 @@ public class DictItemController {
     /**
      * 查询字典项列表
      */
-    @SaCheckPermission("system:dictItem:list")
-    @GetMapping("/list")
-    public PageVo list(@RequestBody PageDto pageDto) {
-        return dictItemService.queryPageList(pageDto);
+    @SaCheckPermission("system:dictItem:page")
+    @PostMapping("/page")
+    public PageVo page(@RequestBody PageDto pageDto) {
+        IPage<DictItem> pageData = dictItemService.queryPageList(pageDto);
+        return PageVo.build(pageData);
     }
 
     /**
@@ -49,7 +53,8 @@ public class DictItemController {
     @SaCheckPermission("system:dictItem:query")
     @GetMapping("/{dictItemId}")
     public DictItemVo getInfo(@NotNull(message = "主键不能为空") @PathVariable Long dictItemId) {
-        return dictItemService.queryById(dictItemId);
+        DictItem dictItem = dictItemService.queryById(dictItemId);
+        return ObjectUtil.copyObject(dictItem, DictItemVo.class);
     }
 
     /**

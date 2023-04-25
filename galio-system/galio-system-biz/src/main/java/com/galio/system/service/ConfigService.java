@@ -1,16 +1,16 @@
 package com.galio.system.service;
 
-import com.galio.system.model.vo.ConfigVo;
 import com.galio.system.model.dto.ConfigDto;
-import com.galio.mybatis.page.PageVo;
+import com.galio.system.model.Config;
 import com.galio.mybatis.page.PageDto;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import java.util.Collection;
 import java.util.List;
 
 /**
  * @Author: galio
- * @Date: 2023-04-16
+ * @Date: 2023-04-25
  * @Description: 应用信息Service接口
  */
 public interface ConfigService {
@@ -18,17 +18,17 @@ public interface ConfigService {
     /**
      * 查询应用信息
      */
-    ConfigVo queryById(Long configId);
+    Config queryById(Long configId);
 
     /**
      * 查询应用信息列表
      */
-    PageVo<ConfigVo> queryPageList(PageDto pageDto);
+    Page<Config> queryPageList(PageDto pageDto);
 
     /**
      * 查询应用信息列表
      */
-    List<ConfigVo> queryList(ConfigDto dto);
+    List<Config> queryList(ConfigDto dto);
 
     /**
      * 修改应用信息

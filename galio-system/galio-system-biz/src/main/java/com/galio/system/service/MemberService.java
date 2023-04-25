@@ -1,16 +1,16 @@
 package com.galio.system.service;
 
-import com.galio.system.model.vo.MemberVo;
 import com.galio.system.model.dto.MemberDto;
-import com.galio.mybatis.page.PageVo;
+import com.galio.system.model.Member;
 import com.galio.mybatis.page.PageDto;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import java.util.Collection;
 import java.util.List;
 
 /**
  * @Author: galio
- * @Date: 2023-04-16
+ * @Date: 2023-04-25
  * @Description: 成员信息Service接口
  */
 public interface MemberService {
@@ -18,17 +18,17 @@ public interface MemberService {
     /**
      * 查询成员信息
      */
-    MemberVo queryById(Long memberId);
+    Member queryById(Long memberId);
 
     /**
      * 查询成员信息列表
      */
-    PageVo<MemberVo> queryPageList(PageDto pageDto);
+    Page<Member> queryPageList(PageDto pageDto);
 
     /**
      * 查询成员信息列表
      */
-    List<MemberVo> queryList(MemberDto dto);
+    List<Member> queryList(MemberDto dto);
 
     /**
      * 修改成员信息

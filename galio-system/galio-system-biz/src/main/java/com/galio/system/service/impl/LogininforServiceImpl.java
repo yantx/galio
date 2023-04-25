@@ -1,18 +1,14 @@
 package com.galio.system.service.impl;
 
-import com.galio.core.utils.ObjectUtil;
 import com.galio.core.utils.StringUtil;
-    import com.galio.mybatis.page.PageDto;
-    import com.galio.mybatis.page.PageVo;
-    import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.galio.core.utils.ObjectUtil;
+import com.galio.mybatis.page.PageDto;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.galio.system.model.dto.LogininforDto;
-import com.galio.system.model.vo.LogininforVo;
 import com.galio.system.model.Logininfor;
-import com.galio.system.mapper.LogininforMapper;
+import com.galio.system.repository.LogininforRepository;
 import com.galio.system.service.LogininforService;
 
 import java.util.List;
@@ -21,53 +17,39 @@ import java.util.Collection;
 
 /**
  * @Author: galio
- * @Date: 2023-04-16
+ * @Date: 2023-04-25
  * @Description: 系统访问记录Service业务层处理
  */
 @RequiredArgsConstructor
 @Service
 public class LogininforServiceImpl implements LogininforService {
 
-    private final LogininforMapper logininforMapper;
+    private final LogininforRepository logininforRepository;
 
     /**
      * 查询系统访问记录
      */
     @Override
-    public LogininforVo queryById(Long infoId) {
-        return logininforMapper.selectVoById(infoId);
+    public Logininfor queryById(Long infoId) {
+        return logininforRepository.selectById(infoId);
     }
 
         /**
          * 查询系统访问记录列表
          */
         @Override
-        public PageVo<LogininforVo> queryPageList(PageDto pageDto) {
-            LambdaQueryWrapper<Logininfor> lqw = Wrappers.lambdaQuery();
-            IPage<LogininforVo> pageData = logininforMapper.selectVoPage(pageDto.build(), lqw);
-            return PageVo.build(pageData);
+        public Page<Logininfor> queryPageList(PageDto pageDto) {
+            return logininforRepository.selectPage(pageDto.build());
         }
 
     /**
      * 查询系统访问记录列表
      */
     @Override
-    public List<LogininforVo> queryList(LogininforDto dto) {
-        LambdaQueryWrapper<Logininfor> lqw = buildQueryWrapper(dto);
-        return logininforMapper.selectVoList(lqw);
-    }
-
-    private LambdaQueryWrapper<Logininfor> buildQueryWrapper(LogininforDto dto) {
+    public List<Logininfor> queryList(LogininforDto dto) {
+        Logininfor entity = ObjectUtil.copyObject(dto, Logininfor.class);
         Map<String, Object> params = dto.getParams();
-        LambdaQueryWrapper<Logininfor> lqw = Wrappers.lambdaQuery();
-                    lqw.like(StringUtil.isNotBlank(dto.getUsername()), Logininfor::getUsername, dto.getUsername());
-                    lqw.eq(dto.getMemberId() != null, Logininfor::getMemberId, dto.getMemberId());
-                    lqw.eq(StringUtil.isNotBlank(dto.getIpaddr()), Logininfor::getIpaddr, dto.getIpaddr());
-                    lqw.eq(StringUtil.isNotBlank(dto.getStatus()), Logininfor::getStatus, dto.getStatus());
-                    lqw.eq(StringUtil.isNotBlank(dto.getMsg()), Logininfor::getMsg, dto.getMsg());
-                    lqw.eq(dto.getAccessTime() != null, Logininfor::getAccessTime, dto.getAccessTime());
-                    lqw.eq(dto.getAppId() != null, Logininfor::getAppId, dto.getAppId());
-        return lqw;
+        return logininforRepository.selectList(entity,params);
     }
 
     /**
@@ -75,9 +57,9 @@ public class LogininforServiceImpl implements LogininforService {
      */
     @Override
     public Boolean insertByDto(LogininforDto dto) {
-        Logininfor add = ObjectUtil.copyObject(dto, Logininfor. class);
+        Logininfor add = ObjectUtil.copyObject(dto, Logininfor.class);
         validEntityBeforeSave(add);
-        boolean flag = logininforMapper.insert(add) > 0;
+        boolean flag = logininforRepository.insert(add) > 0;
         if (flag) {
             dto.setInfoId(add.getInfoId());
         }
@@ -89,9 +71,9 @@ public class LogininforServiceImpl implements LogininforService {
      */
     @Override
     public Boolean updateByDto(LogininforDto dto) {
-        Logininfor update = ObjectUtil.copyObject(dto, Logininfor. class);
+        Logininfor update = ObjectUtil.copyObject(dto, Logininfor.class);
         validEntityBeforeSave(update);
-        return logininforMapper.updateById(update) > 0;
+        return logininforRepository.updateById(update) > 0;
     }
 
     /**
@@ -109,6 +91,6 @@ public class LogininforServiceImpl implements LogininforService {
         if (isValid) {
             //TODO 做一些业务上的校验,判断是否需要校验
         }
-        return logininforMapper.deleteBatchIds(ids) > 0;
+        return logininforRepository.deleteBatchIds(ids) > 0;
     }
 }

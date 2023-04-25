@@ -9,7 +9,7 @@ import com.galio.core.model.BaseEntity;
 
 /**
  * @Author: galio
- * @Date: 2023-04-16
+ * @Date: 2023-04-25
  * @Description: 系统访问记录对象
  */
 @Data

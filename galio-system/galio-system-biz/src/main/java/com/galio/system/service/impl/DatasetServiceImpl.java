@@ -1,18 +1,14 @@
 package com.galio.system.service.impl;
 
-import com.galio.core.utils.ObjectUtil;
 import com.galio.core.utils.StringUtil;
-    import com.galio.mybatis.page.PageDto;
-    import com.galio.mybatis.page.PageVo;
-    import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.galio.core.utils.ObjectUtil;
+import com.galio.mybatis.page.PageDto;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.galio.system.model.dto.DatasetDto;
-import com.galio.system.model.vo.DatasetVo;
 import com.galio.system.model.Dataset;
-import com.galio.system.mapper.DatasetMapper;
+import com.galio.system.repository.DatasetRepository;
 import com.galio.system.service.DatasetService;
 
 import java.util.List;
@@ -21,57 +17,39 @@ import java.util.Collection;
 
 /**
  * @Author: galio
- * @Date: 2023-04-16
+ * @Date: 2023-04-25
  * @Description: 数据集信息Service业务层处理
  */
 @RequiredArgsConstructor
 @Service
 public class DatasetServiceImpl implements DatasetService {
 
-    private final DatasetMapper datasetMapper;
+    private final DatasetRepository datasetRepository;
 
     /**
      * 查询数据集信息
      */
     @Override
-    public DatasetVo queryById(Long datasetId) {
-        return datasetMapper.selectVoById(datasetId);
+    public Dataset queryById(Long datasetId) {
+        return datasetRepository.selectById(datasetId);
     }
 
         /**
          * 查询数据集信息列表
          */
         @Override
-        public PageVo<DatasetVo> queryPageList(PageDto pageDto) {
-            LambdaQueryWrapper<Dataset> lqw = Wrappers.lambdaQuery();
-            IPage<DatasetVo> pageData = datasetMapper.selectVoPage(pageDto.build(), lqw);
-            return PageVo.build(pageData);
+        public Page<Dataset> queryPageList(PageDto pageDto) {
+            return datasetRepository.selectPage(pageDto.build());
         }
 
     /**
      * 查询数据集信息列表
      */
     @Override
-    public List<DatasetVo> queryList(DatasetDto dto) {
-        LambdaQueryWrapper<Dataset> lqw = buildQueryWrapper(dto);
-        return datasetMapper.selectVoList(lqw);
-    }
-
-    private LambdaQueryWrapper<Dataset> buildQueryWrapper(DatasetDto dto) {
+    public List<Dataset> queryList(DatasetDto dto) {
+        Dataset entity = ObjectUtil.copyObject(dto, Dataset.class);
         Map<String, Object> params = dto.getParams();
-        LambdaQueryWrapper<Dataset> lqw = Wrappers.lambdaQuery();
-                    lqw.eq(dto.getDatasourceId() != null, Dataset::getDatasourceId, dto.getDatasourceId());
-                    lqw.eq(StringUtil.isNotBlank(dto.getDatasetCode()), Dataset::getDatasetCode, dto.getDatasetCode());
-                    lqw.like(StringUtil.isNotBlank(dto.getDatasetName()), Dataset::getDatasetName, dto.getDatasetName());
-                    lqw.eq(StringUtil.isNotBlank(dto.getDataContent()), Dataset::getDataContent, dto.getDataContent());
-                    lqw.eq(StringUtil.isNotBlank(dto.getFetchType()), Dataset::getFetchType, dto.getFetchType());
-                    lqw.eq(StringUtil.isNotBlank(dto.getDataTable()), Dataset::getDataTable, dto.getDataTable());
-                    lqw.eq(StringUtil.isNotBlank(dto.getPrimaryKey()), Dataset::getPrimaryKey, dto.getPrimaryKey());
-                    lqw.eq(StringUtil.isNotBlank(dto.getLabelCol()), Dataset::getLabelCol, dto.getLabelCol());
-                    lqw.eq(StringUtil.isNotBlank(dto.getWhereClause()), Dataset::getWhereClause, dto.getWhereClause());
-                    lqw.eq(StringUtil.isNotBlank(dto.getOrderCol()), Dataset::getOrderCol, dto.getOrderCol());
-                    lqw.eq(dto.getAppId() != null, Dataset::getAppId, dto.getAppId());
-        return lqw;
+        return datasetRepository.selectList(entity,params);
     }
 
     /**
@@ -79,9 +57,9 @@ public class DatasetServiceImpl implements DatasetService {
      */
     @Override
     public Boolean insertByDto(DatasetDto dto) {
-        Dataset add = ObjectUtil.copyObject(dto, Dataset. class);
+        Dataset add = ObjectUtil.copyObject(dto, Dataset.class);
         validEntityBeforeSave(add);
-        boolean flag = datasetMapper.insert(add) > 0;
+        boolean flag = datasetRepository.insert(add) > 0;
         if (flag) {
             dto.setDatasetId(add.getDatasetId());
         }
@@ -93,9 +71,9 @@ public class DatasetServiceImpl implements DatasetService {
      */
     @Override
     public Boolean updateByDto(DatasetDto dto) {
-        Dataset update = ObjectUtil.copyObject(dto, Dataset. class);
+        Dataset update = ObjectUtil.copyObject(dto, Dataset.class);
         validEntityBeforeSave(update);
-        return datasetMapper.updateById(update) > 0;
+        return datasetRepository.updateById(update) > 0;
     }
 
     /**
@@ -113,6 +91,6 @@ public class DatasetServiceImpl implements DatasetService {
         if (isValid) {
             //TODO 做一些业务上的校验,判断是否需要校验
         }
-        return datasetMapper.deleteBatchIds(ids) > 0;
+        return datasetRepository.deleteBatchIds(ids) > 0;
     }
 }

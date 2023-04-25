@@ -1,0 +1,111 @@
+package ${packageName}.service.impl;
+
+import com.galio.core.utils.StringUtil;
+#if($table.crud || $table.sub)
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+#end
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
+import ${packageName}.model.${ClassName};
+import ${packageName}.mapper.${ClassName}Mapper;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Collection;
+
+/**
+ * @Author: ${author}
+ * @Date: ${datetime}
+ * @Description: ${functionName}Repository持久层处理
+ */
+@Repository
+@RequiredArgsConstructor
+public class ${ClassName}Repository{
+
+    private final ${ClassName}Mapper ${className}Mapper;
+
+    /**
+     * 查询${functionName}
+     */
+    public ${ClassName} selectById(${pkColumn.javaType} ${pkColumn.javaField}) {
+        return ${className}Mapper.selectById(${pkColumn.javaField});
+    }
+
+    #if($table.crud || $table.sub)
+        /**
+         * 查询${functionName}列表
+         */
+        public Page<${ClassName}> selectPage(Page page) {
+            LambdaQueryWrapper<${ClassName}> lqw = Wrappers.lambdaQuery();
+            return ${className}Mapper.selectPage(page, lqw);
+        }
+    #end
+
+    /**
+     * 查询${functionName}列表
+     */
+    public List<${ClassName}> selectList(${ClassName} ${className},Map<String, Object> params) {
+        LambdaQueryWrapper<${ClassName}> lqw = buildQueryWrapper(${className}, params);
+        return ${className}Mapper.selectList(lqw);
+    }
+
+    private LambdaQueryWrapper<${ClassName}> buildQueryWrapper(${ClassName} entity,Map<String, Object> params) {
+        LambdaQueryWrapper<${ClassName}> lqw = Wrappers.lambdaQuery();
+        #foreach($column in $columns)
+            #if($column.query)
+                #set($queryType=$column.queryType)
+                #set($javaField=$column.javaField)
+                #set($javaType=$column.javaType)
+                #set($columnName=$column.columnName)
+                #set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
+                #set($mpMethod=$column.queryType.toLowerCase())
+                #if($queryType != 'BETWEEN')
+                    #if($javaType == 'String')
+                        #set($condition='StringUtil.isNotBlank(entity.get'+$AttrName+'())')
+                    #else
+                        #set($condition='entity.get'+$AttrName+'() != null')
+                    #end
+                    lqw.$mpMethod($condition, ${ClassName}::get$AttrName, entity.get$AttrName());
+                #else
+                    lqw.between(params.get("begin$AttrName") != null && params.get("end$AttrName") != null,
+                        ${ClassName}::get$AttrName , params.get("begin$AttrName"), params.get("end$AttrName"));
+                #end
+            #end
+        #end
+        return lqw;
+    }
+
+    /**
+     * 新增${functionName}
+     */
+    public int insert(${ClassName} entity) {
+        validEntityBeforeSave(entity);
+        int flag = ${className}Mapper.insert(entity);
+        #set($pk=$pkColumn.javaField.substring(0,1).toUpperCase() + ${pkColumn.javaField.substring(1)})
+        return flag;
+    }
+
+    /**
+     * 修改${functionName}
+     */
+    public int updateById(${ClassName} entity) {
+        validEntityBeforeSave(entity);
+        return ${className}Mapper.updateById(entity);
+    }
+
+    /**
+     * 保存前的数据校验
+     */
+    private void validEntityBeforeSave(${ClassName} entity) {
+        //TODO 做一些数据校验,如唯一约束
+    }
+
+    /**
+     * 批量删除${functionName}
+     */
+    public int deleteBatchIds(Collection<${pkColumn.javaType}> ids) {
+        return ${className}Mapper.deleteBatchIds(ids);
+    }
+}

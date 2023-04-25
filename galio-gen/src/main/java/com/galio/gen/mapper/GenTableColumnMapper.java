@@ -12,7 +12,7 @@ import java.util.List;
 * @createDate 2023-02-15 21:13:37
 * @Entity generator.domain.GenTableColumn
 */
-public interface GenTableColumnMapper extends BaseMapperPlus<GenTableColumnMapper, GenTableColumn, GenTableColumn> {
+public interface GenTableColumnMapper extends BaseMapperPlus<GenTableColumnMapper, GenTableColumn> {
     /**
      * 根据表名称查询列信息
      *

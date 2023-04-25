@@ -1,14 +1,17 @@
 package com.galio.system.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import com.galio.core.utils.ObjectUtil;
 import com.galio.core.validate.InsertGroup;
 import com.galio.core.validate.UpdateGroup;
 import com.galio.core.validate.SelectGroup;
 import com.galio.mybatis.page.PageDto;
 import com.galio.mybatis.page.PageVo;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import com.galio.system.model.Member;
 import com.galio.system.model.vo.MemberVo;
 import com.galio.system.model.dto.MemberDto;
 import com.galio.system.service.MemberService;
@@ -20,7 +23,7 @@ import jakarta.validation.constraints.NotNull;
 
 /**
  * @Author: galio
- * @Date: 2023-04-16
+ * @Date: 2023-04-25
  * @Description: 成员信息接口
  * 前端访问路由地址为:/system/member
  */
@@ -35,10 +38,11 @@ public class MemberController {
     /**
      * 查询成员信息列表
      */
-    @SaCheckPermission("system:member:list")
-    @GetMapping("/list")
-    public PageVo list(@RequestBody PageDto pageDto) {
-        return memberService.queryPageList(pageDto);
+    @SaCheckPermission("system:member:page")
+    @PostMapping("/page")
+    public PageVo page(@RequestBody PageDto pageDto) {
+        IPage<Member> pageData = memberService.queryPageList(pageDto);
+        return PageVo.build(pageData);
     }
 
     /**
@@ -49,7 +53,8 @@ public class MemberController {
     @SaCheckPermission("system:member:query")
     @GetMapping("/{memberId}")
     public MemberVo getInfo(@NotNull(message = "主键不能为空") @PathVariable Long memberId) {
-        return memberService.queryById(memberId);
+        Member member = memberService.queryById(memberId);
+        return ObjectUtil.copyObject(member, MemberVo.class);
     }
 
     /**

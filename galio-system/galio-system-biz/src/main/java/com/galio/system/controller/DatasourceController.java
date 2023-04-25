@@ -1,14 +1,17 @@
 package com.galio.system.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import com.galio.core.utils.ObjectUtil;
 import com.galio.core.validate.InsertGroup;
 import com.galio.core.validate.UpdateGroup;
 import com.galio.core.validate.SelectGroup;
 import com.galio.mybatis.page.PageDto;
 import com.galio.mybatis.page.PageVo;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import com.galio.system.model.Datasource;
 import com.galio.system.model.vo.DatasourceVo;
 import com.galio.system.model.dto.DatasourceDto;
 import com.galio.system.service.DatasourceService;
@@ -20,7 +23,7 @@ import jakarta.validation.constraints.NotNull;
 
 /**
  * @Author: galio
- * @Date: 2023-04-16
+ * @Date: 2023-04-25
  * @Description: 数据源信息接口
  * 前端访问路由地址为:/system/datasource
  */
@@ -35,10 +38,11 @@ public class DatasourceController {
     /**
      * 查询数据源信息列表
      */
-    @SaCheckPermission("system:datasource:list")
-    @GetMapping("/list")
-    public PageVo list(@RequestBody PageDto pageDto) {
-        return datasourceService.queryPageList(pageDto);
+    @SaCheckPermission("system:datasource:page")
+    @PostMapping("/page")
+    public PageVo page(@RequestBody PageDto pageDto) {
+        IPage<Datasource> pageData = datasourceService.queryPageList(pageDto);
+        return PageVo.build(pageData);
     }
 
     /**
@@ -49,7 +53,8 @@ public class DatasourceController {
     @SaCheckPermission("system:datasource:query")
     @GetMapping("/{datasourceId}")
     public DatasourceVo getInfo(@NotNull(message = "主键不能为空") @PathVariable Long datasourceId) {
-        return datasourceService.queryById(datasourceId);
+        Datasource datasource = datasourceService.queryById(datasourceId);
+        return ObjectUtil.copyObject(datasource, DatasourceVo.class);
     }
 
     /**

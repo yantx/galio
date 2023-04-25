@@ -1,16 +1,16 @@
 package com.galio.system.service;
 
-import com.galio.system.model.vo.AppVo;
 import com.galio.system.model.dto.AppDto;
-import com.galio.mybatis.page.PageVo;
+import com.galio.system.model.App;
 import com.galio.mybatis.page.PageDto;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import java.util.Collection;
 import java.util.List;
 
 /**
  * @Author: galio
- * @Date: 2023-04-16
+ * @Date: 2023-04-25
  * @Description: 应用信息Service接口
  */
 public interface AppService {
@@ -18,17 +18,17 @@ public interface AppService {
     /**
      * 查询应用信息
      */
-    AppVo queryById(Long appId);
+    App queryById(Long appId);
 
     /**
      * 查询应用信息列表
      */
-    PageVo<AppVo> queryPageList(PageDto pageDto);
+    Page<App> queryPageList(PageDto pageDto);
 
     /**
      * 查询应用信息列表
      */
-    List<AppVo> queryList(AppDto dto);
+    List<App> queryList(AppDto dto);
 
     /**
      * 修改应用信息

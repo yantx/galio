@@ -1,6 +1,6 @@
 package com.galio.system.api;
 
-import com.galio.system.entity.SysDictItem;
+import com.galio.system.model.SysDictItem;
 import org.springframework.web.service.annotation.HttpExchange;
 
 import java.util.List;
@@ -10,8 +10,8 @@ import java.util.List;
  * @Date: 2023-01-13
  * @Description: 字典项相关业务服务
  */
-@HttpExchange("sysDictController")
-public interface RemoteDictItemService {
+@HttpExchange("/dict")
+public interface RemoteDictItemClient {
     /**
      * 分隔符
      */

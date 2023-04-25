@@ -1,14 +1,17 @@
 package com.galio.system.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import com.galio.core.utils.ObjectUtil;
 import com.galio.core.validate.InsertGroup;
 import com.galio.core.validate.UpdateGroup;
 import com.galio.core.validate.SelectGroup;
 import com.galio.mybatis.page.PageDto;
 import com.galio.mybatis.page.PageVo;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import com.galio.system.model.Logininfor;
 import com.galio.system.model.vo.LogininforVo;
 import com.galio.system.model.dto.LogininforDto;
 import com.galio.system.service.LogininforService;
@@ -20,7 +23,7 @@ import jakarta.validation.constraints.NotNull;
 
 /**
  * @Author: galio
- * @Date: 2023-04-16
+ * @Date: 2023-04-25
  * @Description: 系统访问记录接口
  * 前端访问路由地址为:/system/logininfor
  */
@@ -35,10 +38,11 @@ public class LogininforController {
     /**
      * 查询系统访问记录列表
      */
-    @SaCheckPermission("system:logininfor:list")
-    @GetMapping("/list")
-    public PageVo list(@RequestBody PageDto pageDto) {
-        return logininforService.queryPageList(pageDto);
+    @SaCheckPermission("system:logininfor:page")
+    @PostMapping("/page")
+    public PageVo page(@RequestBody PageDto pageDto) {
+        IPage<Logininfor> pageData = logininforService.queryPageList(pageDto);
+        return PageVo.build(pageData);
     }
 
     /**
@@ -49,7 +53,8 @@ public class LogininforController {
     @SaCheckPermission("system:logininfor:query")
     @GetMapping("/{infoId}")
     public LogininforVo getInfo(@NotNull(message = "主键不能为空") @PathVariable Long infoId) {
-        return logininforService.queryById(infoId);
+        Logininfor logininfor = logininforService.queryById(infoId);
+        return ObjectUtil.copyObject(logininfor, LogininforVo.class);
     }
 
     /**

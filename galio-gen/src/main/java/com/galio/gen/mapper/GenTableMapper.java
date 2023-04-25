@@ -1,9 +1,8 @@
 package com.galio.gen.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.galio.gen.model.GenTable;
-import org.apache.ibatis.annotations.Mapper;
+import com.galio.mybatis.mapper.BaseMapperPlus;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -14,7 +13,7 @@ import java.util.List;
 * @createDate 2023-02-15 21:13:37
 * @Entity generator.domain.GenTable
 */
-public interface GenTableMapper extends BaseMapper<GenTable> {
+public interface GenTableMapper extends BaseMapperPlus<GenTableMapper, GenTable> {
 
     Page<GenTable> selectPageDbTableList(@Param("page") Page<GenTable> page, @Param("genTable") GenTable genTable);
 

@@ -1,4 +1,4 @@
-package com.galio.system.entity;
+package com.galio.system.model;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.galio.core.annotation.Sensitive;

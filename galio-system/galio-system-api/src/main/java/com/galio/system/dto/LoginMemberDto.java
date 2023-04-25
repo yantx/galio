@@ -1,7 +1,7 @@
 package com.galio.system.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.galio.system.entity.SysEmployee;
+import com.galio.system.model.SysEmployee;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

@@ -1,14 +1,19 @@
 package ${packageName}.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import com.galio.core.utils.ObjectUtil;
 import com.galio.core.validate.InsertGroup;
 import com.galio.core.validate.UpdateGroup;
 import com.galio.core.validate.SelectGroup;
+#if($table.crud || $table.sub)
 import com.galio.mybatis.page.PageDto;
 import com.galio.mybatis.page.PageVo;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+#end
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ${packageName}.model.${ClassName};
 import ${packageName}.model.vo.${ClassName}Vo;
 import ${packageName}.model.dto.${ClassName}Dto;
 import ${packageName}.service.${ClassName}Service;
@@ -35,15 +40,19 @@ public class ${ClassName}Controller {
     /**
      * 查询${functionName}列表
      */
-    @SaCheckPermission("${permissionPrefix}:list")
-    @GetMapping("/list")
+    @SaCheckPermission("${permissionPrefix}:page")
 #if($table.crud || $table.sub)
-    public PageVo list(@RequestBody PageDto pageDto) {
-        return ${className}Service.queryPageList(pageDto);
+    @PostMapping("/page")
+    public PageVo page(@RequestBody PageDto pageDto) {
+        IPage<${ClassName}> pageData = ${className}Service.queryPageList(pageDto);
+        return PageVo.build(pageData);
     }
 #elseif($table.tree)
+    @SaCheckPermission("${permissionPrefix}:list")
+    @PostMapping("/list")
     public List<${ClassName}Vo> list(${ClassName}Dto dto) {
-        return ${className}Service.queryList(dto);;
+        List<${ClassName}> ${className}List = ${className}Service.queryList(dto);
+        return ObjectUtil.copyList(${className}List,${ClassName}Vo.class);
     }
 #end
 
@@ -55,7 +64,8 @@ public class ${ClassName}Controller {
     @SaCheckPermission("${permissionPrefix}:query")
     @GetMapping("/{${pkColumn.javaField}}")
     public ${ClassName}Vo getInfo(@NotNull(message = "主键不能为空") @PathVariable ${pkColumn.javaType} ${pkColumn.javaField}) {
-        return ${className}Service.queryById(${pkColumn.javaField});
+        ${ClassName} ${className} = ${className}Service.queryById(${pkColumn.javaField});
+        return ObjectUtil.copyObject(${className}, ${ClassName}Vo.class);
     }
 
     /**

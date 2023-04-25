@@ -1,18 +1,14 @@
 package com.galio.system.service.impl;
 
-import com.galio.core.utils.ObjectUtil;
 import com.galio.core.utils.StringUtil;
-    import com.galio.mybatis.page.PageDto;
-    import com.galio.mybatis.page.PageVo;
-    import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.galio.core.utils.ObjectUtil;
+import com.galio.mybatis.page.PageDto;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.galio.system.model.dto.OperLogDto;
-import com.galio.system.model.vo.OperLogVo;
 import com.galio.system.model.OperLog;
-import com.galio.system.mapper.OperLogMapper;
+import com.galio.system.repository.OperLogRepository;
 import com.galio.system.service.OperLogService;
 
 import java.util.List;
@@ -21,62 +17,39 @@ import java.util.Collection;
 
 /**
  * @Author: galio
- * @Date: 2023-04-16
+ * @Date: 2023-04-25
  * @Description: 操作日志记录Service业务层处理
  */
 @RequiredArgsConstructor
 @Service
 public class OperLogServiceImpl implements OperLogService {
 
-    private final OperLogMapper operLogMapper;
+    private final OperLogRepository operLogRepository;
 
     /**
      * 查询操作日志记录
      */
     @Override
-    public OperLogVo queryById(Long operId) {
-        return operLogMapper.selectVoById(operId);
+    public OperLog queryById(Long operId) {
+        return operLogRepository.selectById(operId);
     }
 
         /**
          * 查询操作日志记录列表
          */
         @Override
-        public PageVo<OperLogVo> queryPageList(PageDto pageDto) {
-            LambdaQueryWrapper<OperLog> lqw = Wrappers.lambdaQuery();
-            IPage<OperLogVo> pageData = operLogMapper.selectVoPage(pageDto.build(), lqw);
-            return PageVo.build(pageData);
+        public Page<OperLog> queryPageList(PageDto pageDto) {
+            return operLogRepository.selectPage(pageDto.build());
         }
 
     /**
      * 查询操作日志记录列表
      */
     @Override
-    public List<OperLogVo> queryList(OperLogDto dto) {
-        LambdaQueryWrapper<OperLog> lqw = buildQueryWrapper(dto);
-        return operLogMapper.selectVoList(lqw);
-    }
-
-    private LambdaQueryWrapper<OperLog> buildQueryWrapper(OperLogDto dto) {
+    public List<OperLog> queryList(OperLogDto dto) {
+        OperLog entity = ObjectUtil.copyObject(dto, OperLog.class);
         Map<String, Object> params = dto.getParams();
-        LambdaQueryWrapper<OperLog> lqw = Wrappers.lambdaQuery();
-                    lqw.eq(StringUtil.isNotBlank(dto.getTitle()), OperLog::getTitle, dto.getTitle());
-                    lqw.eq(StringUtil.isNotBlank(dto.getBusinessType()), OperLog::getBusinessType, dto.getBusinessType());
-                    lqw.eq(StringUtil.isNotBlank(dto.getMethod()), OperLog::getMethod, dto.getMethod());
-                    lqw.eq(StringUtil.isNotBlank(dto.getRequestMethod()), OperLog::getRequestMethod, dto.getRequestMethod());
-                    lqw.eq(StringUtil.isNotBlank(dto.getOperatorType()), OperLog::getOperatorType, dto.getOperatorType());
-                    lqw.eq(dto.getOperBy() != null, OperLog::getOperBy, dto.getOperBy());
-                    lqw.like(StringUtil.isNotBlank(dto.getOrgName()), OperLog::getOrgName, dto.getOrgName());
-                    lqw.eq(StringUtil.isNotBlank(dto.getOperUrl()), OperLog::getOperUrl, dto.getOperUrl());
-                    lqw.eq(StringUtil.isNotBlank(dto.getOperIp()), OperLog::getOperIp, dto.getOperIp());
-                    lqw.eq(StringUtil.isNotBlank(dto.getOperLocation()), OperLog::getOperLocation, dto.getOperLocation());
-                    lqw.eq(StringUtil.isNotBlank(dto.getOperParam()), OperLog::getOperParam, dto.getOperParam());
-                    lqw.eq(StringUtil.isNotBlank(dto.getJsonResult()), OperLog::getJsonResult, dto.getJsonResult());
-                    lqw.eq(StringUtil.isNotBlank(dto.getStatus()), OperLog::getStatus, dto.getStatus());
-                    lqw.eq(StringUtil.isNotBlank(dto.getErrorMsg()), OperLog::getErrorMsg, dto.getErrorMsg());
-                    lqw.eq(dto.getOperTime() != null, OperLog::getOperTime, dto.getOperTime());
-                    lqw.eq(dto.getAppId() != null, OperLog::getAppId, dto.getAppId());
-        return lqw;
+        return operLogRepository.selectList(entity,params);
     }
 
     /**
@@ -84,9 +57,9 @@ public class OperLogServiceImpl implements OperLogService {
      */
     @Override
     public Boolean insertByDto(OperLogDto dto) {
-        OperLog add = ObjectUtil.copyObject(dto, OperLog. class);
+        OperLog add = ObjectUtil.copyObject(dto, OperLog.class);
         validEntityBeforeSave(add);
-        boolean flag = operLogMapper.insert(add) > 0;
+        boolean flag = operLogRepository.insert(add) > 0;
         if (flag) {
             dto.setOperId(add.getOperId());
         }
@@ -98,9 +71,9 @@ public class OperLogServiceImpl implements OperLogService {
      */
     @Override
     public Boolean updateByDto(OperLogDto dto) {
-        OperLog update = ObjectUtil.copyObject(dto, OperLog. class);
+        OperLog update = ObjectUtil.copyObject(dto, OperLog.class);
         validEntityBeforeSave(update);
-        return operLogMapper.updateById(update) > 0;
+        return operLogRepository.updateById(update) > 0;
     }
 
     /**
@@ -118,6 +91,6 @@ public class OperLogServiceImpl implements OperLogService {
         if (isValid) {
             //TODO 做一些业务上的校验,判断是否需要校验
         }
-        return operLogMapper.deleteBatchIds(ids) > 0;
+        return operLogRepository.deleteBatchIds(ids) > 0;
     }
 }

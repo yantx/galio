@@ -1,14 +1,17 @@
 package com.galio.system.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import com.galio.core.utils.ObjectUtil;
 import com.galio.core.validate.InsertGroup;
 import com.galio.core.validate.UpdateGroup;
 import com.galio.core.validate.SelectGroup;
 import com.galio.mybatis.page.PageDto;
 import com.galio.mybatis.page.PageVo;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import com.galio.system.model.Employee;
 import com.galio.system.model.vo.EmployeeVo;
 import com.galio.system.model.dto.EmployeeDto;
 import com.galio.system.service.EmployeeService;
@@ -20,7 +23,7 @@ import jakarta.validation.constraints.NotNull;
 
 /**
  * @Author: galio
- * @Date: 2023-04-16
+ * @Date: 2023-04-25
  * @Description: 机构接口
  * 前端访问路由地址为:/system/employee
  */
@@ -35,10 +38,11 @@ public class EmployeeController {
     /**
      * 查询机构列表
      */
-    @SaCheckPermission("system:employee:list")
-    @GetMapping("/list")
-    public PageVo list(@RequestBody PageDto pageDto) {
-        return employeeService.queryPageList(pageDto);
+    @SaCheckPermission("system:employee:page")
+    @PostMapping("/page")
+    public PageVo page(@RequestBody PageDto pageDto) {
+        IPage<Employee> pageData = employeeService.queryPageList(pageDto);
+        return PageVo.build(pageData);
     }
 
     /**
@@ -49,7 +53,8 @@ public class EmployeeController {
     @SaCheckPermission("system:employee:query")
     @GetMapping("/{employeeId}")
     public EmployeeVo getInfo(@NotNull(message = "主键不能为空") @PathVariable Long employeeId) {
-        return employeeService.queryById(employeeId);
+        Employee employee = employeeService.queryById(employeeId);
+        return ObjectUtil.copyObject(employee, EmployeeVo.class);
     }
 
     /**

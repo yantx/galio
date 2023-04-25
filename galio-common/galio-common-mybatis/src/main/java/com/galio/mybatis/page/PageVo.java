@@ -1,8 +1,10 @@
 package com.galio.mybatis.page;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.galio.core.utils.ObjectUtil;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.io.Serializable;
 import java.util.List;
@@ -33,11 +35,18 @@ public class PageVo<T> implements Serializable {
 
     public static <T> PageVo<T> build(IPage<T> page) {
         PageVo<T> rspData = new PageVo<>();
-        rspData.setRows(page.getRecords());
+        if (CollectionUtils.isNotEmpty(page.getRecords()))
+            rspData.setRows(page.getRecords());
         rspData.setTotal(page.getTotal());
         return rspData;
     }
-
+    public static <V> PageVo<V> buildVo(IPage page, Class<V> voClass) {
+        PageVo<V> rspData = new PageVo<>();
+        if (CollectionUtils.isNotEmpty(page.getRecords()))
+            rspData.setRows(ObjectUtil.copyList(page.getRecords(), voClass));
+        rspData.setTotal(page.getTotal());
+        return rspData;
+    }
     public static <T> PageVo<T> build(List<T> list) {
         PageVo<T> rspData = new PageVo<>();
         rspData.setRows(list);

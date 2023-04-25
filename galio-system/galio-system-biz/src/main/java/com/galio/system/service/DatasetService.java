@@ -1,16 +1,16 @@
 package com.galio.system.service;
 
-import com.galio.system.model.vo.DatasetVo;
 import com.galio.system.model.dto.DatasetDto;
-import com.galio.mybatis.page.PageVo;
+import com.galio.system.model.Dataset;
 import com.galio.mybatis.page.PageDto;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import java.util.Collection;
 import java.util.List;
 
 /**
  * @Author: galio
- * @Date: 2023-04-16
+ * @Date: 2023-04-25
  * @Description: 数据集信息Service接口
  */
 public interface DatasetService {
@@ -18,17 +18,17 @@ public interface DatasetService {
     /**
      * 查询数据集信息
      */
-    DatasetVo queryById(Long datasetId);
+    Dataset queryById(Long datasetId);
 
     /**
      * 查询数据集信息列表
      */
-    PageVo<DatasetVo> queryPageList(PageDto pageDto);
+    Page<Dataset> queryPageList(PageDto pageDto);
 
     /**
      * 查询数据集信息列表
      */
-    List<DatasetVo> queryList(DatasetDto dto);
+    List<Dataset> queryList(DatasetDto dto);
 
     /**
      * 修改数据集信息

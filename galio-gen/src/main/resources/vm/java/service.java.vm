@@ -1,10 +1,10 @@
 package ${packageName}.service;
 
-import ${packageName}.model.vo.${ClassName}Vo;
 import ${packageName}.model.dto.${ClassName}Dto;
+import ${packageName}.model.${ClassName};
 #if($table.crud || $table.sub)
-import com.galio.mybatis.page.PageVo;
 import com.galio.mybatis.page.PageDto;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 #end
 
 import java.util.Collection;
@@ -20,19 +20,19 @@ public interface ${ClassName}Service {
     /**
      * 查询${functionName}
      */
-    ${ClassName}Vo queryById(${pkColumn.javaType} ${pkColumn.javaField});
+    ${ClassName} queryById(${pkColumn.javaType} ${pkColumn.javaField});
 
 #if($table.crud || $table.sub)
     /**
      * 查询${functionName}列表
      */
-    PageVo<${ClassName}Vo> queryPageList(PageDto pageDto);
+    Page<${ClassName}> queryPageList(PageDto pageDto);
 #end
 
     /**
      * 查询${functionName}列表
      */
-    List<${ClassName}Vo> queryList(${ClassName}Dto dto);
+    List<${ClassName}> queryList(${ClassName}Dto dto);
 
     /**
      * 修改${functionName}

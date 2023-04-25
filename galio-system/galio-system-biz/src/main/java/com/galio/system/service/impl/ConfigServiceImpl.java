@@ -1,18 +1,14 @@
 package com.galio.system.service.impl;
 
-import com.galio.core.utils.ObjectUtil;
 import com.galio.core.utils.StringUtil;
-    import com.galio.mybatis.page.PageDto;
-    import com.galio.mybatis.page.PageVo;
-    import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.galio.core.utils.ObjectUtil;
+import com.galio.mybatis.page.PageDto;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.galio.system.model.dto.ConfigDto;
-import com.galio.system.model.vo.ConfigVo;
 import com.galio.system.model.Config;
-import com.galio.system.mapper.ConfigMapper;
+import com.galio.system.repository.ConfigRepository;
 import com.galio.system.service.ConfigService;
 
 import java.util.List;
@@ -21,51 +17,39 @@ import java.util.Collection;
 
 /**
  * @Author: galio
- * @Date: 2023-04-16
+ * @Date: 2023-04-25
  * @Description: 应用信息Service业务层处理
  */
 @RequiredArgsConstructor
 @Service
 public class ConfigServiceImpl implements ConfigService {
 
-    private final ConfigMapper configMapper;
+    private final ConfigRepository configRepository;
 
     /**
      * 查询应用信息
      */
     @Override
-    public ConfigVo queryById(Long configId) {
-        return configMapper.selectVoById(configId);
+    public Config queryById(Long configId) {
+        return configRepository.selectById(configId);
     }
 
         /**
          * 查询应用信息列表
          */
         @Override
-        public PageVo<ConfigVo> queryPageList(PageDto pageDto) {
-            LambdaQueryWrapper<Config> lqw = Wrappers.lambdaQuery();
-            IPage<ConfigVo> pageData = configMapper.selectVoPage(pageDto.build(), lqw);
-            return PageVo.build(pageData);
+        public Page<Config> queryPageList(PageDto pageDto) {
+            return configRepository.selectPage(pageDto.build());
         }
 
     /**
      * 查询应用信息列表
      */
     @Override
-    public List<ConfigVo> queryList(ConfigDto dto) {
-        LambdaQueryWrapper<Config> lqw = buildQueryWrapper(dto);
-        return configMapper.selectVoList(lqw);
-    }
-
-    private LambdaQueryWrapper<Config> buildQueryWrapper(ConfigDto dto) {
+    public List<Config> queryList(ConfigDto dto) {
+        Config entity = ObjectUtil.copyObject(dto, Config.class);
         Map<String, Object> params = dto.getParams();
-        LambdaQueryWrapper<Config> lqw = Wrappers.lambdaQuery();
-                    lqw.like(StringUtil.isNotBlank(dto.getConfigName()), Config::getConfigName, dto.getConfigName());
-                    lqw.eq(StringUtil.isNotBlank(dto.getConfigKey()), Config::getConfigKey, dto.getConfigKey());
-                    lqw.eq(StringUtil.isNotBlank(dto.getConfigValue()), Config::getConfigValue, dto.getConfigValue());
-                    lqw.eq(StringUtil.isNotBlank(dto.getConfigType()), Config::getConfigType, dto.getConfigType());
-                    lqw.eq(dto.getAppId() != null, Config::getAppId, dto.getAppId());
-        return lqw;
+        return configRepository.selectList(entity,params);
     }
 
     /**
@@ -73,9 +57,9 @@ public class ConfigServiceImpl implements ConfigService {
      */
     @Override
     public Boolean insertByDto(ConfigDto dto) {
-        Config add = ObjectUtil.copyObject(dto, Config. class);
+        Config add = ObjectUtil.copyObject(dto, Config.class);
         validEntityBeforeSave(add);
-        boolean flag = configMapper.insert(add) > 0;
+        boolean flag = configRepository.insert(add) > 0;
         if (flag) {
             dto.setConfigId(add.getConfigId());
         }
@@ -87,9 +71,9 @@ public class ConfigServiceImpl implements ConfigService {
      */
     @Override
     public Boolean updateByDto(ConfigDto dto) {
-        Config update = ObjectUtil.copyObject(dto, Config. class);
+        Config update = ObjectUtil.copyObject(dto, Config.class);
         validEntityBeforeSave(update);
-        return configMapper.updateById(update) > 0;
+        return configRepository.updateById(update) > 0;
     }
 
     /**
@@ -107,6 +91,6 @@ public class ConfigServiceImpl implements ConfigService {
         if (isValid) {
             //TODO 做一些业务上的校验,判断是否需要校验
         }
-        return configMapper.deleteBatchIds(ids) > 0;
+        return configRepository.deleteBatchIds(ids) > 0;
     }
 }

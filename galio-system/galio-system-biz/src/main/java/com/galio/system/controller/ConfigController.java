@@ -1,14 +1,17 @@
 package com.galio.system.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import com.galio.core.utils.ObjectUtil;
 import com.galio.core.validate.InsertGroup;
 import com.galio.core.validate.UpdateGroup;
 import com.galio.core.validate.SelectGroup;
 import com.galio.mybatis.page.PageDto;
 import com.galio.mybatis.page.PageVo;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import com.galio.system.model.Config;
 import com.galio.system.model.vo.ConfigVo;
 import com.galio.system.model.dto.ConfigDto;
 import com.galio.system.service.ConfigService;
@@ -20,7 +23,7 @@ import jakarta.validation.constraints.NotNull;
 
 /**
  * @Author: galio
- * @Date: 2023-04-16
+ * @Date: 2023-04-25
  * @Description: 应用信息接口
  * 前端访问路由地址为:/system/config
  */
@@ -35,10 +38,11 @@ public class ConfigController {
     /**
      * 查询应用信息列表
      */
-    @SaCheckPermission("system:config:list")
-    @GetMapping("/list")
-    public PageVo list(@RequestBody PageDto pageDto) {
-        return configService.queryPageList(pageDto);
+    @SaCheckPermission("system:config:page")
+    @PostMapping("/page")
+    public PageVo page(@RequestBody PageDto pageDto) {
+        IPage<Config> pageData = configService.queryPageList(pageDto);
+        return PageVo.build(pageData);
     }
 
     /**
@@ -49,7 +53,8 @@ public class ConfigController {
     @SaCheckPermission("system:config:query")
     @GetMapping("/{configId}")
     public ConfigVo getInfo(@NotNull(message = "主键不能为空") @PathVariable Long configId) {
-        return configService.queryById(configId);
+        Config config = configService.queryById(configId);
+        return ObjectUtil.copyObject(config, ConfigVo.class);
     }
 
     /**

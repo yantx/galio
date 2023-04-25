@@ -1,16 +1,16 @@
 package com.galio.system.service;
 
-import com.galio.system.model.vo.RoleVo;
 import com.galio.system.model.dto.RoleDto;
-import com.galio.mybatis.page.PageVo;
+import com.galio.system.model.Role;
 import com.galio.mybatis.page.PageDto;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import java.util.Collection;
 import java.util.List;
 
 /**
  * @Author: galio
- * @Date: 2023-04-16
+ * @Date: 2023-04-25
  * @Description: 角色信息Service接口
  */
 public interface RoleService {
@@ -18,17 +18,17 @@ public interface RoleService {
     /**
      * 查询角色信息
      */
-    RoleVo queryById(Long roleId);
+    Role queryById(Long roleId);
 
     /**
      * 查询角色信息列表
      */
-    PageVo<RoleVo> queryPageList(PageDto pageDto);
+    Page<Role> queryPageList(PageDto pageDto);
 
     /**
      * 查询角色信息列表
      */
-    List<RoleVo> queryList(RoleDto dto);
+    List<Role> queryList(RoleDto dto);
 
     /**
      * 修改角色信息

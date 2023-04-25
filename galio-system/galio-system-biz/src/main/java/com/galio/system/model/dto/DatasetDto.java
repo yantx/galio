@@ -1,15 +1,15 @@
 package com.galio.system.model.dto;
 
-import com.galio.core.model.BaseEntity;
 import com.galio.core.validate.InsertGroup;
 import com.galio.core.validate.UpdateGroup;
 import lombok.Data;
 import jakarta.validation.constraints.*;
 
+import com.galio.core.model.BaseEntity;
 
 /**
  * @Author: galio
- * @Date: 2023-04-16
+ * @Date: 2023-04-25
  * @Description: 数据集信息业务对象
  */
 

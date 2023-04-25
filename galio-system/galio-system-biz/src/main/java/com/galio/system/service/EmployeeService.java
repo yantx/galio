@@ -1,16 +1,16 @@
 package com.galio.system.service;
 
-import com.galio.system.model.vo.EmployeeVo;
 import com.galio.system.model.dto.EmployeeDto;
-import com.galio.mybatis.page.PageVo;
+import com.galio.system.model.Employee;
 import com.galio.mybatis.page.PageDto;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import java.util.Collection;
 import java.util.List;
 
 /**
  * @Author: galio
- * @Date: 2023-04-16
+ * @Date: 2023-04-25
  * @Description: 机构Service接口
  */
 public interface EmployeeService {
@@ -18,17 +18,17 @@ public interface EmployeeService {
     /**
      * 查询机构
      */
-    EmployeeVo queryById(Long employeeId);
+    Employee queryById(Long employeeId);
 
     /**
      * 查询机构列表
      */
-    PageVo<EmployeeVo> queryPageList(PageDto pageDto);
+    Page<Employee> queryPageList(PageDto pageDto);
 
     /**
      * 查询机构列表
      */
-    List<EmployeeVo> queryList(EmployeeDto dto);
+    List<Employee> queryList(EmployeeDto dto);
 
     /**
      * 修改机构

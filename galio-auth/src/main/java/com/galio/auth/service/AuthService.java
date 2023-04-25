@@ -13,7 +13,7 @@ import com.galio.core.utils.MessageUtils;
 import com.galio.core.utils.ObjectUtil;
 import com.galio.redis.util.RedisUtils;
 import com.galio.satoken.utils.LoginHelper;
-import com.galio.system.api.RemoteMemberService;
+import com.galio.system.api.RemoteMemberClient;
 import com.galio.system.dto.LoginMemberDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +33,7 @@ import java.util.function.Supplier;
 public class AuthService {
 
 
-    private final RemoteMemberService remoteMemberService;
+    private final RemoteMemberClient remoteMemberClient;
 
     private final PasswordProperties passwordProperties;
 
@@ -41,7 +41,7 @@ public class AuthService {
      * 登录
      */
     public String login(String username, String password) {
-        LoginMemberDto memberDto = remoteMemberService.getMemberInfo(username);
+        LoginMemberDto memberDto = remoteMemberClient.getMemberInfo(username);
 
         checkLogin(username, () -> !BCrypt.checkpw(password, memberDto.getPassword()));
         // 获取登录token

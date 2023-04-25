@@ -54,18 +54,20 @@
         </dependency>
         <dependency>
             <groupId>com.galio</groupId>
+            <artifactId>galio-common-redis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.galio</groupId>
             <artifactId>galio-system-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.galio</groupId>
+            <artifactId>galio-common-doc</artifactId>
         </dependency>
     </dependencies>
 
     <build>
         <finalName>${project.artifactId}</finalName>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -74,4 +76,32 @@
             </plugin>
         </plugins>
     </build>
+    <!-- 不同的打包环境 -->
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <!-- 默认启用的是dev环境配置 -->
+                <profiles.active>dev</profiles.active>
+            </properties>
+            <activation>
+                <!-- 开发环境，默认激活 -->
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <!-- 部署测试环境 -->
+                <profiles.active>test</profiles.active>
+            </properties>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <!-- 部署生产环境 -->
+                <profiles.active>prod</profiles.active>
+            </properties>
+        </profile>
+    </profiles>
 </project>

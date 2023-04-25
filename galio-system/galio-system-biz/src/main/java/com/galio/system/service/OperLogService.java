@@ -1,16 +1,16 @@
 package com.galio.system.service;
 
-import com.galio.system.model.vo.OperLogVo;
 import com.galio.system.model.dto.OperLogDto;
-import com.galio.mybatis.page.PageVo;
+import com.galio.system.model.OperLog;
 import com.galio.mybatis.page.PageDto;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import java.util.Collection;
 import java.util.List;
 
 /**
  * @Author: galio
- * @Date: 2023-04-16
+ * @Date: 2023-04-25
  * @Description: 操作日志记录Service接口
  */
 public interface OperLogService {
@@ -18,17 +18,17 @@ public interface OperLogService {
     /**
      * 查询操作日志记录
      */
-    OperLogVo queryById(Long operId);
+    OperLog queryById(Long operId);
 
     /**
      * 查询操作日志记录列表
      */
-    PageVo<OperLogVo> queryPageList(PageDto pageDto);
+    Page<OperLog> queryPageList(PageDto pageDto);
 
     /**
      * 查询操作日志记录列表
      */
-    List<OperLogVo> queryList(OperLogDto dto);
+    List<OperLog> queryList(OperLogDto dto);
 
     /**
      * 修改操作日志记录

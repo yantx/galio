@@ -1,18 +1,14 @@
 package com.galio.system.service.impl;
 
-import com.galio.core.utils.ObjectUtil;
 import com.galio.core.utils.StringUtil;
-    import com.galio.mybatis.page.PageDto;
-    import com.galio.mybatis.page.PageVo;
-    import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.galio.core.utils.ObjectUtil;
+import com.galio.mybatis.page.PageDto;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.galio.system.model.dto.DictDto;
-import com.galio.system.model.vo.DictVo;
 import com.galio.system.model.Dict;
-import com.galio.system.mapper.DictMapper;
+import com.galio.system.repository.DictRepository;
 import com.galio.system.service.DictService;
 
 import java.util.List;
@@ -21,50 +17,39 @@ import java.util.Collection;
 
 /**
  * @Author: galio
- * @Date: 2023-04-16
+ * @Date: 2023-04-25
  * @Description: 字典Service业务层处理
  */
 @RequiredArgsConstructor
 @Service
 public class DictServiceImpl implements DictService {
 
-    private final DictMapper dictMapper;
+    private final DictRepository dictRepository;
 
     /**
      * 查询字典
      */
     @Override
-    public DictVo queryById(Long dictId) {
-        return dictMapper.selectVoById(dictId);
+    public Dict queryById(Long dictId) {
+        return dictRepository.selectById(dictId);
     }
 
         /**
          * 查询字典列表
          */
         @Override
-        public PageVo<DictVo> queryPageList(PageDto pageDto) {
-            LambdaQueryWrapper<Dict> lqw = Wrappers.lambdaQuery();
-            IPage<DictVo> pageData = dictMapper.selectVoPage(pageDto.build(), lqw);
-            return PageVo.build(pageData);
+        public Page<Dict> queryPageList(PageDto pageDto) {
+            return dictRepository.selectPage(pageDto.build());
         }
 
     /**
      * 查询字典列表
      */
     @Override
-    public List<DictVo> queryList(DictDto dto) {
-        LambdaQueryWrapper<Dict> lqw = buildQueryWrapper(dto);
-        return dictMapper.selectVoList(lqw);
-    }
-
-    private LambdaQueryWrapper<Dict> buildQueryWrapper(DictDto dto) {
+    public List<Dict> queryList(DictDto dto) {
+        Dict entity = ObjectUtil.copyObject(dto, Dict.class);
         Map<String, Object> params = dto.getParams();
-        LambdaQueryWrapper<Dict> lqw = Wrappers.lambdaQuery();
-                    lqw.like(StringUtil.isNotBlank(dto.getDictName()), Dict::getDictName, dto.getDictName());
-                    lqw.eq(StringUtil.isNotBlank(dto.getDictCode()), Dict::getDictCode, dto.getDictCode());
-                    lqw.eq(StringUtil.isNotBlank(dto.getStatus()), Dict::getStatus, dto.getStatus());
-                    lqw.eq(dto.getAppId() != null, Dict::getAppId, dto.getAppId());
-        return lqw;
+        return dictRepository.selectList(entity,params);
     }
 
     /**
@@ -72,9 +57,9 @@ public class DictServiceImpl implements DictService {
      */
     @Override
     public Boolean insertByDto(DictDto dto) {
-        Dict add = ObjectUtil.copyObject(dto, Dict. class);
+        Dict add = ObjectUtil.copyObject(dto, Dict.class);
         validEntityBeforeSave(add);
-        boolean flag = dictMapper.insert(add) > 0;
+        boolean flag = dictRepository.insert(add) > 0;
         if (flag) {
             dto.setDictId(add.getDictId());
         }
@@ -86,9 +71,9 @@ public class DictServiceImpl implements DictService {
      */
     @Override
     public Boolean updateByDto(DictDto dto) {
-        Dict update = ObjectUtil.copyObject(dto, Dict. class);
+        Dict update = ObjectUtil.copyObject(dto, Dict.class);
         validEntityBeforeSave(update);
-        return dictMapper.updateById(update) > 0;
+        return dictRepository.updateById(update) > 0;
     }
 
     /**
@@ -106,6 +91,6 @@ public class DictServiceImpl implements DictService {
         if (isValid) {
             //TODO 做一些业务上的校验,判断是否需要校验
         }
-        return dictMapper.deleteBatchIds(ids) > 0;
+        return dictRepository.deleteBatchIds(ids) > 0;
     }
 }

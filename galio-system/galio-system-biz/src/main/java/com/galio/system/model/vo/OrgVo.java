@@ -4,7 +4,7 @@ import lombok.Data;
 
 /**
  * @Author: galio
- * @Date: 2023-04-16
+ * @Date: 2023-04-25
  * @Description: 机构视图对象
  */
 @Data
