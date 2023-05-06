@@ -1,8 +1,8 @@
 package com.galio.core.handler;
 
-import com.galio.core.enums.ResponseCodeEnum;
+import com.galio.core.enums.ResponseEnum;
 import com.galio.core.exception.CustomException;
-import com.galio.core.model.ResponseVo;
+import com.galio.core.model.BaseResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindException;
@@ -12,8 +12,6 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
-
-import javax.naming.CommunicationException;
 
 /**
  * @Author: galio
@@ -25,68 +23,70 @@ import javax.naming.CommunicationException;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler({BindException.class})
-    public ResponseVo MethodArgumentNotValidExceptionHandler(BindException e) {
+    public BaseResponse MethodArgumentNotValidExceptionHandler(BindException e) {
         // 从异常对象中拿到ObjectError对象
         ObjectError objectError = e.getBindingResult().getAllErrors().get(0);
-        return ResponseVo.createFail(ResponseCodeEnum.VALIDATE_ERROR);
+        return BaseResponse.createFail(ResponseEnum.VALIDATE_ERROR);
     }
 
     @ExceptionHandler({NullPointerException.class})
-    public ResponseVo MethodArgumentNotValidExceptionHandler(NullPointerException e) {
-        log.error(ResponseCodeEnum.NULL_POINTER.getMsg(), e);
-        return ResponseVo.createFail(ResponseCodeEnum.NULL_POINTER);
+    public BaseResponse MethodArgumentNotValidExceptionHandler(NullPointerException e) {
+        log.error(ResponseEnum.NULL_POINTER.getMsg(), e);
+        return BaseResponse.createFail(ResponseEnum.NULL_POINTER);
     }
 
     /**
      * NoHandlerFoundException 404 异常处理
      */
     @ExceptionHandler(value = NoHandlerFoundException.class)
-    public ResponseVo handlerNoHandlerFoundException(NoHandlerFoundException e, HttpServletRequest request){
+    public BaseResponse handlerNoHandlerFoundException(NoHandlerFoundException e, HttpServletRequest request){
         log.error("访问地址{}不存在! {}", request.getRequestURI(), e);
-        return ResponseVo.createFail(ResponseCodeEnum.NOT_FOUND);
+        return BaseResponse.createFail(ResponseEnum.NOT_FOUND);
     }
 
     /**
      * HttpRequestMethodNotSupportedException 405 异常处理
      */
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    public ResponseVo handlerHttpRequestMethodNotSupportedException(
+    public BaseResponse handlerHttpRequestMethodNotSupportedException(
             HttpRequestMethodNotSupportedException e){
-        return ResponseVo.createFail(ResponseCodeEnum.METHOD_NOT_ALLOWED);
+        return BaseResponse.createFail(ResponseEnum.METHOD_NOT_ALLOWED);
     }
 
     /**
      * HttpMediaTypeNotSupportedException 415 异常处理
      */
     @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
-    public ResponseVo handlerHttpMediaTypeNotSupportedException(
+    public BaseResponse handlerHttpMediaTypeNotSupportedException(
             HttpMediaTypeNotSupportedException e) {
-        return ResponseVo.createFail(ResponseCodeEnum.UNSUPPORTED_MEDIA_TYPE);
+        return BaseResponse.createFail(ResponseEnum.UNSUPPORTED_MEDIA_TYPE);
     }
 
     /**
      * 拦截未知的运行时异常
      */
     @ExceptionHandler(CustomException.class)
-    public ResponseVo handleCommunicationException(CustomException e, HttpServletRequest request) {
-        return ResponseVo.createFail(e.getCode(),e.getMsg());
+    public BaseResponse handleCommunicationException(CustomException e, HttpServletRequest request) {
+        log.error(e.getMessage(),e);
+        return BaseResponse.createFail(e.getCode(),e.getMsg());
     }
 
     /**
      * 拦截未知的运行时异常
      */
     @ExceptionHandler(RuntimeException.class)
-    public ResponseVo handleRuntimeException(RuntimeException e, HttpServletRequest request) {
+    public BaseResponse handleRuntimeException(RuntimeException e, HttpServletRequest request) {
         String requestURI = request.getRequestURI();
         log.error("请求地址'{}',发生未知异常.", requestURI, e);
-        return ResponseVo.createFail(ResponseCodeEnum.FAILED);
+        return BaseResponse.createFail(ResponseEnum.FAILED);
     }
     /**
      * Exception 类捕获 500 异常处理
      */
     @ExceptionHandler(value = Exception.class)
-    public ResponseVo handlerException(Exception e) {
-        return ResponseVo.createFail(ResponseCodeEnum.FAILED);
+    public BaseResponse handlerException(Exception e) {
+        log.error(e.getMessage(),e);
+        return BaseResponse.createFail(ResponseEnum.FAILED);
     }
 
 }

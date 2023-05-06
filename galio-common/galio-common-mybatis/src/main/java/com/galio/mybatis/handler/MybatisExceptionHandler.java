@@ -1,6 +1,6 @@
 package com.galio.mybatis.handler;
 
-import com.galio.core.model.ResponseVo;
+import com.galio.core.model.BaseResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.MyBatisSystemException;
@@ -21,25 +21,25 @@ public class MybatisExceptionHandler {
      * 主键或UNIQUE索引，数据重复异常
      */
     @ExceptionHandler(DuplicateKeyException.class)
-    public ResponseVo handleDuplicateKeyException(DuplicateKeyException e, HttpServletRequest request) {
+    public BaseResponse handleDuplicateKeyException(DuplicateKeyException e, HttpServletRequest request) {
         String requestURI = request.getRequestURI();
         log.error("请求地址'{}',数据库中已存在记录'{}'", requestURI, e.getMessage());
-        return ResponseVo.createFail("数据库中已存在该记录，请联系管理员确认");
+        return BaseResponse.createFail("数据库中已存在该记录，请联系管理员确认");
     }
 
     /**
      * Mybatis系统异常 通用处理
      */
     @ExceptionHandler(MyBatisSystemException.class)
-    public ResponseVo handleCannotFindDataSourceException(MyBatisSystemException e, HttpServletRequest request) {
+    public BaseResponse handleCannotFindDataSourceException(MyBatisSystemException e, HttpServletRequest request) {
         String requestURI = request.getRequestURI();
         String message = e.getMessage();
         if (message.contains("CannotFindDataSourceException")) {
             log.error("请求地址'{}', 未找到数据源", requestURI);
-            return ResponseVo.createFail("未找到数据源，请联系管理员确认");
+            return BaseResponse.createFail("未找到数据源，请联系管理员确认");
         }
         log.error("请求地址'{}', Mybatis系统异常", requestURI, e);
-        return ResponseVo.createFail(message);
+        return BaseResponse.createFail(message);
     }
 
 }

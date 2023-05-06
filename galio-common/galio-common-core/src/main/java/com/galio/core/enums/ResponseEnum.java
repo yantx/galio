@@ -9,7 +9,7 @@ import lombok.Getter;
  * @Description: 接口响应编码
  */
 @Getter
-public enum ResponseCodeEnum implements StatusCode{
+public enum ResponseEnum implements StatusCode{
 
     SUCCESS(2000, "请求成功"),
 
@@ -50,12 +50,13 @@ public enum ResponseCodeEnum implements StatusCode{
     NO_SUCH_ALGORITHM(5404, "no.such.algorithm"),
     CLASS_NOT_FOUND(5404, "class.not.found"),
     UNKNOWN_HOST(5555, "unknown.host"),
+    REMOTE_RESPONSE_ERROR(6002, "remote.response.error"),
     UNKNOWN_EXCEPTION(9999,"未知异常");
 
     private int code;
     private String msg;
 
-    ResponseCodeEnum(int code, String msg){
+    ResponseEnum(int code, String msg){
         this.code = code;
         this.msg = msg;
     }

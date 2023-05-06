@@ -1,7 +1,7 @@
 package com.galio.gateway.utils;
 
-import com.galio.core.enums.ResponseCodeEnum;
-import com.galio.core.model.ResponseVo;
+import com.galio.core.enums.ResponseEnum;
+import com.galio.core.model.BaseResponse;
 import com.galio.core.utils.JsonUtils;
 import com.galio.core.utils.ObjectUtil;
 import com.galio.core.utils.StringUtil;
@@ -97,7 +97,7 @@ public class WebFluxUtils {
      * @return Mono<Void>
      */
     public static Mono<Void> webFluxResponseWriter(ServerHttpResponse response, Object value) {
-        return webFluxResponseWriter(response, HttpStatus.OK, value, ResponseCodeEnum.FAILED.getCode());
+        return webFluxResponseWriter(response, HttpStatus.OK, value, ResponseEnum.FAILED.getCode());
     }
 
     /**
@@ -138,7 +138,7 @@ public class WebFluxUtils {
     public static Mono<Void> webFluxResponseWriter(ServerHttpResponse response, String contentType, HttpStatus status, Object value, int code) {
         response.setStatusCode(status);
         response.getHeaders().add(HttpHeaders.CONTENT_TYPE, contentType);
-        ResponseVo result = ResponseVo.createResponse(code, value.toString());
+        BaseResponse result = BaseResponse.createResponse(code, value.toString());
         DataBuffer dataBuffer = response.bufferFactory().wrap(JsonUtils.toStringPretty(result).getBytes());
         return response.writeWith(Mono.just(dataBuffer));
     }

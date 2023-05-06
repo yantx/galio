@@ -19,6 +19,7 @@
         <module>../galio-common/galio-common-mybatis</module>
         <module>../galio-common/galio-common-satoken</module>
         <module>../galio-common/galio-common-doc</module>
+        <module>../galio-common/galio-common-http</module>
 
     </modules>
 
@@ -105,6 +106,11 @@
             <dependency>
                 <groupId>com.galio</groupId>
                 <artifactId>galio-common-doc</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.galio</groupId>
+                <artifactId>galio-common-http</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

@@ -34,6 +34,16 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.selectById(memberId);
     }
 
+    /**
+     * 查询成员信息
+     */
+    @Override
+    public Member queryByName(String username) {
+        Member entity = new Member();
+        entity.setUsername(username);
+        return memberRepository.selectOne(entity);
+    }
+
         /**
          * 查询成员信息列表
          */

@@ -1,6 +1,6 @@
 package com.galio.core.utils;
 
-import com.galio.core.enums.ResponseCodeEnum;
+import com.galio.core.enums.ResponseEnum;
 import com.galio.core.exception.CustomException;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.cglib.beans.BeanCopier;
@@ -75,11 +75,11 @@ public class ObjectUtil extends ObjectUtils {
         try {
             obj2 = classz.getConstructor().newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
-            throw new CustomException(ResponseCodeEnum.BEAN_INSTANTIATION_ERROR);
+            throw new CustomException(ResponseEnum.BEAN_INSTANTIATION_ERROR);
         } catch (InvocationTargetException e) {
-            throw new CustomException(ResponseCodeEnum.BEAN_INSTANTIATION_ERROR);
+            throw new CustomException(ResponseEnum.BEAN_INSTANTIATION_ERROR);
         } catch (NoSuchMethodException e) {
-            throw new CustomException(ResponseCodeEnum.BEAN_INSTANTIATION_ERROR);
+            throw new CustomException(ResponseEnum.BEAN_INSTANTIATION_ERROR);
         }
         String name = getClassName(obj1.getClass(), classz);
         BeanCopier beanCopier;

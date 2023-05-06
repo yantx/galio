@@ -1,6 +1,6 @@
 package com.galio.mybatis.handler;
 
-import com.galio.core.enums.ResponseCodeEnum;
+import com.galio.core.enums.ResponseEnum;
 import com.galio.core.exception.CustomException;
 import com.galio.core.utils.ObjectUtil;
 import com.galio.core.utils.SpringUtils;
@@ -98,9 +98,9 @@ public class DataScopePermissionHandler {
             }
         } catch (JSQLParserException e) {
             log.error("数据权限解析异常 => " + e.getMessage());
-            throw new CustomException(ResponseCodeEnum.DATA_PERMISSION_PARSER_ERROR);
+            throw new CustomException(ResponseEnum.DATA_PERMISSION_PARSER_ERROR);
         } catch (ClassNotFoundException e) {
-            throw new CustomException(ResponseCodeEnum.CLASS_NOT_FOUND);
+            throw new CustomException(ResponseEnum.CLASS_NOT_FOUND);
         }
     }
 
@@ -116,7 +116,7 @@ public class DataScopePermissionHandler {
             // 获取角色权限泛型
             DataScopeType type = DataScopeType.findCode(role.getDataScope());
             if (ObjectUtil.isNull(type)) {
-                throw new CustomException(ResponseCodeEnum.NO_ROLE_DATA_SCOPE);
+                throw new CustomException(ResponseEnum.NO_ROLE_DATA_SCOPE);
             }
             // 全部数据权限直接返回
             if (type == DataScopeType.ALL) {

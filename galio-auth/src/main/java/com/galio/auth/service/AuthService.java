@@ -7,7 +7,7 @@ import com.galio.auth.properties.PasswordProperties;
 import com.galio.core.constant.CacheConstants;
 import com.galio.core.constant.CommonConstants;
 import com.galio.core.enums.DeviceType;
-import com.galio.core.enums.ResponseCodeEnum;
+import com.galio.core.enums.ResponseEnum;
 import com.galio.core.exception.CustomException;
 import com.galio.core.utils.MessageUtils;
 import com.galio.core.utils.ObjectUtil;
@@ -41,11 +41,16 @@ public class AuthService {
      * 登录
      */
     public String login(String username, String password) {
-        LoginMemberDto memberDto = remoteMemberClient.getMemberInfo(username);
+        try {
 
-        checkLogin(username, () -> !BCrypt.checkpw(password, memberDto.getPassword()));
-        // 获取登录token
-        LoginHelper.loginByDevice(memberDto, DeviceType.PC);
+            LoginMemberDto memberDto = remoteMemberClient.getMemberInfo(username);
+
+            checkLogin(username, () -> !BCrypt.checkpw(password, memberDto.getPassword()));
+            // 获取登录token
+            LoginHelper.loginByDevice(memberDto, DeviceType.PC);
+        }catch (CustomException e){
+            log.error(e.getMessage(), e);
+        }
 
         recordLogininfor(username, CommonConstants.LOGIN_SUCCESS, MessageUtils.message("member.login.success"));
         return StpUtil.getTokenValue();
@@ -89,7 +94,7 @@ public class AuthService {
         // 锁定时间内登录 则踢出
         if (ObjectUtil.isNotNull(errorNumber) && errorNumber.equals(maxRetryCount)) {
             recordLogininfor(username, loginFail, "login fail");
-            throw new CustomException(ResponseCodeEnum.FAILED);
+            throw new CustomException(ResponseEnum.FAILED);
         }
 
         if (supplier.get()) {
@@ -99,12 +104,12 @@ public class AuthService {
             if (errorNumber.equals(maxRetryCount)) {
                 RedisUtils.setCacheObject(errorKey, errorNumber, Duration.ofMinutes(lockTime));
                 recordLogininfor(username, loginFail, "login fail");
-                throw new CustomException(ResponseCodeEnum.FAILED);
+                throw new CustomException(ResponseEnum.FAILED);
             } else {
                 // 未达到规定错误次数 则递增
                 RedisUtils.setCacheObject(errorKey, errorNumber);
                 recordLogininfor(username, loginFail, "login fail");
-                throw new CustomException(ResponseCodeEnum.FAILED);
+                throw new CustomException(ResponseEnum.FAILED);
             }
         }
         // 登录成功 清空错误次数

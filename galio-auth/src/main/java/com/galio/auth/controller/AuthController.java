@@ -2,7 +2,7 @@ package com.galio.auth.controller;
 
 import com.galio.auth.dto.loginDto;
 import com.galio.auth.service.AuthService;
-import com.galio.core.model.ResponseVo;
+import com.galio.core.model.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -40,9 +40,9 @@ public class AuthController {
      * 登出方法
      */
     @DeleteMapping("logout")
-    public ResponseVo logout() {
+    public BaseResponse logout() {
         authService.logout();
-        return ResponseVo.createSuccess();
+        return BaseResponse.createSuccess();
     }
 
 }

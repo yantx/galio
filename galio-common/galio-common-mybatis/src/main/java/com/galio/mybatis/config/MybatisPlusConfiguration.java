@@ -6,13 +6,12 @@ import com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
-import com.galio.core.enums.ResponseCodeEnum;
+import com.galio.core.enums.ResponseEnum;
 import com.galio.core.exception.CustomException;
 import com.galio.mybatis.handler.CreateAndUpdateMetaObjectHandler;
 import com.galio.mybatis.interceptor.PlusDataPermissionInterceptor;
 import org.apache.ibatis.mapping.DatabaseIdProvider;
 import org.apache.ibatis.mapping.VendorDatabaseIdProvider;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
@@ -84,7 +83,7 @@ public class MybatisPlusConfiguration {
         try {
             return new DefaultIdentifierGenerator(InetAddress.getLocalHost());
         } catch (UnknownHostException e) {
-            throw new CustomException(ResponseCodeEnum.UNKNOWN_HOST);
+            throw new CustomException(ResponseEnum.UNKNOWN_HOST);
         }
     }
     /**

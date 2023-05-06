@@ -3,8 +3,8 @@ package com.galio.gateway.filter;
 import cn.dev33.satoken.reactor.filter.SaReactorFilter;
 import cn.dev33.satoken.router.SaRouter;
 import cn.dev33.satoken.stp.StpUtil;
-import com.galio.core.enums.ResponseCodeEnum;
-import com.galio.core.model.ResponseVo;
+import com.galio.core.enums.ResponseEnum;
+import com.galio.core.model.BaseResponse;
 import com.galio.gateway.config.properties.IgnoreWhiteProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -45,7 +45,7 @@ public class AuthFilter {
                     });
             }).setError(e -> {
                     log.error(e.getMessage(),e);
-                    return ResponseVo.createFail(ResponseCodeEnum.NO_TOKEN);
+                    return BaseResponse.createFail(ResponseEnum.NO_TOKEN);
                 });
     }
 }

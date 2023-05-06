@@ -20,7 +20,7 @@ import java.util.Collection;
  */
 @Repository
 @RequiredArgsConstructor
-public class MemberRepository{
+public class MemberRepository {
 
     private final MemberMapper memberMapper;
 
@@ -30,38 +30,44 @@ public class MemberRepository{
     public Member selectById(Long memberId) {
         return memberMapper.selectById(memberId);
     }
-
-        /**
-         * 查询成员信息列表
-         */
-        public Page<Member> selectPage(Page page) {
-            LambdaQueryWrapper<Member> lqw = Wrappers.lambdaQuery();
-            return memberMapper.selectPage(page, lqw);
-        }
+    /**
+     * 查询成员信息
+     */
+    public Member selectOne(Member entity) {
+        LambdaQueryWrapper<Member> lqw = buildQueryWrapper(entity,null);
+        return memberMapper.selectOne(lqw);
+    }
+    /**
+     * 查询成员信息列表
+     */
+    public Page<Member> selectPage(Page page) {
+        LambdaQueryWrapper<Member> lqw = Wrappers.lambdaQuery();
+        return memberMapper.selectPage(page, lqw);
+    }
 
     /**
      * 查询成员信息列表
      */
-    public List<Member> selectList(Member member,Map<String, Object> params) {
+    public List<Member> selectList(Member member, Map<String, Object> params) {
         LambdaQueryWrapper<Member> lqw = buildQueryWrapper(member, params);
         return memberMapper.selectList(lqw);
     }
 
-    private LambdaQueryWrapper<Member> buildQueryWrapper(Member entity,Map<String, Object> params) {
+    private LambdaQueryWrapper<Member> buildQueryWrapper(Member entity, Map<String, Object> params) {
         LambdaQueryWrapper<Member> lqw = Wrappers.lambdaQuery();
-                    lqw.eq(entity.getEmployeeId() != null, Member::getEmployeeId, entity.getEmployeeId());
-                    lqw.eq(entity.getAppId() != null, Member::getAppId, entity.getAppId());
-                    lqw.like(StringUtil.isNotBlank(entity.getUsername()), Member::getUsername, entity.getUsername());
-                    lqw.eq(StringUtil.isNotBlank(entity.getPassword()), Member::getPassword, entity.getPassword());
-                    lqw.eq(StringUtil.isNotBlank(entity.getMemberType()), Member::getMemberType, entity.getMemberType());
-                    lqw.eq(StringUtil.isNotBlank(entity.getEmail()), Member::getEmail, entity.getEmail());
-                    lqw.eq(entity.getMobileNumber() != null, Member::getMobileNumber, entity.getMobileNumber());
-                    lqw.eq(StringUtil.isNotBlank(entity.getAvatar()), Member::getAvatar, entity.getAvatar());
-                    lqw.eq(StringUtil.isNotBlank(entity.getDeleteFlag()), Member::getDeleteFlag, entity.getDeleteFlag());
-                    lqw.eq(StringUtil.isNotBlank(entity.getLoginIp()), Member::getLoginIp, entity.getLoginIp());
-                    lqw.eq(entity.getLoginDate() != null, Member::getLoginDate, entity.getLoginDate());
-                    lqw.eq(entity.getEnableDate() != null, Member::getEnableDate, entity.getEnableDate());
-                    lqw.eq(entity.getDisableDate() != null, Member::getDisableDate, entity.getDisableDate());
+        lqw.eq(entity.getEmployeeId() != null, Member::getEmployeeId, entity.getEmployeeId());
+        lqw.eq(entity.getAppId() != null, Member::getAppId, entity.getAppId());
+        lqw.like(StringUtil.isNotBlank(entity.getUsername()), Member::getUsername, entity.getUsername());
+        lqw.eq(StringUtil.isNotBlank(entity.getPassword()), Member::getPassword, entity.getPassword());
+        lqw.eq(StringUtil.isNotBlank(entity.getMemberType()), Member::getMemberType, entity.getMemberType());
+        lqw.eq(StringUtil.isNotBlank(entity.getEmail()), Member::getEmail, entity.getEmail());
+        lqw.eq(entity.getMobileNumber() != null, Member::getMobileNumber, entity.getMobileNumber());
+        lqw.eq(StringUtil.isNotBlank(entity.getAvatar()), Member::getAvatar, entity.getAvatar());
+        lqw.eq(StringUtil.isNotBlank(entity.getDeleteFlag()), Member::getDeleteFlag, entity.getDeleteFlag());
+        lqw.eq(StringUtil.isNotBlank(entity.getLoginIp()), Member::getLoginIp, entity.getLoginIp());
+        lqw.eq(entity.getLoginDate() != null, Member::getLoginDate, entity.getLoginDate());
+        lqw.eq(entity.getEnableDate() != null, Member::getEnableDate, entity.getEnableDate());
+        lqw.eq(entity.getDisableDate() != null, Member::getDisableDate, entity.getDisableDate());
         return lqw;
     }
 

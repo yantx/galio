@@ -1,6 +1,6 @@
 package com.galio.core.utils;
 
-import com.galio.core.enums.ResponseCodeEnum;
+import com.galio.core.enums.ResponseEnum;
 import com.galio.core.exception.CustomException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -29,7 +29,7 @@ public class SqlUtil {
      */
     public static String escapeOrderBySql(String value) {
         if (StringUtils.isNotEmpty(value) && !isValidOrderBySql(value)) {
-            throw new CustomException(ResponseCodeEnum.SQL_PARAM_ERROR);
+            throw new CustomException(ResponseEnum.SQL_PARAM_ERROR);
         }
         return value;
     }
@@ -51,7 +51,7 @@ public class SqlUtil {
         String[] sqlKeywords = StringUtils.split(SQL_REGEX, "\\|");
         for (String sqlKeyword : sqlKeywords) {
             if (StringUtils.indexOfIgnoreCase(value, sqlKeyword) > -1) {
-                throw new CustomException(ResponseCodeEnum.SQL_INJECTION_ERROR);
+                throw new CustomException(ResponseEnum.SQL_INJECTION_ERROR);
             }
         }
     }

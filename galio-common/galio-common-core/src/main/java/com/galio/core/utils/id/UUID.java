@@ -1,6 +1,6 @@
 package com.galio.core.utils.id;
 
-import com.galio.core.enums.ResponseCodeEnum;
+import com.galio.core.enums.ResponseEnum;
 import com.galio.core.exception.CustomException;
 import lombok.extern.slf4j.Slf4j;
 
@@ -429,7 +429,7 @@ public final class UUID implements java.io.Serializable, Comparable<UUID> {
             return SecureRandom.getInstance("SHA1PRNG");
         } catch (NoSuchAlgorithmException e) {
             log.error("No Such Algorithm Error : {}", e.getMessage());
-            throw new CustomException(ResponseCodeEnum.NO_SUCH_ALGORITHM);
+            throw new CustomException(ResponseEnum.NO_SUCH_ALGORITHM);
         }
     }
 

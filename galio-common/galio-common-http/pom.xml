@@ -3,13 +3,14 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>galio-system</artifactId>
+        <artifactId>galio-bom</artifactId>
         <groupId>com.galio</groupId>
         <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../../galio-bom/pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>galio-system-api</artifactId>
+    <artifactId>galio-common-http</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -24,10 +25,8 @@
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>com.galio</groupId>
-            <artifactId>galio-common-http</artifactId>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webflux</artifactId>
         </dependency>
-
     </dependencies>
-
 </project>

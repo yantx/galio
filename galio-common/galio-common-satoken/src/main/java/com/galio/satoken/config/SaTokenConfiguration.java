@@ -5,8 +5,8 @@ import cn.dev33.satoken.interceptor.SaInterceptor;
 import cn.dev33.satoken.jwt.StpLogicJwtForSimple;
 import cn.dev33.satoken.same.SaSameUtil;
 import cn.dev33.satoken.stp.StpLogic;
-import com.galio.core.enums.ResponseCodeEnum;
-import com.galio.core.model.ResponseVo;
+import com.galio.core.enums.ResponseEnum;
+import com.galio.core.model.BaseResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -51,7 +51,7 @@ public class SaTokenConfiguration implements WebMvcConfigurer {
                 .setAuth(obj -> SaSameUtil.checkCurrentRequestToken())
                 .setError(e -> {
                     log.error(e.getMessage(),e);
-                    return ResponseVo.createFail(ResponseCodeEnum.NO_TOKEN);
+                    return BaseResponse.createFail(ResponseEnum.NO_TOKEN);
                 });
     }
 

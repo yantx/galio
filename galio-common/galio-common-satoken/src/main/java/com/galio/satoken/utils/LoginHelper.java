@@ -4,7 +4,7 @@ import cn.dev33.satoken.context.SaHolder;
 import cn.dev33.satoken.stp.StpUtil;
 import com.galio.core.constant.MemberConstants;
 import com.galio.core.enums.DeviceType;
-import com.galio.core.enums.ResponseCodeEnum;
+import com.galio.core.enums.ResponseEnum;
 import com.galio.core.exception.CustomException;
 import com.galio.core.utils.ObjectUtil;
 import com.galio.core.utils.StringUtil;
@@ -81,7 +81,7 @@ public class LoginHelper {
             String[] strArr = StringUtil.split(loginId, JOIN_CODE);
             String memberId = strArr[strArr.length - 1];;
             if (StringUtil.isBlank(memberId)) {
-                throw new CustomException(ResponseCodeEnum.NO_MEMBER_ID_IN_STORAGE);
+                throw new CustomException(ResponseEnum.NO_MEMBER_ID_IN_STORAGE);
             }
             return Long.parseLong(memberId);
         }

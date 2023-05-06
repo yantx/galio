@@ -4,15 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.galio.core.annotation.NotControllerResponseAdvice;
 import com.galio.core.constant.CommonConstants;
-import com.galio.core.enums.ResponseCodeEnum;
+import com.galio.core.enums.ResponseEnum;
 import com.galio.core.exception.CustomException;
-import com.galio.core.model.ResponseVo;
-import com.galio.core.utils.JsonUtils;
-import com.galio.core.utils.ObjectUtil;
-import lombok.extern.java.Log;
+import com.galio.core.model.BaseResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.web.servlet.error.AbstractErrorController;
-import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -39,7 +34,7 @@ public class GlobalResponseHandler implements ResponseBodyAdvice<Object> {
     @Override
     public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
         // response是ResponseVo类型，或者注释了NotControllerResponseAdvice都不进行包装
-        return !(returnType.getParameterType().isAssignableFrom(ResponseVo.class)
+        return !(returnType.getParameterType().isAssignableFrom(BaseResponse.class)
                 || returnType.hasMethodAnnotation(NotControllerResponseAdvice.class));
     }
 
@@ -60,12 +55,12 @@ public class GlobalResponseHandler implements ResponseBodyAdvice<Object> {
             ObjectMapper objectMapper = new ObjectMapper();
             try {
                 // 将数据包装在ResponseVo里后转换为json串进行返回
-                return objectMapper.writeValueAsString(ResponseVo.createSuccessWithData(body));
+                return objectMapper.writeValueAsString(BaseResponse.createSuccessWithData(body));
             } catch (JsonProcessingException e) {
-                throw new CustomException(ResponseCodeEnum.JSON_PROCESSING_EXCEPTION);
+                throw new CustomException(ResponseEnum.JSON_PROCESSING_EXCEPTION);
             }
         }
         // 否则直接包装成ResponseVo返回
-        return ResponseVo.createSuccessWithData(body);
+        return BaseResponse.createSuccessWithData(body);
     }
 }

@@ -19,6 +19,7 @@ public interface MemberService {
      * 查询成员信息
      */
     Member queryById(Long memberId);
+    Member queryByName(String username);
 
     /**
      * 查询成员信息列表

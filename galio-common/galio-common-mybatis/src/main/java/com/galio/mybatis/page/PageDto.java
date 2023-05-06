@@ -3,7 +3,7 @@ package com.galio.mybatis.page;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.galio.core.constant.CommonConstants;
-import com.galio.core.enums.ResponseCodeEnum;
+import com.galio.core.enums.ResponseEnum;
 import com.galio.core.exception.CustomException;
 import com.galio.core.utils.ObjectUtil;
 import com.galio.core.utils.SqlUtil;
@@ -92,7 +92,7 @@ public class PageDto implements Serializable {
         String[] orderByArr = orderBy.split(",");
         String[] isAscArr = isAsc.split(",");
         if (isAscArr.length != 1 && isAscArr.length != orderByArr.length) {
-            throw new CustomException(ResponseCodeEnum.VALIDATE_ERROR);
+            throw new CustomException(ResponseEnum.VALIDATE_ERROR);
         }
 
         List<OrderItem> list = new ArrayList<>();
@@ -105,7 +105,7 @@ public class PageDto implements Serializable {
             } else if (CommonConstants.ORDER_DESC.equals(isAscStr)) {
                 list.add(OrderItem.desc(orderByStr));
             } else {
-                throw new CustomException(ResponseCodeEnum.ORDER_VALIDATE_ERROR);
+                throw new CustomException(ResponseEnum.ORDER_VALIDATE_ERROR);
             }
         }
         return list;
