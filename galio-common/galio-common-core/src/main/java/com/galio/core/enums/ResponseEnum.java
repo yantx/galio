@@ -49,6 +49,7 @@ public enum ResponseEnum implements StatusCode{
     NO_ROLE_DATA_SCOPE(5404,"no.role.data.scope"),
     NO_SUCH_ALGORITHM(5404, "no.such.algorithm"),
     CLASS_NOT_FOUND(5404, "class.not.found"),
+    PARAM_NOT_NULL(5404, "param.not.null"),
     UNKNOWN_HOST(5555, "unknown.host"),
     REMOTE_RESPONSE_ERROR(6002, "remote.response.error"),
     UNKNOWN_EXCEPTION(9999,"未知异常");

@@ -6,10 +6,9 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.util.CollectionUtils;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -20,8 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ObjectUtil extends ObjectUtils {
 
     @SuppressWarnings("unchecked")
-    public static <T> T cast(Object obj)
-    {
+    public static <T> T cast(Object obj) {
         return (T) obj;
     }
 
@@ -31,8 +29,7 @@ public class ObjectUtil extends ObjectUtils {
      * @param object Object
      * @return true：为空 false：非空
      */
-    public static boolean isNull(Object object)
-    {
+    public static boolean isNull(Object object) {
         return object == null;
     }
 
@@ -42,9 +39,49 @@ public class ObjectUtil extends ObjectUtils {
      * @param object Object
      * @return true：非空 false：空
      */
-    public static boolean isNotNull(Object object)
-    {
+    public static boolean isNotNull(Object object) {
         return !isNull(object);
+    }
+
+    /**
+     * * 判断一个对象为Null且不包含任何元素
+     *
+     * @param obj Object
+     * @return true：为空 false：非空
+     */
+    public static boolean isEmpty(Object obj) {
+        if (obj == null) {
+            return true;
+        } else if (obj instanceof Optional) {
+            Optional<?> optional = (Optional) obj;
+            return !optional.isPresent();
+        } else if (obj instanceof CharSequence) {
+            CharSequence charSequence = (CharSequence) obj;
+            return charSequence.length() == 0;
+        } else if (obj.getClass().isArray()) {
+            return Array.getLength(obj) == 0;
+        } else if (obj instanceof Collection) {
+            Collection<?> collection = (Collection) obj;
+            return collection.isEmpty();
+        } else if (obj instanceof Map) {
+            Map<?, ?> map = (Map) obj;
+            return map.isEmpty();
+        } else {
+            return false;
+        }
+    }
+    public static boolean isEmpty(Object[] arr) {
+        return arr == null || arr.length ==0;
+    }
+
+    /**
+     * * 判断一个对象是否非空且不包含任何元素
+     *
+     * @param object Object
+     * @return true：非空 false：空
+     */
+    public static boolean isNotEmpty(Object object) {
+        return !isEmpty(object);
     }
 
     /**
@@ -53,8 +90,7 @@ public class ObjectUtil extends ObjectUtils {
      * @param object 对象
      * @return true：是数组 false：不是数组
      */
-    public static boolean isArray(Object object)
-    {
+    public static boolean isArray(Object object) {
         return isNotNull(object) && object.getClass().isArray();
     }
 
@@ -62,7 +98,8 @@ public class ObjectUtil extends ObjectUtils {
 
     /**
      * 对象复制
-     * @param obj1 被复制对象，为空会抛出异常
+     *
+     * @param obj1   被复制对象，为空会抛出异常
      * @param classz 复制类型
      * @param <T>
      * @return
@@ -95,7 +132,8 @@ public class ObjectUtil extends ObjectUtils {
 
     /**
      * 复制队列
-     * @param list 被复制队列
+     *
+     * @param list   被复制队列
      * @param classz 复制类型
      * @param <T>
      * @return
