@@ -3,12 +3,14 @@ package com.galio.auth.service;
 import cn.dev33.satoken.exception.NotLoginException;
 import cn.dev33.satoken.secure.BCrypt;
 import cn.dev33.satoken.stp.StpUtil;
+import com.galio.auth.enums.AuthResponseEnum;
 import com.galio.auth.properties.PasswordProperties;
 import com.galio.core.constant.CacheConstants;
 import com.galio.core.constant.CommonConstants;
 import com.galio.core.enums.DeviceType;
 import com.galio.core.enums.ResponseEnum;
 import com.galio.core.exception.CustomException;
+import com.galio.core.utils.Assert;
 import com.galio.core.utils.MessageUtils;
 import com.galio.core.utils.ObjectUtil;
 import com.galio.redis.util.RedisUtils;
@@ -44,7 +46,7 @@ public class AuthService {
         try {
 
             LoginMemberDto memberDto = remoteMemberClient.getMemberInfo(username);
-
+            Assert.notNull(memberDto,AuthResponseEnum.MEMBER_NOT_EXITS.packageByArgs(username));
             checkLogin(username, () -> !BCrypt.checkpw(password, memberDto.getPassword()));
             // 获取登录token
             LoginHelper.loginByDevice(memberDto, DeviceType.PC);
@@ -93,8 +95,8 @@ public class AuthService {
         Integer errorNumber = RedisUtils.getCacheObject(errorKey);
         // 锁定时间内登录 则踢出
         if (ObjectUtil.isNotNull(errorNumber) && errorNumber.equals(maxRetryCount)) {
-            recordLogininfor(username, loginFail, "login fail");
-            throw new CustomException(ResponseEnum.FAILED);
+            recordLogininfor(username, loginFail, MessageUtils.message("member.password.retry.limit.exceed",maxRetryCount,lockTime));
+            throw new CustomException(AuthResponseEnum.MEMBER_PASSWORD_RETRY_LIMIT_EXCEED,maxRetryCount,lockTime);
         }
 
         if (supplier.get()) {
@@ -103,13 +105,13 @@ public class AuthService {
             // 达到规定错误次数 则锁定登录
             if (errorNumber.equals(maxRetryCount)) {
                 RedisUtils.setCacheObject(errorKey, errorNumber, Duration.ofMinutes(lockTime));
-                recordLogininfor(username, loginFail, "login fail");
-                throw new CustomException(ResponseEnum.FAILED);
+                recordLogininfor(username, loginFail, MessageUtils.message("member.password.retry.limit.exceed",maxRetryCount,lockTime));
+                throw new CustomException(AuthResponseEnum.MEMBER_PASSWORD_RETRY_LIMIT_EXCEED,maxRetryCount,lockTime);
             } else {
                 // 未达到规定错误次数 则递增
                 RedisUtils.setCacheObject(errorKey, errorNumber);
-                recordLogininfor(username, loginFail, "login fail");
-                throw new CustomException(ResponseEnum.FAILED);
+                recordLogininfor(username, loginFail, MessageUtils.message("member.password.retry.limit.count",maxRetryCount));
+                throw new CustomException(AuthResponseEnum.MEMBER_PASSWORD_RETRY_LIMIT_COUNT,maxRetryCount);
             }
         }
         // 登录成功 清空错误次数

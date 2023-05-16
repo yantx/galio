@@ -24,8 +24,9 @@ public class CustomException extends RuntimeException {
         // 状态码
         this.code = statusCode.getCode();
         this.msg = statusCode.getMsg();
+        this.args = statusCode.getArgs();
     }
-    public CustomException(StatusCode statusCode, Object[] args) {
+    public CustomException(StatusCode statusCode, Object... args) {
         this.code = statusCode.getCode();
         this.args = args;
         this.msg = statusCode.getMsg();
@@ -37,7 +38,7 @@ public class CustomException extends RuntimeException {
         this.msg = message;
     }
 
-    public CustomException(int code, String message, Object[] args) {
+    public CustomException(int code, String message, Object... args) {
         this.code = code;
         this.args = args;
         this.msg = message;

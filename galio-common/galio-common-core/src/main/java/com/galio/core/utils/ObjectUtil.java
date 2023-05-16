@@ -100,17 +100,17 @@ public class ObjectUtil extends ObjectUtils {
      * 对象复制
      *
      * @param obj1   被复制对象，为空会抛出异常
-     * @param classz 复制类型
+     * @param clazz 复制类型
      * @param <T>
      * @return
      */
-    public static <T> T copyObject(Object obj1, Class<T> classz) {
-        if (ObjectUtils.isEmpty(obj1) || ObjectUtils.isEmpty(classz)) {
+    public static <T> T copyObject(Object obj1, Class<T> clazz) {
+        if (ObjectUtils.isEmpty(obj1) || ObjectUtils.isEmpty(clazz)) {
             return null;
         }
         T obj2 = null;
         try {
-            obj2 = classz.getConstructor().newInstance();
+            obj2 = clazz.getConstructor().newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
             throw new CustomException(ResponseEnum.BEAN_INSTANTIATION_ERROR);
         } catch (InvocationTargetException e) {
@@ -118,12 +118,12 @@ public class ObjectUtil extends ObjectUtils {
         } catch (NoSuchMethodException e) {
             throw new CustomException(ResponseEnum.BEAN_INSTANTIATION_ERROR);
         }
-        String name = getClassName(obj1.getClass(), classz);
+        String name = getClassName(obj1.getClass(), clazz);
         BeanCopier beanCopier;
         if (map.containsKey(name)) {
             beanCopier = map.get(name);
         } else {
-            beanCopier = BeanCopier.create(obj1.getClass(), classz, false);
+            beanCopier = BeanCopier.create(obj1.getClass(), clazz, false);
             map.put(name, beanCopier);
         }
         beanCopier.copy(obj1, obj2, null);
@@ -134,18 +134,18 @@ public class ObjectUtil extends ObjectUtils {
      * 复制队列
      *
      * @param list   被复制队列
-     * @param classz 复制类型
+     * @param clazz 复制类型
      * @param <T>
      * @return
      */
-    public static <T> List<T> copyList(List<?> list, Class<T> classz) {
+    public static <T> List<T> copyList(List<?> list, Class<T> clazz) {
         if (CollectionUtils.isEmpty(list)) {
             throw new IllegalArgumentException("被复制的队列为空!");
         }
 
         List<T> resultList = new LinkedList<>();
         for (Object obj1 : list) {
-            resultList.add(copyObject(obj1, classz));
+            resultList.add(copyObject(obj1, clazz));
         }
         return resultList;
     }

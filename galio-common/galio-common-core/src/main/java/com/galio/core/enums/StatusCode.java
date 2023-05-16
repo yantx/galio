@@ -8,6 +8,6 @@ package com.galio.core.enums;
 public interface StatusCode {
 
     int getCode();
-
     String getMsg();
+    Object[] getArgs();
 }
