@@ -33,7 +33,7 @@ public class RemoteMemberService {
     @GetMapping(value = "/getInfoByUsername")
     public LoginMemberDto getInfoByUsername(@NotNull(message = "用户名不能为空") @RequestParam String username) {
         Member member = memberService.queryByName(username);
-        Assert.notNull(member, ResponseEnum.SUCCESS_DATA_NULL);
+        Assert.notNull(member, ResponseEnum.MEMBER_NOT_EXITS.packageByArgs(username));
         return ObjectUtil.copyObject(member,LoginMemberDto.class);
     }
 

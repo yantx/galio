@@ -43,6 +43,7 @@ public class CustomException extends RuntimeException {
         this.args = args;
         this.msg = message;
     }
+
     @Override
     public String getMessage() {
         String message = this.msg;

@@ -11,11 +11,10 @@ import lombok.Getter;
 @Getter
 public enum AuthResponseEnum implements StatusCode {
 
-    SUCCESS(012000, "请求操作成功"),
-    SUCCESS_DATA_NULL(012004, "请求成功,响应数据为空"),
-    MEMBER_NOT_EXITS(014001, "member.not.exists"),
-    MEMBER_PASSWORD_RETRY_LIMIT_COUNT(014002, "member.password.retry.limit.count"),
-    MEMBER_PASSWORD_RETRY_LIMIT_EXCEED(014003, "member.password.retry.limit.exceed");
+    LOGIN_SUCCESS(20000, "member.login.success"),
+    MEMBER_PASSWORD_RETRY_LIMIT_COUNT(10001, "member.password.retry.limit.count"),
+    MEMBER_PASSWORD_RETRY_LIMIT_EXCEED(10002, "member.password.retry.limit.exceed");
+
 
     private int code;
     private String msg;

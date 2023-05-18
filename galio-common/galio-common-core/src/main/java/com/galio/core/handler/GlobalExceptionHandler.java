@@ -68,7 +68,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(CustomException.class)
     public BaseResponse handleCommunicationException(CustomException e, HttpServletRequest request) {
         log.error(e.getMessage(),e);
-        return BaseResponse.createFail(e.getCode(),e.getMsg());
+        return BaseResponse.createFail(e.getCode(),e.getMessage());
     }
 
     /**
