@@ -1,1 +1,2 @@
 com.galio.mybatis.config.MybatisPlusConfiguration
+com.galio.mybatis.config.SnowFlakeWorkerIdAllocator

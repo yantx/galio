@@ -103,7 +103,7 @@ public abstract class Assert {
      * @param messageSupplier
      */
     public static void isTrue(boolean expression, StatusCode messageSupplier) {
-        if (expression) {
+        if (!expression) {
             throw new CustomException(messageSupplier);
         }
     }

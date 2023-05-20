@@ -3,6 +3,7 @@ package com.galio.mybatis.config;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.baomidou.mybatisplus.core.incrementer.DefaultIdentifierGenerator;
 import com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator;
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
@@ -79,12 +80,8 @@ public class MybatisPlusConfiguration {
      */
     @Primary
     @Bean
-    public IdentifierGenerator idGenerator() {
-        try {
-            return new DefaultIdentifierGenerator(InetAddress.getLocalHost());
-        } catch (UnknownHostException e) {
-            throw new CustomException(ResponseEnum.UNKNOWN_HOST);
-        }
+    public IdentifierGenerator idGenerator(SnowFlakeWorkerIdAllocator snowFlakeWorkerIdAllocator) {
+        return snowFlakeWorkerIdAllocator.init();
     }
     /**
      * 数据库方言配置

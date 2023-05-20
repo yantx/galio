@@ -38,7 +38,10 @@
             <artifactId>galio-common-satoken</artifactId>
             <optional>true</optional>
         </dependency>
-
+        <dependency>
+            <groupId>com.galio</groupId>
+            <artifactId>galio-common-redis</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
