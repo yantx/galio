@@ -25,4 +25,5 @@
     <root level="info">
         <appender-ref ref="console"/>
     </root>
+    <logger name="com.galio" level="DEBUG" />
 </configuration>
