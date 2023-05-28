@@ -19,10 +19,6 @@
         <grpc-netty.version>1.54.0</grpc-netty.version>
     </properties>
     <dependencies>
-        <dependency>
-            <groupId>com.galio</groupId>
-            <artifactId>galio-common-core</artifactId>
-        </dependency>
         <!-- SpringCloud Gateway -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -80,6 +76,14 @@
             <artifactId>grpc-netty</artifactId>
             <optional>true</optional>
             <version>${grpc-netty.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.galio</groupId>
+            <artifactId>galio-common-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.xiaoymin</groupId>
+            <artifactId>knife4j-gateway-spring-boot-starter</artifactId>
         </dependency>
 
     </dependencies>

@@ -43,6 +43,7 @@
         <bitwalker.version>1.21</bitwalker.version>
         <common-io.version>2.11.0</common-io.version>
         <jakarta.servlet-api>6.0.0</jakarta.servlet-api>
+        <knife4j.version>4.1.0</knife4j.version>
     </properties>
 
     <dependencyManagement>
@@ -80,7 +81,17 @@
                 <artifactId>lombok</artifactId>
                 <version>${lombok.version}</version>
             </dependency>
-
+            <!-- knife4j Api文档工具 -->
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
+                <version>${knife4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-gateway-spring-boot-starter</artifactId>
+                <version>${knife4j.version}</version>
+            </dependency>
             <!-- 统一 guava 版本 解决隐式漏洞问题 -->
             <dependency>
                 <groupId>com.google.guava</groupId>
