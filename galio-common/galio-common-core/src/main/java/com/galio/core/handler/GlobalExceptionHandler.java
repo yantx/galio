@@ -5,6 +5,7 @@ import com.galio.core.exception.CustomException;
 import com.galio.core.model.BaseResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.validation.BindException;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
@@ -20,6 +21,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
  */
 @Slf4j
 @RestControllerAdvice
+@ConditionalOnClass(jakarta.servlet.ServletException.class)
 public class GlobalExceptionHandler {
 
     @ExceptionHandler({BindException.class})
