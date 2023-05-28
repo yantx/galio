@@ -39,7 +39,7 @@ public class AuthController {
     /**
      * 登出方法
      */
-    @DeleteMapping("logout")
+    @GetMapping("logout")
     public BaseResponse logout() {
         authService.logout();
         return BaseResponse.createSuccess();

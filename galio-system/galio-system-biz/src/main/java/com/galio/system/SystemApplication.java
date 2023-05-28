@@ -19,6 +19,5 @@ public class SystemApplication {
         SpringApplication application = new SpringApplication(SystemApplication.class);
         application.setApplicationStartup(new BufferingApplicationStartup(2048));
         application.run(args);
-        System.out.println("系统模块启动成功！！！");
     }
 }

@@ -21,7 +21,6 @@ public class AuthApplication {
         SpringApplication application = new SpringApplication(AuthApplication.class);
         application.setApplicationStartup(new BufferingApplicationStartup(2048));
         application.run(args);
-        System.out.println("-----  鉴权认证服务启动成功   -----");
     }
 
 }

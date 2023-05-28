@@ -1,6 +1,5 @@
 spring:
   config:
-    # 此配置 暂且放在application-{profile}文件中，避免放到主配置文件时config.import引入的文件优先于application-{profile}加载
     import:
       - optional:nacos:application-common.yml
       - optional:nacos:${spring.application.name}.yml

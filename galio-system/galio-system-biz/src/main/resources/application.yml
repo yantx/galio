@@ -1,13 +1,10 @@
 server:
   port: 9211
 
-# Spring
 spring:
   application:
-    # 应用名称
     name: galio-system-biz
   profiles:
-    # 环境配置
     active: @profiles.active@
   cloud:
     nacos:
