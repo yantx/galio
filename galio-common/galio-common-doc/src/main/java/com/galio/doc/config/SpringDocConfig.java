@@ -1,6 +1,7 @@
 package com.galio.doc.config;
 
 import io.swagger.v3.oas.models.ExternalDocumentation;
+import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -18,10 +19,11 @@ public class SpringDocConfig {
     @Bean
     public OpenAPI restfulOpenAPI() {
         return new OpenAPI()
-                .info(new Info().title("Spring Boot3 Restful Galio API")
-                        .description("Galio Detail APi")
+                .info(new Info().title("Restful Galio API")
+                        .description("Galio Detail API")
                         .version("v0.0.1")
-                        .license(new License().name("Apache 2.0").url("http://springdoc.org")))
+                        .contact(new Contact().name("yantxd@qq.com"))
+                        .license(new License().name("MIT ").url("https://github.com/yantx/galio")))
                 .externalDocs(new ExternalDocumentation()
                         .description("SpringDoc Wiki Documentation")
                         .url("https://springdoc.org/v2"));

@@ -3,6 +3,8 @@ package com.galio.auth.controller;
 import com.galio.auth.dto.loginDto;
 import com.galio.auth.service.AuthService;
 import com.galio.core.model.BaseResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -10,14 +12,17 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 
+
+
 /**
  * @Author: galio
  * @Date: 2023-01-13
  * @Description: 账号认证相关接口
  */
+@Tag(name = "账号认证")
 @Validated
-@RequiredArgsConstructor
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/auth")
 public class AuthController {
 
@@ -25,6 +30,7 @@ public class AuthController {
     /**
      * 登录方法
      */
+    @Operation(summary = "登录接口")
     @PostMapping("login")
     public Object login(@Validated @RequestBody loginDto form) {
         // 用户登录
@@ -39,6 +45,7 @@ public class AuthController {
     /**
      * 登出方法
      */
+    @Operation(summary = "退出登录")
     @GetMapping("logout")
     public BaseResponse logout() {
         authService.logout();

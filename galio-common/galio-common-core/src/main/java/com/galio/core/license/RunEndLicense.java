@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 
 import java.net.InetAddress;
@@ -15,6 +16,7 @@ import java.net.InetAddress;
  * @Description: 启动类监听
  */
 @Slf4j
+@Order
 @AutoConfiguration
 public class RunEndLicense implements ApplicationListener<ApplicationReadyEvent> {
 

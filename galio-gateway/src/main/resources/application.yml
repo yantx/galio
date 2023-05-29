@@ -30,7 +30,7 @@ knife4j:
         galio-auth:
           group-name: 鉴权服务
           order: 1
-        galio-system:
+        galio-system-biz:
           group-name: 系统服务
           order: 1
       version: openapi3
