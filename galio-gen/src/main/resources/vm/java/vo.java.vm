@@ -3,6 +3,7 @@ package ${packageName}.model.vo;
 #foreach ($import in $importList)
 import ${import};
 #end
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
@@ -11,6 +12,7 @@ import lombok.Data;
  * @Description: ${functionName}视图对象
  */
 @Data
+@Schema(description = "${functionName}视图对象")
 public class ${ClassName}Vo {
 
     private static final long serialVersionUID = 1L;
@@ -26,6 +28,7 @@ public class ${ClassName}Vo {
 #else
 #set($comment=$column.columnComment)
 #end
+    @Schema(description = "$column.columnComment")
     private $column.javaType $column.javaField;
 
 #end

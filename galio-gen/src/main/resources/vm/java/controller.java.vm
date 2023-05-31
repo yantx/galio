@@ -10,6 +10,8 @@ import com.galio.mybatis.page.PageDto;
 import com.galio.mybatis.page.PageVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 #end
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -30,8 +32,9 @@ import jakarta.validation.constraints.NotNull;
  * 前端访问路由地址为:/${moduleName}/${businessName}
  */
 @Validated
-@RequiredArgsConstructor
 @RestController
+@RequiredArgsConstructor
+@Tag(name = "${functionName}API")
 @RequestMapping("/${businessName}")
 public class ${ClassName}Controller {
 
@@ -40,8 +43,9 @@ public class ${ClassName}Controller {
     /**
      * 查询${functionName}列表
      */
-    @SaCheckPermission("${permissionPrefix}:page")
+    @Operation(summary = "查询${functionName}列表")
 #if($table.crud || $table.sub)
+    @SaCheckPermission("${permissionPrefix}:page")
     @PostMapping("/page")
     public PageVo page(@RequestBody PageDto pageDto) {
         IPage<${ClassName}> pageData = ${className}Service.queryPageList(pageDto);
@@ -61,6 +65,7 @@ public class ${ClassName}Controller {
      *
      * @param ${pkColumn.javaField} 主键
      */
+    @Operation(summary = "查询${functionName}详情")
     @SaCheckPermission("${permissionPrefix}:query")
     @GetMapping("/{${pkColumn.javaField}}")
     public ${ClassName}Vo getInfo(@NotNull(message = "主键不能为空") @PathVariable ${pkColumn.javaType} ${pkColumn.javaField}) {
@@ -71,6 +76,7 @@ public class ${ClassName}Controller {
     /**
      * 新增${functionName}
      */
+    @Operation(summary = "新增${functionName}")
     @SaCheckPermission("${permissionPrefix}:add")
     @PostMapping()
     public Object add(@Validated(InsertGroup.class) @RequestBody ${ClassName}Dto dto) {
@@ -80,6 +86,7 @@ public class ${ClassName}Controller {
     /**
      * 修改${functionName}
      */
+    @Operation(summary = "修改${functionName}")
     @SaCheckPermission("${permissionPrefix}:edit")
     @PutMapping()
     public Object edit(@Validated(UpdateGroup.class) @RequestBody ${ClassName}Dto dto) {
@@ -91,6 +98,7 @@ public class ${ClassName}Controller {
      *
      * @param ${pkColumn.javaField}s 主键串
      */
+    @Operation(summary = "删除${functionName}")
     @SaCheckPermission("${permissionPrefix}:remove")
     @DeleteMapping("/{${pkColumn.javaField}s}")
     public Object remove(@NotEmpty(message = "主键不能为空") @PathVariable ${pkColumn.javaType}[] ${pkColumn.javaField}s) {

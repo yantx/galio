@@ -2,6 +2,7 @@ package ${packageName}.model.dto;
 
 import com.galio.core.validate.InsertGroup;
 import com.galio.core.validate.UpdateGroup;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import jakarta.validation.constraints.*;
 
@@ -26,6 +27,7 @@ import com.galio.core.model.TreeEntity;
 #end
 
 @Data
+@Schema(description = "${functionName}业务对象")
 public class ${ClassName}Dto extends ${Entity} {
 
 #foreach ($column in $columns)
@@ -47,6 +49,7 @@ public class ${ClassName}Dto extends ${Entity} {
     @NotNull(message = "$column.columnComment不能为空", groups = { $Group })
 #end
 #end
+    @Schema(description = "$column.columnComment")
     private $column.javaType $column.javaField;
 
 #end
