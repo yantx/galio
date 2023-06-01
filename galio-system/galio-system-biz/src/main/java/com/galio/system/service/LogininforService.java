@@ -1,6 +1,6 @@
 package com.galio.system.service;
 
-import com.galio.system.model.dto.LogininforDto;
+import com.galio.system.dto.LogininforDto;
 import com.galio.system.model.Logininfor;
 import com.galio.mybatis.page.PageDto;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;

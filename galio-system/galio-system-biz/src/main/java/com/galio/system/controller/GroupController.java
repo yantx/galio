@@ -8,12 +8,14 @@ import com.galio.core.validate.SelectGroup;
 import com.galio.mybatis.page.PageDto;
 import com.galio.mybatis.page.PageVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.galio.system.model.Group;
 import com.galio.system.model.vo.GroupVo;
-import com.galio.system.model.dto.GroupDto;
+import com.galio.system.dto.GroupDto;
 import com.galio.system.service.GroupService;
 
 import java.util.List;
@@ -23,13 +25,14 @@ import jakarta.validation.constraints.NotNull;
 
 /**
  * @Author: galio
- * @Date: 2023-04-25
+ * @Date: 2023-05-30
  * @Description: 群组信息接口
  * 前端访问路由地址为:/system/group
  */
 @Validated
-@RequiredArgsConstructor
 @RestController
+@RequiredArgsConstructor
+@Tag(name = "群组信息API")
 @RequestMapping("/group")
 public class GroupController {
 
@@ -38,6 +41,7 @@ public class GroupController {
     /**
      * 查询群组信息列表
      */
+    @Operation(summary = "查询群组信息列表")
     @SaCheckPermission("system:group:page")
     @PostMapping("/page")
     public PageVo page(@RequestBody PageDto pageDto) {
@@ -50,6 +54,7 @@ public class GroupController {
      *
      * @param groupId 主键
      */
+    @Operation(summary = "查询群组信息详情")
     @SaCheckPermission("system:group:query")
     @GetMapping("/{groupId}")
     public GroupVo getInfo(@NotNull(message = "主键不能为空") @PathVariable Long groupId) {
@@ -60,6 +65,7 @@ public class GroupController {
     /**
      * 新增群组信息
      */
+    @Operation(summary = "新增群组信息")
     @SaCheckPermission("system:group:add")
     @PostMapping()
     public Object add(@Validated(InsertGroup.class) @RequestBody GroupDto dto) {
@@ -69,6 +75,7 @@ public class GroupController {
     /**
      * 修改群组信息
      */
+    @Operation(summary = "修改群组信息")
     @SaCheckPermission("system:group:edit")
     @PutMapping()
     public Object edit(@Validated(UpdateGroup.class) @RequestBody GroupDto dto) {
@@ -80,6 +87,7 @@ public class GroupController {
      *
      * @param groupIds 主键串
      */
+    @Operation(summary = "删除群组信息")
     @SaCheckPermission("system:group:remove")
     @DeleteMapping("/{groupIds}")
     public Object remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] groupIds) {

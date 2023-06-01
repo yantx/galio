@@ -3,7 +3,7 @@ package com.galio.satoken.utils;
 import cn.dev33.satoken.context.SaHolder;
 import cn.dev33.satoken.stp.StpUtil;
 import com.galio.core.constant.MemberConstants;
-import com.galio.core.enums.DeviceType;
+import com.galio.core.enums.OperSideEnum;
 import com.galio.core.enums.ResponseEnum;
 import com.galio.core.exception.CustomException;
 import com.galio.core.utils.ObjectUtil;
@@ -45,9 +45,9 @@ public class LoginHelper {
      *
      * @param loginMember 登录用户信息
      */
-    public static void loginByDevice(LoginMemberDto loginMember, DeviceType deviceType) {
+    public static void loginByDevice(LoginMemberDto loginMember, OperSideEnum operSideEnum) {
         SaHolder.getStorage().set(LOGIN_MEMBER_KEY, loginMember);
-        StpUtil.login(loginMember.getMemberId(), deviceType.getDevice());
+        StpUtil.login(loginMember.getMemberId(), operSideEnum.getValue());
         setLoginMember(loginMember);
     }
 

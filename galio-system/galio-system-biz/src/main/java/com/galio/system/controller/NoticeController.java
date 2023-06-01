@@ -8,12 +8,14 @@ import com.galio.core.validate.SelectGroup;
 import com.galio.mybatis.page.PageDto;
 import com.galio.mybatis.page.PageVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.galio.system.model.Notice;
 import com.galio.system.model.vo.NoticeVo;
-import com.galio.system.model.dto.NoticeDto;
+import com.galio.system.dto.NoticeDto;
 import com.galio.system.service.NoticeService;
 
 import java.util.List;
@@ -23,13 +25,14 @@ import jakarta.validation.constraints.NotNull;
 
 /**
  * @Author: galio
- * @Date: 2023-04-25
+ * @Date: 2023-05-30
  * @Description: 通知公告接口
  * 前端访问路由地址为:/system/notice
  */
 @Validated
-@RequiredArgsConstructor
 @RestController
+@RequiredArgsConstructor
+@Tag(name = "通知公告API")
 @RequestMapping("/notice")
 public class NoticeController {
 
@@ -38,6 +41,7 @@ public class NoticeController {
     /**
      * 查询通知公告列表
      */
+    @Operation(summary = "查询通知公告列表")
     @SaCheckPermission("system:notice:page")
     @PostMapping("/page")
     public PageVo page(@RequestBody PageDto pageDto) {
@@ -50,6 +54,7 @@ public class NoticeController {
      *
      * @param noticeId 主键
      */
+    @Operation(summary = "查询通知公告详情")
     @SaCheckPermission("system:notice:query")
     @GetMapping("/{noticeId}")
     public NoticeVo getInfo(@NotNull(message = "主键不能为空") @PathVariable Long noticeId) {
@@ -60,6 +65,7 @@ public class NoticeController {
     /**
      * 新增通知公告
      */
+    @Operation(summary = "新增通知公告")
     @SaCheckPermission("system:notice:add")
     @PostMapping()
     public Object add(@Validated(InsertGroup.class) @RequestBody NoticeDto dto) {
@@ -69,6 +75,7 @@ public class NoticeController {
     /**
      * 修改通知公告
      */
+    @Operation(summary = "修改通知公告")
     @SaCheckPermission("system:notice:edit")
     @PutMapping()
     public Object edit(@Validated(UpdateGroup.class) @RequestBody NoticeDto dto) {
@@ -80,6 +87,7 @@ public class NoticeController {
      *
      * @param noticeIds 主键串
      */
+    @Operation(summary = "删除通知公告")
     @SaCheckPermission("system:notice:remove")
     @DeleteMapping("/{noticeIds}")
     public Object remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] noticeIds) {

@@ -20,6 +20,7 @@
         <module>../galio-common/galio-common-satoken</module>
         <module>../galio-common/galio-common-doc</module>
         <module>../galio-common/galio-common-http</module>
+        <module>../galio-common/galio-common-log</module>
 
     </modules>
 
@@ -75,7 +76,6 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>

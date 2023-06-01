@@ -27,7 +27,11 @@
             <groupId>com.galio</groupId>
             <artifactId>galio-common-http</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>com.galio</groupId>
+            <artifactId>galio-common-doc</artifactId>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
 
 </project>

@@ -5,6 +5,7 @@ import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 /**
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Component;
 @SuppressWarnings("unchecked")
 @Component
 public class SpringUtils implements BeanFactoryPostProcessor {
+
+    private static ApplicationContext applicationContext;
     private static ConfigurableListableBeanFactory beanFactory;
 
     @Override
@@ -35,7 +38,10 @@ public class SpringUtils implements BeanFactoryPostProcessor {
         return (T) beanFactory.getBean(name);
     }
     public static ListableBeanFactory getBeanFactory(){
-        return SpringUtils.beanFactory;
+        return beanFactory;
+    }
+    public static ApplicationContext getContext(){
+        return applicationContext;
     }
     /**
      * 获取类型为requiredType的对象

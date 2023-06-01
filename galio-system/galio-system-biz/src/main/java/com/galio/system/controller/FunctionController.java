@@ -8,12 +8,14 @@ import com.galio.core.validate.SelectGroup;
 import com.galio.mybatis.page.PageDto;
 import com.galio.mybatis.page.PageVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.galio.system.model.Function;
 import com.galio.system.model.vo.FunctionVo;
-import com.galio.system.model.dto.FunctionDto;
+import com.galio.system.dto.FunctionDto;
 import com.galio.system.service.FunctionService;
 
 import java.util.List;
@@ -23,13 +25,14 @@ import jakarta.validation.constraints.NotNull;
 
 /**
  * @Author: galio
- * @Date: 2023-04-25
+ * @Date: 2023-05-30
  * @Description: 功能接口
  * 前端访问路由地址为:/system/function
  */
 @Validated
-@RequiredArgsConstructor
 @RestController
+@RequiredArgsConstructor
+@Tag(name = "功能API")
 @RequestMapping("/function")
 public class FunctionController {
 
@@ -38,6 +41,7 @@ public class FunctionController {
     /**
      * 查询功能列表
      */
+    @Operation(summary = "查询功能列表")
     @SaCheckPermission("system:function:page")
     @PostMapping("/page")
     public PageVo page(@RequestBody PageDto pageDto) {
@@ -50,6 +54,7 @@ public class FunctionController {
      *
      * @param functionId 主键
      */
+    @Operation(summary = "查询功能详情")
     @SaCheckPermission("system:function:query")
     @GetMapping("/{functionId}")
     public FunctionVo getInfo(@NotNull(message = "主键不能为空") @PathVariable Long functionId) {
@@ -60,6 +65,7 @@ public class FunctionController {
     /**
      * 新增功能
      */
+    @Operation(summary = "新增功能")
     @SaCheckPermission("system:function:add")
     @PostMapping()
     public Object add(@Validated(InsertGroup.class) @RequestBody FunctionDto dto) {
@@ -69,6 +75,7 @@ public class FunctionController {
     /**
      * 修改功能
      */
+    @Operation(summary = "修改功能")
     @SaCheckPermission("system:function:edit")
     @PutMapping()
     public Object edit(@Validated(UpdateGroup.class) @RequestBody FunctionDto dto) {
@@ -80,6 +87,7 @@ public class FunctionController {
      *
      * @param functionIds 主键串
      */
+    @Operation(summary = "删除功能")
     @SaCheckPermission("system:function:remove")
     @DeleteMapping("/{functionIds}")
     public Object remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] functionIds) {

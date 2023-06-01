@@ -1,6 +1,5 @@
 package com.galio.system.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.galio.system.model.SysEmployee;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +12,7 @@ import java.util.Set;
 /**
  * @Author: galio
  * @Date: 2023-01-09
- * @Description: 登录账号实体
+ * @Description: 登录账号业务对象
  */
 @Data
 @NoArgsConstructor

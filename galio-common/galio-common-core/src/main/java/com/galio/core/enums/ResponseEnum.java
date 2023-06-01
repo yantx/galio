@@ -32,6 +32,7 @@ public enum ResponseEnum implements StatusCode{
     NULL_POINTER(50001,"空指针异常"),
     JSON_PROCESSING_EXCEPTION(50002,"response返回包装失败"),
     SNOW_FLASK_WORKER_ID_ERROR(50003,"snow.flask.worker.id.error"),
+    NOT_REQUEST_LOG_WRITE_ERROR(50004,"not.request.log.write.error"),
     BAD_GATEWAY(50200,  "bad gateway"),
     SERVICE_UNAVAILABLE(50300,  "service unavailable"),
     GATEWAY_TIMEOUT(50400,  "Gateway Timeout"),

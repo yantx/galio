@@ -1,0 +1,2 @@
+com.galio.common.log.event.LogEventListener
+com.galio.common.log.aspect.LogAspect

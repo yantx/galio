@@ -9,10 +9,10 @@ import org.springframework.web.service.annotation.HttpExchange;
 /**
  * @Author: galio
  * @Date: 2023-01-13
- * @Description: 人员相关业务服务
+ * @Description: 人员信息交易接口
  */
 @HttpExchange("/remote/member")
-public interface RemoteMemberClient {
+public interface MemberExchange {
     /**
      * 通过登录名查询账号信息
      *

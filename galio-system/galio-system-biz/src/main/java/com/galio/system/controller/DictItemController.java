@@ -8,12 +8,14 @@ import com.galio.core.validate.SelectGroup;
 import com.galio.mybatis.page.PageDto;
 import com.galio.mybatis.page.PageVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.galio.system.model.DictItem;
 import com.galio.system.model.vo.DictItemVo;
-import com.galio.system.model.dto.DictItemDto;
+import com.galio.system.dto.DictItemDto;
 import com.galio.system.service.DictItemService;
 
 import java.util.List;
@@ -28,8 +30,9 @@ import jakarta.validation.constraints.NotNull;
  * 前端访问路由地址为:/system/dictItem
  */
 @Validated
-@RequiredArgsConstructor
 @RestController
+@RequiredArgsConstructor
+@Tag(name = "字典项API")
 @RequestMapping("/dictItem")
 public class DictItemController {
 
@@ -38,6 +41,7 @@ public class DictItemController {
     /**
      * 查询字典项列表
      */
+    @Operation(summary = "查询字典项列表")
     @SaCheckPermission("system:dictItem:page")
     @PostMapping("/page")
     public PageVo page(@RequestBody PageDto pageDto) {
@@ -50,6 +54,7 @@ public class DictItemController {
      *
      * @param dictItemId 主键
      */
+    @Operation(summary = "查询字典项详情")
     @SaCheckPermission("system:dictItem:query")
     @GetMapping("/{dictItemId}")
     public DictItemVo getInfo(@NotNull(message = "主键不能为空") @PathVariable Long dictItemId) {
@@ -60,6 +65,7 @@ public class DictItemController {
     /**
      * 新增字典项
      */
+    @Operation(summary = "新增字典项")
     @SaCheckPermission("system:dictItem:add")
     @PostMapping()
     public Object add(@Validated(InsertGroup.class) @RequestBody DictItemDto dto) {
@@ -69,6 +75,7 @@ public class DictItemController {
     /**
      * 修改字典项
      */
+    @Operation(summary = "修改字典项")
     @SaCheckPermission("system:dictItem:edit")
     @PutMapping()
     public Object edit(@Validated(UpdateGroup.class) @RequestBody DictItemDto dto) {
@@ -80,6 +87,7 @@ public class DictItemController {
      *
      * @param dictItemIds 主键串
      */
+    @Operation(summary = "删除字典项")
     @SaCheckPermission("system:dictItem:remove")
     @DeleteMapping("/{dictItemIds}")
     public Object remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] dictItemIds) {

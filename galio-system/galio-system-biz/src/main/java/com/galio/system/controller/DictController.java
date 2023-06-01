@@ -8,12 +8,14 @@ import com.galio.core.validate.SelectGroup;
 import com.galio.mybatis.page.PageDto;
 import com.galio.mybatis.page.PageVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.galio.system.model.Dict;
 import com.galio.system.model.vo.DictVo;
-import com.galio.system.model.dto.DictDto;
+import com.galio.system.dto.DictDto;
 import com.galio.system.service.DictService;
 
 import java.util.List;
@@ -28,8 +30,9 @@ import jakarta.validation.constraints.NotNull;
  * 前端访问路由地址为:/system/dict
  */
 @Validated
-@RequiredArgsConstructor
 @RestController
+@RequiredArgsConstructor
+@Tag(name = "字典API")
 @RequestMapping("/dict")
 public class DictController {
 
@@ -38,6 +41,7 @@ public class DictController {
     /**
      * 查询字典列表
      */
+    @Operation(summary = "查询字典列表")
     @SaCheckPermission("system:dict:page")
     @PostMapping("/page")
     public PageVo page(@RequestBody PageDto pageDto) {
@@ -50,6 +54,7 @@ public class DictController {
      *
      * @param dictId 主键
      */
+    @Operation(summary = "查询字典详情")
     @SaCheckPermission("system:dict:query")
     @GetMapping("/{dictId}")
     public DictVo getInfo(@NotNull(message = "主键不能为空") @PathVariable Long dictId) {
@@ -60,6 +65,7 @@ public class DictController {
     /**
      * 新增字典
      */
+    @Operation(summary = "新增字典")
     @SaCheckPermission("system:dict:add")
     @PostMapping()
     public Object add(@Validated(InsertGroup.class) @RequestBody DictDto dto) {
@@ -69,6 +75,7 @@ public class DictController {
     /**
      * 修改字典
      */
+    @Operation(summary = "修改字典")
     @SaCheckPermission("system:dict:edit")
     @PutMapping()
     public Object edit(@Validated(UpdateGroup.class) @RequestBody DictDto dto) {
@@ -80,6 +87,7 @@ public class DictController {
      *
      * @param dictIds 主键串
      */
+    @Operation(summary = "删除字典")
     @SaCheckPermission("system:dict:remove")
     @DeleteMapping("/{dictIds}")
     public Object remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] dictIds) {

@@ -6,7 +6,7 @@ import com.galio.mybatis.page.PageDto;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import com.galio.system.model.dto.AppDto;
+import com.galio.system.dto.AppDto;
 import com.galio.system.model.App;
 import com.galio.system.repository.AppRepository;
 import com.galio.system.service.AppService;

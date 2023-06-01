@@ -7,7 +7,7 @@ import com.galio.auth.enums.AuthResponseEnum;
 import com.galio.auth.properties.PasswordProperties;
 import com.galio.core.constant.CacheConstants;
 import com.galio.core.constant.CommonConstants;
-import com.galio.core.enums.DeviceType;
+import com.galio.core.enums.OperSideEnum;
 import com.galio.core.enums.ResponseEnum;
 import com.galio.core.exception.CustomException;
 import com.galio.core.utils.Assert;
@@ -15,7 +15,7 @@ import com.galio.core.utils.MessageUtils;
 import com.galio.core.utils.ObjectUtil;
 import com.galio.redis.util.RedisUtils;
 import com.galio.satoken.utils.LoginHelper;
-import com.galio.system.api.RemoteMemberClient;
+import com.galio.system.api.MemberExchange;
 import com.galio.system.dto.LoginMemberDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +35,7 @@ import java.util.function.Supplier;
 public class AuthService {
 
 
-    private final RemoteMemberClient remoteMemberClient;
+    private final MemberExchange memberExchange;
 
     private final PasswordProperties passwordProperties;
 
@@ -43,12 +43,12 @@ public class AuthService {
      * 登录
      */
     public String login(String username, String password) throws CustomException{
-        LoginMemberDto memberDto = remoteMemberClient.getMemberInfo(username);
+        LoginMemberDto memberDto = memberExchange.getMemberInfo(username);
 
         Assert.notNull(memberDto, ResponseEnum.MEMBER_NOT_EXITS.packageByArgs(username));
         checkLogin(username, () -> !BCrypt.checkpw(password, memberDto.getPassword()));
         // 获取登录token
-        LoginHelper.loginByDevice(memberDto, DeviceType.PC);
+        LoginHelper.loginByDevice(memberDto, OperSideEnum.PC);
 
         recordLogininfor(username, CommonConstants.LOGIN_SUCCESS, MessageUtils.message("member.login.success"));
         return StpUtil.getTokenValue();

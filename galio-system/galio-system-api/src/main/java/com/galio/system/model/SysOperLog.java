@@ -37,13 +37,13 @@ public class SysOperLog implements Serializable {
     /**
      * 业务类型（0其它 1新增 2修改 3删除）
      */
-    private String businessType;
+    private String operType;
 
     /**
      * 业务类型数组
      */
     @TableField(exist = false)
-    private Integer[] businessTypes;
+    private Integer[] operTypes;
 
     /**
      * 请求方法
@@ -58,7 +58,7 @@ public class SysOperLog implements Serializable {
     /**
      * 操作类别（0其它 1后台用户 2手机端用户）
      */
-    private String operatorType;
+    private String operSide;
 
     /**
      * 操作人员

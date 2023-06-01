@@ -1,7 +1,7 @@
 package com.galio.system.config;
 
 import com.galio.core.utils.SpringUtils;
-import com.galio.system.api.RemoteMemberClient;
+import com.galio.system.api.MemberExchange;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,10 +19,10 @@ import com.galio.http.config.WebClientConfig;
 @AutoConfigureAfter(WebClientConfig.class)
 public class RestClientConfig {
     @Bean
-    public RemoteMemberClient remoteMemberClient() {
+    public MemberExchange remoteMemberClient() {
         WebClient webClient = SpringUtils.getBean(WebClient.class);
         HttpServiceProxyFactory factory = HttpServiceProxyFactory.builder(WebClientAdapter.forClient(webClient))
                 .build();
-        return factory.createClient(RemoteMemberClient.class);
+        return factory.createClient(MemberExchange.class);
     }
 }

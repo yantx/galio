@@ -9,7 +9,7 @@ import com.galio.core.model.BaseEntity;
 
 /**
  * @Author: galio
- * @Date: 2023-04-25
+ * @Date: 2023-05-30
  * @Description: 操作日志记录对象
  */
 @Data
@@ -31,7 +31,7 @@ public class OperLog extends BaseEntity {
     /**
      * 业务类型（0其它 1新增 2修改 3删除）
      */
-    private String businessType;
+    private String operType;
     /**
      * 方法名称
      */
@@ -43,7 +43,7 @@ public class OperLog extends BaseEntity {
     /**
      * 操作类别（0其它 1后台雇员 2手机端雇员）
      */
-    private String operatorType;
+    private String operSide;
     /**
      * 操作人员
      */

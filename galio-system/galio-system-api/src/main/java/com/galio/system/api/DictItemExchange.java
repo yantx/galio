@@ -8,10 +8,10 @@ import java.util.List;
 /**
  * @Author: galio
  * @Date: 2023-01-13
- * @Description: 字典项相关业务服务
+ * @Description: 字典项相关业务交易接口
  */
 @HttpExchange("/dict")
-public interface RemoteDictItemClient {
+public interface DictItemExchange {
     /**
      * 分隔符
      */

@@ -8,12 +8,14 @@ import com.galio.core.validate.SelectGroup;
 import com.galio.mybatis.page.PageDto;
 import com.galio.mybatis.page.PageVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.galio.system.model.Employee;
 import com.galio.system.model.vo.EmployeeVo;
-import com.galio.system.model.dto.EmployeeDto;
+import com.galio.system.dto.EmployeeDto;
 import com.galio.system.service.EmployeeService;
 
 import java.util.List;
@@ -23,13 +25,14 @@ import jakarta.validation.constraints.NotNull;
 
 /**
  * @Author: galio
- * @Date: 2023-04-25
+ * @Date: 2023-05-30
  * @Description: 机构接口
  * 前端访问路由地址为:/system/employee
  */
 @Validated
-@RequiredArgsConstructor
 @RestController
+@RequiredArgsConstructor
+@Tag(name = "机构API")
 @RequestMapping("/employee")
 public class EmployeeController {
 
@@ -38,6 +41,7 @@ public class EmployeeController {
     /**
      * 查询机构列表
      */
+    @Operation(summary = "查询机构列表")
     @SaCheckPermission("system:employee:page")
     @PostMapping("/page")
     public PageVo page(@RequestBody PageDto pageDto) {
@@ -50,6 +54,7 @@ public class EmployeeController {
      *
      * @param employeeId 主键
      */
+    @Operation(summary = "查询机构详情")
     @SaCheckPermission("system:employee:query")
     @GetMapping("/{employeeId}")
     public EmployeeVo getInfo(@NotNull(message = "主键不能为空") @PathVariable Long employeeId) {
@@ -60,6 +65,7 @@ public class EmployeeController {
     /**
      * 新增机构
      */
+    @Operation(summary = "新增机构")
     @SaCheckPermission("system:employee:add")
     @PostMapping()
     public Object add(@Validated(InsertGroup.class) @RequestBody EmployeeDto dto) {
@@ -69,6 +75,7 @@ public class EmployeeController {
     /**
      * 修改机构
      */
+    @Operation(summary = "修改机构")
     @SaCheckPermission("system:employee:edit")
     @PutMapping()
     public Object edit(@Validated(UpdateGroup.class) @RequestBody EmployeeDto dto) {
@@ -80,6 +87,7 @@ public class EmployeeController {
      *
      * @param employeeIds 主键串
      */
+    @Operation(summary = "删除机构")
     @SaCheckPermission("system:employee:remove")
     @DeleteMapping("/{employeeIds}")
     public Object remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] employeeIds) {

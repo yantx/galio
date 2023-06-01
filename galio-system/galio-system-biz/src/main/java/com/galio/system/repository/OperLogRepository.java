@@ -50,10 +50,10 @@ public class OperLogRepository{
     private LambdaQueryWrapper<OperLog> buildQueryWrapper(OperLog entity,Map<String, Object> params) {
         LambdaQueryWrapper<OperLog> lqw = Wrappers.lambdaQuery();
                     lqw.eq(StringUtil.isNotBlank(entity.getTitle()), OperLog::getTitle, entity.getTitle());
-                    lqw.eq(StringUtil.isNotBlank(entity.getBusinessType()), OperLog::getBusinessType, entity.getBusinessType());
+                    lqw.eq(StringUtil.isNotBlank(entity.getOperType()), OperLog::getOperType, entity.getOperType());
                     lqw.eq(StringUtil.isNotBlank(entity.getMethod()), OperLog::getMethod, entity.getMethod());
                     lqw.eq(StringUtil.isNotBlank(entity.getRequestMethod()), OperLog::getRequestMethod, entity.getRequestMethod());
-                    lqw.eq(StringUtil.isNotBlank(entity.getOperatorType()), OperLog::getOperatorType, entity.getOperatorType());
+                    lqw.eq(StringUtil.isNotBlank(entity.getOperSide()), OperLog::getOperSide, entity.getOperSide());
                     lqw.eq(entity.getOperBy() != null, OperLog::getOperBy, entity.getOperBy());
                     lqw.like(StringUtil.isNotBlank(entity.getOrgName()), OperLog::getOrgName, entity.getOrgName());
                     lqw.eq(StringUtil.isNotBlank(entity.getOperUrl()), OperLog::getOperUrl, entity.getOperUrl());

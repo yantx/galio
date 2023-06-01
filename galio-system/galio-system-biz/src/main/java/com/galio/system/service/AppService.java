@@ -1,6 +1,6 @@
 package com.galio.system.service;
 
-import com.galio.system.model.dto.AppDto;
+import com.galio.system.dto.AppDto;
 import com.galio.system.model.App;
 import com.galio.mybatis.page.PageDto;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;

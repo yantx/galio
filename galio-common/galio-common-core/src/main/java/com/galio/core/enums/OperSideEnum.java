@@ -10,7 +10,7 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public enum DeviceType {
+public enum OperSideEnum {
     /**
      * pc端
      */
@@ -31,5 +31,5 @@ public enum DeviceType {
      */
     DATAV("datav");
 
-    private final String device;
+    private final String value;
 }
