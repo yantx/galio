@@ -1,6 +1,8 @@
 package ${packageName}.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import com.galio.common.log.annotation.OperLog;
+import com.galio.common.log.enums.OperTypeEnum;
 import com.galio.core.utils.ObjectUtil;
 import com.galio.core.validate.InsertGroup;
 import com.galio.core.validate.UpdateGroup;
@@ -43,8 +45,9 @@ public class ${ClassName}Controller {
     /**
      * 查询${functionName}列表
      */
-    @Operation(summary = "查询${functionName}列表")
 #if($table.crud || $table.sub)
+    @OperLog(operModul = "分页查询${functionName}列表", operType = OperTypeEnum.SELECT)
+    @Operation(summary = "分页查询${functionName}列表")
     @SaCheckPermission("${permissionPrefix}:page")
     @PostMapping("/page")
     public PageVo page(@RequestBody PageDto pageDto) {
@@ -52,6 +55,8 @@ public class ${ClassName}Controller {
         return PageVo.build(pageData);
     }
 #elseif($table.tree)
+    @OperLog(operModul = "查询${functionName}列表", operType = OperTypeEnum.SELECT)
+    @Operation(summary = "查询${functionName}列表")
     @SaCheckPermission("${permissionPrefix}:list")
     @PostMapping("/list")
     public List<${ClassName}Vo> list(${ClassName}Dto dto) {
@@ -65,6 +70,7 @@ public class ${ClassName}Controller {
      *
      * @param ${pkColumn.javaField} 主键
      */
+    @OperLog(operModul = "查询${functionName}详情", operType = OperTypeEnum.SELECT)
     @Operation(summary = "查询${functionName}详情")
     @SaCheckPermission("${permissionPrefix}:query")
     @GetMapping("/{${pkColumn.javaField}}")
@@ -76,6 +82,7 @@ public class ${ClassName}Controller {
     /**
      * 新增${functionName}
      */
+    @OperLog(operModul = "新增${functionName}", operType = OperTypeEnum.INSERT)
     @Operation(summary = "新增${functionName}")
     @SaCheckPermission("${permissionPrefix}:add")
     @PostMapping()
@@ -86,6 +93,7 @@ public class ${ClassName}Controller {
     /**
      * 修改${functionName}
      */
+    @OperLog(operModul = "修改${functionName}", operType = OperTypeEnum.UPDATE)
     @Operation(summary = "修改${functionName}")
     @SaCheckPermission("${permissionPrefix}:edit")
     @PutMapping()
@@ -98,6 +106,7 @@ public class ${ClassName}Controller {
      *
      * @param ${pkColumn.javaField}s 主键串
      */
+    @OperLog(operModul = "删除${functionName}", operType = OperTypeEnum.DELETE)
     @Operation(summary = "删除${functionName}")
     @SaCheckPermission("${permissionPrefix}:remove")
     @DeleteMapping("/{${pkColumn.javaField}s}")

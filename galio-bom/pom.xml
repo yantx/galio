@@ -134,7 +134,11 @@
                 <artifactId>galio-system-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>com.galio</groupId>
+                <artifactId>galio-common-log</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <!-- Mybatis 依赖引入 -->
             <dependency>
                 <groupId>org.mybatis.spring.boot</groupId>

@@ -16,7 +16,12 @@ public @interface OperLog {
     /**
      * 模块
      */
-    String model() default "";
+    String operModul() default "";
+
+   /**
+     * 说明
+     */
+    String operDesc() default "";
 
     /**
      * 功能类别

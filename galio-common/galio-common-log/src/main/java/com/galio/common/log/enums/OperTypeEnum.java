@@ -27,6 +27,11 @@ public enum OperTypeEnum {
     DELETE,
 
     /**
+     * 查询
+     */
+    SELECT,
+
+    /**
      * 授权
      */
     GRANT,

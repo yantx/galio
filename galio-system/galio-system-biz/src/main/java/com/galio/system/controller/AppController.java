@@ -1,6 +1,8 @@
 package com.galio.system.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import com.galio.common.log.annotation.OperLog;
+import com.galio.common.log.enums.OperTypeEnum;
 import com.galio.core.utils.ObjectUtil;
 import com.galio.core.validate.InsertGroup;
 import com.galio.core.validate.UpdateGroup;
@@ -39,9 +41,11 @@ public class AppController {
     /**
      * 查询应用信息列表
      */
+
     @Operation(summary = "查询应用信息列表")
     @SaCheckPermission("system:app:page")
     @PostMapping("/page")
+    @OperLog(operModul = "应用信息-分页查询应用信息列表", operType = OperTypeEnum.SELECT)
     public PageVo page(@RequestBody PageDto pageDto) {
         IPage<App> pageData = appService.queryPageList(pageDto);
         return PageVo.build(pageData);
