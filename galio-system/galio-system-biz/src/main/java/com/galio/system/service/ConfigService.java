@@ -44,4 +44,9 @@ public interface ConfigService {
      * 校验并批量删除应用信息信息
      */
     Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);
+
+    /**
+     * 参数缓存数据
+     */
+    void loadingConfigCache();
 }

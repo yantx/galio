@@ -8,49 +8,39 @@ package com.galio.core.constant;
 public interface MemberConstants {
 
     /**
-     * 正常状态
-     */
-    String NORMAL = "1";
-
-    /**
-     * 异常状态
-     */
-    String EXCEPTION = "0";
-
-    /**
      * 账号正常状态
      */
-    String USER_NORMAL = "1";
+    String USER_NORMAL = "0";
 
     /**
      * 账号封禁状态
      */
-    String USER_DISABLE = "0";
+    String USER_DISABLE = "1";
 
     /**
      * 角色正常状态
      */
-    String ROLE_NORMAL = "1";
+    String ROLE_NORMAL = "0";
 
     /**
      * 角色封禁状态
      */
-    String ROLE_DISABLE = "0";
+    String ROLE_DISABLE = "1";
 
     /**
      * 组织正常状态
      */
-    String DEPT_NORMAL = "1";
+    String DEPT_NORMAL = "0";
 
     /**
      * 组织停用状态
      */
-    String ORG_DISABLE = "0";
+    String ORG_DISABLE = "1";
 
     /**
      * 字典正常状态
      */
-    String DICT_NORMAL = "1";
+    String DICT_NORMAL = "0";
 
     /**
      * 是否为系统默认（是）
@@ -69,12 +59,12 @@ public interface MemberConstants {
     /**
      * 菜单正常状态
      */
-    String MENU_NORMAL = "1";
+    String MENU_NORMAL = "0";
 
     /**
      * 菜单停用状态
      */
-    String MENU_DISABLE = "0";
+    String MENU_DISABLE = "1";
 
     /**
      * 菜单类型（目录）

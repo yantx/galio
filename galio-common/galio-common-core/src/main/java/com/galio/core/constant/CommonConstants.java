@@ -95,4 +95,15 @@ public interface CommonConstants {
      * 基础包名
      */
     String BASE_PACKAGES = "com.galio";
+
+    /**
+     * 正常状态
+     */
+    String NORMAL = "0";
+
+    /**
+     * 异常状态
+     */
+    String EXCEPTION = "1";
+
 }

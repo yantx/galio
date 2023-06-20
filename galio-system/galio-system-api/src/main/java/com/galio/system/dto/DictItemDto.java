@@ -51,7 +51,13 @@ public class DictItemDto extends BaseEntity {
      */
     @NotBlank(message = "字典表id不能为空", groups = { InsertGroup.class, UpdateGroup.class })
     @Schema(description = "字典表id")
-    private String dictId;
+    private Long dictId;
+
+    /**
+     * 字典编号
+     */
+    @Schema(description = "字典编号")
+    private String dictCode;
 
     /**
      * 样式属性（其他样式扩展）

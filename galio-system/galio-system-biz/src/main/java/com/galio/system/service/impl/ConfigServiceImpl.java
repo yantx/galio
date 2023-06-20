@@ -1,9 +1,11 @@
 package com.galio.system.service.impl;
 
+import com.galio.core.constant.CacheConstants;
 import com.galio.core.utils.StringUtil;
 import com.galio.core.utils.ObjectUtil;
 import com.galio.mybatis.page.PageDto;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.galio.redis.util.CacheUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.galio.system.dto.ConfigDto;
@@ -92,5 +94,12 @@ public class ConfigServiceImpl implements ConfigService {
             //TODO 做一些业务上的校验,判断是否需要校验
         }
         return configRepository.deleteBatchIds(ids) > 0;
+    }
+
+    @Override
+    public void loadingConfigCache() {
+        List<Config> configsList = queryList(new ConfigDto());
+        configsList.forEach(config ->
+                CacheUtils.put(CacheConstants.SYS_CONFIG_NAMESPACE, config.getConfigKey(), config.getConfigValue()));
     }
 }

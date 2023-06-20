@@ -1,9 +1,13 @@
 package com.galio.system.service;
 
+import com.galio.core.constant.CacheConstants;
+import com.galio.redis.util.CacheUtils;
 import com.galio.system.dto.DictDto;
+import com.galio.system.dto.DictItemDto;
 import com.galio.system.model.Dict;
 import com.galio.mybatis.page.PageDto;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.galio.system.model.DictItem;
 
 import java.util.Collection;
 import java.util.List;
@@ -44,4 +48,5 @@ public interface DictService {
      * 校验并批量删除字典信息
      */
     Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);
+    public void loadingDictCache();
 }

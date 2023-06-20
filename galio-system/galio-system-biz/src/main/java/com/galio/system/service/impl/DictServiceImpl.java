@@ -1,10 +1,16 @@
 package com.galio.system.service.impl;
 
-import com.galio.core.utils.StringUtil;
+import com.galio.core.constant.CacheConstants;
+import com.galio.core.constant.CommonConstants;
 import com.galio.core.utils.ObjectUtil;
 import com.galio.mybatis.page.PageDto;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.galio.redis.util.CacheUtils;
+import com.galio.system.dto.DictItemDto;
+import com.galio.system.model.DictItem;
+import com.galio.system.service.DictItemService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import com.galio.system.dto.DictDto;
 import com.galio.system.model.Dict;
@@ -14,17 +20,20 @@ import com.galio.system.service.DictService;
 import java.util.List;
 import java.util.Map;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 /**
  * @Author: galio
  * @Date: 2023-04-25
  * @Description: 字典Service业务层处理
  */
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class DictServiceImpl implements DictService {
 
     private final DictRepository dictRepository;
+    private final DictItemService dictItemService;
 
     /**
      * 查询字典
@@ -92,5 +101,16 @@ public class DictServiceImpl implements DictService {
             //TODO 做一些业务上的校验,判断是否需要校验
         }
         return dictRepository.deleteBatchIds(ids) > 0;
+    }
+
+    @Override
+    public void loadingDictCache() {
+        List<Dict> dicts = queryList(new DictDto());
+        DictItemDto itemDto = new DictItemDto();
+        itemDto.setStatus(CommonConstants.NORMAL);
+        List<DictItem> items = dictItemService.queryList(itemDto);
+        Map<Long, List<DictItem>> dictItemMap =  items.stream().collect(Collectors.groupingBy(DictItem::getDictId));
+        dicts.forEach(dict ->
+                CacheUtils.put(CacheConstants.SYS_DICT_NAMESPACE, dict.getDictCode(), dictItemMap.get(dict.getDictId())));
     }
 }

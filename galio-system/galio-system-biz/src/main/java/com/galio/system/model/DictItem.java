@@ -38,7 +38,7 @@ public class DictItem extends BaseEntity {
     /**
      * 字典表id
      */
-    private String dictId;
+    private Long dictId;
     /**
      * 样式属性（其他样式扩展）
      */

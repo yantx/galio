@@ -62,4 +62,26 @@ public interface CacheConstants {
      */
     String PWD_ERR_CNT_KEY = "pwd_err_cnt:";
 
+
+
+    /**
+     * 登录用户 redis namespace
+     */
+    String LOGIN_TOKEN_NAMESPACE = "authorization";
+
+    /**
+     * 在线用户 redis namespace
+     */
+    String ONLINE_TOKEN_NAMESPACE = "online_tokens";
+
+    /**
+     * 参数管理 cache name
+     */
+    String SYS_CONFIG_NAMESPACE = "sys_config";
+
+    /**
+     * 字典管理 cache name
+     */
+    String SYS_DICT_NAMESPACE = "sys_dict";
+
 }

@@ -22,11 +22,11 @@ public class SystemApplicationRunner implements ApplicationRunner {
     private final DictService dictService;
 
     @Override
-    public void run(ApplicationArguments args) throws Exception {
-//        configService.loadingConfigCache();
-        log.info("加载参数缓存数据成功");
-//        dictService.loadingDictCache();
-        log.info("加载字典缓存数据成功");
+    public void run(ApplicationArguments args){
+        configService.loadingConfigCache();
+        log.info("加载系统参数缓存数据完成");
+        dictService.loadingDictCache();
+        log.info("加载字典缓存数据完成");
     }
 
 }

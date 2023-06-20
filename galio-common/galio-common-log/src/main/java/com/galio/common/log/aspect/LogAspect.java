@@ -84,8 +84,7 @@ public class LogAspect {
             SpringUtils.getContext().publishEvent(operLog);
         } catch (Exception exp) {
             // 记录本地异常日志
-            log.error("异常信息:{}", exp.getMessage());
-            exp.printStackTrace();
+            log.error("异常信息:{}", exp.getMessage(), e);
         }
     }
 
@@ -99,7 +98,7 @@ public class LogAspect {
         // 设置action动作
         operLog.setOperType(log.operType().ordinal());
         // 设置模块
-        operLog.setModel(log.model());
+        operLog.setModel(log.operModul());
         // 是否需要保存request，参数和值
         if (log.isSaveRequestData()) {
             // 获取参数的信息，传入到数据库中。
