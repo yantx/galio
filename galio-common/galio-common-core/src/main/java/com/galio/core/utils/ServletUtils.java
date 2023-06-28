@@ -157,8 +157,18 @@ public class ServletUtils {
         return StringUtils.equalsAnyIgnoreCase(ajax, "json", "xml");
     }
 
-    public static String getClientIP(HttpServletRequest request) {
-        return getClientIP(getRequest());
+    public static String getClientIP() {
+        String[] headerNames = new String[]{"X-Forwarded-For", "X-Real-IP", "Proxy-Client-IP", "WL-Proxy-Client-IP", "HTTP_CLIENT_IP", "HTTP_X_FORWARDED_FOR"};
+        String ip;
+        for(int i = 0; i < headerNames.length; ++i) {
+            String header = headerNames[i];
+            ip = getRequest().getHeader(header);
+            if (StringUtil.isNotEmpty(ip) && "unknown".equalsIgnoreCase(ip)) {
+                return ip;
+            }
+        }
+        ip = getRequest().getRemoteAddr();
+        return ip;
     }
 
     /**

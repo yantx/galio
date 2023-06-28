@@ -61,7 +61,7 @@ public class LogAspect {
             OperLogEvent operLog = new OperLogEvent();
             operLog.setStatus(OperStatus.SUCCESS.ordinal());
             // 请求的地址
-            operLog.setOperIp(ServletUtils.getClientIP(ServletUtils.getRequest()));
+            operLog.setOperIp(ServletUtils.getClientIP());
             operLog.setOperUrl(StringUtil.substring(ServletUtils.getRequest().getRequestURI(), 0, 255));
             String username = LoginHelper.getUsername();
             if (StringUtil.isNotBlank(username)) {
