@@ -22,7 +22,7 @@ public class OperLog extends BaseEntity {
     /**
      * 主键
      */
-    @TableId(value = "oper_id")
+    @TableId(value = "oper_id",type = IdType.ASSIGN_ID)
     private Long operId;
     /**
      * 模块标题

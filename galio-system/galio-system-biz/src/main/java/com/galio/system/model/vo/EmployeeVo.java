@@ -7,10 +7,10 @@ import lombok.Data;
 /**
  * @Author: galio
  * @Date: 2023-05-30
- * @Description: 机构视图对象
+ * @Description: 雇员视图对象
  */
 @Data
-@Schema(description = "机构视图对象")
+@Schema(description = "雇员视图对象")
 public class EmployeeVo {
 
     private static final long serialVersionUID = 1L;
@@ -22,9 +22,9 @@ public class EmployeeVo {
     private Long employeeId;
 
     /**
-     * 机构id
+     * 雇员id
      */
-    @Schema(description = "机构id")
+    @Schema(description = "雇员id")
     private Long orgId;
 
     /**

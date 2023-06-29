@@ -21,7 +21,7 @@ public class Org extends BaseEntity {
     /**
      * 主键
      */
-    @TableId(value = "org_id")
+    @TableId(value = "org_id",type = IdType.ASSIGN_ID)
     private Long orgId;
     /**
      * 父部门id

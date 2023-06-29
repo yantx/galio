@@ -1,7 +1,10 @@
 package com.galio.system.config;
 
 import com.galio.core.utils.SpringUtils;
+import com.galio.system.api.DictItemExchange;
+import com.galio.system.api.LogininforExchange;
 import com.galio.system.api.MemberExchange;
+import com.galio.system.api.OperLogExchange;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,5 +27,27 @@ public class RestClientConfig {
         HttpServiceProxyFactory factory = HttpServiceProxyFactory.builder(WebClientAdapter.forClient(webClient))
                 .build();
         return factory.createClient(MemberExchange.class);
+    }
+
+    @Bean
+    public OperLogExchange operLogExchange() {
+        WebClient webClient = SpringUtils.getBean(WebClient.class);
+        HttpServiceProxyFactory factory = HttpServiceProxyFactory.builder(WebClientAdapter.forClient(webClient))
+                .build();
+        return factory.createClient(OperLogExchange.class);
+    }
+    @Bean
+    public LogininforExchange logininforExchange() {
+        WebClient webClient = SpringUtils.getBean(WebClient.class);
+        HttpServiceProxyFactory factory = HttpServiceProxyFactory.builder(WebClientAdapter.forClient(webClient))
+                .build();
+        return factory.createClient(LogininforExchange.class);
+    }
+    @Bean
+    public DictItemExchange dictItemExchange() {
+        WebClient webClient = SpringUtils.getBean(WebClient.class);
+        HttpServiceProxyFactory factory = HttpServiceProxyFactory.builder(WebClientAdapter.forClient(webClient))
+                .build();
+        return factory.createClient(DictItemExchange.class);
     }
 }

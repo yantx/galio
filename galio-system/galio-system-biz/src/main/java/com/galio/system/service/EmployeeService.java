@@ -11,37 +11,37 @@ import java.util.List;
 /**
  * @Author: galio
  * @Date: 2023-04-25
- * @Description: 机构Service接口
+ * @Description: 雇员Service接口
  */
 public interface EmployeeService {
 
     /**
-     * 查询机构
+     * 查询雇员
      */
     Employee queryById(Long employeeId);
 
     /**
-     * 查询机构列表
+     * 查询雇员列表
      */
     Page<Employee> queryPageList(PageDto pageDto);
 
     /**
-     * 查询机构列表
+     * 查询雇员列表
      */
     List<Employee> queryList(EmployeeDto dto);
 
     /**
-     * 修改机构
+     * 修改雇员
      */
     Boolean insertByDto(EmployeeDto dto);
 
     /**
-     * 修改机构
+     * 修改雇员
      */
     Boolean updateByDto(EmployeeDto dto);
 
     /**
-     * 校验并批量删除机构信息
+     * 校验并批量删除雇员信息
      */
     Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);
 }

@@ -21,7 +21,7 @@ public class Dict extends BaseEntity {
     /**
      * 字典主键
      */
-    @TableId(value = "dict_id")
+    @TableId(value = "dict_id",type = IdType.ASSIGN_ID)
     private Long dictId;
     /**
      * 字典名称

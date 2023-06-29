@@ -11,11 +11,11 @@ import lombok.Data;
 /**
  * @Author: galio
  * @Date: 2023-05-30
- * @Description: 应用信息业务对象
+ * @Description: 系统配置信息业务对象
  */
 
 @Data
-@Schema(description = "应用信息业务对象")
+@Schema(description = "系统配置信息业务对象")
 public class ConfigDto extends BaseEntity {
 
     /**
@@ -61,10 +61,10 @@ public class ConfigDto extends BaseEntity {
     private String remark;
 
     /**
-     * 应用id
+     * 系统配置id
      */
-    @NotNull(message = "应用id不能为空", groups = { InsertGroup.class, UpdateGroup.class })
-    @Schema(description = "应用id")
+    @NotNull(message = "系统配置id不能为空", groups = { InsertGroup.class, UpdateGroup.class })
+    @Schema(description = "系统配置id")
     private Long appId;
 
 

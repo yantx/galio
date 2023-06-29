@@ -9,7 +9,7 @@ import com.galio.core.model.BaseEntity;
 /**
  * @Author: galio
  * @Date: 2023-05-30
- * @Description: 应用信息对象
+ * @Description: 系统配置信息对象
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -21,7 +21,7 @@ public class Config extends BaseEntity {
     /**
      * 参数表主键
      */
-    @TableId(value = "config_id")
+    @TableId(value = "config_id",type = IdType.ASSIGN_ID)
     private Long configId;
     /**
      * 参数名称
@@ -44,7 +44,7 @@ public class Config extends BaseEntity {
      */
     private String remark;
     /**
-     * 应用id
+     * 系统配置id
      */
     private Long appId;
 

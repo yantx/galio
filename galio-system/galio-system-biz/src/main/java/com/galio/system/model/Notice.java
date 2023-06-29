@@ -21,7 +21,7 @@ public class Notice extends BaseEntity {
     /**
      * 主键
      */
-    @TableId(value = "notice_id")
+    @TableId(value = "notice_id",type = IdType.ASSIGN_ID)
     private Long noticeId;
     /**
      * 公告标题

@@ -22,7 +22,7 @@ public class Member extends BaseEntity {
     /**
      * 主键
      */
-    @TableId(value = "member_id")
+    @TableId(value = "member_id",type = IdType.ASSIGN_ID)
     private Long memberId;
     /**
      * 雇员id

@@ -13,11 +13,11 @@ import java.time.LocalDateTime;
 /**
  * @Author: galio
  * @Date: 2023-05-30
- * @Description: 机构业务对象
+ * @Description: 雇员业务对象
  */
 
 @Data
-@Schema(description = "机构业务对象")
+@Schema(description = "雇员业务对象")
 public class EmployeeDto extends BaseEntity {
 
     /**
@@ -28,10 +28,10 @@ public class EmployeeDto extends BaseEntity {
     private Long employeeId;
 
     /**
-     * 机构id
+     * 雇员id
      */
-    @NotNull(message = "机构id不能为空", groups = { InsertGroup.class, UpdateGroup.class })
-    @Schema(description = "机构id")
+    @NotNull(message = "雇员id不能为空", groups = { InsertGroup.class, UpdateGroup.class })
+    @Schema(description = "雇员id")
     private Long orgId;
 
     /**

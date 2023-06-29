@@ -52,7 +52,7 @@ public class DictItemRepository{
                     lqw.eq(entity.getOrderNum() != null, DictItem::getOrderNum, entity.getOrderNum());
                     lqw.eq(StringUtil.isNotBlank(entity.getLabel()), DictItem::getLabel, entity.getLabel());
                     lqw.eq(StringUtil.isNotBlank(entity.getValue()), DictItem::getValue, entity.getValue());
-                    lqw.eq(StringUtil.isNotBlank(entity.getDictId()), DictItem::getDictId, entity.getDictId());
+                    lqw.eq(entity.getDictId() != null, DictItem::getDictId, entity.getDictId());
                     lqw.eq(StringUtil.isNotBlank(entity.getCssClass()), DictItem::getCssClass, entity.getCssClass());
                     lqw.eq(StringUtil.isNotBlank(entity.getListClass()), DictItem::getListClass, entity.getListClass());
                     lqw.eq(StringUtil.isNotBlank(entity.getIsDefault()), DictItem::getIsDefault, entity.getIsDefault());

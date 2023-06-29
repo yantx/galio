@@ -21,7 +21,7 @@ public class Group extends BaseEntity {
     /**
      * 主键
      */
-    @TableId(value = "group_id")
+    @TableId(value = "group_id",type = IdType.ASSIGN_ID)
     private Long groupId;
     /**
      * 组代码

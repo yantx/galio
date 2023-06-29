@@ -21,7 +21,7 @@ public class Function extends BaseEntity {
     /**
      * 主键
      */
-    @TableId(value = "function_id")
+    @TableId(value = "function_id",type = IdType.ASSIGN_ID)
     private Long functionId;
     /**
      * 功能名称

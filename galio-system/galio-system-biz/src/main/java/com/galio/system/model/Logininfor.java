@@ -22,7 +22,7 @@ public class Logininfor extends BaseEntity {
     /**
      * 主键
      */
-    @TableId(value = "info_id")
+    @TableId(value = "info_id",type = IdType.ASSIGN_ID)
     private Long infoId;
     /**
      * 登录名

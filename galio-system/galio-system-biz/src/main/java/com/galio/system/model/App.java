@@ -21,7 +21,7 @@ public class App extends BaseEntity {
     /**
      * 应用id
      */
-    @TableId(value = "app_id")
+    @TableId(value = "app_id", type = IdType.ASSIGN_ID)
     private Long appId;
     /**
      * 应用名称

@@ -21,7 +21,7 @@ public class Role extends BaseEntity {
     /**
      * 主键
      */
-    @TableId(value = "role_id")
+    @TableId(value = "role_id",type = IdType.ASSIGN_ID)
     private Long roleId;
     /**
      * 角色名称
@@ -34,7 +34,7 @@ public class Role extends BaseEntity {
     /**
      * 显示顺序
      */
-    private Long orderNum;
+    private Integer orderNum;
     /**
      * 数据范围（1：全部数据权限 2：自定数据权限 3：本部门数据权限 4：本部门及以下数据权限）
      */

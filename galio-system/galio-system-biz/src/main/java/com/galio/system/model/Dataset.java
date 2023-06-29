@@ -21,7 +21,7 @@ public class Dataset extends BaseEntity {
     /**
      * 数据集id
      */
-    @TableId(value = "dataset_id")
+    @TableId(value = "dataset_id",type = IdType.ASSIGN_ID)
     private Long datasetId;
     /**
      * 数据源id

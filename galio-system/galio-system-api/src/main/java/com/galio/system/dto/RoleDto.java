@@ -35,4 +35,7 @@ public class RoleDto extends BaseEntity {
      */
     @Schema(description = "数据范围（1：所有数据权限；2：自定义数据权限；3：本部门数据权限；4：本部门及以下数据权限；5：仅本人数据权限）")
     private String dataScope;
+
+    @Schema(description = "显示顺序")
+    private Integer orderNum;
 }

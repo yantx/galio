@@ -6,10 +6,10 @@ import lombok.Data;
 /**
  * @Author: galio
  * @Date: 2023-05-30
- * @Description: 应用信息视图对象
+ * @Description: 系统配置信息视图对象
  */
 @Data
-@Schema(description = "应用信息视图对象")
+@Schema(description = "系统配置信息视图对象")
 public class ConfigVo {
 
     private static final long serialVersionUID = 1L;
@@ -51,9 +51,9 @@ public class ConfigVo {
     private String remark;
 
     /**
-     * 应用id
+     * 系统配置id
      */
-    @Schema(description = "应用id")
+    @Schema(description = "系统配置id")
     private Long appId;
 
 

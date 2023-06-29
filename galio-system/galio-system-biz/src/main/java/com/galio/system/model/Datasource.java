@@ -21,7 +21,7 @@ public class Datasource extends BaseEntity {
     /**
      * 数据源id
      */
-    @TableId(value = "datasource_id")
+    @TableId(value = "datasource_id",type = IdType.ASSIGN_ID)
     private Long datasourceId;
     /**
      * 数据源名称

@@ -1,7 +1,6 @@
 package com.galio.system.service.impl;
 
 import com.galio.core.constant.CacheConstants;
-import com.galio.core.utils.StringUtil;
 import com.galio.core.utils.ObjectUtil;
 import com.galio.mybatis.page.PageDto;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -20,7 +19,7 @@ import java.util.Collection;
 /**
  * @Author: galio
  * @Date: 2023-04-25
- * @Description: 应用信息Service业务层处理
+ * @Description: 系统配置信息Service业务层处理
  */
 @RequiredArgsConstructor
 @Service
@@ -29,33 +28,33 @@ public class ConfigServiceImpl implements ConfigService {
     private final ConfigRepository configRepository;
 
     /**
-     * 查询应用信息
+     * 查询系统配置信息
      */
     @Override
     public Config queryById(Long configId) {
         return configRepository.selectById(configId);
     }
 
-        /**
-         * 查询应用信息列表
-         */
-        @Override
-        public Page<Config> queryPageList(PageDto pageDto) {
-            return configRepository.selectPage(pageDto.build());
-        }
+    /**
+     * 查询系统配置信息列表
+     */
+    @Override
+    public Page<Config> queryPageList(PageDto pageDto) {
+        return configRepository.selectPage(pageDto.build());
+    }
 
     /**
-     * 查询应用信息列表
+     * 查询系统配置信息列表
      */
     @Override
     public List<Config> queryList(ConfigDto dto) {
         Config entity = ObjectUtil.copyObject(dto, Config.class);
         Map<String, Object> params = dto.getParams();
-        return configRepository.selectList(entity,params);
+        return configRepository.selectList(entity, params);
     }
 
     /**
-     * 新增应用信息
+     * 新增系统配置信息
      */
     @Override
     public Boolean insertByDto(ConfigDto dto) {
@@ -69,7 +68,7 @@ public class ConfigServiceImpl implements ConfigService {
     }
 
     /**
-     * 修改应用信息
+     * 修改系统配置信息
      */
     @Override
     public Boolean updateByDto(ConfigDto dto) {
@@ -86,7 +85,7 @@ public class ConfigServiceImpl implements ConfigService {
     }
 
     /**
-     * 批量删除应用信息
+     * 批量删除系统配置信息
      */
     @Override
     public Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid) {

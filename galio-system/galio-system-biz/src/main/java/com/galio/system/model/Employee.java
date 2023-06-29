@@ -10,7 +10,7 @@ import com.galio.core.model.BaseEntity;
 /**
  * @Author: galio
  * @Date: 2023-05-30
- * @Description: 机构对象
+ * @Description: 雇员对象
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -22,10 +22,10 @@ public class Employee extends BaseEntity {
     /**
      * 主键
      */
-    @TableId(value = "employee_id")
+    @TableId(value = "employee_id",type = IdType.ASSIGN_ID)
     private Long employeeId;
     /**
-     * 机构id
+     * 雇员id
      */
     private Long orgId;
     /**

@@ -21,7 +21,7 @@ public class DictItem extends BaseEntity {
     /**
      * 主键
      */
-    @TableId(value = "dict_item_id")
+    @TableId(value = "dict_item_id",type = IdType.ASSIGN_ID)
     private Long dictItemId;
     /**
      * 字典项排序
