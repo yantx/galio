@@ -19,16 +19,19 @@ import lombok.Data;
 public class AppDto extends BaseEntity {
 
     /**
+     * 应用ID
+     */
+    @Schema(description = "应用ID")
+    private Long appId;
+    /**
      * 应用名称
      */
-    @NotBlank(message = "应用名称不能为空", groups = { InsertGroup.class, UpdateGroup.class })
     @Schema(description = "应用名称")
     private String appName;
 
     /**
      * 应用代码
      */
-    @NotBlank(message = "应用代码不能为空", groups = { InsertGroup.class, UpdateGroup.class })
     @Schema(description = "应用代码")
     private String appCode;
 

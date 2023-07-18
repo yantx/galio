@@ -1,13 +1,9 @@
 package com.galio.system.service;
 
-import com.galio.core.constant.CacheConstants;
-import com.galio.redis.util.CacheUtils;
 import com.galio.system.dto.DictDto;
-import com.galio.system.dto.DictItemDto;
 import com.galio.system.model.Dict;
-import com.galio.mybatis.page.PageDto;
+import com.galio.core.model.PageRequestDto;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.galio.system.model.DictItem;
 
 import java.util.Collection;
 import java.util.List;
@@ -27,7 +23,7 @@ public interface DictService {
     /**
      * 查询字典列表
      */
-    Page<Dict> queryPageList(PageDto pageDto);
+    Page<Dict> queryPageList(PageRequestDto pageRequestDto);
 
     /**
      * 查询字典列表

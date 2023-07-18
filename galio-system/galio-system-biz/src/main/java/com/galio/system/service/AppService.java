@@ -1,8 +1,8 @@
 package com.galio.system.service;
 
 import com.galio.system.dto.AppDto;
+import com.galio.system.dto.AppPageReqDto;
 import com.galio.system.model.App;
-import com.galio.mybatis.page.PageDto;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import java.util.Collection;
@@ -23,7 +23,7 @@ public interface AppService {
     /**
      * 查询应用信息列表
      */
-    Page<App> queryPageList(PageDto pageDto);
+    Page<App> queryPageList(AppPageReqDto pageRequestDto);
 
     /**
      * 查询应用信息列表

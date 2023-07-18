@@ -1,8 +1,8 @@
 package com.galio.system.service;
 
+import com.galio.core.model.PageRequestDto;
 import com.galio.system.dto.FunctionDto;
 import com.galio.system.model.Function;
-import com.galio.mybatis.page.PageDto;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import java.util.Collection;
@@ -23,7 +23,7 @@ public interface FunctionService {
     /**
      * 查询功能列表
      */
-    Page<Function> queryPageList(PageDto pageDto);
+    Page<Function> queryPageList(PageRequestDto pageRequestDto);
 
     /**
      * 查询功能列表

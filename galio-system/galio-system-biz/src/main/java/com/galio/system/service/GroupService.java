@@ -2,7 +2,7 @@ package com.galio.system.service;
 
 import com.galio.system.dto.GroupDto;
 import com.galio.system.model.Group;
-import com.galio.mybatis.page.PageDto;
+import com.galio.core.model.PageRequestDto;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import java.util.Collection;
@@ -23,7 +23,7 @@ public interface GroupService {
     /**
      * 查询群组信息列表
      */
-    Page<Group> queryPageList(PageDto pageDto);
+    Page<Group> queryPageList(PageRequestDto pageRequestDto);
 
     /**
      * 查询群组信息列表

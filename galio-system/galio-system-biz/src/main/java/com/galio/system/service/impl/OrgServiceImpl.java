@@ -1,9 +1,9 @@
 package com.galio.system.service.impl;
 
-import com.galio.core.utils.StringUtil;
 import com.galio.core.utils.ObjectUtil;
-import com.galio.mybatis.page.PageDto;
+import com.galio.core.model.PageRequestDto;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.galio.mybatis.page.MybatisPageConvertHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.galio.system.dto.OrgDto;
@@ -38,8 +38,8 @@ public class OrgServiceImpl implements OrgService {
          * 查询机构列表
          */
         @Override
-        public Page<Org> queryPageList(PageDto pageDto) {
-            return orgRepository.selectPage(pageDto.build());
+        public Page<Org> queryPageList(PageRequestDto pageRequestDto) {
+            return orgRepository.selectPage(MybatisPageConvertHelper.build(pageRequestDto));
         }
 
     /**

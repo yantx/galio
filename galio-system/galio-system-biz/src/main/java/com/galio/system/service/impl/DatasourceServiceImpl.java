@@ -1,9 +1,9 @@
 package com.galio.system.service.impl;
 
-import com.galio.core.utils.StringUtil;
 import com.galio.core.utils.ObjectUtil;
-import com.galio.mybatis.page.PageDto;
+import com.galio.core.model.PageRequestDto;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.galio.mybatis.page.MybatisPageConvertHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.galio.system.dto.DatasourceDto;
@@ -38,8 +38,8 @@ public class DatasourceServiceImpl implements DatasourceService {
          * 查询数据源信息列表
          */
         @Override
-        public Page<Datasource> queryPageList(PageDto pageDto) {
-            return datasourceRepository.selectPage(pageDto.build());
+        public Page<Datasource> queryPageList(PageRequestDto pageRequestDto) {
+            return datasourceRepository.selectPage(MybatisPageConvertHelper.build(pageRequestDto));
         }
 
     /**

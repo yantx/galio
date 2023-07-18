@@ -1,8 +1,8 @@
 package com.galio.system.service;
 
+import com.galio.core.model.PageRequestDto;
 import com.galio.system.dto.DatasourceDto;
 import com.galio.system.model.Datasource;
-import com.galio.mybatis.page.PageDto;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import java.util.Collection;
@@ -23,7 +23,7 @@ public interface DatasourceService {
     /**
      * 查询数据源信息列表
      */
-    Page<Datasource> queryPageList(PageDto pageDto);
+    Page<Datasource> queryPageList(PageRequestDto pageRequestDto);
 
     /**
      * 查询数据源信息列表

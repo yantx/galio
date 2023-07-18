@@ -49,7 +49,7 @@ public class EmployeeVo {
      * 手机号码
      */
     @Schema(description = "手机号码")
-    private Long mobilePhone;
+    private String mobilePhone;
 
     /**
      * 座机号码

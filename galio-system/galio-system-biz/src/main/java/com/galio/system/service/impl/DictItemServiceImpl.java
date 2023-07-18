@@ -1,9 +1,9 @@
 package com.galio.system.service.impl;
 
-import com.galio.core.utils.StringUtil;
 import com.galio.core.utils.ObjectUtil;
-import com.galio.mybatis.page.PageDto;
+import com.galio.core.model.PageRequestDto;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.galio.mybatis.page.MybatisPageConvertHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.galio.system.dto.DictItemDto;
@@ -38,8 +38,8 @@ public class DictItemServiceImpl implements DictItemService {
          * 查询字典项列表
          */
         @Override
-        public Page<DictItem> queryPageList(PageDto pageDto) {
-            return dictItemRepository.selectPage(pageDto.build());
+        public Page<DictItem> queryPageList(PageRequestDto pageRequestDto) {
+            return dictItemRepository.selectPage(MybatisPageConvertHelper.build(pageRequestDto));
         }
 
     /**

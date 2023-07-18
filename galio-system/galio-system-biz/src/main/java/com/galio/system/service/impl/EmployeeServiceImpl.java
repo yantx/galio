@@ -1,9 +1,9 @@
 package com.galio.system.service.impl;
 
-import com.galio.core.utils.StringUtil;
 import com.galio.core.utils.ObjectUtil;
-import com.galio.mybatis.page.PageDto;
+import com.galio.core.model.PageRequestDto;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.galio.mybatis.page.MybatisPageConvertHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.galio.system.dto.EmployeeDto;
@@ -18,7 +18,7 @@ import java.util.Collection;
 /**
  * @Author: galio
  * @Date: 2023-04-25
- * @Description: 机构Service业务层处理
+ * @Description: 雇员Service业务层处理
  */
 @RequiredArgsConstructor
 @Service
@@ -27,7 +27,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository employeeRepository;
 
     /**
-     * 查询机构
+     * 查询雇员
      */
     @Override
     public Employee queryById(Long employeeId) {
@@ -35,15 +35,15 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
         /**
-         * 查询机构列表
+         * 查询雇员列表
          */
         @Override
-        public Page<Employee> queryPageList(PageDto pageDto) {
-            return employeeRepository.selectPage(pageDto.build());
+        public Page<Employee> queryPageList(PageRequestDto pageRequestDto) {
+            return employeeRepository.selectPage(MybatisPageConvertHelper.build(pageRequestDto));
         }
 
     /**
-     * 查询机构列表
+     * 查询雇员列表
      */
     @Override
     public List<Employee> queryList(EmployeeDto dto) {
@@ -53,7 +53,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     /**
-     * 新增机构
+     * 新增雇员
      */
     @Override
     public Boolean insertByDto(EmployeeDto dto) {
@@ -67,7 +67,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     /**
-     * 修改机构
+     * 修改雇员
      */
     @Override
     public Boolean updateByDto(EmployeeDto dto) {
@@ -84,7 +84,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     /**
-     * 批量删除机构
+     * 批量删除雇员
      */
     @Override
     public Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid) {

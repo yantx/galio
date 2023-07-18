@@ -105,4 +105,6 @@ public class LoginMemberDto implements Serializable {
      */
     private Long roleId;
 
+    private Long appId;
+
 }

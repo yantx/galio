@@ -1,8 +1,8 @@
 package com.galio.system.service;
 
+import com.galio.core.model.PageRequestDto;
 import com.galio.system.dto.LogininforDto;
 import com.galio.system.model.Logininfor;
-import com.galio.mybatis.page.PageDto;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import java.util.Collection;
@@ -23,7 +23,7 @@ public interface LogininforService {
     /**
      * 查询系统访问记录列表
      */
-    Page<Logininfor> queryPageList(PageDto pageDto);
+    Page<Logininfor> queryPageList(PageRequestDto pageRequestDto);
 
     /**
      * 查询系统访问记录列表

@@ -1,9 +1,9 @@
 package com.galio.system.service.impl;
 
-import com.galio.core.utils.StringUtil;
 import com.galio.core.utils.ObjectUtil;
-import com.galio.mybatis.page.PageDto;
+import com.galio.core.model.PageRequestDto;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.galio.mybatis.page.MybatisPageConvertHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.galio.system.dto.RoleDto;
@@ -38,8 +38,8 @@ public class RoleServiceImpl implements RoleService {
          * 查询角色信息列表
          */
         @Override
-        public Page<Role> queryPageList(PageDto pageDto) {
-            return roleRepository.selectPage(pageDto.build());
+        public Page<Role> queryPageList(PageRequestDto pageRequestDto) {
+            return roleRepository.selectPage(MybatisPageConvertHelper.build(pageRequestDto));
         }
 
     /**

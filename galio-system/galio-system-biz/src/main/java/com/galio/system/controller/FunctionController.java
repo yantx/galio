@@ -1,11 +1,9 @@
 package com.galio.system.controller;
 
-import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.galio.core.utils.ObjectUtil;
 import com.galio.core.validate.InsertGroup;
 import com.galio.core.validate.UpdateGroup;
-import com.galio.core.validate.SelectGroup;
-import com.galio.mybatis.page.PageDto;
+import com.galio.core.model.PageRequestDto;
 import com.galio.mybatis.page.PageVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,7 +16,6 @@ import com.galio.system.model.vo.FunctionVo;
 import com.galio.system.dto.FunctionDto;
 import com.galio.system.service.FunctionService;
 
-import java.util.List;
 import java.util.Arrays;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -44,8 +41,8 @@ public class FunctionController {
     @Operation(summary = "查询功能列表")
     // @SaCheckPermission("system:function:page")
     @PostMapping("/page")
-    public PageVo page(@RequestBody PageDto pageDto) {
-        IPage<Function> pageData = functionService.queryPageList(pageDto);
+    public PageVo page(@RequestBody PageRequestDto pageRequestDto) {
+        IPage<Function> pageData = functionService.queryPageList(pageRequestDto);
         return PageVo.build(pageData);
     }
 

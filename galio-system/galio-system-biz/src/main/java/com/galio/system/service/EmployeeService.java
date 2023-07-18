@@ -1,8 +1,8 @@
 package com.galio.system.service;
 
+import com.galio.core.model.PageRequestDto;
 import com.galio.system.dto.EmployeeDto;
 import com.galio.system.model.Employee;
-import com.galio.mybatis.page.PageDto;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import java.util.Collection;
@@ -23,7 +23,7 @@ public interface EmployeeService {
     /**
      * 查询雇员列表
      */
-    Page<Employee> queryPageList(PageDto pageDto);
+    Page<Employee> queryPageList(PageRequestDto pageRequestDto);
 
     /**
      * 查询雇员列表

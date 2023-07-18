@@ -2,7 +2,7 @@ package com.galio.system.service;
 
 import com.galio.system.dto.MemberDto;
 import com.galio.system.model.Member;
-import com.galio.mybatis.page.PageDto;
+import com.galio.core.model.PageRequestDto;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import java.util.Collection;
@@ -24,7 +24,7 @@ public interface MemberService {
     /**
      * 查询成员信息列表
      */
-    Page<Member> queryPageList(PageDto pageDto);
+    Page<Member> queryPageList(PageRequestDto pageRequestDto);
 
     /**
      * 查询成员信息列表

@@ -21,7 +21,6 @@ public class NoticeDto extends BaseEntity {
     /**
      * 主键
      */
-    @NotNull(message = "主键不能为空", groups = { UpdateGroup.class })
     @Schema(description = "主键")
     private Long noticeId;
 
@@ -56,7 +55,6 @@ public class NoticeDto extends BaseEntity {
     /**
      * 备注
      */
-    @NotBlank(message = "备注不能为空", groups = { InsertGroup.class, UpdateGroup.class })
     @Schema(description = "备注信息")
     private String remark;
 

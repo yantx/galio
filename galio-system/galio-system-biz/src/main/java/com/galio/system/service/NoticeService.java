@@ -1,8 +1,8 @@
 package com.galio.system.service;
 
+import com.galio.core.model.PageRequestDto;
 import com.galio.system.dto.NoticeDto;
 import com.galio.system.model.Notice;
-import com.galio.mybatis.page.PageDto;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import java.util.Collection;
@@ -23,7 +23,7 @@ public interface NoticeService {
     /**
      * 查询通知公告列表
      */
-    Page<Notice> queryPageList(PageDto pageDto);
+    Page<Notice> queryPageList(PageRequestDto pageRequestDto);
 
     /**
      * 查询通知公告列表

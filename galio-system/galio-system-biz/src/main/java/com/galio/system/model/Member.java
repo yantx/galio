@@ -29,7 +29,7 @@ public class Member extends BaseEntity {
      */
     private Long employeeId;
     /**
-     * $column.columnComment
+     * 应用ID
      */
     private Long appId;
     /**
@@ -51,7 +51,7 @@ public class Member extends BaseEntity {
     /**
      * 手机号
      */
-    private Long mobileNumber;
+    private String mobileNumber;
     /**
      * 头像地址
      */

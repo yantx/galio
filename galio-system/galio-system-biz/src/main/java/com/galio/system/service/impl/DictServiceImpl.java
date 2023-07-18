@@ -3,8 +3,9 @@ package com.galio.system.service.impl;
 import com.galio.core.constant.CacheConstants;
 import com.galio.core.constant.CommonConstants;
 import com.galio.core.utils.ObjectUtil;
-import com.galio.mybatis.page.PageDto;
+import com.galio.core.model.PageRequestDto;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.galio.mybatis.page.MybatisPageConvertHelper;
 import com.galio.redis.util.CacheUtils;
 import com.galio.system.dto.DictItemDto;
 import com.galio.system.model.DictItem;
@@ -47,8 +48,8 @@ public class DictServiceImpl implements DictService {
          * 查询字典列表
          */
         @Override
-        public Page<Dict> queryPageList(PageDto pageDto) {
-            return dictRepository.selectPage(pageDto.build());
+        public Page<Dict> queryPageList(PageRequestDto pageRequestDto) {
+            return dictRepository.selectPage(MybatisPageConvertHelper.build(pageRequestDto));
         }
 
     /**

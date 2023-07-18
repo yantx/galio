@@ -20,7 +20,7 @@ import java.util.Collection;
  */
 @Repository
 @RequiredArgsConstructor
-public class RoleRepository{
+public class RoleRepository {
 
     private final RoleMapper roleMapper;
 
@@ -31,33 +31,33 @@ public class RoleRepository{
         return roleMapper.selectById(roleId);
     }
 
-        /**
-         * 查询角色信息列表
-         */
-        public Page<Role> selectPage(Page page) {
-            LambdaQueryWrapper<Role> lqw = Wrappers.lambdaQuery();
-            return roleMapper.selectPage(page, lqw);
-        }
+    /**
+     * 查询角色信息列表
+     */
+    public Page<Role> selectPage(Page page) {
+        LambdaQueryWrapper<Role> lqw = Wrappers.lambdaQuery();
+        return roleMapper.selectPage(page, lqw);
+    }
 
     /**
      * 查询角色信息列表
      */
-    public List<Role> selectList(Role role,Map<String, Object> params) {
+    public List<Role> selectList(Role role, Map<String, Object> params) {
         LambdaQueryWrapper<Role> lqw = buildQueryWrapper(role, params);
         return roleMapper.selectList(lqw);
     }
 
-    private LambdaQueryWrapper<Role> buildQueryWrapper(Role entity,Map<String, Object> params) {
+    private LambdaQueryWrapper<Role> buildQueryWrapper(Role entity, Map<String, Object> params) {
         LambdaQueryWrapper<Role> lqw = Wrappers.lambdaQuery();
-                    lqw.like(StringUtil.isNotBlank(entity.getRoleName()), Role::getRoleName, entity.getRoleName());
-                    lqw.eq(StringUtil.isNotBlank(entity.getRoleKey()), Role::getRoleKey, entity.getRoleKey());
-                    lqw.eq(entity.getOrderNum() != null, Role::getOrderNum, entity.getOrderNum());
-                    lqw.eq(StringUtil.isNotBlank(entity.getDataScope()), Role::getDataScope, entity.getDataScope());
-                    lqw.eq(StringUtil.isNotBlank(entity.getFunctionCheckStrictly()), Role::getFunctionCheckStrictly, entity.getFunctionCheckStrictly());
-                    lqw.eq(StringUtil.isNotBlank(entity.getOrgCheckStrictly()), Role::getOrgCheckStrictly, entity.getOrgCheckStrictly());
-                    lqw.eq(StringUtil.isNotBlank(entity.getStatus()), Role::getStatus, entity.getStatus());
-                    lqw.eq(StringUtil.isNotBlank(entity.getDeleteFlag()), Role::getDeleteFlag, entity.getDeleteFlag());
-                    lqw.eq(entity.getAppId() != null, Role::getAppId, entity.getAppId());
+        lqw.like(StringUtil.isNotBlank(entity.getRoleName()), Role::getRoleName, entity.getRoleName());
+        lqw.eq(StringUtil.isNotBlank(entity.getRoleKey()), Role::getRoleKey, entity.getRoleKey());
+        lqw.eq(entity.getOrderNum() != null, Role::getOrderNum, entity.getOrderNum());
+        lqw.eq(StringUtil.isNotBlank(entity.getDataScope()), Role::getDataScope, entity.getDataScope());
+        lqw.eq(StringUtil.isNotBlank(entity.getFunctionCheckStrictly()), Role::getFunctionCheckStrictly, entity.getFunctionCheckStrictly());
+        lqw.eq(StringUtil.isNotBlank(entity.getOrgCheckStrictly()), Role::getOrgCheckStrictly, entity.getOrgCheckStrictly());
+        lqw.eq(StringUtil.isNotBlank(entity.getStatus()), Role::getStatus, entity.getStatus());
+        lqw.eq(StringUtil.isNotBlank(entity.getDeleteFlag()), Role::getDeleteFlag, entity.getDeleteFlag());
+        lqw.eq(entity.getAppId() != null, Role::getAppId, entity.getAppId());
         return lqw;
     }
 

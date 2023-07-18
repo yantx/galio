@@ -1,8 +1,8 @@
 package com.galio.system.service;
 
+import com.galio.core.model.PageRequestDto;
 import com.galio.system.dto.ConfigDto;
 import com.galio.system.model.Config;
-import com.galio.mybatis.page.PageDto;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import java.util.Collection;
@@ -23,7 +23,7 @@ public interface ConfigService {
     /**
      * 查询系统配置信息列表
      */
-    Page<Config> queryPageList(PageDto pageDto);
+    Page<Config> queryPageList(PageRequestDto pageRequestDto);
 
     /**
      * 查询系统配置信息列表

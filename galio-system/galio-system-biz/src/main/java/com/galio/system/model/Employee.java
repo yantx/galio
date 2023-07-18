@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import com.galio.core.model.BaseEntity;
 
@@ -43,7 +44,7 @@ public class Employee extends BaseEntity {
     /**
      * 手机号码
      */
-    private Long mobilePhone;
+    private String mobilePhone;
     /**
      * 座机号码
      */
@@ -59,11 +60,11 @@ public class Employee extends BaseEntity {
     /**
      * 入职日期
      */
-    private LocalDateTime entryDate;
+    private LocalDate entryDate;
     /**
      * 离职日期
      */
-    private LocalDateTime termDate;
+    private LocalDate termDate;
     /**
      * 状态1正常 0异常
      */

@@ -1,9 +1,9 @@
 package com.galio.system.service.impl;
 
-import com.galio.core.utils.StringUtil;
 import com.galio.core.utils.ObjectUtil;
-import com.galio.mybatis.page.PageDto;
+import com.galio.core.model.PageRequestDto;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.galio.mybatis.page.MybatisPageConvertHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.galio.system.dto.LogininforDto;
@@ -38,8 +38,8 @@ public class LogininforServiceImpl implements LogininforService {
          * 查询系统访问记录列表
          */
         @Override
-        public Page<Logininfor> queryPageList(PageDto pageDto) {
-            return logininforRepository.selectPage(pageDto.build());
+        public Page<Logininfor> queryPageList(PageRequestDto pageRequestDto) {
+            return logininforRepository.selectPage(MybatisPageConvertHelper.build(pageRequestDto));
         }
 
     /**

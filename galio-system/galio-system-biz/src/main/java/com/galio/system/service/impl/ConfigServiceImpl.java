@@ -2,8 +2,9 @@ package com.galio.system.service.impl;
 
 import com.galio.core.constant.CacheConstants;
 import com.galio.core.utils.ObjectUtil;
-import com.galio.mybatis.page.PageDto;
+import com.galio.core.model.PageRequestDto;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.galio.mybatis.page.MybatisPageConvertHelper;
 import com.galio.redis.util.CacheUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -39,8 +40,8 @@ public class ConfigServiceImpl implements ConfigService {
      * 查询系统配置信息列表
      */
     @Override
-    public Page<Config> queryPageList(PageDto pageDto) {
-        return configRepository.selectPage(pageDto.build());
+    public Page<Config> queryPageList(PageRequestDto pageRequestDto) {
+        return configRepository.selectPage(MybatisPageConvertHelper.build(pageRequestDto));
     }
 
     /**

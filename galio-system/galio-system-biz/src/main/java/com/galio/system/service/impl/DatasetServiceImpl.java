@@ -1,9 +1,9 @@
 package com.galio.system.service.impl;
 
-import com.galio.core.utils.StringUtil;
 import com.galio.core.utils.ObjectUtil;
-import com.galio.mybatis.page.PageDto;
+import com.galio.core.model.PageRequestDto;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.galio.mybatis.page.MybatisPageConvertHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.galio.system.dto.DatasetDto;
@@ -38,8 +38,8 @@ public class DatasetServiceImpl implements DatasetService {
          * 查询数据集信息列表
          */
         @Override
-        public Page<Dataset> queryPageList(PageDto pageDto) {
-            return datasetRepository.selectPage(pageDto.build());
+        public Page<Dataset> queryPageList(PageRequestDto pageRequestDto) {
+            return datasetRepository.selectPage(MybatisPageConvertHelper.build(pageRequestDto));
         }
 
     /**

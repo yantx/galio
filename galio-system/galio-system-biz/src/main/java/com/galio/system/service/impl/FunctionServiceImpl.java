@@ -1,9 +1,9 @@
 package com.galio.system.service.impl;
 
-import com.galio.core.utils.StringUtil;
 import com.galio.core.utils.ObjectUtil;
-import com.galio.mybatis.page.PageDto;
+import com.galio.core.model.PageRequestDto;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.galio.mybatis.page.MybatisPageConvertHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.galio.system.dto.FunctionDto;
@@ -38,8 +38,8 @@ public class FunctionServiceImpl implements FunctionService {
          * 查询功能列表
          */
         @Override
-        public Page<Function> queryPageList(PageDto pageDto) {
-            return functionRepository.selectPage(pageDto.build());
+        public Page<Function> queryPageList(PageRequestDto pageRequestDto) {
+            return functionRepository.selectPage(MybatisPageConvertHelper.build(pageRequestDto));
         }
 
     /**

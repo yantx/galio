@@ -61,7 +61,7 @@ public class MemberVo {
      * 手机号
      */
     @Schema(description = "手机号")
-    private Long mobileNumber;
+    private String mobileNumber;
 
     /**
      * 头像地址

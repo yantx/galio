@@ -2,7 +2,7 @@ package com.galio.system.service;
 
 import com.galio.system.dto.RoleDto;
 import com.galio.system.model.Role;
-import com.galio.mybatis.page.PageDto;
+import com.galio.core.model.PageRequestDto;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import java.util.Collection;
@@ -23,7 +23,7 @@ public interface RoleService {
     /**
      * 查询角色信息列表
      */
-    Page<Role> queryPageList(PageDto pageDto);
+    Page<Role> queryPageList(PageRequestDto pageRequestDto);
 
     /**
      * 查询角色信息列表

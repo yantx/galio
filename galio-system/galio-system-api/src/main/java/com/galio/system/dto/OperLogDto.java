@@ -23,7 +23,6 @@ public class OperLogDto extends BaseEntity {
     /**
      * 主键
      */
-    @NotNull(message = "主键不能为空", groups = { UpdateGroup.class })
     @Schema(description = "主键")
     private Long operId;
 
@@ -72,7 +71,6 @@ public class OperLogDto extends BaseEntity {
     /**
      * 机构名称
      */
-    @NotBlank(message = "机构名称不能为空", groups = { InsertGroup.class, UpdateGroup.class })
     @Schema(description = "机构名称")
     private String orgName;
 
@@ -100,7 +98,6 @@ public class OperLogDto extends BaseEntity {
     /**
      * 请求参数
      */
-    @NotBlank(message = "请求参数不能为空", groups = { InsertGroup.class, UpdateGroup.class })
     @Schema(description = "请求参数")
     private String operParam;
 
@@ -114,14 +111,12 @@ public class OperLogDto extends BaseEntity {
     /**
      * 操作状态（1正常 0异常）
      */
-    @NotBlank(message = "操作状态（1正常 0异常）不能为空", groups = { InsertGroup.class, UpdateGroup.class })
     @Schema(description = "操作状态（1正常 0异常）")
     private String status;
 
     /**
      * 错误消息
      */
-    @NotBlank(message = "错误消息不能为空", groups = { InsertGroup.class, UpdateGroup.class })
     @Schema(description = "错误消息")
     private String errorMsg;
 

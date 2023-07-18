@@ -1,9 +1,9 @@
 package com.galio.system.service.impl;
 
-import com.galio.core.utils.StringUtil;
 import com.galio.core.utils.ObjectUtil;
-import com.galio.mybatis.page.PageDto;
+import com.galio.core.model.PageRequestDto;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.galio.mybatis.page.MybatisPageConvertHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.galio.system.dto.NoticeDto;
@@ -38,8 +38,8 @@ public class NoticeServiceImpl implements NoticeService {
          * 查询通知公告列表
          */
         @Override
-        public Page<Notice> queryPageList(PageDto pageDto) {
-            return noticeRepository.selectPage(pageDto.build());
+        public Page<Notice> queryPageList(PageRequestDto pageRequestDto) {
+            return noticeRepository.selectPage(MybatisPageConvertHelper.build(pageRequestDto));
         }
 
     /**

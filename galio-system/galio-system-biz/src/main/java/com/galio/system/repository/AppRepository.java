@@ -51,7 +51,6 @@ public class AppRepository{
         LambdaQueryWrapper<App> lqw = Wrappers.lambdaQuery();
                     lqw.like(StringUtil.isNotBlank(entity.getAppName()), App::getAppName, entity.getAppName());
                     lqw.eq(StringUtil.isNotBlank(entity.getAppCode()), App::getAppCode, entity.getAppCode());
-                    lqw.eq(StringUtil.isNotBlank(entity.getAppIcon()), App::getAppIcon, entity.getAppIcon());
                     lqw.eq(StringUtil.isNotBlank(entity.getIsFixed()), App::getIsFixed, entity.getIsFixed());
                     lqw.eq(StringUtil.isNotBlank(entity.getStatus()), App::getStatus, entity.getStatus());
         return lqw;
