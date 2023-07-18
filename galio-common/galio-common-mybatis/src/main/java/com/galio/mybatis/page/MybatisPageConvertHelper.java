@@ -5,46 +5,22 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.galio.core.constant.CommonConstants;
 import com.galio.core.enums.ResponseEnum;
 import com.galio.core.exception.CustomException;
+import com.galio.core.model.PageRequestDto;
 import com.galio.core.utils.ObjectUtil;
 import com.galio.core.utils.SqlUtil;
 import com.galio.core.utils.StringUtil;
-import lombok.Data;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @Author: galio
- * @Date: 2023-01-19
- * @Description: 分页查询参数
+ * @Date: 2023-07-05 22:43:28
+ * @Description: 分页助手
  */
-@Data
-public class PageDto implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-
-    /**
-     * 分页大小
-     */
-    private Integer pageSize;
-
-    /**
-     * 当前页数
-     */
-    private Integer currentPage;
-
-    /**
-     * 排序列
-     */
-    private String orderByColumn;
-
-    /**
-     * 排序的方向desc或者asc
-     */
-    private String isAsc;
+public class MybatisPageConvertHelper {
 
     /**
      * 当前记录起始索引 默认值
@@ -56,14 +32,14 @@ public class PageDto implements Serializable {
      */
     public static final int DEFAULT_PAGE_SIZE = Integer.MAX_VALUE;
 
-    public <T> Page<T> build() {
-        Integer pageNum = ObjectUtil.defaultIfNull(getCurrentPage(), DEFAULT_CURRENT_PAGE);
-        Integer pageSize = ObjectUtil.defaultIfNull(getPageSize(), DEFAULT_PAGE_SIZE);
+    public static <T> Page<T> build(PageRequestDto pageRequestDto) {
+        Integer pageNum = ObjectUtil.defaultIfNull(pageRequestDto.getCurrentPage(), DEFAULT_CURRENT_PAGE);
+        Integer pageSize = ObjectUtil.defaultIfNull(pageRequestDto.getPageSize(), DEFAULT_PAGE_SIZE);
         if (pageNum <= 0) {
             pageNum = DEFAULT_CURRENT_PAGE;
         }
         Page<T> page = new Page<>(pageNum, pageSize);
-        List<OrderItem> orderItems = buildOrderItem();
+        List<OrderItem> orderItems = buildOrderItem(pageRequestDto);
         if (CollectionUtils.isNotEmpty(orderItems)) {
             page.addOrder(orderItems);
         }
@@ -79,18 +55,19 @@ public class PageDto implements Serializable {
      * {isAsc:"desc",orderByColumn:"id,createTime"} order by id desc,create_time desc
      * {isAsc:"asc,desc",orderByColumn:"id,createTime"} order by id asc,create_time desc
      */
-    private List<OrderItem> buildOrderItem() {
-        if (StringUtils.isBlank(orderByColumn) || StringUtils.isBlank(isAsc)) {
+    private static List<OrderItem> buildOrderItem(PageRequestDto pageRequestDto) {
+        if (StringUtils.isBlank(pageRequestDto.getOrderByColumn()) || StringUtils.isBlank(pageRequestDto.getIsAsc())) {
             return null;
         }
-        String orderBy = SqlUtil.escapeOrderBySql(orderByColumn);
+        String orderBy = SqlUtil.escapeOrderBySql(pageRequestDto.getOrderByColumn());
         orderBy = StringUtil.humpToLine(orderBy);
 
+        String isAsc;
         // 兼容前端排序类型
-        isAsc = StringUtils.replaceEach(isAsc, new String[]{"ascending", "descending"}, new String[]{"asc", "desc"});
-
+        isAsc = StringUtils.replaceEach(pageRequestDto.getIsAsc(), new String[]{"ascending", "descending"}, new String[]{"asc", "desc"});
+        pageRequestDto.setIsAsc(isAsc);
         String[] orderByArr = orderBy.split(",");
-        String[] isAscArr = isAsc.split(",");
+        String[] isAscArr = pageRequestDto.getIsAsc().split(",");
         if (isAscArr.length != 1 && isAscArr.length != orderByArr.length) {
             throw new CustomException(ResponseEnum.VALIDATE_ERROR);
         }
@@ -110,5 +87,4 @@ public class PageDto implements Serializable {
         }
         return list;
     }
-
 }
