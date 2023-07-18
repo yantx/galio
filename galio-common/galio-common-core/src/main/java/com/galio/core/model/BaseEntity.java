@@ -10,7 +10,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,17 +23,6 @@ public class BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 搜索值
-     */
-    @JsonIgnore
-    @TableField(exist = false)
-    private String searchValue;
-    /**
-     * 所属应用系统编号
-     */
-    @TableField(fill = FieldFill.INSERT)
-    private Long appId;
     /**
      * 创建者
      */
