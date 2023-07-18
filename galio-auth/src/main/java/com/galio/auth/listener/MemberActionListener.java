@@ -17,8 +17,6 @@ import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 
-import static com.galio.core.utils.ServletUtils.getRequest;
-
 /**
  * @Author: galio
  * @Date: 2023-01-16
@@ -36,9 +34,9 @@ public class MemberActionListener implements SaTokenListener {
      */
     @Override
     public void doLogin(String loginType, Object loginId, String tokenValue, SaLoginModel loginModel) {
-        String userAgentStr = getRequest().getHeader("User-Agent");
+        String userAgentStr = ServletUtils.getRequest().getHeader("User-Agent");
         UserAgent userAgent = UserAgent.parseUserAgentString(userAgentStr);
-        String ip = ServletUtils.getClientIP(getRequest());
+        String ip = ServletUtils.getClientIP();
         LoginMemberDto accountDTO = LoginHelper.getLoginMember();
         MemberOnline memberOnline = new MemberOnline();
         memberOnline.setIpaddr(ip);
