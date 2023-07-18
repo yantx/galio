@@ -1,14 +1,16 @@
 package com.galio.mybatis.handler;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.galio.core.exception.CustomException;
 import com.galio.core.model.BaseEntity;
-import com.galio.core.utils.DateUtil;
 import com.galio.core.utils.ObjectUtil;
+import com.galio.mybatis.enums.MybatisResponseEnum;
 import com.galio.satoken.utils.LoginHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.reflection.MetaObject;
 
+import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 
 /**
@@ -35,10 +37,14 @@ public class CreateAndUpdateMetaObjectHandler implements MetaObjectHandler {
                 // 当前已登录 且 更新人为空 则填充
                 baseEntity.setUpdateBy(memberId);
 
-                baseEntity.setAppId(1L);
+                Field field = metaObject.getClass().getDeclaredField("appId");
+                if (!field.isAnnotationPresent(TableId.class)){
+                    this.setFieldValByName("appId", getAppId(), metaObject);
+                }
             }
         } catch (Exception e) {
-            throw new CustomException(4401,"自动注入异常 => " + e.getMessage());
+            log.error(MybatisResponseEnum.SET_FIELD_VALUE_ERROR.getMsg(),e);
+            throw new CustomException(MybatisResponseEnum.SET_FIELD_VALUE_ERROR);
         }
     }
 
@@ -57,7 +63,8 @@ public class CreateAndUpdateMetaObjectHandler implements MetaObjectHandler {
                 }
             }
         } catch (Exception e) {
-            throw new CustomException(4401,"自动注入异常 => " + e.getMessage());
+            log.error(MybatisResponseEnum.SET_FIELD_VALUE_ERROR.getMsg(),e);
+            throw new CustomException(MybatisResponseEnum.SET_FIELD_VALUE_ERROR);
         }
     }
 
@@ -66,6 +73,12 @@ public class CreateAndUpdateMetaObjectHandler implements MetaObjectHandler {
      */
     private Long getMemberId() {
         return LoginHelper.getMemberId();
+    }
+    /**
+     * 获取登录账号所属应用
+     */
+    private Long getAppId() {
+        return LoginHelper.getAppId();
     }
 
 }

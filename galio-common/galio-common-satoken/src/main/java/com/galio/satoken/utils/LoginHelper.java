@@ -94,6 +94,9 @@ public class LoginHelper {
     public static Long getOrgId() {
         return getLoginMember().getOrgId();
     }
+    public static Long getAppId() {
+        return getLoginMember().getAppId();
+    }
 
     /**
      * 获取用户账户
