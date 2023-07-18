@@ -6,9 +6,8 @@ import com.galio.common.log.enums.OperTypeEnum;
 import com.galio.core.utils.ObjectUtil;
 import com.galio.core.validate.InsertGroup;
 import com.galio.core.validate.UpdateGroup;
-import com.galio.core.validate.SelectGroup;
-#if($table.crud || $table.sub)
-import com.galio.mybatis.page.PageDto;
+    #if($table.crud || $table.sub)
+import ${packageName}.model.dto.${ClassName}PageRequestDto;
 import com.galio.mybatis.page.PageVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 #end
@@ -50,8 +49,8 @@ public class ${ClassName}Controller {
     @Operation(summary = "分页查询${functionName}列表")
     @SaCheckPermission("${permissionPrefix}:page")
     @PostMapping("/page")
-    public PageVo page(@RequestBody PageDto pageDto) {
-        IPage<${ClassName}> pageData = ${className}Service.queryPageList(pageDto);
+    public PageVo findPage(@RequestBody ${ClassName}PageRequestDto pageRequestDto) {
+        IPage<${ClassName}> pageData = ${className}Service.queryPageList(pageRequestDto);
         return PageVo.build(pageData);
     }
 #elseif($table.tree)
@@ -59,7 +58,7 @@ public class ${ClassName}Controller {
     @Operation(summary = "查询${functionName}列表")
     @SaCheckPermission("${permissionPrefix}:list")
     @PostMapping("/list")
-    public List<${ClassName}Vo> list(${ClassName}Dto dto) {
+    public List<${ClassName}Vo> findList(${ClassName}Dto dto) {
         List<${ClassName}> ${className}List = ${className}Service.queryList(dto);
         return ObjectUtil.copyList(${className}List,${ClassName}Vo.class);
     }

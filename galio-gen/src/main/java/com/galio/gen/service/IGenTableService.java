@@ -1,9 +1,8 @@
 package com.galio.gen.service;
 
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.galio.gen.model.GenTable;
-import com.galio.mybatis.page.PageDto;
+import com.galio.core.model.PageRequestDto;
 import com.galio.mybatis.page.PageVo;
 
 import java.util.List;
@@ -16,9 +15,9 @@ import java.util.Map;
 */
 public interface IGenTableService {
 
-    PageVo<GenTable> selectPageGenTableList(PageDto pageQuery);
+    PageVo<GenTable> selectPageGenTableList(PageRequestDto pageQuery);
 
-    PageVo<GenTable> selectPageDbTableList(PageDto pageQuery);
+    PageVo<GenTable> selectPageDbTableList(PageRequestDto pageQuery);
 
     /**
      * 查询据库列表

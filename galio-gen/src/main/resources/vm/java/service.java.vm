@@ -3,7 +3,7 @@ package ${packageName}.service;
 import ${packageName}.model.dto.${ClassName}Dto;
 import ${packageName}.model.${ClassName};
 #if($table.crud || $table.sub)
-import com.galio.mybatis.page.PageDto;
+import com.galio.core.model.PageRequestDto;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 #end
 
@@ -26,7 +26,7 @@ public interface ${ClassName}Service {
     /**
      * 查询${functionName}列表
      */
-    Page<${ClassName}> queryPageList(PageDto pageDto);
+    Page<${ClassName}> queryPageList(PageRequestDto pageRequestDto);
 #end
 
     /**

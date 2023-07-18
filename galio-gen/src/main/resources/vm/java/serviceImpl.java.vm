@@ -1,9 +1,8 @@
 package ${packageName}.service.impl;
 
-import com.galio.core.utils.StringUtil;
 import com.galio.core.utils.ObjectUtil;
 #if($table.crud || $table.sub)
-import com.galio.mybatis.page.PageDto;
+import com.galio.core.model.PageRequestDto;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 #end
 import lombok.RequiredArgsConstructor;
@@ -41,8 +40,8 @@ public class ${ClassName}ServiceImpl implements ${ClassName}Service {
          * 查询${functionName}列表
          */
         @Override
-        public Page<${ClassName}> queryPageList(PageDto pageDto) {
-            return ${className}Repository.selectPage(pageDto.build());
+        public Page<${ClassName}> queryPageList(PageRequestDto pageRequestDto) {
+            return ${className}Repository.selectPage(pageRequestDto.build());
         }
     #end
 

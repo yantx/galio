@@ -1,9 +1,13 @@
 package com.galio.gen.util;
 
+import com.galio.core.enums.ResponseEnum;
+import com.galio.core.exception.CustomException;
+import com.galio.core.utils.Assert;
 import com.galio.core.utils.DateUtil;
 import com.galio.core.utils.JsonUtils;
 import com.galio.core.utils.StringUtil;
 import com.galio.gen.constant.GenConstants;
+import com.galio.gen.enums.GenExceptionResponseEnum;
 import com.galio.gen.model.GenTable;
 import com.galio.gen.model.GenTableColumn;
 import lombok.AccessLevel;
@@ -13,6 +17,8 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.apache.velocity.VelocityContext;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 
 /**
  * @Author: galio
@@ -130,6 +136,7 @@ public class VelocityUtils {
         List<String> templates = new ArrayList<String>();
         templates.add("vm/java/entity.java.vm");
         templates.add("vm/java/dto.java.vm");
+        templates.add("vm/java/queryDto.java.vm");
         templates.add("vm/java/vo.java.vm");
         templates.add("vm/java/mapper.java.vm");
         templates.add("vm/java/repository.java.vm");
@@ -162,51 +169,29 @@ public class VelocityUtils {
     public static String getFileName(String template, GenTable genTable) {
         // 文件名称
         String fileName = "";
-        // 包路径
-        String packageName = genTable.getPackageName();
-        // 模块名
-        String moduleName = genTable.getModuleName();
-        // 大写类名
-        String className = genTable.getClassName();
-        // 业务名称
-        String businessName = genTable.getBusinessName();
-
-        String javaPath = PROJECT_PATH + "/" + StringUtil.replace(packageName, ".", "/");
-        String mybatisPath = MYBATIS_PATH + "/" + moduleName;
+        Function<String,String> javaPathFun = (packageName) -> { return PROJECT_PATH + "/" + StringUtil.replace(packageName, ".", "/");};
+        Function<String,String> mybatisPathFun = (moduleName) -> {return MYBATIS_PATH + "/" + moduleName;};
         String vuePath = "vue";
+        Map<String, Function<GenTable,String>> templateMap = new HashMap<>();
+        templateMap.put("vm/java/entity.java.vm", (params) -> StringUtil.format("{}/model/{}.java", javaPathFun.apply(params.getPackageName()), params.getClassName()));
+        templateMap.put("vm/java/vo.java.vm", (params) -> StringUtil.format("{}/model/vo/{}Vo.java", javaPathFun.apply(params.getPackageName()), params.getClassName()));
+        templateMap.put("vm/java/dto.java.vm", (params) -> StringUtil.format("{}/model/dto/{}Dto.java", javaPathFun.apply(params.getPackageName()), params.getClassName()));
+        templateMap.put("vm/java/queryDto.java.vm", (params) -> StringUtil.format("{}/model/dto/{}PageReqDto.java", javaPathFun.apply(params.getPackageName()), params.getClassName()));
+        templateMap.put("vm/java/sub-entity.java.vm", (params) -> StringUtil.format("{}/model/{}.java", javaPathFun.apply(params.getPackageName()), params.getClassName()));
+        templateMap.put("vm/java/mapper.java.vm", (params) -> StringUtil.format("{}/mapper/{}Mapper.java", javaPathFun.apply(params.getPackageName()), params.getClassName()));
+        templateMap.put("vm/java/repository.java.vm", (params) -> StringUtil.format("{}/repository/{}Repository.java", javaPathFun.apply(params.getPackageName()), params.getClassName()));
+        templateMap.put("vm/java/service.java.vm", (params) -> StringUtil.format("{}/service/{}Service.java", javaPathFun.apply(params.getPackageName()), params.getClassName()));
+        templateMap.put("vm/java/serviceImpl.java.vm", (params) -> StringUtil.format("{}/service/impl/{}ServiceImpl.java", javaPathFun.apply(params.getPackageName()), params.getClassName()));
+        templateMap.put("vm/java/controller.java.vm", (params) -> StringUtil.format("{}/controller/{}Controller.java", javaPathFun.apply(params.getPackageName()), params.getClassName()));
+        templateMap.put("vm/xml/mapper.xml.vm", (params) -> StringUtil.format("{}/{}Mapper.xml", mybatisPathFun.apply(params.getModuleName()), params.getClassName()));
+        templateMap.put("vm/sql/sql.vm", (params) -> StringUtil.format("{}.sql", params.getBusinessName()));
+        templateMap.put("vm/js/api.js.vm", (params) -> StringUtil.format("{}/api/{}/{}.js", vuePath, params.getModuleName(), params.getBusinessName()));
+        templateMap.put("vm/vue/index.vue.vm", (params) -> StringUtil.format("{}/views/{}/{}/index.vue", vuePath, params.getModuleName(), params.getBusinessName()));
+        templateMap.put("vm/vue/index-tree.vue.vm", (params) -> StringUtil.format("{}/views/{}/{}/index.vue", vuePath, params.getModuleName(), params.getBusinessName()));
 
-        if (template.contains("entity.java.vm")) {
-            fileName = StringUtil.format("{}/model/{}.java", javaPath, className);
-        }
-        if (template.contains("vo.java.vm")) {
-            fileName = StringUtil.format("{}/model/vo/{}Vo.java", javaPath, className);
-        }
-        if (template.contains("dto.java.vm")) {
-            fileName = StringUtil.format("{}/model/dto/{}Dto.java", javaPath, className);
-        }
-        if (template.contains("sub-entity.java.vm") && StringUtil.equals(GenConstants.TPL_SUB, genTable.getTplCategory())) {
-            fileName = StringUtil.format("{}/model/{}.java", javaPath, genTable.getSubTable().getClassName());
-        } else if (template.contains("mapper.java.vm")) {
-            fileName = StringUtil.format("{}/mapper/{}Mapper.java", javaPath, className);
-        }  else if (template.contains("repository.java.vm")) {
-            fileName = StringUtil.format("{}/repository/{}Repository.java", javaPath, className);
-        } else if (template.contains("service.java.vm")) {
-            fileName = StringUtil.format("{}/service/{}Service.java", javaPath, className);
-        } else if (template.contains("serviceImpl.java.vm")) {
-            fileName = StringUtil.format("{}/service/impl/{}ServiceImpl.java", javaPath, className);
-        } else if (template.contains("controller.java.vm")) {
-            fileName = StringUtil.format("{}/controller/{}Controller.java", javaPath, className);
-        } else if (template.contains("mapper.xml.vm")) {
-            fileName = StringUtil.format("{}/{}Mapper.xml", mybatisPath, className);
-        } else if (template.contains("sql.vm")) {
-            fileName = businessName + "Menu.sql";
-        } else if (template.contains("api.js.vm")) {
-            fileName = StringUtil.format("{}/api/{}/{}.js", vuePath, moduleName, businessName);
-        } else if (template.contains("index.vue.vm")) {
-            fileName = StringUtil.format("{}/views/{}/{}/index.vue", vuePath, moduleName, businessName);
-        } else if (template.contains("index-tree.vue.vm")) {
-            fileName = StringUtil.format("{}/views/{}/{}/index.vue", vuePath, moduleName, businessName);
-        }
+        Assert.isTrue(templateMap.containsKey(template), GenExceptionResponseEnum.GEN_TEMPLATE_NOT_FOUND.packageByArgs(template));
+        fileName = templateMap.get(template).apply(genTable);
+
         return fileName;
     }
 

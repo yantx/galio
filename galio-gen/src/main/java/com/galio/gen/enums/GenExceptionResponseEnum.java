@@ -14,6 +14,7 @@ public enum GenExceptionResponseEnum implements StatusCode {
 
     GEN_TABLE_IMPORT_ERROR(65000,  "gen.table.import.error"),
     GEN_TEMPLATE_WRITE_ERROR(65001,  "gen.template.write.error"),
+    GEN_TEMPLATE_NOT_FOUND(65008,  "gen.template.not.found"),
     GEN_TABLE_STRUCT_NOT_FOUND(65002,  "gen.table.struct.not.found"),
     GEN_TREE_CODE_NOT_NULL(65003,  "gen.tree.code.not.null"),
     GEN_TREE_PARENT_CODE_NOT_NULL(65004,  "gen.tree.parent.code.not.null"),

@@ -1,9 +1,6 @@
 package com.galio.gen.model;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 
 import java.util.Date;
 import java.util.List;
@@ -11,6 +8,7 @@ import java.util.List;
 import com.galio.core.model.BaseEntity;
 import com.galio.core.utils.StringUtil;
 import com.galio.gen.constant.GenConstants;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -105,6 +103,10 @@ public class GenTable extends BaseEntity {
     private Integer orderNum;
 
     /**
+     * 是否中间表 1-是 0-否
+     */
+    private String isMid;
+    /**
      * 树编码字段
      */
     @TableField(exist = false)
@@ -150,6 +152,12 @@ public class GenTable extends BaseEntity {
     @TableField(exist = false)
     private GenTableColumn pkColumn;
 
+    /**
+     * 应用id
+     */
+    @Schema(description = "应用id")
+    @TableField(fill = FieldFill.INSERT)
+    private Long appId;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

@@ -3,7 +3,6 @@ package com.galio.gen.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.galio.core.exception.CustomException;
 import com.galio.core.text.CharsetKit;
 import com.galio.core.utils.JsonUtils;
@@ -19,9 +18,9 @@ import com.galio.gen.service.IGenTableService;
 import com.galio.gen.util.GenUtils;
 import com.galio.gen.util.VelocityInitializer;
 import com.galio.gen.util.VelocityUtils;
-import com.galio.mybatis.page.PageDto;
+import com.galio.core.model.PageRequestDto;
+import com.galio.mybatis.page.MybatisPageConvertHelper;
 import com.galio.mybatis.page.PageVo;
-import com.galio.satoken.utils.LoginHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -72,8 +71,8 @@ public class IGenTableServiceImpl implements IGenTableService {
     }
 
     @Override
-    public PageVo<GenTable> selectPageGenTableList(PageDto pageQuery) {
-        return PageVo.build(genTableMapper.selectPage(pageQuery.build(),buildGenTableQueryWrapper(new GenTable())));
+    public PageVo<GenTable> selectPageGenTableList(PageRequestDto pageQuery) {
+        return PageVo.build(genTableMapper.selectPage(MybatisPageConvertHelper.build(pageQuery),buildGenTableQueryWrapper(new GenTable())));
     }
 
     private QueryWrapper<GenTable> buildGenTableQueryWrapper(GenTable genTable) {
@@ -88,8 +87,8 @@ public class IGenTableServiceImpl implements IGenTableService {
 
 
     @Override
-    public PageVo<GenTable> selectPageDbTableList(PageDto pageQuery) {
-        return PageVo.build(genTableMapper.selectPageDbTableList(pageQuery.build(), new GenTable()));
+    public PageVo<GenTable> selectPageDbTableList(PageRequestDto pageQuery) {
+        return PageVo.build(genTableMapper.selectPageDbTableList(MybatisPageConvertHelper.build(pageQuery), new GenTable()));
     }
 
     /**

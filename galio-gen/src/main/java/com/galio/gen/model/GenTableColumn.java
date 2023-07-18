@@ -1,14 +1,12 @@
 package com.galio.gen.model;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 
 import java.util.Date;
 
 import com.galio.core.model.BaseEntity;
 import com.galio.core.utils.StringUtil;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -110,6 +108,13 @@ public class GenTableColumn extends BaseEntity {
      * 排序
      */
     private Object orderNum;
+
+    /**
+     * 应用id
+     */
+    @Schema(description = "应用id")
+    @TableField(fill = FieldFill.INSERT)
+    private Long appId;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

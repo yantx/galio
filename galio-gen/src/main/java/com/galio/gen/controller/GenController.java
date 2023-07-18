@@ -5,7 +5,7 @@ import com.galio.gen.model.GenTable;
 import com.galio.gen.model.GenTableColumn;
 import com.galio.gen.service.IGenTableColumnService;
 import com.galio.gen.service.IGenTableService;
-import com.galio.mybatis.page.PageDto;
+import com.galio.core.model.PageRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
@@ -40,7 +40,7 @@ public class GenController{
      */
     @PostMapping("/list")
     @Operation(summary = "查询代码生成列表")
-    public Object genList(@RequestBody PageDto pageQuery) {
+    public Object genList(@RequestBody PageRequestDto pageQuery) {
         return genTableService.selectPageGenTableList(pageQuery);
     }
 
@@ -67,7 +67,7 @@ public class GenController{
      */
     @PostMapping("/db/list")
     @Operation(summary = "查询数据库列表")
-    public Object dataList(@RequestBody PageDto pageQuery) {
+    public Object dataList(@RequestBody PageRequestDto pageQuery) {
         return genTableService.selectPageDbTableList(pageQuery);
     }
 
