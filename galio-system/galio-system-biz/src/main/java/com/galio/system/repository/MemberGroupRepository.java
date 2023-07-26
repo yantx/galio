@@ -1,9 +1,8 @@
 package com.galio.system.repository;
 
-import com.galio.core.utils.StringUtil;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.galio.system.model.MemberRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import com.galio.system.model.MemberGroup;
@@ -27,43 +26,26 @@ public class MemberGroupRepository{
     /**
      * 查询成员和群组关联
      */
-    public MemberGroup selectById(Long memberId) {
-        return memberGroupMapper.selectById(memberId);
-    }
-
-    /**
-     * 查询成员和群组关联列表
-     */
-    public List<MemberGroup> selectList(MemberGroup memberGroup,Map<String, Object> params) {
-        LambdaQueryWrapper<MemberGroup> lqw = buildQueryWrapper(memberGroup, params);
-        return memberGroupMapper.selectList(lqw);
-    }
-
-    private LambdaQueryWrapper<MemberGroup> buildQueryWrapper(MemberGroup entity,Map<String, Object> params) {
+    public List<MemberGroup> selectByMemberId(Long memberId) {
         LambdaQueryWrapper<MemberGroup> lqw = Wrappers.lambdaQuery();
-        return lqw;
+        lqw.eq(MemberGroup::getMemberId, memberId);
+        return memberGroupMapper.selectList(lqw);
     }
 
     /**
      * 新增成员和群组关联
      */
-    public int insert(MemberGroup entity) {
-        validEntityBeforeSave(entity);
-        int flag = memberGroupMapper.insert(entity);
+    public boolean insertBatch(List<MemberGroup> entity) {
+        boolean flag = memberGroupMapper.insertBatch(entity);
         return flag;
-    }
-
-    /**
-     * 保存前的数据校验
-     */
-    private void validEntityBeforeSave(MemberGroup entity) {
-        //TODO 做一些数据校验,如唯一约束
     }
 
     /**
      * 批量删除成员和群组关联
      */
-    public int deleteBatchIds(Collection<Long> ids) {
-        return memberGroupMapper.deleteBatchIds(ids);
+    public int deleteByMemberId(Long memberId) {
+        LambdaQueryWrapper<MemberGroup> lqw = Wrappers.lambdaQuery();
+        lqw.eq(MemberGroup::getMemberId, memberId);
+        return memberGroupMapper.delete(lqw);
     }
 }

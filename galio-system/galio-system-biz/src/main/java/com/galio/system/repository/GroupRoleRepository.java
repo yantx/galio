@@ -25,45 +25,28 @@ public class GroupRoleRepository{
     private final GroupRoleMapper groupRoleMapper;
 
     /**
-     * 查询分组和角色关联
-     */
-    public GroupRole selectById(Long groupId) {
-        return groupRoleMapper.selectById(groupId);
-    }
-
-    /**
      * 查询分组和角色关联列表
      */
-    public List<GroupRole> selectList(GroupRole groupRole,Map<String, Object> params) {
-        LambdaQueryWrapper<GroupRole> lqw = buildQueryWrapper(groupRole, params);
-        return groupRoleMapper.selectList(lqw);
-    }
-
-    private LambdaQueryWrapper<GroupRole> buildQueryWrapper(GroupRole entity,Map<String, Object> params) {
+    public List<GroupRole> selectList(Long groupId) {
         LambdaQueryWrapper<GroupRole> lqw = Wrappers.lambdaQuery();
-        return lqw;
+        lqw.eq(GroupRole::getGroupId, groupId);
+        return groupRoleMapper.selectList(lqw);
     }
 
     /**
      * 新增分组和角色关联
      */
-    public int insert(GroupRole entity) {
-        validEntityBeforeSave(entity);
-        int flag = groupRoleMapper.insert(entity);
+    public boolean insertBatch(List<GroupRole> entity) {
+        boolean flag = groupRoleMapper.insertBatch(entity);
         return flag;
-    }
-
-    /**
-     * 保存前的数据校验
-     */
-    private void validEntityBeforeSave(GroupRole entity) {
-        //TODO 做一些数据校验,如唯一约束
     }
 
     /**
      * 批量删除分组和角色关联
      */
-    public int deleteBatchIds(Collection<Long> ids) {
-        return groupRoleMapper.deleteBatchIds(ids);
+    public int deleteByGroupId(Long groupId) {
+        LambdaQueryWrapper<GroupRole> lqw = Wrappers.lambdaQuery();
+        lqw.eq(GroupRole::getGroupId, groupId);
+        return groupRoleMapper.delete(lqw);
     }
 }

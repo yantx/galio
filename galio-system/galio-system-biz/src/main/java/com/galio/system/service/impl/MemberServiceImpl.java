@@ -4,6 +4,9 @@ import com.galio.core.utils.ObjectUtil;
 import com.galio.core.model.PageRequestDto;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.galio.mybatis.page.MybatisPageConvertHelper;
+import com.galio.system.model.MemberRole;
+import com.galio.system.repository.MemberGroupRepository;
+import com.galio.system.repository.MemberRoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.galio.system.dto.MemberDto;
@@ -14,6 +17,7 @@ import com.galio.system.service.MemberService;
 import java.util.List;
 import java.util.Map;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 /**
  * @Author: galio
@@ -25,6 +29,8 @@ import java.util.Collection;
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
+    private final MemberRoleRepository memberRoleRepository;
+    private final MemberGroupRepository memberGroupRepository;
 
     /**
      * 查询成员信息
@@ -72,6 +78,11 @@ public class MemberServiceImpl implements MemberService {
         boolean flag = memberRepository.insert(add) > 0;
         if (flag) {
             dto.setMemberId(add.getMemberId());
+            memberRoleRepository.deleteByMemberId(dto.getMemberId());
+            List<MemberRole> memberRoles = dto.getRoleIds().stream()
+                    .map(o -> new MemberRole(dto.getMemberId(),o)).collect(Collectors.toList());
+            memberRoleRepository.insertBatch(memberRoles);
+
         }
         return flag;
     }

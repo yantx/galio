@@ -2,6 +2,7 @@ package com.galio.system.repository;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.galio.system.model.RoleDataset;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import com.galio.system.model.RoleFunction;
@@ -22,46 +23,26 @@ public class RoleFunctionRepository{
 
     private final RoleFunctionMapper roleFunctionMapper;
 
-    /**
-     * 查询角色和功能关联
-     */
-    public RoleFunction selectById(Long roleId) {
-        return roleFunctionMapper.selectById(roleId);
-    }
-
-    /**
-     * 查询角色和功能关联列表
-     */
-    public List<RoleFunction> selectList(RoleFunction roleFunction,Map<String, Object> params) {
-        LambdaQueryWrapper<RoleFunction> lqw = buildQueryWrapper(roleFunction, params);
-        return roleFunctionMapper.selectList(lqw);
-    }
-
-    private LambdaQueryWrapper<RoleFunction> buildQueryWrapper(RoleFunction entity,Map<String, Object> params) {
+    public List<RoleFunction> selectList(Long roleId) {
         LambdaQueryWrapper<RoleFunction> lqw = Wrappers.lambdaQuery();
-        return lqw;
+        lqw.eq(RoleFunction::getRoleId, roleId);
+        return roleFunctionMapper.selectList(lqw);
     }
 
     /**
      * 新增角色和功能关联
      */
-    public int insert(RoleFunction entity) {
-        validEntityBeforeSave(entity);
-        int flag = roleFunctionMapper.insert(entity);
+    public boolean insertBatch(List<RoleFunction> entity) {
+        boolean flag = roleFunctionMapper.insertBatch(entity);
         return flag;
-    }
-
-    /**
-     * 保存前的数据校验
-     */
-    private void validEntityBeforeSave(RoleFunction entity) {
-        //TODO 做一些数据校验,如唯一约束
     }
 
     /**
      * 批量删除角色和功能关联
      */
-    public int deleteBatchIds(Collection<Long> ids) {
-        return roleFunctionMapper.deleteBatchIds(ids);
+    public int deleteRoleId(Long roleId) {
+        LambdaQueryWrapper<RoleFunction> lqw = Wrappers.lambdaQuery();
+        lqw.eq(RoleFunction::getRoleId, roleId);
+        return roleFunctionMapper.delete(lqw);
     }
 }

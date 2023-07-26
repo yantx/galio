@@ -27,43 +27,26 @@ public class MemberRoleRepository{
     /**
      * 查询成员和角色关联
      */
-    public MemberRole selectById(Long roleId) {
-        return memberRoleMapper.selectById(roleId);
-    }
-
-    /**
-     * 查询成员和角色关联列表
-     */
-    public List<MemberRole> selectList(MemberRole memberRole,Map<String, Object> params) {
-        LambdaQueryWrapper<MemberRole> lqw = buildQueryWrapper(memberRole, params);
+    public List<MemberRole> selectByMemberId(Long memberId) {
+        LambdaQueryWrapper<MemberRole> lqw = Wrappers.lambdaQuery();
+        lqw.eq(MemberRole::getMemberId, memberId);
         return memberRoleMapper.selectList(lqw);
     }
 
-    private LambdaQueryWrapper<MemberRole> buildQueryWrapper(MemberRole entity,Map<String, Object> params) {
-        LambdaQueryWrapper<MemberRole> lqw = Wrappers.lambdaQuery();
-        return lqw;
-    }
-
     /**
-     * 新增成员和角色关联
+     * 批量新增成员和角色关联对象
      */
-    public int insert(MemberRole entity) {
-        validEntityBeforeSave(entity);
-        int flag = memberRoleMapper.insert(entity);
+    public boolean insertBatch(List<MemberRole> entity) {
+        boolean flag = memberRoleMapper.insertBatch(entity);
         return flag;
-    }
-
-    /**
-     * 保存前的数据校验
-     */
-    private void validEntityBeforeSave(MemberRole entity) {
-        //TODO 做一些数据校验,如唯一约束
     }
 
     /**
      * 批量删除成员和角色关联
      */
-    public int deleteBatchIds(Collection<Long> ids) {
-        return memberRoleMapper.deleteBatchIds(ids);
+    public int deleteByMemberId(Long memberId) {
+        LambdaQueryWrapper<MemberRole> lqw = Wrappers.lambdaQuery();
+        lqw.eq(MemberRole::getMemberId, memberId);
+        return memberRoleMapper.delete(lqw);
     }
 }

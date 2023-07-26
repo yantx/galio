@@ -25,45 +25,28 @@ public class RoleDatasetRepository{
     private final RoleDatasetMapper roleDatasetMapper;
 
     /**
-     * 查询角色和数据集关联
-     */
-    public RoleDataset selectById(Long roleId) {
-        return roleDatasetMapper.selectById(roleId);
-    }
-
-    /**
      * 查询角色和数据集关联列表
      */
-    public List<RoleDataset> selectList(RoleDataset roleDataset,Map<String, Object> params) {
-        LambdaQueryWrapper<RoleDataset> lqw = buildQueryWrapper(roleDataset, params);
-        return roleDatasetMapper.selectList(lqw);
-    }
-
-    private LambdaQueryWrapper<RoleDataset> buildQueryWrapper(RoleDataset entity,Map<String, Object> params) {
+    public List<RoleDataset> selectList(Long roleId) {
         LambdaQueryWrapper<RoleDataset> lqw = Wrappers.lambdaQuery();
-        return lqw;
+        lqw.eq(RoleDataset::getRoleId, roleId);
+        return roleDatasetMapper.selectList(lqw);
     }
 
     /**
      * 新增角色和数据集关联
      */
-    public int insert(RoleDataset entity) {
-        validEntityBeforeSave(entity);
-        int flag = roleDatasetMapper.insert(entity);
+    public boolean insertBatch(List<RoleDataset> entity) {
+        boolean flag = roleDatasetMapper.insertBatch(entity);
         return flag;
-    }
-
-    /**
-     * 保存前的数据校验
-     */
-    private void validEntityBeforeSave(RoleDataset entity) {
-        //TODO 做一些数据校验,如唯一约束
     }
 
     /**
      * 批量删除角色和数据集关联
      */
-    public int deleteBatchIds(Collection<Long> ids) {
-        return roleDatasetMapper.deleteBatchIds(ids);
+    public int deleteRoleId(Long roleId) {
+        LambdaQueryWrapper<RoleDataset> lqw = Wrappers.lambdaQuery();
+        lqw.eq(RoleDataset::getRoleId, roleId);
+        return roleDatasetMapper.delete(lqw);
     }
 }
