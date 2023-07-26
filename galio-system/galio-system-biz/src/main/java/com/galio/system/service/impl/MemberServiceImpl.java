@@ -4,6 +4,7 @@ import com.galio.core.utils.ObjectUtil;
 import com.galio.core.model.PageRequestDto;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.galio.mybatis.page.MybatisPageConvertHelper;
+import com.galio.system.model.MemberGroup;
 import com.galio.system.model.MemberRole;
 import com.galio.system.repository.MemberGroupRepository;
 import com.galio.system.repository.MemberRoleRepository;
@@ -13,6 +14,7 @@ import com.galio.system.dto.MemberDto;
 import com.galio.system.model.Member;
 import com.galio.system.repository.MemberRepository;
 import com.galio.system.service.MemberService;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -72,17 +74,15 @@ public class MemberServiceImpl implements MemberService {
      * 新增成员信息
      */
     @Override
+    @Transactional
     public Boolean insertByDto(MemberDto dto) {
         Member add = ObjectUtil.copyObject(dto, Member.class);
         validEntityBeforeSave(add);
         boolean flag = memberRepository.insert(add) > 0;
         if (flag) {
-            dto.setMemberId(add.getMemberId());
-            memberRoleRepository.deleteByMemberId(dto.getMemberId());
-            List<MemberRole> memberRoles = dto.getRoleIds().stream()
-                    .map(o -> new MemberRole(dto.getMemberId(),o)).collect(Collectors.toList());
-            memberRoleRepository.insertBatch(memberRoles);
-
+            relevanceGroupInfo(dto);
+            // 会员角色关联
+            relevanceRoleInfo(dto);
         }
         return flag;
     }
@@ -91,10 +91,17 @@ public class MemberServiceImpl implements MemberService {
      * 修改成员信息
      */
     @Override
+    @Transactional
     public Boolean updateByDto(MemberDto dto) {
         Member update = ObjectUtil.copyObject(dto, Member.class);
         validEntityBeforeSave(update);
-        return memberRepository.updateById(update) > 0;
+        boolean flag = memberRepository.updateById(update) > 0;
+        if (flag) {
+            relevanceGroupInfo(dto);
+            // 会员角色关联
+            relevanceRoleInfo(dto);
+        }
+        return flag;
     }
 
     /**
@@ -113,5 +120,27 @@ public class MemberServiceImpl implements MemberService {
             //TODO 做一些业务上的校验,判断是否需要校验
         }
         return memberRepository.deleteBatchIds(ids) > 0;
+    }
+
+    public boolean relevanceGroupInfo(MemberDto dto){
+        if (ObjectUtil.isEmpty(dto.getGroupIds())){
+            return true;
+        }
+        dto.setMemberId(dto.getMemberId());
+        memberGroupRepository.deleteByMemberId(dto.getMemberId());
+        List<MemberGroup> memberGroups = dto.getRoleIds().stream()
+                .map(o -> new MemberGroup(dto.getMemberId(),o)).collect(Collectors.toList());
+        return memberGroupRepository.insertBatch(memberGroups);
+    }
+
+    public boolean relevanceRoleInfo(MemberDto dto){
+        if (ObjectUtil.isEmpty(dto.getRoleIds())){
+            return true;
+        }
+        dto.setMemberId(dto.getMemberId());
+        memberRoleRepository.deleteByMemberId(dto.getMemberId());
+        List<MemberRole> memberRoles = dto.getRoleIds().stream()
+                .map(o -> new MemberRole(dto.getMemberId(),o)).collect(Collectors.toList());
+        return memberRoleRepository.insertBatch(memberRoles);
     }
 }
