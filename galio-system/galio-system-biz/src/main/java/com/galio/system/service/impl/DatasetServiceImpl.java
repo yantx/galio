@@ -48,8 +48,8 @@ public class DatasetServiceImpl implements DatasetService {
     @Override
     public List<Dataset> queryList(DatasetDto dto) {
         Dataset entity = ObjectUtil.copyObject(dto, Dataset.class);
-        Map<String, Object> params = dto.getParams();
-        return datasetRepository.selectList(entity,params);
+        
+        return datasetRepository.selectList(entity);
     }
 
     /**
@@ -87,10 +87,8 @@ public class DatasetServiceImpl implements DatasetService {
      * 批量删除数据集信息
      */
     @Override
-    public Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid) {
-        if (isValid) {
-            //TODO 做一些业务上的校验,判断是否需要校验
-        }
+    public Boolean deleteWithValidByIds(Collection<Long> ids) {
+        
         return datasetRepository.deleteBatchIds(ids) > 0;
     }
 }

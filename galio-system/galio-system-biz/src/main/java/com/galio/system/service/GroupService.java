@@ -43,5 +43,5 @@ public interface GroupService {
     /**
      * 校验并批量删除群组信息信息
      */
-    Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);
+    Boolean deleteWithValidByIds(Collection<Long> ids);
 }

@@ -43,5 +43,5 @@ public interface NoticeService {
     /**
      * 校验并批量删除通知公告信息
      */
-    Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);
+    Boolean deleteWithValidByIds(Collection<Long> ids);
 }

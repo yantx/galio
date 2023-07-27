@@ -51,8 +51,7 @@ public class ${ClassName}ServiceImpl implements ${ClassName}Service {
     @Override
     public List<${ClassName}> queryList(${ClassName}Dto dto) {
         ${ClassName} entity = ObjectUtil.copyObject(dto, ${ClassName}.class);
-        Map<String, Object> params = dto.getParams();
-        return ${className}Repository.selectList(entity,params);
+        return ${className}Repository.selectList(entity);
     }
 
     /**
@@ -91,10 +90,7 @@ public class ${ClassName}ServiceImpl implements ${ClassName}Service {
      * 批量删除${functionName}
      */
     @Override
-    public Boolean deleteWithValidByIds(Collection<${pkColumn.javaType}> ids, Boolean isValid) {
-        if (isValid) {
-            //TODO 做一些业务上的校验,判断是否需要校验
-        }
+    public Boolean deleteWithValidByIds(Collection<${pkColumn.javaType}> ids) {
         return ${className}Repository.deleteBatchIds(ids) > 0;
     }
 }

@@ -42,12 +42,12 @@ public class NoticeRepository{
     /**
      * 查询通知公告列表
      */
-    public List<Notice> selectList(Notice notice,Map<String, Object> params) {
-        LambdaQueryWrapper<Notice> lqw = buildQueryWrapper(notice, params);
+    public List<Notice> selectList(Notice notice) {
+        LambdaQueryWrapper<Notice> lqw = buildQueryWrapper(notice);
         return noticeMapper.selectList(lqw);
     }
 
-    private LambdaQueryWrapper<Notice> buildQueryWrapper(Notice entity,Map<String, Object> params) {
+    private LambdaQueryWrapper<Notice> buildQueryWrapper(Notice entity) {
         LambdaQueryWrapper<Notice> lqw = Wrappers.lambdaQuery();
                     lqw.eq(StringUtil.isNotBlank(entity.getNoticeTitle()), Notice::getNoticeTitle, entity.getNoticeTitle());
                     lqw.eq(StringUtil.isNotBlank(entity.getNoticeType()), Notice::getNoticeType, entity.getNoticeType());

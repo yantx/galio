@@ -48,8 +48,8 @@ public class NoticeServiceImpl implements NoticeService {
     @Override
     public List<Notice> queryList(NoticeDto dto) {
         Notice entity = ObjectUtil.copyObject(dto, Notice.class);
-        Map<String, Object> params = dto.getParams();
-        return noticeRepository.selectList(entity,params);
+        
+        return noticeRepository.selectList(entity);
     }
 
     /**
@@ -87,10 +87,8 @@ public class NoticeServiceImpl implements NoticeService {
      * 批量删除通知公告
      */
     @Override
-    public Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid) {
-        if (isValid) {
-            //TODO 做一些业务上的校验,判断是否需要校验
-        }
+    public Boolean deleteWithValidByIds(Collection<Long> ids) {
+        
         return noticeRepository.deleteBatchIds(ids) > 0;
     }
 }

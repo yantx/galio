@@ -42,12 +42,12 @@ public class ConfigRepository{
     /**
      * 查询应用信息列表
      */
-    public List<Config> selectList(Config config,Map<String, Object> params) {
-        LambdaQueryWrapper<Config> lqw = buildQueryWrapper(config, params);
+    public List<Config> selectList(Config config) {
+        LambdaQueryWrapper<Config> lqw = buildQueryWrapper(config);
         return configMapper.selectList(lqw);
     }
 
-    private LambdaQueryWrapper<Config> buildQueryWrapper(Config entity,Map<String, Object> params) {
+    private LambdaQueryWrapper<Config> buildQueryWrapper(Config entity) {
         LambdaQueryWrapper<Config> lqw = Wrappers.lambdaQuery();
                     lqw.like(StringUtil.isNotBlank(entity.getConfigName()), Config::getConfigName, entity.getConfigName());
                     lqw.eq(StringUtil.isNotBlank(entity.getConfigKey()), Config::getConfigKey, entity.getConfigKey());

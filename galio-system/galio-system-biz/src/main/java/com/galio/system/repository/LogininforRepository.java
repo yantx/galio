@@ -42,12 +42,12 @@ public class LogininforRepository{
     /**
      * 查询系统访问记录列表
      */
-    public List<Logininfor> selectList(Logininfor logininfor,Map<String, Object> params) {
-        LambdaQueryWrapper<Logininfor> lqw = buildQueryWrapper(logininfor, params);
+    public List<Logininfor> selectList(Logininfor logininfor) {
+        LambdaQueryWrapper<Logininfor> lqw = buildQueryWrapper(logininfor);
         return logininforMapper.selectList(lqw);
     }
 
-    private LambdaQueryWrapper<Logininfor> buildQueryWrapper(Logininfor entity,Map<String, Object> params) {
+    private LambdaQueryWrapper<Logininfor> buildQueryWrapper(Logininfor entity) {
         LambdaQueryWrapper<Logininfor> lqw = Wrappers.lambdaQuery();
                     lqw.like(StringUtil.isNotBlank(entity.getUsername()), Logininfor::getUsername, entity.getUsername());
                     lqw.eq(entity.getMemberId() != null, Logininfor::getMemberId, entity.getMemberId());

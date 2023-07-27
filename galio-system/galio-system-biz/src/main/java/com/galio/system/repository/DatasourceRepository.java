@@ -42,12 +42,12 @@ public class DatasourceRepository{
     /**
      * 查询数据源信息列表
      */
-    public List<Datasource> selectList(Datasource datasource,Map<String, Object> params) {
-        LambdaQueryWrapper<Datasource> lqw = buildQueryWrapper(datasource, params);
+    public List<Datasource> selectList(Datasource datasource) {
+        LambdaQueryWrapper<Datasource> lqw = buildQueryWrapper(datasource);
         return datasourceMapper.selectList(lqw);
     }
 
-    private LambdaQueryWrapper<Datasource> buildQueryWrapper(Datasource entity,Map<String, Object> params) {
+    private LambdaQueryWrapper<Datasource> buildQueryWrapper(Datasource entity) {
         LambdaQueryWrapper<Datasource> lqw = Wrappers.lambdaQuery();
                     lqw.like(StringUtil.isNotBlank(entity.getDatasourceName()), Datasource::getDatasourceName, entity.getDatasourceName());
                     lqw.eq(StringUtil.isNotBlank(entity.getDatasourceType()), Datasource::getDatasourceType, entity.getDatasourceType());

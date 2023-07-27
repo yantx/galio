@@ -48,8 +48,8 @@ public class LogininforServiceImpl implements LogininforService {
     @Override
     public List<Logininfor> queryList(LogininforDto dto) {
         Logininfor entity = ObjectUtil.copyObject(dto, Logininfor.class);
-        Map<String, Object> params = dto.getParams();
-        return logininforRepository.selectList(entity,params);
+        
+        return logininforRepository.selectList(entity);
     }
 
     /**
@@ -87,10 +87,8 @@ public class LogininforServiceImpl implements LogininforService {
      * 批量删除系统访问记录
      */
     @Override
-    public Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid) {
-        if (isValid) {
-            //TODO 做一些业务上的校验,判断是否需要校验
-        }
+    public Boolean deleteWithValidByIds(Collection<Long> ids) {
+        
         return logininforRepository.deleteBatchIds(ids) > 0;
     }
 }

@@ -48,8 +48,8 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public List<Role> queryList(RoleDto dto) {
         Role entity = ObjectUtil.copyObject(dto, Role.class);
-        Map<String, Object> params = dto.getParams();
-        return roleRepository.selectList(entity,params);
+        
+        return roleRepository.selectList(entity);
     }
 
     /**
@@ -87,10 +87,8 @@ public class RoleServiceImpl implements RoleService {
      * 批量删除角色信息
      */
     @Override
-    public Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid) {
-        if (isValid) {
-            //TODO 做一些业务上的校验,判断是否需要校验
-        }
+    public Boolean deleteWithValidByIds(Collection<Long> ids) {
+        
         return roleRepository.deleteBatchIds(ids) > 0;
     }
 }

@@ -71,7 +71,7 @@ public interface BaseMapperPlus<M, T> extends BaseMapper<T> {
     }
 
     /**
-     * 插入或更新(包含限制条数)
+     * 插入或更新
      */
     default boolean insertOrUpdate(T entity) {
         return Db.saveOrUpdate(entity);

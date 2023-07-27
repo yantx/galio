@@ -42,12 +42,12 @@ public class OrgRepository{
     /**
      * 查询机构列表
      */
-    public List<Org> selectList(Org org,Map<String, Object> params) {
-        LambdaQueryWrapper<Org> lqw = buildQueryWrapper(org, params);
+    public List<Org> selectList(Org org) {
+        LambdaQueryWrapper<Org> lqw = buildQueryWrapper(org);
         return orgMapper.selectList(lqw);
     }
 
-    private LambdaQueryWrapper<Org> buildQueryWrapper(Org entity,Map<String, Object> params) {
+    private LambdaQueryWrapper<Org> buildQueryWrapper(Org entity) {
         LambdaQueryWrapper<Org> lqw = Wrappers.lambdaQuery();
                     lqw.eq(entity.getParentId() != null, Org::getParentId, entity.getParentId());
                     lqw.eq(StringUtil.isNotBlank(entity.getAncestors()), Org::getAncestors, entity.getAncestors());

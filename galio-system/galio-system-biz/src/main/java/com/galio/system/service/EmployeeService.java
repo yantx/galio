@@ -43,5 +43,5 @@ public interface EmployeeService {
     /**
      * 校验并批量删除雇员信息
      */
-    Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);
+    Boolean deleteWithValidByIds(Collection<Long> ids);
 }

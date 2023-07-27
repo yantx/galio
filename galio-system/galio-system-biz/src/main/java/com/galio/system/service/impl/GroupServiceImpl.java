@@ -4,16 +4,22 @@ import com.galio.core.utils.ObjectUtil;
 import com.galio.core.model.PageRequestDto;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.galio.mybatis.page.MybatisPageConvertHelper;
+import com.galio.system.dto.MemberDto;
+import com.galio.system.model.GroupRole;
+import com.galio.system.model.MemberRole;
+import com.galio.system.repository.GroupRoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.galio.system.dto.GroupDto;
 import com.galio.system.model.Group;
 import com.galio.system.repository.GroupRepository;
 import com.galio.system.service.GroupService;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 /**
  * @Author: galio
@@ -25,6 +31,7 @@ import java.util.Collection;
 public class GroupServiceImpl implements GroupService {
 
     private final GroupRepository groupRepository;
+    private final GroupRoleRepository groupRoleRepository;
 
     /**
      * 查询群组信息
@@ -48,20 +55,22 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public List<Group> queryList(GroupDto dto) {
         Group entity = ObjectUtil.copyObject(dto, Group.class);
-        Map<String, Object> params = dto.getParams();
-        return groupRepository.selectList(entity,params);
+        
+        return groupRepository.selectList(entity);
     }
 
     /**
      * 新增群组信息
      */
     @Override
+    @Transactional
     public Boolean insertByDto(GroupDto dto) {
         Group add = ObjectUtil.copyObject(dto, Group.class);
         validEntityBeforeSave(add);
         boolean flag = groupRepository.insert(add) > 0;
         if (flag) {
             dto.setGroupId(add.getGroupId());
+            relevanceRoleInfo(dto);
         }
         return flag;
     }
@@ -87,10 +96,21 @@ public class GroupServiceImpl implements GroupService {
      * 批量删除群组信息
      */
     @Override
-    public Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid) {
-        if (isValid) {
-            //TODO 做一些业务上的校验,判断是否需要校验
+    public Boolean deleteWithValidByIds(Collection<Long> ids) {
+        
+        boolean flag = groupRepository.deleteBatchIds(ids) > 0;
+        if (flag){
+            flag = groupRoleRepository.deleteByGroupIds(ids) > 0;
         }
-        return groupRepository.deleteBatchIds(ids) > 0;
+        return flag;
+    }
+    public boolean relevanceRoleInfo(GroupDto dto){
+        if (ObjectUtil.isEmpty(dto.getRoleIds())){
+            return true;
+        }
+        groupRoleRepository.deleteByGroupId(dto.getGroupId());
+        List<GroupRole> groupRoles = dto.getRoleIds().stream()
+                .map(o -> new GroupRole(dto.getGroupId(),o)).collect(Collectors.toList());
+        return groupRoleRepository.insertBatch(groupRoles);
     }
 }

@@ -34,7 +34,7 @@ public class MemberRepository {
      * 查询成员信息
      */
     public Member selectOne(Member entity) {
-        LambdaQueryWrapper<Member> lqw = buildQueryWrapper(entity,null);
+        LambdaQueryWrapper<Member> lqw = buildQueryWrapper(entity);
         return memberMapper.selectOne(lqw);
     }
     /**
@@ -48,12 +48,12 @@ public class MemberRepository {
     /**
      * 查询成员信息列表
      */
-    public List<Member> selectList(Member member, Map<String, Object> params) {
-        LambdaQueryWrapper<Member> lqw = buildQueryWrapper(member, params);
+    public List<Member> selectList(Member member) {
+        LambdaQueryWrapper<Member> lqw = buildQueryWrapper(member);
         return memberMapper.selectList(lqw);
     }
 
-    private LambdaQueryWrapper<Member> buildQueryWrapper(Member entity, Map<String, Object> params) {
+    private LambdaQueryWrapper<Member> buildQueryWrapper(Member entity) {
         LambdaQueryWrapper<Member> lqw = Wrappers.lambdaQuery();
         lqw.eq(entity.getEmployeeId() != null, Member::getEmployeeId, entity.getEmployeeId());
         lqw.eq(entity.getAppId() != null, Member::getAppId, entity.getAppId());

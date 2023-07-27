@@ -2,9 +2,11 @@ package com.galio.gen.model;
 
 import com.baomidou.mybatisplus.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.galio.core.model.BaseEntity;
 import com.galio.core.utils.StringUtil;
 import com.galio.gen.constant.GenConstants;
@@ -13,6 +15,7 @@ import jakarta.validation.Valid;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.commons.lang3.ArrayUtils;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * 代码生成表
@@ -158,6 +161,20 @@ public class GenTable extends BaseEntity {
     @Schema(description = "应用id")
     @TableField(fill = FieldFill.INSERT)
     private Long appId;
+
+
+    /**
+     * 开始时间
+     */
+    @TableField(exist = false)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime startTime;
+    /**
+     * 结束时间
+     */
+    @TableField(exist = false)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime endTime;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

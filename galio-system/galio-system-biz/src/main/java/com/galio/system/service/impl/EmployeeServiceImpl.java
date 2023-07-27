@@ -48,8 +48,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public List<Employee> queryList(EmployeeDto dto) {
         Employee entity = ObjectUtil.copyObject(dto, Employee.class);
-        Map<String, Object> params = dto.getParams();
-        return employeeRepository.selectList(entity,params);
+        
+        return employeeRepository.selectList(entity);
     }
 
     /**
@@ -87,10 +87,8 @@ public class EmployeeServiceImpl implements EmployeeService {
      * 批量删除雇员
      */
     @Override
-    public Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid) {
-        if (isValid) {
-            //TODO 做一些业务上的校验,判断是否需要校验
-        }
+    public Boolean deleteWithValidByIds(Collection<Long> ids) {
+        
         return employeeRepository.deleteBatchIds(ids) > 0;
     }
 }

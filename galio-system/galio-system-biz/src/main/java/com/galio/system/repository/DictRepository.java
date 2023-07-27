@@ -42,12 +42,12 @@ public class DictRepository{
     /**
      * 查询字典列表
      */
-    public List<Dict> selectList(Dict dict,Map<String, Object> params) {
-        LambdaQueryWrapper<Dict> lqw = buildQueryWrapper(dict, params);
+    public List<Dict> selectList(Dict dict) {
+        LambdaQueryWrapper<Dict> lqw = buildQueryWrapper(dict);
         return dictMapper.selectList(lqw);
     }
 
-    private LambdaQueryWrapper<Dict> buildQueryWrapper(Dict entity,Map<String, Object> params) {
+    private LambdaQueryWrapper<Dict> buildQueryWrapper(Dict entity) {
         LambdaQueryWrapper<Dict> lqw = Wrappers.lambdaQuery();
                     lqw.like(StringUtil.isNotBlank(entity.getDictName()), Dict::getDictName, entity.getDictName());
                     lqw.eq(StringUtil.isNotBlank(entity.getDictCode()), Dict::getDictCode, entity.getDictCode());

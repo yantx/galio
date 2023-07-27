@@ -76,12 +76,11 @@ public class IGenTableServiceImpl implements IGenTableService {
     }
 
     private QueryWrapper<GenTable> buildGenTableQueryWrapper(GenTable genTable) {
-        Map<String, Object> params = genTable.getParams();
         QueryWrapper<GenTable> wrapper = Wrappers.query();
         wrapper.like(StringUtil.isNotBlank(genTable.getTableName()), "lower(table_name)" , StringUtil.lowerCase(genTable.getTableName()))
                 .like(StringUtil.isNotBlank(genTable.getTableComment()), "lower(table_comment)" , StringUtil.lowerCase(genTable.getTableComment()))
-                .between(params.get("beginTime") != null && params.get("endTime") != null,
-                        "create_time" , params.get("beginTime"), params.get("endTime"));
+                .between(genTable.getStartTime() != null && genTable.getEndTime() != null,
+                        "create_time" , genTable.getStartTime(), genTable.getEndTime());
         return wrapper;
     }
 
@@ -121,8 +120,6 @@ public class IGenTableServiceImpl implements IGenTableService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void updateGenTable(GenTable genTable) {
-        String options = JsonUtils.toString(genTable.getParams());
-        genTable.setOptions(options);
         int row = genTableMapper.updateById(genTable);
         if (row > 0) {
             for (GenTableColumn cenTableColumn : genTable.getColumns()) {
@@ -373,28 +370,7 @@ public class IGenTableServiceImpl implements IGenTableService {
      */
     @Override
     public void validateEdit(GenTable genTable) {
-        if (GenConstants.TPL_TREE.equals(genTable.getTplCategory())) {
-            String options = JsonUtils.toString(genTable.getParams());
-            LinkedHashMap paramsObj = JsonUtils.toObject(options, LinkedHashMap.class);
-            if (StringUtil.isEmpty(paramsObj.get(GenConstants.TREE_CODE).toString())) {
-                log.error(GenExceptionResponseEnum.GEN_TREE_CODE_NOT_NULL.getMsg());
-                throw new CustomException(GenExceptionResponseEnum.GEN_TREE_CODE_NOT_NULL);
-            } else if (StringUtil.isEmpty(paramsObj.get(GenConstants.TREE_PARENT_CODE).toString())) {
-                log.error(GenExceptionResponseEnum.GEN_TREE_PARENT_CODE_NOT_NULL.getMsg());
-                throw new CustomException(GenExceptionResponseEnum.GEN_TREE_PARENT_CODE_NOT_NULL);
-            } else if (StringUtil.isEmpty(paramsObj.get(GenConstants.TREE_NAME).toString())) {
-                log.error(GenExceptionResponseEnum.GEN_TREE_NAME_NOT_NULL.getMsg());
-                throw new CustomException(GenExceptionResponseEnum.GEN_TREE_NAME_NOT_NULL);
-            } else if (GenConstants.TPL_SUB.equals(genTable.getTplCategory())) {
-                if (StringUtil.isEmpty(genTable.getSubTableName())) {
-                    log.error(GenExceptionResponseEnum.GEN_SUB_TABLE_NOT_NULL.getMsg());
-                    throw new CustomException(GenExceptionResponseEnum.GEN_SUB_TABLE_NOT_NULL);
-                } else if (StringUtil.isEmpty(genTable.getSubTableFkName())) {
-                    log.error(GenExceptionResponseEnum.GEN_SUB_TABLE_FK_NAME_NOT_NULL.getMsg());
-                    throw new CustomException(GenExceptionResponseEnum.GEN_SUB_TABLE_FK_NAME_NOT_NULL);
-                }
-            }
-        }
+
     }
 
     /**

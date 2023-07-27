@@ -44,9 +44,20 @@ public class GroupRoleRepository{
     /**
      * 批量删除分组和角色关联
      */
+    public int deleteByGroupIds(Collection<Long> groupIds) {
+        LambdaQueryWrapper<GroupRole> lqw = Wrappers.lambdaQuery();
+        lqw.in(GroupRole::getGroupId, groupIds);
+
+        return groupRoleMapper.delete(lqw);
+    }
+
+    /**
+     * 删除分组和角色关联
+     */
     public int deleteByGroupId(Long groupId) {
         LambdaQueryWrapper<GroupRole> lqw = Wrappers.lambdaQuery();
         lqw.eq(GroupRole::getGroupId, groupId);
+
         return groupRoleMapper.delete(lqw);
     }
 }

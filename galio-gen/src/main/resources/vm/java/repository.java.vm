@@ -46,12 +46,12 @@ public class ${ClassName}Repository{
     /**
      * 查询${functionName}列表
      */
-    public List<${ClassName}> selectList(${ClassName} ${className},Map<String, Object> params) {
-        LambdaQueryWrapper<${ClassName}> lqw = buildQueryWrapper(${className}, params);
+    public List<${ClassName}> selectList(${ClassName} ${className}) {
+        LambdaQueryWrapper<${ClassName}> lqw = buildQueryWrapper(${className});
         return ${className}Mapper.selectList(lqw);
     }
 
-    private LambdaQueryWrapper<${ClassName}> buildQueryWrapper(${ClassName} entity,Map<String, Object> params) {
+    private LambdaQueryWrapper<${ClassName}> buildQueryWrapper(${ClassName} entity) {
         LambdaQueryWrapper<${ClassName}> lqw = Wrappers.lambdaQuery();
         #foreach($column in $columns)
             #if($column.query)
@@ -69,8 +69,8 @@ public class ${ClassName}Repository{
                     #end
                     lqw.$mpMethod($condition, ${ClassName}::get$AttrName, entity.get$AttrName());
                 #else
-                    lqw.between(params.get("begin$AttrName") != null && params.get("end$AttrName") != null,
-                        ${ClassName}::get$AttrName , params.get("begin$AttrName"), params.get("end$AttrName"));
+                    lqw.between("entity.getStart"+$AttrName +"() != null && entity.getEnd"+$AttrName + "() != null,"
+                        ${ClassName}::get$AttrName , "entity.getStart"+$AttrName+"()", "entity.getEnd"+$AttrName+"()");
                 #end
             #end
         #end

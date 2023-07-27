@@ -48,8 +48,8 @@ public class OperLogServiceImpl implements OperLogService {
     @Override
     public List<OperLog> queryList(OperLogDto dto) {
         OperLog entity = ObjectUtil.copyObject(dto, OperLog.class);
-        Map<String, Object> params = dto.getParams();
-        return operLogRepository.selectList(entity,params);
+        
+        return operLogRepository.selectList(entity);
     }
 
     /**
@@ -87,10 +87,8 @@ public class OperLogServiceImpl implements OperLogService {
      * 批量删除操作日志记录
      */
     @Override
-    public Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid) {
-        if (isValid) {
-            //TODO 做一些业务上的校验,判断是否需要校验
-        }
+    public Boolean deleteWithValidByIds(Collection<Long> ids) {
+        
         return operLogRepository.deleteBatchIds(ids) > 0;
     }
 }

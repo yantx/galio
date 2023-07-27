@@ -42,12 +42,12 @@ public class AppRepository{
     /**
      * 查询应用信息列表
      */
-    public List<App> selectList(App app,Map<String, Object> params) {
-        LambdaQueryWrapper<App> lqw = buildQueryWrapper(app, params);
+    public List<App> selectList(App app) {
+        LambdaQueryWrapper<App> lqw = buildQueryWrapper(app);
         return appMapper.selectList(lqw);
     }
 
-    private LambdaQueryWrapper<App> buildQueryWrapper(App entity,Map<String, Object> params) {
+    private LambdaQueryWrapper<App> buildQueryWrapper(App entity) {
         LambdaQueryWrapper<App> lqw = Wrappers.lambdaQuery();
                     lqw.like(StringUtil.isNotBlank(entity.getAppName()), App::getAppName, entity.getAppName());
                     lqw.eq(StringUtil.isNotBlank(entity.getAppCode()), App::getAppCode, entity.getAppCode());

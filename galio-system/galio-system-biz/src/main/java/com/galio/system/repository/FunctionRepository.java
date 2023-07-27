@@ -42,12 +42,12 @@ public class FunctionRepository{
     /**
      * 查询功能列表
      */
-    public List<Function> selectList(Function function,Map<String, Object> params) {
-        LambdaQueryWrapper<Function> lqw = buildQueryWrapper(function, params);
+    public List<Function> selectList(Function function) {
+        LambdaQueryWrapper<Function> lqw = buildQueryWrapper(function);
         return functionMapper.selectList(lqw);
     }
 
-    private LambdaQueryWrapper<Function> buildQueryWrapper(Function entity,Map<String, Object> params) {
+    private LambdaQueryWrapper<Function> buildQueryWrapper(Function entity) {
         LambdaQueryWrapper<Function> lqw = Wrappers.lambdaQuery();
                     lqw.like(StringUtil.isNotBlank(entity.getFunctionName()), Function::getFunctionName, entity.getFunctionName());
                     lqw.eq(entity.getParentId() != null, Function::getParentId, entity.getParentId());

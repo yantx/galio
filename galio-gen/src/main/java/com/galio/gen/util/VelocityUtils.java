@@ -174,9 +174,9 @@ public class VelocityUtils {
         String vuePath = "vue";
         Map<String, Function<GenTable,String>> templateMap = new HashMap<>();
         templateMap.put("vm/java/entity.java.vm", (params) -> StringUtil.format("{}/model/{}.java", javaPathFun.apply(params.getPackageName()), params.getClassName()));
-        templateMap.put("vm/java/vo.java.vm", (params) -> StringUtil.format("{}/model/vo/{}Vo.java", javaPathFun.apply(params.getPackageName()), params.getClassName()));
-        templateMap.put("vm/java/dto.java.vm", (params) -> StringUtil.format("{}/model/dto/{}Dto.java", javaPathFun.apply(params.getPackageName()), params.getClassName()));
-        templateMap.put("vm/java/queryDto.java.vm", (params) -> StringUtil.format("{}/model/dto/{}PageReqDto.java", javaPathFun.apply(params.getPackageName()), params.getClassName()));
+        templateMap.put("vm/java/vo.java.vm", (params) -> StringUtil.format("{}/model/vo/{}VO.java", javaPathFun.apply(params.getPackageName()), params.getClassName()));
+        templateMap.put("vm/java/dto.java.vm", (params) -> StringUtil.format("{}/model/dto/{}DTO.java", javaPathFun.apply(params.getPackageName()), params.getClassName()));
+        templateMap.put("vm/java/queryDto.java.vm", (params) -> StringUtil.format("{}/model/dto/{}PageReqDTO.java", javaPathFun.apply(params.getPackageName()), params.getClassName()));
         templateMap.put("vm/java/sub-entity.java.vm", (params) -> StringUtil.format("{}/model/{}.java", javaPathFun.apply(params.getPackageName()), params.getClassName()));
         templateMap.put("vm/java/mapper.java.vm", (params) -> StringUtil.format("{}/mapper/{}Mapper.java", javaPathFun.apply(params.getPackageName()), params.getClassName()));
         templateMap.put("vm/java/repository.java.vm", (params) -> StringUtil.format("{}/repository/{}Repository.java", javaPathFun.apply(params.getPackageName()), params.getClassName()));

@@ -41,11 +41,20 @@ public class MemberGroupRepository{
     }
 
     /**
-     * 批量删除成员和群组关联
+     * 删除成员和群组关联
      */
     public int deleteByMemberId(Long memberId) {
         LambdaQueryWrapper<MemberGroup> lqw = Wrappers.lambdaQuery();
         lqw.eq(MemberGroup::getMemberId, memberId);
+        return memberGroupMapper.delete(lqw);
+    }
+
+    /**
+     * 批量删除成员和群组关联
+     */
+    public int deleteByMemberIds(Collection<Long> memberId) {
+        LambdaQueryWrapper<MemberGroup> lqw = Wrappers.lambdaQuery();
+        lqw.in(MemberGroup::getMemberId, memberId);
         return memberGroupMapper.delete(lqw);
     }
 }

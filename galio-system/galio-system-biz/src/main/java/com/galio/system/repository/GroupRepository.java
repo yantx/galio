@@ -42,12 +42,12 @@ public class GroupRepository{
     /**
      * 查询群组信息列表
      */
-    public List<Group> selectList(Group group,Map<String, Object> params) {
-        LambdaQueryWrapper<Group> lqw = buildQueryWrapper(group, params);
+    public List<Group> selectList(Group group) {
+        LambdaQueryWrapper<Group> lqw = buildQueryWrapper(group);
         return groupMapper.selectList(lqw);
     }
 
-    private LambdaQueryWrapper<Group> buildQueryWrapper(Group entity,Map<String, Object> params) {
+    private LambdaQueryWrapper<Group> buildQueryWrapper(Group entity) {
         LambdaQueryWrapper<Group> lqw = Wrappers.lambdaQuery();
                     lqw.eq(entity.getGroupCode() != null, Group::getGroupCode, entity.getGroupCode());
                     lqw.like(StringUtil.isNotBlank(entity.getGroupName()), Group::getGroupName, entity.getGroupName());

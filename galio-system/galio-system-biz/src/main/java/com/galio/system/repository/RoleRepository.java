@@ -42,12 +42,12 @@ public class RoleRepository {
     /**
      * 查询角色信息列表
      */
-    public List<Role> selectList(Role role, Map<String, Object> params) {
-        LambdaQueryWrapper<Role> lqw = buildQueryWrapper(role, params);
+    public List<Role> selectList(Role role) {
+        LambdaQueryWrapper<Role> lqw = buildQueryWrapper(role);
         return roleMapper.selectList(lqw);
     }
 
-    private LambdaQueryWrapper<Role> buildQueryWrapper(Role entity, Map<String, Object> params) {
+    private LambdaQueryWrapper<Role> buildQueryWrapper(Role entity) {
         LambdaQueryWrapper<Role> lqw = Wrappers.lambdaQuery();
         lqw.like(StringUtil.isNotBlank(entity.getRoleName()), Role::getRoleName, entity.getRoleName());
         lqw.eq(StringUtil.isNotBlank(entity.getRoleKey()), Role::getRoleKey, entity.getRoleKey());

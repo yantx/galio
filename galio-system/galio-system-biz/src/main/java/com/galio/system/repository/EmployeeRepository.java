@@ -42,12 +42,12 @@ public class EmployeeRepository{
     /**
      * 查询机构列表
      */
-    public List<Employee> selectList(Employee employee,Map<String, Object> params) {
-        LambdaQueryWrapper<Employee> lqw = buildQueryWrapper(employee, params);
+    public List<Employee> selectList(Employee employee) {
+        LambdaQueryWrapper<Employee> lqw = buildQueryWrapper(employee);
         return employeeMapper.selectList(lqw);
     }
 
-    private LambdaQueryWrapper<Employee> buildQueryWrapper(Employee entity,Map<String, Object> params) {
+    private LambdaQueryWrapper<Employee> buildQueryWrapper(Employee entity) {
         LambdaQueryWrapper<Employee> lqw = Wrappers.lambdaQuery();
                     lqw.eq(entity.getOrgId() != null, Employee::getOrgId, entity.getOrgId());
                     lqw.like(StringUtil.isNotBlank(entity.getEmployeeName()), Employee::getEmployeeName, entity.getEmployeeName());

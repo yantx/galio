@@ -42,12 +42,12 @@ public class DatasetRepository{
     /**
      * 查询数据集信息列表
      */
-    public List<Dataset> selectList(Dataset dataset,Map<String, Object> params) {
-        LambdaQueryWrapper<Dataset> lqw = buildQueryWrapper(dataset, params);
+    public List<Dataset> selectList(Dataset dataset) {
+        LambdaQueryWrapper<Dataset> lqw = buildQueryWrapper(dataset);
         return datasetMapper.selectList(lqw);
     }
 
-    private LambdaQueryWrapper<Dataset> buildQueryWrapper(Dataset entity,Map<String, Object> params) {
+    private LambdaQueryWrapper<Dataset> buildQueryWrapper(Dataset entity) {
         LambdaQueryWrapper<Dataset> lqw = Wrappers.lambdaQuery();
                     lqw.eq(entity.getDatasourceId() != null, Dataset::getDatasourceId, entity.getDatasourceId());
                     lqw.eq(StringUtil.isNotBlank(entity.getDatasetCode()), Dataset::getDatasetCode, entity.getDatasetCode());

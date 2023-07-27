@@ -4,8 +4,7 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.galio.core.utils.ObjectUtil;
 import com.galio.core.validate.InsertGroup;
 import com.galio.core.validate.UpdateGroup;
-import com.galio.core.validate.SelectGroup;
-import com.galio.mybatis.page.PageDto;
+import com.galio.core.model.PageRequestDto;
 import com.galio.mybatis.page.PageVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,7 +17,6 @@ import com.galio.system.model.vo.OrgVo;
 import com.galio.system.dto.OrgDto;
 import com.galio.system.service.OrgService;
 
-import java.util.List;
 import java.util.Arrays;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -44,8 +42,8 @@ public class OrgController {
     @Operation(summary = "查询机构列表")
     @SaCheckPermission("system:org:page")
     @PostMapping("/page")
-    public PageVo page(@RequestBody PageDto pageDto) {
-        IPage<Org> pageData = orgService.queryPageList(pageDto);
+    public PageVo page(@RequestBody PageRequestDto pageRequestDto) {
+        IPage<Org> pageData = orgService.queryPageList(pageRequestDto);
         return PageVo.build(pageData);
     }
 
@@ -91,6 +89,6 @@ public class OrgController {
     @SaCheckPermission("system:org:remove")
     @DeleteMapping("/{orgIds}")
     public Object remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] orgIds) {
-        return orgService.deleteWithValidByIds(Arrays.asList(orgIds), true);
+        return orgService.deleteWithValidByIds(Arrays.asList(orgIds));
     }
 }

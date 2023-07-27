@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @Author: galio
@@ -109,5 +110,10 @@ public class MemberDto extends BaseEntity {
     @Schema(description = "备注")
     private String remark;
 
+    @Schema(description = "关联角色ID")
+    private List<Long> roleIds;
+
+    @Schema(description = "关联群组ID")
+    private List<Long> groupIds;
 
 }

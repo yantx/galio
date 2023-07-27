@@ -6,6 +6,8 @@ import lombok.EqualsAndHashCode;
 
 import com.galio.core.model.BaseEntity;
 
+import java.util.List;
+
 /**
  * @Author: galio
  * @Date: 2023-05-30
@@ -47,5 +49,11 @@ public class Group extends BaseEntity {
      * 备注
      */
     private String remark;
+
+    /**
+     * 关联关联角色ID集合
+     */
+    @TableField(exist = false)
+    private List<Long> roleIds;
 
 }

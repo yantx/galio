@@ -43,7 +43,7 @@ public interface ConfigService {
     /**
      * 校验并批量删除系统配置信息信息
      */
-    Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);
+    Boolean deleteWithValidByIds(Collection<Long> ids);
 
     /**
      * 参数缓存数据

@@ -4,7 +4,7 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.galio.core.utils.ObjectUtil;
 import com.galio.core.validate.InsertGroup;
 import com.galio.core.validate.UpdateGroup;
-import com.galio.mybatis.page.PageDto;
+import com.galio.core.model.PageRequestDto;
 import com.galio.mybatis.page.PageVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.v3.oas.annotations.Operation;
@@ -42,8 +42,8 @@ public class DatasetController {
     @Operation(summary = "查询数据集信息列表")
     @SaCheckPermission("system:dataset:page")
     @PostMapping("/page")
-    public PageVo page(@RequestBody PageDto pageDto) {
-        IPage<Dataset> pageData = datasetService.queryPageList(pageDto);
+    public PageVo page(@RequestBody PageRequestDto pageRequestDto) {
+        IPage<Dataset> pageData = datasetService.queryPageList(pageRequestDto);
         return PageVo.build(pageData);
     }
 
@@ -89,6 +89,6 @@ public class DatasetController {
     @SaCheckPermission("system:dataset:remove")
     @DeleteMapping("/{datasetIds}")
     public Object remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] datasetIds) {
-        return datasetService.deleteWithValidByIds(Arrays.asList(datasetIds), true);
+        return datasetService.deleteWithValidByIds(Arrays.asList(datasetIds));
     }
 }

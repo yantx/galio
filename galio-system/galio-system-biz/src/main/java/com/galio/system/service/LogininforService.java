@@ -43,5 +43,5 @@ public interface LogininforService {
     /**
      * 校验并批量删除系统访问记录信息
      */
-    Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);
+    Boolean deleteWithValidByIds(Collection<Long> ids);
 }

@@ -1,5 +1,6 @@
 package com.galio.system.dto;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.galio.core.model.BaseEntity;
 import com.galio.core.validate.InsertGroup;
 import com.galio.core.validate.UpdateGroup;
@@ -7,6 +8,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+
+import java.util.List;
 
 /**
  * @Author: galio
@@ -60,5 +63,10 @@ public class GroupDto extends BaseEntity {
     @Schema(description = "备注")
     private String remark;
 
+    /**
+     * 关联关联角色ID集合
+     */
+    @Schema(description = "角色ID集合")
+    private List<Long> roleIds;
 
 }

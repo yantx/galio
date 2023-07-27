@@ -66,8 +66,8 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public List<Member> queryList(MemberDto dto) {
         Member entity = ObjectUtil.copyObject(dto, Member.class);
-        Map<String, Object> params = dto.getParams();
-        return memberRepository.selectList(entity,params);
+        
+        return memberRepository.selectList(entity);
     }
 
     /**
@@ -80,6 +80,7 @@ public class MemberServiceImpl implements MemberService {
         validEntityBeforeSave(add);
         boolean flag = memberRepository.insert(add) > 0;
         if (flag) {
+            dto.setMemberId(dto.getMemberId());
             relevanceGroupInfo(dto);
             // 会员角色关联
             relevanceRoleInfo(dto);
@@ -115,18 +116,18 @@ public class MemberServiceImpl implements MemberService {
      * 批量删除成员信息
      */
     @Override
-    public Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid) {
-        if (isValid) {
-            //TODO 做一些业务上的校验,判断是否需要校验
+    public Boolean deleteWithValidByIds(Collection<Long> ids) {
+        boolean flag = memberRepository.deleteBatchIds(ids) > 0;
+        if (flag){
+            flag = memberGroupRepository.deleteByMemberIds(ids) > 0;
         }
-        return memberRepository.deleteBatchIds(ids) > 0;
+        return flag;
     }
 
     public boolean relevanceGroupInfo(MemberDto dto){
         if (ObjectUtil.isEmpty(dto.getGroupIds())){
             return true;
         }
-        dto.setMemberId(dto.getMemberId());
         memberGroupRepository.deleteByMemberId(dto.getMemberId());
         List<MemberGroup> memberGroups = dto.getRoleIds().stream()
                 .map(o -> new MemberGroup(dto.getMemberId(),o)).collect(Collectors.toList());
@@ -137,7 +138,6 @@ public class MemberServiceImpl implements MemberService {
         if (ObjectUtil.isEmpty(dto.getRoleIds())){
             return true;
         }
-        dto.setMemberId(dto.getMemberId());
         memberRoleRepository.deleteByMemberId(dto.getMemberId());
         List<MemberRole> memberRoles = dto.getRoleIds().stream()
                 .map(o -> new MemberRole(dto.getMemberId(),o)).collect(Collectors.toList());

@@ -42,12 +42,12 @@ public class OperLogRepository{
     /**
      * 查询操作日志记录列表
      */
-    public List<OperLog> selectList(OperLog operLog,Map<String, Object> params) {
-        LambdaQueryWrapper<OperLog> lqw = buildQueryWrapper(operLog, params);
+    public List<OperLog> selectList(OperLog operLog) {
+        LambdaQueryWrapper<OperLog> lqw = buildQueryWrapper(operLog);
         return operLogMapper.selectList(lqw);
     }
 
-    private LambdaQueryWrapper<OperLog> buildQueryWrapper(OperLog entity,Map<String, Object> params) {
+    private LambdaQueryWrapper<OperLog> buildQueryWrapper(OperLog entity) {
         LambdaQueryWrapper<OperLog> lqw = Wrappers.lambdaQuery();
                     lqw.eq(StringUtil.isNotBlank(entity.getTitle()), OperLog::getTitle, entity.getTitle());
                     lqw.eq(StringUtil.isNotBlank(entity.getOperType()), OperLog::getOperType, entity.getOperType());

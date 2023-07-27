@@ -43,5 +43,5 @@ public interface OperLogService {
     /**
      * 校验并批量删除操作日志记录信息
      */
-    Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);
+    Boolean deleteWithValidByIds(Collection<Long> ids);
 }

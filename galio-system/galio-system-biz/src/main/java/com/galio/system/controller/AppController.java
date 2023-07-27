@@ -6,9 +6,9 @@ import com.galio.common.log.enums.OperTypeEnum;
 import com.galio.core.utils.ObjectUtil;
 import com.galio.core.validate.InsertGroup;
 import com.galio.core.validate.UpdateGroup;
-import com.galio.mybatis.page.PageDto;
 import com.galio.mybatis.page.PageVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.galio.system.dto.AppPageReqDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -46,8 +46,8 @@ public class AppController {
     @SaCheckPermission("system:app:page")
     @PostMapping("/page")
     @OperLog(operModul = "应用信息-分页查询应用信息列表", operType = OperTypeEnum.SELECT)
-    public PageVo page(@RequestBody PageDto pageDto) {
-        IPage<App> pageData = appService.queryPageList(pageDto);
+    public PageVo page(@RequestBody AppPageReqDto pageRequestDto) {
+        IPage<App> pageData = appService.queryPageList(pageRequestDto);
         return PageVo.build(pageData);
     }
 
@@ -93,6 +93,6 @@ public class AppController {
     @SaCheckPermission("system:app:remove")
     @DeleteMapping("/{appIds}")
     public Object remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] appIds) {
-        return appService.deleteWithValidByIds(Arrays.asList(appIds), true);
+        return appService.deleteWithValidByIds(Arrays.asList(appIds));
     }
 }

@@ -48,8 +48,8 @@ public class FunctionServiceImpl implements FunctionService {
     @Override
     public List<Function> queryList(FunctionDto dto) {
         Function entity = ObjectUtil.copyObject(dto, Function.class);
-        Map<String, Object> params = dto.getParams();
-        return functionRepository.selectList(entity,params);
+        
+        return functionRepository.selectList(entity);
     }
 
     /**
@@ -87,10 +87,8 @@ public class FunctionServiceImpl implements FunctionService {
      * 批量删除功能
      */
     @Override
-    public Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid) {
-        if (isValid) {
-            //TODO 做一些业务上的校验,判断是否需要校验
-        }
+    public Boolean deleteWithValidByIds(Collection<Long> ids) {
+        
         return functionRepository.deleteBatchIds(ids) > 0;
     }
 }

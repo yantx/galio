@@ -50,8 +50,8 @@ public class ConfigServiceImpl implements ConfigService {
     @Override
     public List<Config> queryList(ConfigDto dto) {
         Config entity = ObjectUtil.copyObject(dto, Config.class);
-        Map<String, Object> params = dto.getParams();
-        return configRepository.selectList(entity, params);
+        
+        return configRepository.selectList(entity);
     }
 
     /**
@@ -89,10 +89,8 @@ public class ConfigServiceImpl implements ConfigService {
      * 批量删除系统配置信息
      */
     @Override
-    public Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid) {
-        if (isValid) {
-            //TODO 做一些业务上的校验,判断是否需要校验
-        }
+    public Boolean deleteWithValidByIds(Collection<Long> ids) {
+        
         return configRepository.deleteBatchIds(ids) > 0;
     }
 

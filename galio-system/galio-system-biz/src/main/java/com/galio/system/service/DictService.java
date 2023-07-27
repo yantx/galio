@@ -43,6 +43,6 @@ public interface DictService {
     /**
      * 校验并批量删除字典信息
      */
-    Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);
+    Boolean deleteWithValidByIds(Collection<Long> ids);
     public void loadingDictCache();
 }

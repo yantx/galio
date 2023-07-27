@@ -48,8 +48,8 @@ public class DictItemServiceImpl implements DictItemService {
     @Override
     public List<DictItem> queryList(DictItemDto dto) {
         DictItem entity = ObjectUtil.copyObject(dto, DictItem.class);
-        Map<String, Object> params = dto.getParams();
-        return dictItemRepository.selectList(entity,params);
+        
+        return dictItemRepository.selectList(entity);
     }
 
     /**
@@ -87,10 +87,8 @@ public class DictItemServiceImpl implements DictItemService {
      * 批量删除字典项
      */
     @Override
-    public Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid) {
-        if (isValid) {
-            //TODO 做一些业务上的校验,判断是否需要校验
-        }
+    public Boolean deleteWithValidByIds(Collection<Long> ids) {
+        
         return dictItemRepository.deleteBatchIds(ids) > 0;
     }
 }

@@ -48,8 +48,8 @@ public class OrgServiceImpl implements OrgService {
     @Override
     public List<Org> queryList(OrgDto dto) {
         Org entity = ObjectUtil.copyObject(dto, Org.class);
-        Map<String, Object> params = dto.getParams();
-        return orgRepository.selectList(entity,params);
+        
+        return orgRepository.selectList(entity);
     }
 
     /**
@@ -87,10 +87,8 @@ public class OrgServiceImpl implements OrgService {
      * 批量删除机构
      */
     @Override
-    public Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid) {
-        if (isValid) {
-            //TODO 做一些业务上的校验,判断是否需要校验
-        }
+    public Boolean deleteWithValidByIds(Collection<Long> ids) {
+        
         return orgRepository.deleteBatchIds(ids) > 0;
     }
 }

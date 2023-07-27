@@ -48,8 +48,8 @@ public class AppServiceImpl implements AppService {
     @Override
     public List<App> queryList(AppDto dto) {
         App entity = ObjectUtil.copyObject(dto, App.class);
-        Map<String, Object> params = dto.getParams();
-        return appRepository.selectList(entity,params);
+        
+        return appRepository.selectList(entity);
     }
 
     /**
@@ -87,10 +87,8 @@ public class AppServiceImpl implements AppService {
      * 批量删除应用信息
      */
     @Override
-    public Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid) {
-        if (isValid) {
-            //TODO 做一些业务上的校验,判断是否需要校验
-        }
+    public Boolean deleteWithValidByIds(Collection<Long> ids) {
+        
         return appRepository.deleteBatchIds(ids) > 0;
     }
 }
