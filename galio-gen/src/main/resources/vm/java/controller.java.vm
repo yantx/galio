@@ -110,6 +110,6 @@ public class ${ClassName}Controller {
     @SaCheckPermission("${permissionPrefix}:remove")
     @DeleteMapping("/{${pkColumn.javaField}s}")
     public Object remove(@NotEmpty(message = "主键不能为空") @PathVariable ${pkColumn.javaType}[] ${pkColumn.javaField}s) {
-        return ${className}Service.deleteWithValidByIds(Arrays.asList(${pkColumn.javaField}s), true);
+        return ${className}Service.deleteWithValidByIds(Arrays.asList(${pkColumn.javaField}s));
     }
 }
