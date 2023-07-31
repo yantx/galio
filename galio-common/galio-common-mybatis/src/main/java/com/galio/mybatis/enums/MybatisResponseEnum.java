@@ -11,7 +11,8 @@ import lombok.Getter;
 @Getter
 public enum MybatisResponseEnum implements StatusCode {
 
-    SET_FIELD_VALUE_ERROR(90001,"set.field.value.error");
+    SET_FIELD_VALUE_ERROR(90001,"set.field.value.error"),
+    ROLE_DATA_SCOPE_ERROR(90002,"role.data.scope.error");
 
     private int code;
     private String msg;

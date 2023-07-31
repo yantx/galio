@@ -9,6 +9,7 @@ import com.galio.core.utils.StringUtil;
 import com.galio.mybatis.annotation.DataColumn;
 import com.galio.mybatis.annotation.DataPermission;
 import com.galio.mybatis.enums.DataScopeType;
+import com.galio.mybatis.enums.MybatisResponseEnum;
 import com.galio.mybatis.helper.DataPermissionHelper;
 import com.galio.satoken.utils.LoginHelper;
 import com.galio.system.dto.LoginMemberDto;
@@ -36,7 +37,8 @@ import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * @Author: galio
@@ -80,8 +82,10 @@ public class DataScopePermissionHandler {
                 DataPermissionHelper.setVariable("user" , loginMemberDto);
             }
             // 如果是超级管理员，则不过滤数据
-            if (ObjectUtil.isNull(loginMemberDto) || LoginHelper.isAdmin(loginMemberDto.getMemberId())) {
+            if (ObjectUtil.isNull(loginMemberDto) || loginMemberDto.isSuperAdmin()) {
                 return where;
+            }else if (loginMemberDto.isAdmin()){
+                return CCJSqlParserUtil.parseExpression(" app_id = " + loginMemberDto.getAppId());
             }
             String dataFilterSql = buildDataFilter(dataColumns, isSelect);
             if (StringUtil.isBlank(dataFilterSql)) {
@@ -125,7 +129,7 @@ public class DataScopePermissionHandler {
             boolean isSuccess = false;
             for (DataColumn dataColumn : dataColumns) {
                 if (dataColumn.key().length != dataColumn.value().length) {
-//                    throw new ServiceException("角色数据范围异常 => key与value长度不匹配");
+                    throw new CustomException(MybatisResponseEnum.ROLE_DATA_SCOPE_ERROR);
                 }
                 // 不包含 key 变量 则不处理
                 if (!StringUtil.containsAny(type.getSqlTemplate(),
@@ -163,7 +167,7 @@ public class DataScopePermissionHandler {
         String methodName = sb.substring(index + 1, sb.length());
         Class<?> clazz = ClassUtils.getClass(clazzName);
         List<Method> methods = Arrays.stream(clazz.getDeclaredMethods())
-                .filter(method -> method.getName().equals(methodName)).collect(Collectors.toList());
+                .filter(method -> method.getName().equals(methodName)).collect(toList());
         DataPermission dataPermission;
         // 获取方法注解
         for (Method method : methods) {
