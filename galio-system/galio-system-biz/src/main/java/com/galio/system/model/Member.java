@@ -86,16 +86,4 @@ public class Member extends BaseEntity {
      */
     private String remark;
 
-    private List<Role> roles;
-
-    private List<Group> groups;
-
-    public boolean isSuperAdmin(){
-        return roles.stream().filter(o -> o.getRoleKey().equals(MemberConstants.SUPER_ADMIN_ROLE)).findAny().isEmpty();
-    }
-
-    public boolean isAdmin(){
-        return roles.stream().filter(o -> o.getRoleKey().equals(MemberConstants.ADMIN_ROLE)).findAny().isEmpty();
-    }
-
 }

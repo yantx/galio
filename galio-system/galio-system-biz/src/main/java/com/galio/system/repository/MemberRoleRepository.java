@@ -37,8 +37,7 @@ public class MemberRoleRepository{
      * 批量新增成员和角色关联对象
      */
     public boolean insertBatch(List<MemberRole> entity) {
-        boolean flag = memberRoleMapper.insertBatch(entity);
-        return flag;
+        return memberRoleMapper.insertBatch(entity);
     }
 
     /**

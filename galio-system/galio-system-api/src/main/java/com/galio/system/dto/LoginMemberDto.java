@@ -1,6 +1,6 @@
 package com.galio.system.dto;
 
-import com.galio.system.model.SysEmployee;
+import com.galio.core.constant.MemberConstants;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -107,5 +107,13 @@ public class LoginMemberDto implements Serializable {
     private Long roleId;
 
     private Long appId;
+
+    public boolean isSuperAdmin(){
+        return roles.stream().filter(o -> o.getRoleKey().equals(MemberConstants.SUPER_ADMIN_ROLE)).findAny().isEmpty();
+    }
+
+    public boolean isAdmin(){
+        return roles.stream().filter(o -> o.getRoleKey().equals(MemberConstants.ADMIN_ROLE)).findAny().isEmpty();
+    }
 
 }
