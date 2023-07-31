@@ -20,7 +20,7 @@ import java.util.Collection;
  */
 @Repository
 @RequiredArgsConstructor
-public class EmployeeRepository{
+public class EmployeeRepository {
 
     private final EmployeeMapper employeeMapper;
 
@@ -31,13 +31,13 @@ public class EmployeeRepository{
         return employeeMapper.selectById(employeeId);
     }
 
-        /**
-         * 查询机构列表
-         */
-        public Page<Employee> selectPage(Page page) {
-            LambdaQueryWrapper<Employee> lqw = Wrappers.lambdaQuery();
-            return employeeMapper.selectPage(page, lqw);
-        }
+    /**
+     * 查询机构列表
+     */
+    public Page<Employee> selectPage(Page page) {
+        LambdaQueryWrapper<Employee> lqw = Wrappers.lambdaQuery();
+        return employeeMapper.selectPage(page, lqw);
+    }
 
     /**
      * 查询机构列表
@@ -49,19 +49,19 @@ public class EmployeeRepository{
 
     private LambdaQueryWrapper<Employee> buildQueryWrapper(Employee entity) {
         LambdaQueryWrapper<Employee> lqw = Wrappers.lambdaQuery();
-                    lqw.eq(entity.getOrgId() != null, Employee::getOrgId, entity.getOrgId());
-                    lqw.like(StringUtil.isNotBlank(entity.getEmployeeName()), Employee::getEmployeeName, entity.getEmployeeName());
-                    lqw.eq(StringUtil.isNotBlank(entity.getEmployeeNo()), Employee::getEmployeeNo, entity.getEmployeeNo());
-                    lqw.eq(StringUtil.isNotBlank(entity.getEmail()), Employee::getEmail, entity.getEmail());
-                    lqw.eq(entity.getMobilePhone() != null, Employee::getMobilePhone, entity.getMobilePhone());
-                    lqw.eq(StringUtil.isNotBlank(entity.getFixedPhone()), Employee::getFixedPhone, entity.getFixedPhone());
-                    lqw.eq(StringUtil.isNotBlank(entity.getSex()), Employee::getSex, entity.getSex());
-                    lqw.eq(entity.getAge() != null, Employee::getAge, entity.getAge());
-                    lqw.eq(entity.getEntryDate() != null, Employee::getEntryDate, entity.getEntryDate());
-                    lqw.eq(entity.getTermDate() != null, Employee::getTermDate, entity.getTermDate());
-                    lqw.eq(StringUtil.isNotBlank(entity.getStatus()), Employee::getStatus, entity.getStatus());
-                    lqw.eq(StringUtil.isNotBlank(entity.getDeleteFlag()), Employee::getDeleteFlag, entity.getDeleteFlag());
-                    lqw.eq(entity.getAppId() != null, Employee::getAppId, entity.getAppId());
+        lqw.eq(entity.getOrgId() != null, Employee::getOrgId, entity.getOrgId());
+        lqw.like(StringUtil.isNotBlank(entity.getEmployeeName()), Employee::getEmployeeName, entity.getEmployeeName());
+        lqw.eq(StringUtil.isNotBlank(entity.getEmployeeNo()), Employee::getEmployeeNo, entity.getEmployeeNo());
+        lqw.eq(StringUtil.isNotBlank(entity.getEmail()), Employee::getEmail, entity.getEmail());
+        lqw.eq(entity.getMobilePhone() != null, Employee::getMobilePhone, entity.getMobilePhone());
+        lqw.eq(StringUtil.isNotBlank(entity.getFixedPhone()), Employee::getFixedPhone, entity.getFixedPhone());
+        lqw.eq(StringUtil.isNotBlank(entity.getSex()), Employee::getSex, entity.getSex());
+        lqw.eq(entity.getAge() != null, Employee::getAge, entity.getAge());
+        lqw.eq(entity.getEntryDate() != null, Employee::getEntryDate, entity.getEntryDate());
+        lqw.eq(entity.getTermDate() != null, Employee::getTermDate, entity.getTermDate());
+        lqw.eq(StringUtil.isNotBlank(entity.getStatus()), Employee::getStatus, entity.getStatus());
+        lqw.eq(StringUtil.isNotBlank(entity.getDeleteFlag()), Employee::getDeleteFlag, entity.getDeleteFlag());
+        lqw.eq(entity.getAppId() != null, Employee::getAppId, entity.getAppId());
         return lqw;
     }
 

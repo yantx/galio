@@ -70,7 +70,7 @@ public class GroupServiceImpl implements GroupService {
         boolean flag = groupRepository.insert(add) > 0;
         if (flag) {
             dto.setGroupId(add.getGroupId());
-            relevanceRoleInfo(dto);
+            flag = relevanceRoleInfo(dto);
         }
         return flag;
     }
@@ -79,10 +79,16 @@ public class GroupServiceImpl implements GroupService {
      * 修改群组信息
      */
     @Override
+    @Transactional
     public Boolean updateByDto(GroupDto dto) {
         Group update = ObjectUtil.copyObject(dto, Group.class);
         validEntityBeforeSave(update);
-        return groupRepository.updateById(update) > 0;
+        boolean flag = groupRepository.updateById(update) > 0;
+        if (flag) {
+            dto.setGroupId(dto.getGroupId());
+            flag = relevanceRoleInfo(dto);
+        }
+        return flag;
     }
 
     /**
@@ -97,10 +103,9 @@ public class GroupServiceImpl implements GroupService {
      */
     @Override
     public Boolean deleteWithValidByIds(Collection<Long> ids) {
-        
         boolean flag = groupRepository.deleteBatchIds(ids) > 0;
         if (flag){
-            flag = groupRoleRepository.deleteByGroupIds(ids) > 0;
+            groupRoleRepository.deleteByGroupIds(ids);
         }
         return flag;
     }

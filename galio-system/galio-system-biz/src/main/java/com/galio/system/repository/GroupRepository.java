@@ -20,7 +20,7 @@ import java.util.Collection;
  */
 @Repository
 @RequiredArgsConstructor
-public class GroupRepository{
+public class GroupRepository {
 
     private final GroupMapper groupMapper;
 
@@ -31,13 +31,13 @@ public class GroupRepository{
         return groupMapper.selectById(groupId);
     }
 
-        /**
-         * 查询群组信息列表
-         */
-        public Page<Group> selectPage(Page page) {
-            LambdaQueryWrapper<Group> lqw = Wrappers.lambdaQuery();
-            return groupMapper.selectPage(page, lqw);
-        }
+    /**
+     * 查询群组信息列表
+     */
+    public Page<Group> selectPage(Page page) {
+        LambdaQueryWrapper<Group> lqw = Wrappers.lambdaQuery();
+        return groupMapper.selectPage(page, lqw);
+    }
 
     /**
      * 查询群组信息列表
@@ -47,13 +47,20 @@ public class GroupRepository{
         return groupMapper.selectList(lqw);
     }
 
+    /**
+     * 查询群组信息列表 By memberId
+     */
+    public List<Group> selectListByMember(Long memberId) {
+        return groupMapper.selectListByMemberId(memberId);
+    }
+
     private LambdaQueryWrapper<Group> buildQueryWrapper(Group entity) {
         LambdaQueryWrapper<Group> lqw = Wrappers.lambdaQuery();
-                    lqw.eq(entity.getGroupCode() != null, Group::getGroupCode, entity.getGroupCode());
-                    lqw.like(StringUtil.isNotBlank(entity.getGroupName()), Group::getGroupName, entity.getGroupName());
-                    lqw.eq(entity.getOrderNum() != null, Group::getOrderNum, entity.getOrderNum());
-                    lqw.eq(StringUtil.isNotBlank(entity.getStatus()), Group::getStatus, entity.getStatus());
-                    lqw.eq(entity.getAppId() != null, Group::getAppId, entity.getAppId());
+        lqw.eq(entity.getGroupCode() != null, Group::getGroupCode, entity.getGroupCode());
+        lqw.like(StringUtil.isNotBlank(entity.getGroupName()), Group::getGroupName, entity.getGroupName());
+        lqw.eq(entity.getOrderNum() != null, Group::getOrderNum, entity.getOrderNum());
+        lqw.eq(StringUtil.isNotBlank(entity.getStatus()), Group::getStatus, entity.getStatus());
+        lqw.eq(entity.getAppId() != null, Group::getAppId, entity.getAppId());
         return lqw;
     }
 

@@ -28,6 +28,11 @@ public class RoleFunctionRepository{
         lqw.eq(RoleFunction::getRoleId, roleId);
         return roleFunctionMapper.selectList(lqw);
     }
+    public List<RoleFunction> selectList(Collection<Long> roleIds) {
+        LambdaQueryWrapper<RoleFunction> lqw = Wrappers.lambdaQuery();
+        lqw.in(RoleFunction::getRoleId, roleIds);
+        return roleFunctionMapper.selectList(lqw);
+    }
 
     /**
      * 新增角色和功能关联
@@ -38,11 +43,19 @@ public class RoleFunctionRepository{
     }
 
     /**
-     * 批量删除角色和功能关联
+     * 删除角色和功能关联
      */
     public int deleteRoleId(Long roleId) {
         LambdaQueryWrapper<RoleFunction> lqw = Wrappers.lambdaQuery();
         lqw.eq(RoleFunction::getRoleId, roleId);
+        return roleFunctionMapper.delete(lqw);
+    }
+    /**
+     * 批量删除角色和功能关联
+     */
+    public int deleteRoleIds(Collection<Long> roleIds) {
+        LambdaQueryWrapper<RoleFunction> lqw = Wrappers.lambdaQuery();
+        lqw.in(RoleFunction::getRoleId, roleIds);
         return roleFunctionMapper.delete(lqw);
     }
 }

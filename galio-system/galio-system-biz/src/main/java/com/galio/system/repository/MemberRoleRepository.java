@@ -42,11 +42,17 @@ public class MemberRoleRepository{
     }
 
     /**
-     * 批量删除成员和角色关联
+     * 删除成员和角色关联
      */
     public int deleteByMemberId(Long memberId) {
         LambdaQueryWrapper<MemberRole> lqw = Wrappers.lambdaQuery();
         lqw.eq(MemberRole::getMemberId, memberId);
+        return memberRoleMapper.delete(lqw);
+    }
+
+    public int deleteByMemberIds(Collection<Long> memberIds) {
+        LambdaQueryWrapper<MemberRole> lqw = Wrappers.lambdaQuery();
+        lqw.in(MemberRole::getMemberId, memberIds);
         return memberRoleMapper.delete(lqw);
     }
 }

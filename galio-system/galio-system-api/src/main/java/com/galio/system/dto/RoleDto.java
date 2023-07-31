@@ -4,6 +4,8 @@ import com.galio.core.model.BaseEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * @Author: galio
  * @Date: 2023-01-09
@@ -38,4 +40,10 @@ public class RoleDto extends BaseEntity {
 
     @Schema(description = "显示顺序")
     private Integer orderNum;
+
+    @Schema(description = "功能ID集合")
+    private List<Long> functionIds;
+
+    @Schema(description = "数据集ID集合")
+    private List<Long> datasetIds;
 }

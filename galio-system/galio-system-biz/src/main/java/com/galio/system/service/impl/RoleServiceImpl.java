@@ -4,16 +4,25 @@ import com.galio.core.utils.ObjectUtil;
 import com.galio.core.model.PageRequestDto;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.galio.mybatis.page.MybatisPageConvertHelper;
+import com.galio.system.dto.MemberDto;
+import com.galio.system.model.MemberRole;
+import com.galio.system.model.RoleDataset;
+import com.galio.system.model.RoleFunction;
+import com.galio.system.repository.RoleDatasetRepository;
+import com.galio.system.repository.RoleFunctionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.galio.system.dto.RoleDto;
 import com.galio.system.model.Role;
 import com.galio.system.repository.RoleRepository;
 import com.galio.system.service.RoleService;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Collection;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @Author: galio
@@ -25,6 +34,8 @@ import java.util.Collection;
 public class RoleServiceImpl implements RoleService {
 
     private final RoleRepository roleRepository;
+    private final RoleFunctionRepository roleFunctionRepository;
+    private final RoleDatasetRepository roleDatasetRepository;
 
     /**
      * 查询角色信息
@@ -34,13 +45,23 @@ public class RoleServiceImpl implements RoleService {
         return roleRepository.selectById(roleId);
     }
 
-        /**
-         * 查询角色信息列表
-         */
-        @Override
-        public Page<Role> queryPageList(PageRequestDto pageRequestDto) {
-            return roleRepository.selectPage(MybatisPageConvertHelper.build(pageRequestDto));
-        }
+    /**
+     * 查询角色信息列表
+     */
+    @Override
+    public Page<Role> queryPageList(PageRequestDto pageRequestDto) {
+        return roleRepository.selectPage(MybatisPageConvertHelper.build(pageRequestDto));
+    }
+
+    /**
+     * 查询角色信息列表
+     */
+    @Override
+    public Set<String> queryRolePermissions(Long memberId) {
+        List<Role> roles = roleRepository.selectByMemberId(memberId);
+
+        return roles.stream().map(Role::getRoleKey).collect(Collectors.toSet());
+    }
 
     /**
      * 查询角色信息列表
@@ -48,7 +69,7 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public List<Role> queryList(RoleDto dto) {
         Role entity = ObjectUtil.copyObject(dto, Role.class);
-        
+
         return roleRepository.selectList(entity);
     }
 
@@ -56,12 +77,14 @@ public class RoleServiceImpl implements RoleService {
      * 新增角色信息
      */
     @Override
+    @Transactional
     public Boolean insertByDto(RoleDto dto) {
         Role add = ObjectUtil.copyObject(dto, Role.class);
         validEntityBeforeSave(add);
         boolean flag = roleRepository.insert(add) > 0;
         if (flag) {
             dto.setRoleId(add.getRoleId());
+            flag = relevanceFunctionInfo(dto) && relevanceDatasetInfo(dto);
         }
         return flag;
     }
@@ -70,10 +93,15 @@ public class RoleServiceImpl implements RoleService {
      * 修改角色信息
      */
     @Override
+    @Transactional
     public Boolean updateByDto(RoleDto dto) {
         Role update = ObjectUtil.copyObject(dto, Role.class);
         validEntityBeforeSave(update);
-        return roleRepository.updateById(update) > 0;
+        boolean flag = roleRepository.updateById(update) > 0;
+        if (flag) {
+            flag = relevanceFunctionInfo(dto) && relevanceDatasetInfo(dto);
+        }
+        return flag;
     }
 
     /**
@@ -87,8 +115,33 @@ public class RoleServiceImpl implements RoleService {
      * 批量删除角色信息
      */
     @Override
+    @Transactional
     public Boolean deleteWithValidByIds(Collection<Long> ids) {
-        
-        return roleRepository.deleteBatchIds(ids) > 0;
+        boolean flag = roleRepository.deleteBatchIds(ids) > 0;
+        if (flag) {
+            roleFunctionRepository.deleteRoleIds(ids);
+            roleDatasetRepository.deleteRoleIds(ids);
+        }
+        return flag;
+    }
+
+    public boolean relevanceFunctionInfo(RoleDto dto) {
+        if (ObjectUtil.isEmpty(dto.getFunctionIds())) {
+            return true;
+        }
+        roleFunctionRepository.deleteRoleId(dto.getRoleId());
+        List<RoleFunction> roleFunctions = dto.getFunctionIds().stream()
+                .map(o -> new RoleFunction(dto.getRoleId(), o)).collect(Collectors.toList());
+        return roleFunctionRepository.insertBatch(roleFunctions);
+    }
+
+    public boolean relevanceDatasetInfo(RoleDto dto) {
+        if (ObjectUtil.isEmpty(dto.getDatasetIds())) {
+            return true;
+        }
+        roleDatasetRepository.deleteRoleId(dto.getRoleId());
+        List<RoleDataset> roleFunctions = dto.getDatasetIds().stream()
+                .map(o -> new RoleDataset(dto.getRoleId(), o)).collect(Collectors.toList());
+        return roleDatasetRepository.insertBatch(roleFunctions);
     }
 }

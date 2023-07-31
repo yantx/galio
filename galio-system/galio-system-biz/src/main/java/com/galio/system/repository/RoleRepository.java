@@ -47,6 +47,22 @@ public class RoleRepository {
         return roleMapper.selectList(lqw);
     }
 
+    /**
+     * 查询角色信息列表
+     */
+    public List<Role> selectList(Collection<Long> roleIds) {
+        LambdaQueryWrapper<Role> lqw = Wrappers.lambdaQuery();
+        lqw.in(Role::getRoleId, roleIds);
+        return roleMapper.selectList(lqw);
+    }
+
+    /**
+     * 查询角色信息列表
+     */
+    public List<Role> selectByMemberId(Long memberId) {
+        return roleMapper.selectByMemberId(memberId);
+    }
+
     private LambdaQueryWrapper<Role> buildQueryWrapper(Role entity) {
         LambdaQueryWrapper<Role> lqw = Wrappers.lambdaQuery();
         lqw.like(StringUtil.isNotBlank(entity.getRoleName()), Role::getRoleName, entity.getRoleName());

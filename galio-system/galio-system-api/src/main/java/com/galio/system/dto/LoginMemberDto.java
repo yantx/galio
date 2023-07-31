@@ -34,6 +34,7 @@ public class LoginMemberDto implements Serializable {
      * 机构名
      */
     private String orgName;
+    private String parentOrgName;
 
     /**
      * 用户唯一标识
@@ -98,7 +99,7 @@ public class LoginMemberDto implements Serializable {
     /**
      * 登录账号所属的人员信息
      */
-    private SysEmployee employee;
+    private EmployeeDto employee;
 
     /**
      * 数据权限 当前角色ID

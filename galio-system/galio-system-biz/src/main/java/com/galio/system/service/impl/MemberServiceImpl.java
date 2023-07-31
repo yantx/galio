@@ -17,7 +17,6 @@ import com.galio.system.service.MemberService;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
@@ -52,13 +51,13 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.selectOne(entity);
     }
 
-        /**
-         * 查询成员信息列表
-         */
-        @Override
-        public Page<Member> queryPageList(PageRequestDto pageRequestDto) {
-            return memberRepository.selectPage(MybatisPageConvertHelper.build(pageRequestDto));
-        }
+    /**
+     * 查询成员信息列表
+     */
+    @Override
+    public Page<Member> queryPageList(PageRequestDto pageRequestDto) {
+        return memberRepository.selectPage(MybatisPageConvertHelper.build(pageRequestDto));
+    }
 
     /**
      * 查询成员信息列表
@@ -81,9 +80,7 @@ public class MemberServiceImpl implements MemberService {
         boolean flag = memberRepository.insert(add) > 0;
         if (flag) {
             dto.setMemberId(dto.getMemberId());
-            relevanceGroupInfo(dto);
-            // 会员角色关联
-            relevanceRoleInfo(dto);
+            flag = relevanceGroupInfo(dto) && relevanceRoleInfo(dto);
         }
         return flag;
     }
@@ -98,9 +95,7 @@ public class MemberServiceImpl implements MemberService {
         validEntityBeforeSave(update);
         boolean flag = memberRepository.updateById(update) > 0;
         if (flag) {
-            relevanceGroupInfo(dto);
-            // 会员角色关联
-            relevanceRoleInfo(dto);
+            flag = relevanceGroupInfo(dto) && relevanceRoleInfo(dto);
         }
         return flag;
     }
@@ -118,29 +113,30 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Boolean deleteWithValidByIds(Collection<Long> ids) {
         boolean flag = memberRepository.deleteBatchIds(ids) > 0;
-        if (flag){
-            flag = memberGroupRepository.deleteByMemberIds(ids) > 0;
+        if (flag) {
+            memberGroupRepository.deleteByMemberIds(ids);
+            memberRoleRepository.deleteByMemberIds(ids);
         }
         return flag;
     }
 
-    public boolean relevanceGroupInfo(MemberDto dto){
-        if (ObjectUtil.isEmpty(dto.getGroupIds())){
+    public boolean relevanceGroupInfo(MemberDto dto) {
+        if (ObjectUtil.isEmpty(dto.getGroupIds())) {
             return true;
         }
         memberGroupRepository.deleteByMemberId(dto.getMemberId());
         List<MemberGroup> memberGroups = dto.getRoleIds().stream()
-                .map(o -> new MemberGroup(dto.getMemberId(),o)).collect(Collectors.toList());
+                .map(o -> new MemberGroup(dto.getMemberId(), o)).collect(Collectors.toList());
         return memberGroupRepository.insertBatch(memberGroups);
     }
 
-    public boolean relevanceRoleInfo(MemberDto dto){
-        if (ObjectUtil.isEmpty(dto.getRoleIds())){
+    public boolean relevanceRoleInfo(MemberDto dto) {
+        if (ObjectUtil.isEmpty(dto.getRoleIds())) {
             return true;
         }
         memberRoleRepository.deleteByMemberId(dto.getMemberId());
         List<MemberRole> memberRoles = dto.getRoleIds().stream()
-                .map(o -> new MemberRole(dto.getMemberId(),o)).collect(Collectors.toList());
+                .map(o -> new MemberRole(dto.getMemberId(), o)).collect(Collectors.toList());
         return memberRoleRepository.insertBatch(memberRoles);
     }
 }

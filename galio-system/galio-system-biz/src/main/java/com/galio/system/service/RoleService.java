@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @Author: galio
@@ -24,6 +25,10 @@ public interface RoleService {
      * 查询角色信息列表
      */
     Page<Role> queryPageList(PageRequestDto pageRequestDto);
+    /**
+     * 根据用户ID查询角色key
+     */
+    Set<String> queryRolePermissions(Long memberId);
 
     /**
      * 查询角色信息列表

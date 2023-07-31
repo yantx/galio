@@ -1,7 +1,5 @@
 package com.galio.system.repository;
 
-import com.galio.core.utils.StringUtil;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
@@ -9,9 +7,8 @@ import org.springframework.stereotype.Repository;
 import com.galio.system.model.RoleDataset;
 import com.galio.system.mapper.RoleDatasetMapper;
 
-import java.util.List;
-import java.util.Map;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @Author: galio
@@ -42,11 +39,20 @@ public class RoleDatasetRepository{
     }
 
     /**
-     * 批量删除角色和数据集关联
+     * 删除角色和数据集关联
      */
     public int deleteRoleId(Long roleId) {
         LambdaQueryWrapper<RoleDataset> lqw = Wrappers.lambdaQuery();
         lqw.eq(RoleDataset::getRoleId, roleId);
+        return roleDatasetMapper.delete(lqw);
+    }
+
+    /**
+     * 批量删除角色和数据集关联
+     */
+    public int deleteRoleIds(Collection<Long> roleIds) {
+        LambdaQueryWrapper<RoleDataset> lqw = Wrappers.lambdaQuery();
+        lqw.in(RoleDataset::getRoleId, roleIds);
         return roleDatasetMapper.delete(lqw);
     }
 }

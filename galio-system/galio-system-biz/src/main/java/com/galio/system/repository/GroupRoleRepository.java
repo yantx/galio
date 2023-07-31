@@ -32,6 +32,14 @@ public class GroupRoleRepository{
         lqw.eq(GroupRole::getGroupId, groupId);
         return groupRoleMapper.selectList(lqw);
     }
+    /**
+     * 查询分组和角色关联列表
+     */
+    public List<GroupRole> selectList(Collection<Long> groupIds) {
+        LambdaQueryWrapper<GroupRole> lqw = Wrappers.lambdaQuery();
+        lqw.in(GroupRole::getGroupId, groupIds);
+        return groupRoleMapper.selectList(lqw);
+    }
 
     /**
      * 新增分组和角色关联

@@ -25,6 +25,11 @@ public class MemberOnline implements Serializable {
     private String orgName;
 
     /**
+     * 雇员名称
+     */
+    private String employeeName;
+
+    /**
      * 用户名称
      */
     private String username;
