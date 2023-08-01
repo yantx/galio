@@ -5,7 +5,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.galio.system.mapper.AccessLogMapper">
 
     <resultMap type="com.galio.system.model.AccessLog" id="LogininforResult">
-    <result property="infoId" column="info_id"/>
+    <result property="accessId" column="access_id"/>
     <result property="username" column="username"/>
     <result property="memberId" column="member_id"/>
     <result property="ipaddr" column="ipaddr"/>
