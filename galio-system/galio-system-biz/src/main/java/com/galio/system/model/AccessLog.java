@@ -14,16 +14,16 @@ import com.galio.core.model.BaseEntity;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("sys_logininfor")
-public class Logininfor extends BaseEntity {
+@TableName("sys_access_log")
+public class AccessLog extends BaseEntity {
 
     private static final long serialVersionUID=1L;
 
     /**
      * 主键
      */
-    @TableId(value = "info_id",type = IdType.ASSIGN_ID)
-    private Long infoId;
+    @TableId(value = "access_id",type = IdType.ASSIGN_ID)
+    private Long accessId;
     /**
      * 登录名
      */

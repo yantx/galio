@@ -13,7 +13,7 @@ import lombok.Data;
 
 @Data
 @Schema(description = "系统访问日志分页查询对象")
-public class LogininforPageReqDto extends PageRequestDto {
+public class AccessLogPageReqDto extends PageRequestDto {
 
     /**
      * 登录名

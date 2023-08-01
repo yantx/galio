@@ -10,7 +10,7 @@ import java.util.List;
  * @Date: 2023-01-13
  * @Description: 字典项相关业务交易接口
  */
-@HttpExchange("/dict")
+@HttpExchange("/dict_item")
 public interface DictItemExchange {
     /**
      * 分隔符
@@ -46,13 +46,13 @@ public interface DictItemExchange {
     }
 
     /**
-     * 根据字典类型和字典标签获取字典值
+     * 根据字典和字典项标签获取字典值
      *
      * @param dictId 字典类型
      * @param dictItemLabel 字典标签
      * @return 字典值
      */
-    default String getDictValue(String dictId, String dictItemLabel) {
+    default String getDictItemValue(String dictId, String dictItemLabel) {
         return getDictItemValue(dictId, dictItemLabel, SEPARATOR);
     }
 

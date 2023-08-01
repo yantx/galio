@@ -2,7 +2,7 @@ package com.galio.system.config;
 
 import com.galio.core.utils.SpringUtils;
 import com.galio.system.api.DictItemExchange;
-import com.galio.system.api.LogininforExchange;
+import com.galio.system.api.AccessLogExchange;
 import com.galio.system.api.MemberExchange;
 import com.galio.system.api.OperLogExchange;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -37,11 +37,11 @@ public class RestClientConfig {
         return factory.createClient(OperLogExchange.class);
     }
     @Bean
-    public LogininforExchange logininforExchange() {
+    public AccessLogExchange accessLogExchange() {
         WebClient webClient = SpringUtils.getBean(WebClient.class);
         HttpServiceProxyFactory factory = HttpServiceProxyFactory.builder(WebClientAdapter.forClient(webClient))
                 .build();
-        return factory.createClient(LogininforExchange.class);
+        return factory.createClient(AccessLogExchange.class);
     }
     @Bean
     public DictItemExchange dictItemExchange() {

@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.galio.system.mapper.LogininforMapper">
+<mapper namespace="com.galio.system.mapper.AccessLogMapper">
 
-    <resultMap type="com.galio.system.model.Logininfor" id="LogininforResult">
+    <resultMap type="com.galio.system.model.AccessLog" id="LogininforResult">
     <result property="infoId" column="info_id"/>
     <result property="username" column="username"/>
     <result property="memberId" column="member_id"/>

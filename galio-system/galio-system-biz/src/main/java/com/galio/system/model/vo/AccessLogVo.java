@@ -11,7 +11,7 @@ import lombok.Data;
  */
 @Data
 @Schema(description = "系统访问记录视图对象")
-public class LogininforVo {
+public class AccessLogVo {
 
     private static final long serialVersionUID = 1L;
 
@@ -19,7 +19,7 @@ public class LogininforVo {
      * 主键
      */
     @Schema(description = "主键")
-    private Long infoId;
+    private Long accessId;
 
     /**
      * 登录名

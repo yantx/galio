@@ -1,10 +1,7 @@
 package com.galio.system.dto;
 
-import com.galio.core.validate.InsertGroup;
-import com.galio.core.validate.UpdateGroup;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import jakarta.validation.constraints.*;
 
 import java.time.LocalDateTime;
 import com.galio.core.model.BaseEntity;
@@ -17,13 +14,13 @@ import com.galio.core.model.BaseEntity;
 
 @Data
 @Schema(description = "系统访问记录业务对象")
-public class LogininforDto extends BaseEntity {
+public class AccessLogDto extends BaseEntity {
 
     /**
      * 主键
      */
     @Schema(description = "主键")
-    private Long infoId;
+    private Long accessId;
 
     /**
      * 登录名
