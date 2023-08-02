@@ -1,9 +1,9 @@
 package com.galio.common.log.event;
 
 import com.galio.core.utils.ObjectUtil;
-import com.galio.system.api.LogininforExchange;
+import com.galio.system.api.AccessLogExchange;
 import com.galio.system.api.OperLogExchange;
-import com.galio.system.dto.LogininforDto;
+import com.galio.system.dto.AccessLogDto;
 import com.galio.system.dto.OperLogDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 public class LogEventListener {
 
     private final OperLogExchange operLogExchange;
-    private final LogininforExchange logininforExchange;
+    private final AccessLogExchange accessLogExchange;
 
     /**
      * 保存系统日志记录
@@ -34,9 +34,9 @@ public class LogEventListener {
 
     @Async
     @EventListener
-    public void saveLogininfor(LogininforEvent logininforEvent) {
-        LogininforDto sysLogininfor = ObjectUtil.copyObject(logininforEvent, LogininforDto.class);
-        logininforExchange.add(sysLogininfor);
+    public void saveAccessLog(AccessLogEvent accessLogEvent) {
+        AccessLogDto accessLogDto = ObjectUtil.copyObject(accessLogEvent, AccessLogDto.class);
+        accessLogExchange.add(accessLogDto);
     }
 
 }

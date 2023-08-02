@@ -50,7 +50,7 @@ public class AuthService {
         // 获取登录token
         LoginHelper.loginByDevice(memberDto, OperSideEnum.PC);
 
-        recordLogininfor(username, CommonConstants.LOGIN_SUCCESS, MessageUtils.message("member.login.success"));
+        recordAccessLog(username, CommonConstants.LOGIN_SUCCESS, MessageUtils.message("member.login.success"));
         return StpUtil.getTokenValue();
     }
 
@@ -61,7 +61,7 @@ public class AuthService {
         try {
             LoginMemberDto loginUser = LoginHelper.getLoginMember();
             StpUtil.logout();
-            recordLogininfor(loginUser.getUsername(), CommonConstants.LOGOUT, MessageUtils.message("member.logout.success"));
+            recordAccessLog(loginUser.getUsername(), CommonConstants.LOGOUT, MessageUtils.message("member.logout.success"));
         } catch (NotLoginException ignored) {
         }
     }
@@ -74,7 +74,7 @@ public class AuthService {
      * @param message  消息内容
      * @return
      */
-    public void recordLogininfor(String username, String status, String message) {
+    public void recordAccessLog(String username, String status, String message) {
         log.debug("username: {}, status: {}, message:{}", username, status, message);
     }
 
@@ -91,7 +91,7 @@ public class AuthService {
         Integer errorNumber = RedisUtils.getCacheObject(errorKey);
         // 锁定时间内登录 则踢出
         if (ObjectUtil.isNotNull(errorNumber) && errorNumber.equals(maxRetryCount)) {
-            recordLogininfor(username, loginFail, MessageUtils.message("member.password.retry.limit.exceed", maxRetryCount, lockTime));
+            recordAccessLog(username, loginFail, MessageUtils.message("member.password.retry.limit.exceed", maxRetryCount, lockTime));
             throw new CustomException(AuthResponseEnum.MEMBER_PASSWORD_RETRY_LIMIT_EXCEED, maxRetryCount, lockTime);
         }
 
@@ -101,12 +101,12 @@ public class AuthService {
             // 达到规定错误次数 则锁定登录
             if (errorNumber.equals(maxRetryCount)) {
                 RedisUtils.setCacheObject(errorKey, errorNumber, Duration.ofMinutes(lockTime));
-                recordLogininfor(username, loginFail, MessageUtils.message("member.password.retry.limit.exceed", maxRetryCount, lockTime));
+                recordAccessLog(username, loginFail, MessageUtils.message("member.password.retry.limit.exceed", maxRetryCount, lockTime));
                 throw new CustomException(AuthResponseEnum.MEMBER_PASSWORD_RETRY_LIMIT_EXCEED, maxRetryCount, lockTime);
             } else {
                 // 未达到规定错误次数 则递增
                 RedisUtils.setCacheObject(errorKey, errorNumber);
-                recordLogininfor(username, loginFail, MessageUtils.message("member.password.retry.limit.count", maxRetryCount));
+                recordAccessLog(username, loginFail, MessageUtils.message("member.password.retry.limit.count", maxRetryCount));
                 throw new CustomException(AuthResponseEnum.MEMBER_PASSWORD_RETRY_LIMIT_COUNT, maxRetryCount);
             }
         }

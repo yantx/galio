@@ -16,11 +16,6 @@ import lombok.NoArgsConstructor;
  * @Author: galio
  * @Date: 2023-01-09
  * @Description: 登录鉴权助手
- * deivce 为 设备类型 同一个用户类型 可以有 多种设备类型 例如 web,ios
- * 可以组成 用户类型与设备类型多对多的 权限灵活控制
- *
- * 多用户体系 针对 多种用户类型 但权限控制不一致
- * 可以组成 多用户类型表与多设备类型 分别控制权限
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class LoginHelper {
@@ -99,24 +94,10 @@ public class LoginHelper {
     }
 
     /**
-     * 获取用户账户
+     * 获取会员登录名
      */
     public static String getUsername() {
         return getLoginMember().getUsername();
-    }
-
-    /**
-     * 是否为管理员
-     *
-     * @param memberId 会员ID
-     * @return 结果
-     */
-    public static boolean isAdmin(Long memberId) {
-        return MemberConstants.ADMIN_ROLE.equals(memberId);
-    }
-
-    public static boolean isAdmin() {
-        return isAdmin(getMemberId());
     }
 
 }
