@@ -33,13 +33,13 @@ public class AccessLogServiceImpl implements AccessLogService {
         return accessLogRepository.selectById(accessId);
     }
 
-        /**
-         * 查询系统访问记录列表
-         */
-        @Override
-        public Page<AccessLog> queryPageList(PageRequestDto pageRequestDto) {
-            return accessLogRepository.selectPage(MybatisPageConvertHelper.build(pageRequestDto));
-        }
+    /**
+     * 查询系统访问记录列表
+     */
+    @Override
+    public Page<AccessLog> queryPageList(PageRequestDto pageRequestDto) {
+        return accessLogRepository.selectPage(MybatisPageConvertHelper.build(pageRequestDto));
+    }
 
     /**
      * 查询系统访问记录列表
@@ -47,7 +47,7 @@ public class AccessLogServiceImpl implements AccessLogService {
     @Override
     public List<AccessLog> queryList(AccessLogDto dto) {
         AccessLog entity = ObjectUtil.copyObject(dto, AccessLog.class);
-        
+
         return accessLogRepository.selectList(entity);
     }
 
@@ -87,7 +87,7 @@ public class AccessLogServiceImpl implements AccessLogService {
      */
     @Override
     public Boolean deleteWithValidByIds(Collection<Long> ids) {
-        
+
         return accessLogRepository.deleteBatchIds(ids) > 0;
     }
 }
