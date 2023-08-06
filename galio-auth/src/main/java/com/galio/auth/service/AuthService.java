@@ -5,16 +5,16 @@ import cn.dev33.satoken.secure.BCrypt;
 import cn.dev33.satoken.stp.StpUtil;
 import com.galio.auth.enums.AuthResponseEnum;
 import com.galio.auth.properties.PasswordProperties;
+import com.galio.common.log.event.AccessLogEvent;
 import com.galio.core.constant.CacheConstants;
 import com.galio.core.constant.CommonConstants;
 import com.galio.core.enums.OperSideEnum;
 import com.galio.core.enums.ResponseEnum;
 import com.galio.core.exception.CustomException;
-import com.galio.core.utils.Assert;
-import com.galio.core.utils.MessageUtils;
-import com.galio.core.utils.ObjectUtil;
+import com.galio.core.utils.*;
 import com.galio.redis.util.RedisUtils;
 import com.galio.satoken.utils.LoginHelper;
+import com.galio.system.api.AccessLogExchange;
 import com.galio.system.api.MemberExchange;
 import com.galio.system.dto.LoginMemberDto;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +36,7 @@ public class AuthService {
 
 
     private final MemberExchange memberExchange;
+    private final AccessLogExchange accessLogExchange;
 
     private final PasswordProperties passwordProperties;
 
@@ -75,7 +76,13 @@ public class AuthService {
      * @return
      */
     public void recordAccessLog(String username, String status, String message) {
-        log.debug("username: {}, status: {}, message:{}", username, status, message);
+        AccessLogEvent accessLogEvent = new AccessLogEvent();
+        accessLogEvent.setUserName(username);
+        accessLogEvent.setStatus(status.equals(CommonConstants.LOGIN_FAIL) ? CommonConstants.LOGIN_FAIL_STATUS : CommonConstants.LOGIN_SUCCESS_STATUS);
+        accessLogEvent.setMsg(message);
+        accessLogEvent.setMsg(ServletUtils.getClientIP());
+        SpringUtils.getContext().publishEvent(accessLogEvent);
+        log.debug("username: {}, status: {}, message:{}", username, accessLogEvent.getStatus(), message);
     }
 
     /**

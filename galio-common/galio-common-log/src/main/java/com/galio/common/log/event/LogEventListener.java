@@ -28,8 +28,8 @@ public class LogEventListener {
     @Async
     @EventListener
     public void saveLog(OperLogEvent operLogEvent) {
-        OperLogDto sysOperLog = ObjectUtil.copyObject(operLogEvent, OperLogDto.class);
-        operLogExchange.add(sysOperLog);
+        OperLogDto operLogDto = ObjectUtil.copyObject(operLogEvent, OperLogDto.class);
+        operLogExchange.add(operLogDto);
     }
 
     @Async

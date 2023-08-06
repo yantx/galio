@@ -111,12 +111,12 @@ public class DataScopePermissionHandler {
     private String buildDataFilter(DataColumn[] dataColumns, boolean isSelect) {
         // 更新或删除需满足所有条件
         String joinStr = isSelect ? " OR " : " AND ";
-        LoginMemberDto user = DataPermissionHelper.getVariable("user");
+        LoginMemberDto memberDto = DataPermissionHelper.getVariable("user");
         StandardEvaluationContext context = new StandardEvaluationContext();
         context.setBeanResolver(beanResolver);
         DataPermissionHelper.getContext().forEach(context::setVariable);
         Set<String> conditions = new HashSet<>();
-        for (RoleDto role : user.getRoles()) {
+        for (RoleDto role : memberDto.getRoles()) {
             // 获取角色权限泛型
             DataScopeType type = DataScopeType.findCode(role.getDataScope());
             if (ObjectUtil.isNull(type)) {

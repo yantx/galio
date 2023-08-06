@@ -64,6 +64,11 @@
             <groupId>com.galio</groupId>
             <artifactId>galio-common-doc</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.galio</groupId>
+            <artifactId>galio-common-log</artifactId>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
 
     <build>
