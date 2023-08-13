@@ -10,7 +10,6 @@ import com.galio.system.model.Group;
 import com.galio.system.mapper.GroupMapper;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Collection;
 
 /**

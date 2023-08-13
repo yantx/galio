@@ -13,6 +13,6 @@ import java.util.List;
  */
 public interface GroupMapper extends BaseMapperPlus<GroupMapper, Group> {
 
-    List<Group> selectListByMemberId(@Param("member") Long memberId);
+    List<Group> selectListByMemberId(@Param("memberId") Long memberId);
 
 }

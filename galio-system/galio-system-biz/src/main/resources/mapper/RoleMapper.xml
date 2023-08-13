@@ -23,22 +23,22 @@
     </resultMap>
 
     <sql id="column_list">
-        role_id,
-        role_name,
-        role_key,
-        order_num,
-        data_scope,
-        function_check_strictly,
-        org_check_strictly,
-        org_check_strictly,
-        status,
-        delete_flag,
-        create_by,
-        update_by,
-        create_time,
-        update_time,
-        remark,
-        app_id
+        sr.role_id,
+        sr.role_name,
+        sr.role_key,
+        sr.order_num,
+        sr.data_scope,
+        sr.function_check_strictly,
+        sr.org_check_strictly,
+        sr.org_check_strictly,
+        sr.status,
+        sr.delete_flag,
+        sr.create_by,
+        sr.update_by,
+        sr.create_time,
+        sr.update_time,
+        sr.remark,
+        sr.app_id
     </sql>
     <select id="selectByMemberId" parameterType="java.lang.Long" resultMap="RoleResult">
         select

@@ -19,8 +19,8 @@
     </resultMap>
 
     <sql id="column_list">
-        group_id
-        ,group_code,group_name,order_num,status,app_id,remark,create_by,create_time,update_by,update_time
+        sg.group_id
+        ,sg.group_code,sg.group_name,sg.order_num,sg.status,sg.app_id,sg.remark,sg.create_by,sg.create_time,sg.update_by,sg.update_time
     </sql>
 
     <select id="selectListByMemberId" parameterType="long" resultMap="GroupResult">
