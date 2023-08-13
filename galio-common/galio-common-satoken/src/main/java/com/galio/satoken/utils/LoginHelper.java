@@ -35,8 +35,8 @@ public class LoginHelper {
     }
 
     /**
-     * 登录系统 基于 设备类型
-     * 针对相同用户体系不同设备
+     * 登录系统 基于 终端类型
+     * 针对相同用户体系不同终端
      *
      * @param loginMember 登录用户信息
      */

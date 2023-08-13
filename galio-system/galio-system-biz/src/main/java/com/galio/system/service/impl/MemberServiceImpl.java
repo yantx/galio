@@ -1,5 +1,6 @@
 package com.galio.system.service.impl;
 
+import cn.dev33.satoken.secure.BCrypt;
 import com.galio.core.utils.ObjectUtil;
 import com.galio.core.model.PageRequestDto;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -76,6 +77,7 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     public Boolean insertByDto(MemberDto dto) {
         Member add = ObjectUtil.copyObject(dto, Member.class);
+        add.setPassword(BCrypt.hashpw(dto.getPassword()));
         validEntityBeforeSave(add);
         boolean flag = memberRepository.insert(add) > 0;
         if (flag) {
