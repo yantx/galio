@@ -18,7 +18,7 @@ public class AccessLogEvent implements Serializable {
     /**
      * 用户账号
      */
-    private String userName;
+    private String username;
 
     /**
      * 登录状态 0成功 1失败

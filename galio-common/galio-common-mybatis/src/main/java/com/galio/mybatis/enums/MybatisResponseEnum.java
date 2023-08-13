@@ -24,7 +24,7 @@ public enum MybatisResponseEnum implements StatusCode {
         this.msg = msg;
     }
 
-    public MybatisResponseEnum packageByArgs(Object... args) {
+    public MybatisResponseEnum withArgs(Object... args) {
         this.args = args;
         return this;
     }

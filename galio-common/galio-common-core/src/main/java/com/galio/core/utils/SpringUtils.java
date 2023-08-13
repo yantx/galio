@@ -1,12 +1,17 @@
 package com.galio.core.utils;
 
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 /**
  * @Author: galio
@@ -15,15 +20,20 @@ import org.springframework.stereotype.Component;
  */
 @SuppressWarnings("unchecked")
 @Component
-public class SpringUtils implements BeanFactoryPostProcessor {
+@Lazy(false)
+public class SpringUtils implements BeanFactoryPostProcessor, ApplicationContextAware {
 
     private static ApplicationContext applicationContext;
     private static ConfigurableListableBeanFactory beanFactory;
 
     @Override
-    public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory)
-            throws BeansException {
+    public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
         SpringUtils.beanFactory = beanFactory;
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        SpringUtils.applicationContext = applicationContext;
     }
 
     /**
@@ -32,24 +42,25 @@ public class SpringUtils implements BeanFactoryPostProcessor {
      * @param name
      * @return Object 一个以所给名字注册的bean的实例
      * @throws org.springframework.beans.BeansException
-     *
      */
     public static <T> T getBean(String name) throws BeansException {
         return (T) beanFactory.getBean(name);
     }
-    public static ListableBeanFactory getBeanFactory(){
+
+    public static ListableBeanFactory getBeanFactory() {
         return beanFactory;
     }
-    public static ApplicationContext getContext(){
+
+    public static ApplicationContext getContext() {
         return applicationContext;
     }
+
     /**
      * 获取类型为requiredType的对象
      *
      * @param clz
      * @return
      * @throws org.springframework.beans.BeansException
-     *
      */
     public static <T> T getBean(Class<T> clz) throws BeansException {
         @SuppressWarnings("unchecked")
@@ -74,7 +85,6 @@ public class SpringUtils implements BeanFactoryPostProcessor {
      * @param name
      * @return boolean
      * @throws org.springframework.beans.factory.NoSuchBeanDefinitionException
-     *
      */
     public static boolean isSingleton(String name) throws NoSuchBeanDefinitionException {
         return beanFactory.isSingleton(name);
@@ -84,7 +94,6 @@ public class SpringUtils implements BeanFactoryPostProcessor {
      * @param name
      * @return Class 注册对象的类型
      * @throws org.springframework.beans.factory.NoSuchBeanDefinitionException
-     *
      */
     public static Class<?> getType(String name) throws NoSuchBeanDefinitionException {
         return beanFactory.getType(name);
@@ -96,7 +105,6 @@ public class SpringUtils implements BeanFactoryPostProcessor {
      * @param name
      * @return
      * @throws org.springframework.beans.factory.NoSuchBeanDefinitionException
-     *
      */
     public static String[] getAliases(String name) throws NoSuchBeanDefinitionException {
         return beanFactory.getAliases(name);

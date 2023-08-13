@@ -12,7 +12,7 @@ import org.springframework.context.annotation.ComponentScan;
  * @Date: 2023-01-17
  * @Description: 鉴权认证服务启动类
  */
-@ComponentScan({"com.galio.*.api",CommonConstants.BASE_PACKAGES})
+@ComponentScan(CommonConstants.BASE_PACKAGES)
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 public class AuthApplication {
 

@@ -22,7 +22,7 @@ public class SatokenExceptionHandler {
     @ExceptionHandler({NotLoginException.class})
     public BaseResponse notLoginExceptionExceptionHandler(NotLoginException e) {
         log.error(e.getMessage(),e);
-        return BaseResponse.createFail(ResponseEnum.UNAUTHORIZED);
+        return BaseResponse.createFail(ResponseEnum.UNAUTHORIZED.withArgs(e.getMessage()));
     }
 
 }

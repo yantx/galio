@@ -53,12 +53,12 @@
             <groupId>cn.dev33</groupId>
             <artifactId>sa-token-jwt</artifactId>
             <version>${satoken.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>cn.hutool</groupId>
-                    <artifactId>hutool-jwt</artifactId>
-                </exclusion>
-            </exclusions>
+<!--            <exclusions>-->
+<!--                <exclusion>-->
+<!--                    <groupId>cn.hutool</groupId>-->
+<!--                    <artifactId>hutool-jwt</artifactId>-->
+<!--                </exclusion>-->
+<!--            </exclusions>-->
         </dependency>
     </dependencies>
 </project>

@@ -3,6 +3,7 @@ package com.galio.core.handler;
 import com.galio.core.enums.ResponseEnum;
 import com.galio.core.exception.CustomException;
 import com.galio.core.model.BaseResponse;
+import com.galio.core.utils.StringUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -13,6 +14,8 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
+
+import java.util.Optional;
 
 /**
  * @Author: galio
@@ -34,7 +37,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({NullPointerException.class})
     public BaseResponse MethodArgumentNotValidExceptionHandler(NullPointerException e) {
         log.error(ResponseEnum.NULL_POINTER.getMsg(), e);
-        return BaseResponse.createFail(ResponseEnum.NULL_POINTER);
+        return BaseResponse.createFail(ResponseEnum.NULL_POINTER.withArgs(e.toString()));
     }
 
     /**
@@ -70,7 +73,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(CustomException.class)
     public BaseResponse handleCommunicationException(CustomException e, HttpServletRequest request) {
         log.error(e.getMessage(),e);
-        return BaseResponse.createFail(e.getCode(),e.getMessage());
+        return BaseResponse.createResponse(e.getCode(),e.getMessage());
     }
 
     /**
@@ -78,17 +81,18 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(RuntimeException.class)
     public BaseResponse handleRuntimeException(RuntimeException e, HttpServletRequest request) {
-        String requestURI = request.getRequestURI();
-        log.error("请求地址'{}',发生未知异常.", requestURI, e);
-        return BaseResponse.createFail(ResponseEnum.FAILED);
+        String ex =StringUtil.isNotEmpty(e.getMessage())? e.toString() : e.toString() +": " + e.getCause();
+        log.error("[{}] URL:{} [ex] ", request.getMethod(), request.getRequestURI(), e);
+        return BaseResponse.createFail(ResponseEnum.INTERNAL_SERVER_ERROR.withArgs(ex));
     }
     /**
      * Exception 类捕获 500 异常处理
      */
     @ExceptionHandler(value = Exception.class)
-    public BaseResponse handlerException(Exception e) {
-        log.error(e.getMessage(),e);
-        return BaseResponse.createFail(ResponseEnum.FAILED);
+    public BaseResponse handlerException(Exception e, HttpServletRequest request) {
+        String ex =StringUtil.isNotEmpty(e.getMessage())? e.toString() : e.toString() +": " + e.getCause();
+        log.error("[{}] URL:{} [ex] ", request.getMethod(), request.getRequestURI(), e);
+        return BaseResponse.createFail(ResponseEnum.INTERNAL_SERVER_ERROR.withArgs(ex));
     }
 
 }

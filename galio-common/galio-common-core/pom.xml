@@ -85,6 +85,13 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
         </dependency>
+        <!--    核心包基础类添加注解使用    -->
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-annotations-jakarta</artifactId>
+            <version>2.2.8</version>
+            <scope>compile</scope>
+        </dependency>
 
     </dependencies>
 </project>

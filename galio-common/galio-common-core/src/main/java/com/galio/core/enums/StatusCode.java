@@ -9,5 +9,17 @@ public interface StatusCode {
 
     int getCode();
     String getMsg();
+
+    /**
+     * 国际化消息拼接参数获取
+     * @return
+     */
     Object[] getArgs();
+    /**
+     * 国际化消息拼接参数传入
+     * @return
+     */
+    StatusCode withArgs(Object... args);
+
+
 }

@@ -13,6 +13,7 @@ import com.galio.system.model.MemberOnline;
 import eu.bitwalker.useragentutils.UserAgent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
@@ -23,6 +24,7 @@ import java.time.Duration;
  * @Description: 账号行为监听
  */
 @Slf4j
+@Lazy(false)
 @Component
 @RequiredArgsConstructor
 public class MemberActionListener implements SaTokenListener {

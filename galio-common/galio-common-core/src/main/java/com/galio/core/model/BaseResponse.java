@@ -3,6 +3,7 @@ package com.galio.core.model;
 import com.galio.core.enums.ResponseEnum;
 import com.galio.core.enums.StatusCode;
 import com.galio.core.utils.MessageUtils;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -15,22 +16,26 @@ import org.apache.commons.lang3.StringUtils;
  */
 @Data
 @NoArgsConstructor
+@Schema(description="响应数据对象")
 public class BaseResponse<T> {
 
     // 状态码
+    @Schema(description = "状态码20000表示成功")
     private int code;
 
     // 状态信息
+    @Schema(description = "提示消息")
     private String msg;
 
     // 返回对象
+    @Schema(description = "返回数据内容")
     private Object data;
 
     public static <T> BaseResponse<T> createSuccess() {
         return createResponse(ResponseEnum.SUCCESS.getCode(), ResponseEnum.SUCCESS.getMsg(), null);
     }
     public static <T> BaseResponse<T> createSuccess(StatusCode statusCode) {
-        return createResponse(statusCode.getCode(), statusCode.getMsg(), null);
+        return createResponse(statusCode.getCode(), statusCode.getMsg(), null, statusCode.getArgs());
     }
     public static <T> BaseResponse<T> createSuccessWithData(T data) {
         return createResponse(ResponseEnum.SUCCESS.getCode(), ResponseEnum.SUCCESS.getMsg(), data);
@@ -38,34 +43,22 @@ public class BaseResponse<T> {
     public static <T> BaseResponse<T> createFail() {
         return createResponse(ResponseEnum.FAILED.getCode(), ResponseEnum.FAILED.getMsg(), null);
     }
-    public static <T> BaseResponse<T> createFail(String msg) {
-        return createResponse(ResponseEnum.FAILED.getCode(), msg, null);
-    }
-    public static <T> BaseResponse<T> createFail(int code, String msg) {
-        return createResponse(code, msg, null);
+    public static <T> BaseResponse<T> createFail(String msg, Object... args) {
+        return createResponse(ResponseEnum.FAILED.getCode(), msg, null, args);
     }
     public static <T> BaseResponse<T> createFail(StatusCode statusCode) {
-        return createResponse(statusCode.getCode(), statusCode.getMsg(), null);
+        return createResponse(statusCode.getCode(), statusCode.getMsg(), null, statusCode.getArgs());
     }
     public static <T> BaseResponse<T> createFailWithData(T data) {
-        return createResponse(ResponseEnum.FAILED.getCode(), ResponseEnum.FAILED.getMsg(), data);
-    }
-    public static <T> BaseResponse<T> createWarn() {
-        return createResponse(ResponseEnum.FAILED.getCode(), ResponseEnum.FAILED.getMsg(), null);
-    }
-    public static <T> BaseResponse<T> createWarn(StatusCode statusCode) {
-        return createResponse(statusCode.getCode(), statusCode.getMsg(), null);
-    }
-    public static <T> BaseResponse<T> createWarnWithData(T data) {
         return createResponse(ResponseEnum.FAILED.getCode(), ResponseEnum.FAILED.getMsg(), data);
     }
     public static <T> BaseResponse<T> createResponse(int code, String msg) {
         return createResponse(code, msg, null);
     }
-    private static <T> BaseResponse<T> createResponse(int code, String msg, T data) {
+    private static <T> BaseResponse<T> createResponse(int code, String msg, T data, Object... args) {
         BaseResponse<T> r = new BaseResponse<>();
         r.setCode(code);
-        r.setMsg(getMessage(msg));
+        r.setMsg(getMessage(msg,args));
         r.setData(data);
         return r;
     }

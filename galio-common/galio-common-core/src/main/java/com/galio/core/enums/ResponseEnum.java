@@ -27,9 +27,10 @@ public enum ResponseEnum implements StatusCode{
     UNSUPPORTED_MEDIA_TYPE(41500,"unsupported.media.type"),
 
     // 服务端异常
-    FAILED(50000,  "请求失败,服务内部异常"),
+    FAILED(50000,  "操作失败"),
+    INTERNAL_SERVER_ERROR(50007,  "internal.server.error"),
     WARN(60000,  "系统告警提示"),
-    NULL_POINTER(50001,"空指针异常"),
+    NULL_POINTER(50001,"null.pointer"),
     JSON_PROCESSING_EXCEPTION(50002,"response返回包装失败"),
     SNOW_FLASK_WORKER_ID_ERROR(50003,"snow.flask.worker.id.error"),
     NOT_REQUEST_LOG_WRITE_ERROR(50004,"not.request.log.write.error"),
@@ -53,7 +54,8 @@ public enum ResponseEnum implements StatusCode{
     CLASS_NOT_FOUND(54401,  "class.not.found"),
     PARAM_NOT_NULL(54402,"param.not.null"),
     UNKNOWN_HOST(55500,  "unknown.host"),
-    REMOTE_RESPONSE_ERROR(60002,  "remote.response.error"),
+    REMOTE_ANALYZE_RESPONSE_ERROR(50005,  "remote.analyze.response.error"),
+    REMOTE_RESPONSE_ERROR(50006,  "remote.response.error"),
     SERVICE_INVOCATION_ERROR(66666,  "service.invocation.error"),
     UNKNOWN_EXCEPTION(9999,"未知异常");
 
@@ -67,7 +69,8 @@ public enum ResponseEnum implements StatusCode{
         this.msg = msg;
     }
 
-    public ResponseEnum packageByArgs(Object... args) {
+    @Override
+    public ResponseEnum withArgs(Object... args) {
         this.args = args;
         return this;
     }

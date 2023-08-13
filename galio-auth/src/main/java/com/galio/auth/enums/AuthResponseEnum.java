@@ -23,9 +23,10 @@ public enum AuthResponseEnum implements StatusCode {
         this.code = code;
         this.msg = msg;
     }
-    public AuthResponseEnum packageByArgs(Object... args) {
+
+    @Override
+    public AuthResponseEnum withArgs(Object... args) {
         this.args = args;
         return this;
     }
-
 }

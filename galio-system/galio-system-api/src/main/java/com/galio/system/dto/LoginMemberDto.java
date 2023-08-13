@@ -101,11 +101,6 @@ public class LoginMemberDto implements Serializable {
      */
     private EmployeeDto employee;
 
-    /**
-     * 数据权限 当前角色ID
-     */
-    private Long roleId;
-
     private Long appId;
 
     public boolean isSuperAdmin(){

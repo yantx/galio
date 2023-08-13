@@ -14,7 +14,6 @@ import com.galio.core.exception.CustomException;
 import com.galio.core.utils.*;
 import com.galio.redis.util.RedisUtils;
 import com.galio.satoken.utils.LoginHelper;
-import com.galio.system.api.AccessLogExchange;
 import com.galio.system.api.MemberExchange;
 import com.galio.system.dto.LoginMemberDto;
 import lombok.RequiredArgsConstructor;
@@ -36,19 +35,19 @@ public class AuthService {
 
 
     private final MemberExchange memberExchange;
-    private final AccessLogExchange accessLogExchange;
-
     private final PasswordProperties passwordProperties;
 
     /**
      * 登录
      */
     public String login(String username, String password) throws CustomException{
-        LoginMemberDto memberDto = memberExchange.getMemberInfo(username);
 
-        Assert.notNull(memberDto, ResponseEnum.MEMBER_NOT_EXITS.packageByArgs(username));
+        // 登录改造 首先获取数据库中密码 登录成功后再获取所有用户信息。 密码应避免明文传输，
+        // 加密策略待定 若加密需要盐则在用户输入账号时就应该验证用户是否存在 存在返回一个用户的盐，由前端将用户的密码+盐进行加密
+        LoginMemberDto memberDto = memberExchange.getMemberInfo(username);
+        Assert.notNull(memberDto, ResponseEnum.MEMBER_NOT_EXITS.withArgs(username));
         checkLogin(username, () -> !BCrypt.checkpw(password, memberDto.getPassword()));
-        // 获取登录token
+        // 获取登录token 目前仅PC端
         LoginHelper.loginByDevice(memberDto, OperSideEnum.PC);
 
         recordAccessLog(username, CommonConstants.LOGIN_SUCCESS, MessageUtils.message("member.login.success"));
@@ -73,11 +72,11 @@ public class AuthService {
      * @param username 用户名
      * @param status   状态
      * @param message  消息内容
-     * @return
      */
     public void recordAccessLog(String username, String status, String message) {
         AccessLogEvent accessLogEvent = new AccessLogEvent();
-        accessLogEvent.setUserName(username);
+        accessLogEvent.setUsername(username);
+        accessLogEvent.setUsername(username);
         accessLogEvent.setStatus(status.equals(CommonConstants.LOGIN_FAIL) ? CommonConstants.LOGIN_FAIL_STATUS : CommonConstants.LOGIN_SUCCESS_STATUS);
         accessLogEvent.setMsg(message);
         accessLogEvent.setMsg(ServletUtils.getClientIP());
@@ -99,7 +98,7 @@ public class AuthService {
         // 锁定时间内登录 则踢出
         if (ObjectUtil.isNotNull(errorNumber) && errorNumber.equals(maxRetryCount)) {
             recordAccessLog(username, loginFail, MessageUtils.message("member.password.retry.limit.exceed", maxRetryCount, lockTime));
-            throw new CustomException(AuthResponseEnum.MEMBER_PASSWORD_RETRY_LIMIT_EXCEED, maxRetryCount, lockTime);
+            throw new CustomException(AuthResponseEnum.MEMBER_PASSWORD_RETRY_LIMIT_EXCEED.withArgs(maxRetryCount, lockTime));
         }
 
         if (supplier.get()) {
@@ -108,13 +107,14 @@ public class AuthService {
             // 达到规定错误次数 则锁定登录
             if (errorNumber.equals(maxRetryCount)) {
                 RedisUtils.setCacheObject(errorKey, errorNumber, Duration.ofMinutes(lockTime));
+                // TODO 如果日志推送异常则导致 后面的自定义密码错误异常将不会提示 这里需要处理一下, 可以try一下 或者访问日志接口不应该设置权限
                 recordAccessLog(username, loginFail, MessageUtils.message("member.password.retry.limit.exceed", maxRetryCount, lockTime));
-                throw new CustomException(AuthResponseEnum.MEMBER_PASSWORD_RETRY_LIMIT_EXCEED, maxRetryCount, lockTime);
+                throw new CustomException(AuthResponseEnum.MEMBER_PASSWORD_RETRY_LIMIT_EXCEED.withArgs(maxRetryCount, lockTime));
             } else {
                 // 未达到规定错误次数 则递增
                 RedisUtils.setCacheObject(errorKey, errorNumber);
                 recordAccessLog(username, loginFail, MessageUtils.message("member.password.retry.limit.count", maxRetryCount));
-                throw new CustomException(AuthResponseEnum.MEMBER_PASSWORD_RETRY_LIMIT_COUNT, maxRetryCount);
+                throw new CustomException(AuthResponseEnum.MEMBER_PASSWORD_RETRY_LIMIT_COUNT.withArgs(maxRetryCount));
             }
         }
         // 登录成功 清空错误次数
