@@ -1,6 +1,5 @@
 package com.galio.gen.enums;
 
-import com.galio.core.enums.ResponseEnum;
 import com.galio.core.enums.StatusCode;
 import lombok.Getter;
 
@@ -33,7 +32,8 @@ public enum GenExceptionResponseEnum implements StatusCode {
         this.msg = msg;
     }
 
-    public GenExceptionResponseEnum packageByArgs(Object... args) {
+    @Override
+    public GenExceptionResponseEnum withArgs(Object... args) {
         this.args = args;
         return this;
     }
