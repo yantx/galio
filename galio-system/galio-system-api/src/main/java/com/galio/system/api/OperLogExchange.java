@@ -12,7 +12,7 @@ import org.springframework.web.service.annotation.PostExchange;
  * @Date: 2023-05-31 08:10:20
  * @Description: 操作日志相关交易接口
  */
-@HttpExchange("/operLog")
+@HttpExchange("system/operLog")
 public interface OperLogExchange {
     @PostExchange()
     Boolean add(@Validated(InsertGroup.class) @RequestBody OperLogDto dto);

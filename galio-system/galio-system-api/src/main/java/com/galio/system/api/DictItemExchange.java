@@ -10,7 +10,7 @@ import java.util.List;
  * @Date: 2023-01-13
  * @Description: 字典项相关业务交易接口
  */
-@HttpExchange("/dict_item")
+@HttpExchange("/system/dict_item")
 public interface DictItemExchange {
     /**
      * 分隔符

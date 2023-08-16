@@ -11,7 +11,7 @@ import org.springframework.web.service.annotation.HttpExchange;
  * @Date: 2023-01-13
  * @Description: 人员信息交易接口
  */
-@HttpExchange("/remote/member")
+@HttpExchange("system/remote/member")
 public interface MemberExchange {
     /**
      * 通过登录名查询账号信息
