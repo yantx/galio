@@ -2,8 +2,8 @@ import { http } from '@/utils/http/axios';
 
 export interface BasicResponseModel<T = any> {
   code: number;
-  message: string;
-  result: T;
+  msg: string;
+  data: T;
 }
 
 export interface BasicPageParams {

@@ -26,6 +26,7 @@ security:
       - /auth/login
       - /*/v3/api-docs
       - /csrf
+      - /*/remote
 
 spring:
   cloud:

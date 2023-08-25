@@ -134,7 +134,7 @@
         };
 
         try {
-          const { code, message: msg } = await userStore.login(params);
+          const { code, msg } = await userStore.login(params);
           message.destroyAll();
           if (code == ResultEnum.SUCCESS) {
             const toPath = decodeURIComponent((route.query?.redirect || '/') as string);

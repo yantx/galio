@@ -9,12 +9,12 @@
   "private": true,
   "scripts": {
     "bootstrap": "pnpm install",
-    "serve": "npm run dev",
+    "serve": "vite --host --mode production",
     "dev": "vite",
     "build": "vite build && esno ./build/script/postBuild.ts",
-    "build:no-cache": "pnpm clean cache && npm run build",
-    "report": "cross-env REPORT=true npm run build",
-    "preview": "npm run build && vite preview",
+    "build:no-cache": "pnpm clean cache && vite build",
+    "report": "cross-env REPORT=true vite build ",
+    "preview": "vite build && vite preview",
     "preview:dist": "vite preview",
     "clean:cache": "rimraf node_modules/.cache/ && rimraf node_modules/.vite",
     "clean:lib": "rimraf node_modules",
@@ -25,7 +25,6 @@
     "lint:pretty": "pretty-quick --staged",
     "reinstall": "rimraf pnpm-lock.yaml && rimraf package.lock.json && rimraf node_modules && npm run bootstrap"
   },
-  
   "dependencies": {
     "@vicons/antd": "^0.12.0",
     "@vicons/ionicons5": "^0.12.0",
@@ -61,6 +60,7 @@
     "@vue/eslint-config-typescript": "^11.0.2",
     "autoprefixer": "^10.4.13",
     "core-js": "^3.26.0",
+    "cross-env": "^7.0.3",
     "dotenv": "^16.0.3",
     "eslint": "^8.27.0",
     "eslint-config-prettier": "^8.5.0",
