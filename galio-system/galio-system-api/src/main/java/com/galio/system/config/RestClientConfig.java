@@ -13,6 +13,8 @@ import org.springframework.web.reactive.function.client.support.WebClientAdapter
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 import com.galio.http.config.WebClientConfig;
 
+import java.time.Duration;
+
 /**
  * @Author: galio
  * @Date: 2023-04-19 13:36:11
@@ -25,6 +27,7 @@ public class RestClientConfig {
     public MemberExchange remoteMemberClient() {
         WebClient webClient = SpringUtils.getBean(WebClient.class);
         HttpServiceProxyFactory factory = HttpServiceProxyFactory.builder(WebClientAdapter.forClient(webClient))
+                .blockTimeout(Duration.ofSeconds(60))
                 .build();
         return factory.createClient(MemberExchange.class);
     }
@@ -33,6 +36,7 @@ public class RestClientConfig {
     public OperLogExchange operLogExchange() {
         WebClient webClient = SpringUtils.getBean(WebClient.class);
         HttpServiceProxyFactory factory = HttpServiceProxyFactory.builder(WebClientAdapter.forClient(webClient))
+                .blockTimeout(Duration.ofSeconds(60))
                 .build();
         return factory.createClient(OperLogExchange.class);
     }
@@ -40,6 +44,7 @@ public class RestClientConfig {
     public AccessLogExchange accessLogExchange() {
         WebClient webClient = SpringUtils.getBean(WebClient.class);
         HttpServiceProxyFactory factory = HttpServiceProxyFactory.builder(WebClientAdapter.forClient(webClient))
+                .blockTimeout(Duration.ofSeconds(60))
                 .build();
         return factory.createClient(AccessLogExchange.class);
     }
@@ -47,6 +52,7 @@ public class RestClientConfig {
     public DictItemExchange dictItemExchange() {
         WebClient webClient = SpringUtils.getBean(WebClient.class);
         HttpServiceProxyFactory factory = HttpServiceProxyFactory.builder(WebClientAdapter.forClient(webClient))
+                .blockTimeout(Duration.ofSeconds(60))
                 .build();
         return factory.createClient(DictItemExchange.class);
     }

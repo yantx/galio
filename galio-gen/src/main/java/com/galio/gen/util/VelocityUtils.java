@@ -189,7 +189,7 @@ public class VelocityUtils {
         templateMap.put("vm/vue/index.vue.vm", (params) -> StringUtil.format("{}/views/{}/{}/index.vue", vuePath, params.getModuleName(), params.getBusinessName()));
         templateMap.put("vm/vue/index-tree.vue.vm", (params) -> StringUtil.format("{}/views/{}/{}/index.vue", vuePath, params.getModuleName(), params.getBusinessName()));
 
-        Assert.isTrue(templateMap.containsKey(template), GenExceptionResponseEnum.GEN_TEMPLATE_NOT_FOUND.packageByArgs(template));
+        Assert.isTrue(templateMap.containsKey(template), GenExceptionResponseEnum.GEN_TEMPLATE_NOT_FOUND.withArgs(template));
         fileName = templateMap.get(template).apply(genTable);
 
         return fileName;

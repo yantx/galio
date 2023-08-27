@@ -251,7 +251,7 @@ public class IGenTableServiceImpl implements IGenTableService {
                     FileUtils.writeStringToFile(new File(path), sw.toString(), CharsetKit.UTF_8);
                 } catch (Exception e) {
                     log.error("{} gen template write error: {}", table.getTableName(), e.getMessage());
-                    throw new CustomException(GenExceptionResponseEnum.GEN_TEMPLATE_WRITE_ERROR.packageByArgs(table.getTableName()));
+                    throw new CustomException(GenExceptionResponseEnum.GEN_TEMPLATE_WRITE_ERROR.withArgs(table.getTableName()));
                 }
             }
         }
@@ -272,7 +272,7 @@ public class IGenTableServiceImpl implements IGenTableService {
         List<GenTableColumn> dbTableColumns = genTableColumnMapper.selectDbTableColumnsByName(tableName);
         if (CollectionUtils.isEmpty(dbTableColumns)) {
             log.error("sync db fail, {} table struct not found", tableName);
-            throw new CustomException(GenExceptionResponseEnum.GEN_TABLE_STRUCT_NOT_FOUND.packageByArgs(tableName));
+            throw new CustomException(GenExceptionResponseEnum.GEN_TABLE_STRUCT_NOT_FOUND.withArgs(tableName));
         }
         List<String> dbTableColumnNames = StreamUtils.toList(dbTableColumns, GenTableColumn::getColumnName);
 
