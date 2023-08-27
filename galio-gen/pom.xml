@@ -61,7 +61,11 @@
         </dependency>
         <dependency>
             <groupId>com.galio</groupId>
-            <artifactId>galio-common-satoken</artifactId>
+            <artifactId>galio-common-satoken-tools</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.galio</groupId>
+            <artifactId>galio-common-satoken-security</artifactId>
         </dependency>
         <!-- 代码生成使用模板 -->
         <dependency>

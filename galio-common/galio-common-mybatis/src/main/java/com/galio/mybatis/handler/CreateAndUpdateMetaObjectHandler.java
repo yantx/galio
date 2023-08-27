@@ -6,7 +6,7 @@ import com.galio.core.exception.CustomException;
 import com.galio.core.model.BaseEntity;
 import com.galio.core.utils.ObjectUtil;
 import com.galio.mybatis.enums.MybatisResponseEnum;
-import com.galio.satoken.utils.LoginHelper;
+import com.galio.satoken.tools.helper.LoginHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.reflection.MetaObject;
 

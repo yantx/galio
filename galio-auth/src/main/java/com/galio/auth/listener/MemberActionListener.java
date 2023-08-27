@@ -7,7 +7,7 @@ import com.galio.core.constant.CacheConstants;
 import com.galio.core.utils.ObjectUtil;
 import com.galio.core.utils.ServletUtils;
 import com.galio.redis.util.RedisUtils;
-import com.galio.satoken.utils.LoginHelper;
+import com.galio.satoken.tools.helper.LoginHelper;
 import com.galio.system.dto.LoginMemberDto;
 import com.galio.system.model.MemberOnline;
 import eu.bitwalker.useragentutils.UserAgent;

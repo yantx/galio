@@ -11,7 +11,7 @@ import com.galio.mybatis.annotation.DataPermission;
 import com.galio.mybatis.enums.DataScopeType;
 import com.galio.mybatis.enums.MybatisResponseEnum;
 import com.galio.mybatis.helper.DataPermissionHelper;
-import com.galio.satoken.utils.LoginHelper;
+import com.galio.satoken.tools.helper.LoginHelper;
 import com.galio.system.dto.LoginMemberDto;
 import com.galio.system.dto.RoleDto;
 import lombok.extern.slf4j.Slf4j;

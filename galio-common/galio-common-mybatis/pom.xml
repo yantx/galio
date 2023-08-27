@@ -35,7 +35,7 @@
 
         <dependency>
             <groupId>com.galio</groupId>
-            <artifactId>galio-common-satoken</artifactId>
+            <artifactId>galio-common-satoken-tools</artifactId>
             <optional>true</optional>
         </dependency>
         <dependency>

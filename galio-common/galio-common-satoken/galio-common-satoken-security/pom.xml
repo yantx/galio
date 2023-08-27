@@ -3,14 +3,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>galio-bom</artifactId>
+        <artifactId>galio-common-satoken</artifactId>
         <groupId>com.galio</groupId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath>../../galio-bom/pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>galio-common-http</artifactId>
+    <artifactId>galio-common-satoken-security</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -18,7 +17,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
-        <!-- 核心模块 -->
         <dependency>
             <groupId>com.galio</groupId>
             <artifactId>galio-common-core</artifactId>
@@ -32,6 +30,18 @@
         <dependency>
             <groupId>com.galio</groupId>
             <artifactId>galio-common-satoken-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-spring-boot3-starter</artifactId>
+            <version>${satoken.version}</version>
+            <!-- 此处配置防止依赖传递，其他服务引用此服务时web jar包版本冲突 -->
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-web</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 </project>

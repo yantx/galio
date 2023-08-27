@@ -111,7 +111,17 @@
             </dependency>
             <dependency>
                 <groupId>com.galio</groupId>
-                <artifactId>galio-common-satoken</artifactId>
+                <artifactId>galio-common-satoken-core</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>com.galio</groupId>
+                <artifactId>galio-common-satoken-tools</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>com.galio</groupId>
+                <artifactId>galio-common-satoken-security</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -218,18 +228,18 @@
         </dependency>
     </dependencies>
     <!-- 配置部署的远程仓库 -->
-<!--    <distributionManagement>-->
-<!--        <snapshotRepository>-->
-<!--            <id>galio-snapshots</id>-->
-<!--            <name>galio Snapshot Repository</name>-->
-<!--            <url>http://101.43.234.14:8081/repository/galio-snapshots/</url>-->
-<!--        </snapshotRepository>-->
-<!--        <repository>-->
-<!--            <id>galio-releases</id>-->
-<!--            <name>galio Release Repository</name>-->
-<!--            <url>http://101.43.234.14:8081/repository/galio-releases/</url>-->
-<!--        </repository>-->
-<!--    </distributionManagement>-->
+    <!--    <distributionManagement>-->
+    <!--        <snapshotRepository>-->
+    <!--            <id>galio-snapshots</id>-->
+    <!--            <name>galio Snapshot Repository</name>-->
+    <!--            <url>http://101.43.234.14:8081/repository/galio-snapshots/</url>-->
+    <!--        </snapshotRepository>-->
+    <!--        <repository>-->
+    <!--            <id>galio-releases</id>-->
+    <!--            <name>galio Release Repository</name>-->
+    <!--            <url>http://101.43.234.14:8081/repository/galio-releases/</url>-->
+    <!--        </repository>-->
+    <!--    </distributionManagement>-->
     <build>
 
         <resources>
@@ -247,7 +257,7 @@
             </resource>
         </resources>
     </build>
-<!--    spring cloud 非正式版  依赖下载地址-->
+    <!--    spring cloud 非正式版  依赖下载地址-->
     <repositories>
         <repository>
             <id>spring-milestones</id>

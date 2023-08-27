@@ -4,7 +4,7 @@ import com.galio.common.log.annotation.OperLog;
 import com.galio.common.log.enums.OperStatus;
 import com.galio.common.log.event.OperLogEvent;
 import com.galio.core.utils.*;
-import com.galio.satoken.utils.LoginHelper;
+import com.galio.satoken.tools.helper.LoginHelper;
 import io.netty.handler.codec.http.HttpMethod;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

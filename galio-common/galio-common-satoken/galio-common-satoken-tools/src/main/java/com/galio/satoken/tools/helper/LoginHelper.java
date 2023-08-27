@@ -1,8 +1,7 @@
-package com.galio.satoken.utils;
+package com.galio.satoken.tools.helper;
 
 import cn.dev33.satoken.context.SaHolder;
 import cn.dev33.satoken.stp.StpUtil;
-import com.galio.core.constant.MemberConstants;
 import com.galio.core.enums.OperSideEnum;
 import com.galio.core.enums.ResponseEnum;
 import com.galio.core.exception.CustomException;

@@ -1,0 +1,2 @@
+com.galio.satoken.storage.SaTokenDaoImpl
+com.galio.satoken.config.SaTokenConfiguration

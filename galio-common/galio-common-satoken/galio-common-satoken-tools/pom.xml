@@ -3,14 +3,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>galio-bom</artifactId>
+        <artifactId>galio-common-satoken</artifactId>
         <groupId>com.galio</groupId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath>../../galio-bom/pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>galio-common-http</artifactId>
+    <artifactId>galio-common-satoken-tools</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -18,20 +17,15 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
-        <!-- 核心模块 -->
-        <dependency>
-            <groupId>com.galio</groupId>
-            <artifactId>galio-common-core</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webflux</artifactId>
-            <optional>true</optional>
-        </dependency>
         <dependency>
             <groupId>com.galio</groupId>
             <artifactId>galio-common-satoken-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.galio</groupId>
+            <artifactId>galio-system-api</artifactId>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
+
 </project>

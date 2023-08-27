@@ -3,14 +3,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>galio-bom</artifactId>
+        <artifactId>galio-common-satoken</artifactId>
         <groupId>com.galio</groupId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath>../../galio-bom/pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>galio-common-log</artifactId>
+    <artifactId>galio-common-satoken-core</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -19,22 +18,27 @@
     </properties>
     <dependencies>
         <dependency>
-            <groupId>com.galio</groupId>
-            <artifactId>galio-common-satoken-tools</artifactId>
-            <optional>true</optional>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-core</artifactId>
+            <version>${satoken.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-aop</artifactId>
-        </dependency>
+
         <dependency>
             <groupId>com.galio</groupId>
-            <artifactId>galio-system-api</artifactId>
-            <optional>true</optional>
+            <artifactId>galio-common-redis</artifactId>
         </dependency>
+
+        <!-- Sa-Token 整合 jwt -->
         <dependency>
-            <groupId>jakarta.servlet</groupId>
-            <artifactId>jakarta.servlet-api</artifactId>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-jwt</artifactId>
+            <version>${satoken.version}</version>
+            <!--            <exclusions>-->
+            <!--                <exclusion>-->
+            <!--                    <groupId>cn.hutool</groupId>-->
+            <!--                    <artifactId>hutool-jwt</artifactId>-->
+            <!--                </exclusion>-->
+            <!--            </exclusions>-->
         </dependency>
     </dependencies>
 

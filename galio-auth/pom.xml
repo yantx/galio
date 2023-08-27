@@ -47,10 +47,13 @@
             <groupId>com.galio</groupId>
             <artifactId>galio-common-core</artifactId>
         </dependency>
-
         <dependency>
             <groupId>com.galio</groupId>
-            <artifactId>galio-common-satoken</artifactId>
+            <artifactId>galio-common-satoken-tools</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.galio</groupId>
+            <artifactId>galio-common-satoken-security</artifactId>
         </dependency>
         <dependency>
             <groupId>com.galio</groupId>

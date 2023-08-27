@@ -2,9 +2,7 @@ package com.galio.satoken.config;
 
 import cn.dev33.satoken.filter.SaServletFilter;
 import cn.dev33.satoken.interceptor.SaInterceptor;
-import cn.dev33.satoken.jwt.StpLogicJwtForSimple;
 import cn.dev33.satoken.same.SaSameUtil;
-import cn.dev33.satoken.stp.StpLogic;
 import com.galio.core.enums.ResponseEnum;
 import com.galio.core.model.BaseResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -20,15 +18,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @Slf4j
 @AutoConfiguration
-public class SaTokenConfiguration implements WebMvcConfigurer {
-
-    /**
-     * 注入Jwt实现 simple模式
-     */
-    @Bean
-    public StpLogic getStpLogicJwt() {
-        return new StpLogicJwtForSimple();
-    }
+public class SaTokenSecurityConfiguration implements WebMvcConfigurer {
 
     /**
      * 注册sa-token的拦截器
@@ -47,10 +37,10 @@ public class SaTokenConfiguration implements WebMvcConfigurer {
         return new SaServletFilter()
                 .addInclude("/**")
                 // 静态资源,knife4j接口文档相关资源放行
-                .addExclude("/actuator/**","/*.html","/webjars/**","/favicon.ico","/auth/**","/**/api-docs/**","/generate/**","/member/**","/remote/**")
+                .addExclude("/actuator/**", "/*.html", "/webjars/**", "/favicon.ico", "/auth/**", "/**/api-docs/**", "/generate/**", "/**/remote/**")
                 .setAuth(obj -> SaSameUtil.checkCurrentRequestToken())
                 .setError(e -> {
-                    log.error(e.getMessage(),e);
+                    log.error(e.getMessage(), e);
                     return BaseResponse.createFail(ResponseEnum.NO_TOKEN);
                 });
     }

@@ -1,7 +1,7 @@
-package com.galio.satoken.core.service;
+package com.galio.satoken.tools.permission;
 
 import cn.dev33.satoken.stp.StpInterface;
-import com.galio.satoken.utils.LoginHelper;
+import com.galio.satoken.tools.helper.LoginHelper;
 import com.galio.system.dto.LoginMemberDto;
 
 import java.util.ArrayList;
