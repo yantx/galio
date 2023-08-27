@@ -24,7 +24,7 @@ import java.util.concurrent.ConcurrentMap;
  *
  */
 @SuppressWarnings("unchecked")
-public class PlusSpringCacheManager implements CacheManager {
+public class SpringCacheManagerPlus implements CacheManager {
 
     private boolean dynamic = true;
 
@@ -38,7 +38,7 @@ public class PlusSpringCacheManager implements CacheManager {
     /**
      * Creates CacheManager supplied by Redisson instance
      */
-    public PlusSpringCacheManager() {
+    public SpringCacheManagerPlus() {
     }
 
 

@@ -3,7 +3,7 @@ package com.galio.redis.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.galio.redis.config.properties.RedissonProperties;
 import com.galio.redis.handler.KeyPrefixHandler;
-import com.galio.redis.manager.PlusSpringCacheManager;
+import com.galio.redis.manager.SpringCacheManagerPlus;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.redisson.codec.JsonJacksonCodec;
@@ -14,6 +14,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
 
 /**
  * @Author: galio
@@ -75,9 +76,10 @@ public class RedisConfiguration {
     /**
      * 自定义缓存管理器 整合spring-cache
      */
-    @Bean
+    @Primary
+    @Bean({"springCacheManagerPlus"})
     public CacheManager cacheManager() {
-        return new PlusSpringCacheManager();
+        return new SpringCacheManagerPlus();
     }
 
     /**
