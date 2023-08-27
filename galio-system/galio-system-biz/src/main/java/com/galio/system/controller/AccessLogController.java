@@ -66,7 +66,7 @@ public class AccessLogController {
     @Operation(summary = "新增系统访问记录")
     @SaCheckPermission("system:accesslog:add")
     @PostMapping()
-    public Object add(@Validated(InsertGroup.class) @RequestBody AccessLogDto dto) {
+    public Boolean add(@Validated(InsertGroup.class) @RequestBody AccessLogDto dto) {
         return accessLogService.insertByDto(dto);
     }
 
