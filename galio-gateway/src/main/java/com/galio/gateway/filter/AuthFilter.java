@@ -3,13 +3,11 @@ package com.galio.gateway.filter;
 import cn.dev33.satoken.reactor.filter.SaReactorFilter;
 import cn.dev33.satoken.router.SaRouter;
 import cn.dev33.satoken.stp.StpUtil;
-import com.galio.core.enums.ResponseEnum;
-import com.galio.core.model.BaseResponse;
+import cn.dev33.satoken.util.SaResult;
 import com.galio.gateway.config.properties.IgnoreWhiteProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Bean;
-
 /**
  * @Author: galio
  * @Date: 2023-03-01
@@ -27,25 +25,25 @@ public class AuthFilter {
         return new SaReactorFilter()
             // 拦截地址
             .addInclude("/**")
-            .addExclude("/favicon.ico", "/actuator/**","/remote/**")
+            .addExclude("/favicon.ico", "/actuator/**")
             // 鉴权方法：每次访问进入
             .setAuth(obj -> {
-                // 登录校验 -- 拦截所有路由
                 SaRouter.match("/**")
                     .notMatch(ignoreWhite.getWhites())
                     .check(r -> {
-                        // 检查是否登录 是否有token
                         StpUtil.checkLogin();
-
-                        // 有效率影响 用于临时测试
-                         if (log.isDebugEnabled()) {
-                             log.debug("剩余有效时间: {}", StpUtil.getTokenTimeout());
-                             log.debug("临时有效时间: {}", StpUtil.getTokenActivityTimeout());
-                         }
                     });
+                // 登录校验 -- 拦截所有路由，并排除/user/doLogin 用于开放登录
+//                SaRouter.match("/**", "/user/doLogin", r -> StpUtil.checkLogin());
+
+                // 权限认证 -- 不同模块, 校验不同权限
+//                SaRouter.match("/user/**", r -> StpUtil.checkPermission("user"));
+//                SaRouter.match("/admin/**", r -> StpUtil.checkPermission("admin"));
+//                SaRouter.match("/goods/**", r -> StpUtil.checkPermission("goods"));
+//                SaRouter.match("/orders/**", r -> StpUtil.checkPermission("orders"));
             }).setError(e -> {
                     log.error(e.getMessage(),e);
-                    return BaseResponse.createFail(ResponseEnum.NO_TOKEN);
+                    return SaResult.error(e.getMessage());
                 });
     }
 }
