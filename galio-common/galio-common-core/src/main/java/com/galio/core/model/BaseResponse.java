@@ -14,9 +14,9 @@ import org.apache.commons.lang3.StringUtils;
  * @version:
  * @Description: 响应数据对象
  */
+@Schema(description="响应数据对象")
 @Data
 @NoArgsConstructor
-@Schema(description="响应数据对象")
 public class BaseResponse<T> {
 
     // 状态码
