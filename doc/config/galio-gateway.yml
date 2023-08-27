@@ -1,4 +1,3 @@
-
 # 安全配置
 security:
   # 验证码
@@ -21,12 +20,16 @@ security:
   # 不校验白名单
   ignore:
     whites:
-      - /code
-      - /auth/logout
-      - /auth/login
-      - /*/v3/api-docs
+      - /generate
+      - /galio-auth/auth/logout
+      - /galio-auth/auth/login
+      - /**/api-docs/**
       - /csrf
-      - /*/remote
+      - /doc.html
+      - /webjars/**
+      - /favicon.ico
+      - /*.png
+      - /**/remote/**
 
 spring:
   cloud:
@@ -46,18 +49,18 @@ spring:
             - Path=/auth/**
           filters:
             # 验证码处理
-#            - ValidateCodeFilter
+            #            - ValidateCodeFilter
             - StripPrefix=1
         # 代码生成
         - id: galio-gen
           uri: lb://galio-gen
           predicates:
-            - Path=/code/**
+            - Path=/generate/**
           filters:
             - StripPrefix=1
         # 系统模块
-        - id: galio-system
-          uri: lb://galio-system
+        - id: galio-system-biz
+          uri: lb://galio-system-biz
           predicates:
             - Path=/system/**
           filters:
