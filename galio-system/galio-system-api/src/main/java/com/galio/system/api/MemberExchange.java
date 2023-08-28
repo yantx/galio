@@ -23,6 +23,15 @@ public interface MemberExchange {
     LoginMemberDto getMemberInfo(@RequestParam(value = "username") String username) throws CustomException;
 
     /**
+     * 通过登录名查询会员密码
+     *
+     * @param username 用户名
+     * @return 密码串
+     */
+    @GetExchange(value = "/getInfoByUsername")
+    String getPassword(@RequestParam(value = "username") String username) throws CustomException;
+
+    /**
      * 通过手机号查询账号信息
      *
      * @param mobilePhone 手机号
