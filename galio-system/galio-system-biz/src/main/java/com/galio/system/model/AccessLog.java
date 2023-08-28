@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
-import com.galio.core.model.BaseEntity;
 
 /**
  * @Author: galio
@@ -13,9 +12,9 @@ import com.galio.core.model.BaseEntity;
  * @Description: 系统访问记录对象
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 @TableName("sys_access_log")
-public class AccessLog extends BaseEntity {
+public class AccessLog{
 
     private static final long serialVersionUID=1L;
 

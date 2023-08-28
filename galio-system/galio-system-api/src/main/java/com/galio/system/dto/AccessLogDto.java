@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import com.galio.core.model.BaseEntity;
 
 /**
  * @Author: galio
@@ -14,7 +13,7 @@ import com.galio.core.model.BaseEntity;
 
 @Data
 @Schema(description = "系统访问记录业务对象")
-public class AccessLogDto extends BaseEntity {
+public class AccessLogDto {
 
     /**
      * 主键

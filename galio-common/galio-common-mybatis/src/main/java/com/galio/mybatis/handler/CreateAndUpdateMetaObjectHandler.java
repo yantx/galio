@@ -24,25 +24,29 @@ public class CreateAndUpdateMetaObjectHandler implements MetaObjectHandler {
     @Override
     public void insertFill(MetaObject metaObject) {
         try {
-            if (ObjectUtil.isNotNull(metaObject) && metaObject.getOriginalObject() instanceof BaseEntity) {
-                BaseEntity baseEntity = (BaseEntity) metaObject.getOriginalObject();
-                LocalDateTime current = ObjectUtil.isNotNull(baseEntity.getCreateTime())
-                        ? baseEntity.getCreateTime() : LocalDateTime.now().withNano(0);
-                baseEntity.setCreateTime(current);
-                baseEntity.setUpdateTime(current);
-                Long memberId = ObjectUtil.isNotNull(baseEntity.getCreateBy())
-                        ? baseEntity.getCreateBy() : getMemberId();
-                // 当前已登录 且 创建人为空 则填充
-                baseEntity.setCreateBy(memberId);
-                // 当前已登录 且 更新人为空 则填充
-                baseEntity.setUpdateBy(memberId);
-
+            if (ObjectUtil.isNotNull(metaObject)){
                 Field field = metaObject.getClass().getDeclaredField("appId");
                 if (!field.isAnnotationPresent(TableId.class)){
                     this.setFieldValByName("appId", getAppId(), metaObject);
                 }
+
+                if (metaObject.getOriginalObject() instanceof BaseEntity) {
+                    BaseEntity baseEntity = (BaseEntity) metaObject.getOriginalObject();
+                    LocalDateTime current = ObjectUtil.isNotNull(baseEntity.getCreateTime())
+                            ? baseEntity.getCreateTime() : LocalDateTime.now().withNano(0);
+                    baseEntity.setCreateTime(current);
+                    baseEntity.setUpdateTime(current);
+                    Long memberId = ObjectUtil.isNotNull(baseEntity.getCreateBy())
+                            ? baseEntity.getCreateBy() : getMemberId();
+                    // 当前已登录 且 创建人为空 则填充
+                    baseEntity.setCreateBy(memberId);
+                    // 当前已登录 且 更新人为空 则填充
+                    baseEntity.setUpdateBy(memberId);
+                }
             }
-        } catch (Exception e) {
+        }catch (NoSuchFieldException e) {
+            log.warn(e.toString());
+        }catch (Exception e) {
             log.error(MybatisResponseEnum.SET_FIELD_VALUE_ERROR.getMsg(),e);
             throw new CustomException(MybatisResponseEnum.SET_FIELD_VALUE_ERROR);
         }
