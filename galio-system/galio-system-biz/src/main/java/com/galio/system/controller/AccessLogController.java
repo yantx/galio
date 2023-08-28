@@ -31,7 +31,7 @@ import jakarta.validation.constraints.NotNull;
 @RestController
 @RequiredArgsConstructor
 @Tag(name = "系统访问记录API")
-@RequestMapping("/access_log")
+@RequestMapping({"/access_log","/remote/access_log"})
 public class AccessLogController {
 
     private final AccessLogService accessLogService;
@@ -40,7 +40,6 @@ public class AccessLogController {
      * 查询系统访问记录列表
      */
     @Operation(summary = "查询系统访问记录列表")
-    @SaCheckPermission("system:accesslog:page")
     @PostMapping("/page")
     public PageVo page(@RequestBody PageRequestDto pageRequestDto) {
         IPage<AccessLog> pageData = accessLogService.queryPageList(pageRequestDto);
@@ -53,7 +52,6 @@ public class AccessLogController {
      * @param accessId 主键
      */
     @Operation(summary = "查询系统访问记录详情")
-    @SaCheckPermission("system:accesslog:query")
     @GetMapping("/{accessId}")
     public AccessLogVo getInfo(@NotNull(message = "主键不能为空") @PathVariable Long accessId) {
         AccessLog accessLog = accessLogService.queryById(accessId);
@@ -64,7 +62,6 @@ public class AccessLogController {
      * 新增系统访问记录
      */
     @Operation(summary = "新增系统访问记录")
-    @SaCheckPermission("system:accesslog:add")
     @PostMapping()
     public Boolean add(@Validated(InsertGroup.class) @RequestBody AccessLogDto dto) {
         return accessLogService.insertByDto(dto);
@@ -74,7 +71,6 @@ public class AccessLogController {
      * 修改系统访问记录
      */
     @Operation(summary = "修改系统访问记录")
-    @SaCheckPermission("system:accesslog:edit")
     @PutMapping()
     public Object edit(@Validated(UpdateGroup.class) @RequestBody AccessLogDto dto) {
         return accessLogService.updateByDto(dto);
@@ -86,7 +82,6 @@ public class AccessLogController {
      * @param accessIds 主键串
      */
     @Operation(summary = "删除系统访问记录")
-    @SaCheckPermission("system:accesslog:remove")
     @DeleteMapping("/{accessIds}")
     public Object remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] accessIds) {
         return accessLogService.deleteWithValidByIds(Arrays.asList(accessIds));

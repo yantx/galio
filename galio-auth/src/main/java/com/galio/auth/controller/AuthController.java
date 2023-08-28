@@ -3,6 +3,7 @@ package com.galio.auth.controller;
 import com.galio.auth.dto.loginDto;
 import com.galio.auth.service.AuthService;
 import com.galio.core.model.BaseResponse;
+import com.galio.system.dto.LoginMemberDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -32,16 +33,14 @@ public class AuthController {
      */
     @Operation(summary = "登录接口")
     @PostMapping("login")
-    public Object login(@Validated @RequestBody loginDto form) {
-        // 用户登录
-        String accessToken = authService.login(form.getUsername(), form.getPassword());
-
-        // 接口返回信息
-        Map<String, Object> rspMap = new HashMap<String, Object>();
-        rspMap.put("access_token", accessToken);
-        return rspMap;
+    public LoginMemberDto login(@Validated @RequestBody loginDto form) {
+         return authService.login(form.getUsername(), form.getPassword());
     }
-
+    @Operation(summary = "查询用户token")
+    @GetMapping("token/{username}")
+    public String getToken(@Validated @PathVariable("username") String username) {
+        return authService.getToken(username);
+    }
     /**
      * 登出方法
      */

@@ -10,7 +10,7 @@ import org.springframework.web.service.annotation.PostExchange;
  * @Date: 2023-06-01 07:12:19
  * @Description: 系统访问日志信息交易接口
  */
-@HttpExchange("system/access_log")
+@HttpExchange("system/remote/access_log")
 public interface AccessLogExchange {
 
     @PostExchange()

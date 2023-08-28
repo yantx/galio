@@ -28,7 +28,7 @@ public interface MemberExchange {
      * @param username 用户名
      * @return 密码串
      */
-    @GetExchange(value = "/getInfoByUsername")
+    @GetExchange(value = "/getPassword")
     String getPassword(@RequestParam(value = "username") String username) throws CustomException;
 
     /**

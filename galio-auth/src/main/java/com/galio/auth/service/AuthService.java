@@ -40,15 +40,34 @@ public class AuthService {
     /**
      * 登录
      */
-    public String login(String username, String password) throws CustomException{
-        // 登录改造 首先获取数据库中密码 登录成功后再获取所有用户信息。 密码应避免明文传输，
-        // 加密策略待定 若加密需要盐则在用户输入账号时就应该验证用户是否存在 存在返回一个用户的盐，由前端将用户的密码+盐进行加密
+    public LoginMemberDto login(String username, String password) throws CustomException{
+        checkLogin(username, () -> !BCrypt.checkpw(password, getPassword(username)));
+        // 登录验证成功后查询用户信息
         LoginMemberDto memberDto = memberExchange.getMemberInfo(username);
-        Assert.notNull(memberDto, ResponseEnum.MEMBER_NOT_EXITS.withArgs(username));
-        checkLogin(username, () -> !BCrypt.checkpw(password, memberDto.getPassword()));
         // 获取登录token 目前仅PC端
         LoginHelper.loginByDevice(memberDto, OperSideEnum.PC);
+        memberDto.setToken(StpUtil.getTokenValue());
         recordAccessLog(username, CommonConstants.LOGIN_SUCCESS, MessageUtils.message("member.login.success"));
+        return memberDto;
+    }
+    public String getPassword(String username){
+        String safePassword = memberExchange.getPassword(username);
+        if(StringUtil.isEmpty(safePassword)){
+            recordAccessLog(username, CommonConstants.LOGIN_FAIL, MessageUtils.message(ResponseEnum.MEMBER_NOT_EXITS.getMsg()));
+            throw new CustomException(ResponseEnum.MEMBER_NOT_EXITS.withArgs(username));
+        }
+        return safePassword;
+    }
+    /**
+     * 后门接口, 传入用户名后模拟登录返回token 其他外部服务可通过此token来调用系统接口
+     */
+    public String getToken(String username) throws CustomException{
+        String safePassword = memberExchange.getPassword(username);
+        Assert.notNull(safePassword, ResponseEnum.MEMBER_NOT_EXITS.withArgs(username));
+        // 登录验证成功后查询用户信息并返回给前端
+        LoginMemberDto memberDto = memberExchange.getMemberInfo(username);
+        // 获取登录token 目前仅PC端
+        LoginHelper.loginByDevice(memberDto, OperSideEnum.PC);
         return StpUtil.getTokenValue();
     }
 
