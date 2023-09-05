@@ -2,6 +2,7 @@ package com.galio.auth.service;
 
 import cn.dev33.satoken.exception.NotLoginException;
 import cn.dev33.satoken.secure.BCrypt;
+import cn.dev33.satoken.secure.SaSecureUtil;
 import cn.dev33.satoken.stp.StpUtil;
 import com.galio.auth.enums.AuthResponseEnum;
 import com.galio.auth.properties.PasswordProperties;
@@ -21,12 +22,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
+import java.util.HashMap;
 import java.util.function.Supplier;
 
 /**
  * @Author: galio
  * @Date: 2023-01-13
  * @Description: 账号认证业务实现
+ * 登录流程采用RSA与AES混合加密：
+ *  客户端生成RSA密钥对（privateKey-A、publicKey-A），把公钥 publicKey-发A送给服务端
+ *  服务端生成RSA密钥对（privateKey-B、publicKey-B），使用客户端的公钥publicKey-A加密自己的公钥publicKey-B ，将加密后的数据发送给客户端
+ *  客户端使用自己的私钥privateKey-A解密获取到服务端的公钥，将AESKey使用服务端公钥publicKey-B加密发送给服务端
+ *  服务端使用自己的私钥解密获取AESkey
  */
 @Slf4j
 @Service
@@ -36,12 +43,28 @@ public class AuthService {
 
     private final MemberExchange memberExchange;
     private final PasswordProperties passwordProperties;
+    private HashMap<String,String> rsaKeys;
 
     /**
-     * 登录
+     * 获取公钥
+     * @return 公钥
+     * @throws Exception
+     */
+    public String getPublicKey() throws Exception {
+        rsaKeys = SaSecureUtil.rsaGenerateKeyPair();
+        return rsaKeys.get("public");
+    }
+
+    /**
+     * 登录接口
+     * @param username 登录名
+     * @param password 密码-RSA公钥加密后
+     * @return LoginMemberDto对象
+     * @throws CustomException
      */
     public LoginMemberDto login(String username, String password) throws CustomException{
-        checkLogin(username, () -> !BCrypt.checkpw(password, getPassword(username)));
+        String relPass =  SaSecureUtil.rsaDecryptByPrivate(rsaKeys.get("private"), password);
+        checkLogin(username, () -> !BCrypt.checkpw(relPass, getPassword(username)));
         // 登录验证成功后查询用户信息
         LoginMemberDto memberDto = memberExchange.getMemberInfo(username);
         // 获取登录token 目前仅PC端

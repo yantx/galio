@@ -13,7 +13,7 @@ import org.hibernate.validator.constraints.Length;
  */
 @Data
 @Schema(description = "登录参数")
-public class loginDto {
+public class LoginDto {
     /**
      * 登录名
      */
