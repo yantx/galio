@@ -3,6 +3,8 @@ import './style.css'
 import App from './App.vue'
 import store from './store'
 import router from './router'
+import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
 
 //创建Vue实例
 const app = createApp(App)
@@ -11,6 +13,7 @@ const app = createApp(App)
 app.use(store)
 // 挂载路由
 app.use(router)
+app.use(ElementPlus)
 
 // 挂载实例
 app.mount('#app');
