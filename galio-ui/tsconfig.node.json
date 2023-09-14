@@ -4,8 +4,8 @@
     "skipLibCheck": true,
     "module": "ESNext",
     "types": ["vite/client"],
-    "moduleResolution": "bundler",
+    "moduleResolution": "Bundler",
     "allowSyntheticDefaultImports": true
   },
-  "include": ["vite.config.ts"]
+  "include": ["server.proxy.ts","vite.config.ts"]
 }

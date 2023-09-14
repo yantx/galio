@@ -30,12 +30,14 @@
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",
     "eslint-plugin-vue": "^9.17.0",
+    "mockjs": "^1.1.0",
     "prettier": "^3.0.3",
     "sass": "^1.66.1",
     "typescript": "^5.0.2",
     "unplugin-auto-import": "^0.16.6",
     "unplugin-vue-components": "^0.25.2",
     "vite": "^4.4.5",
+    "vite-plugin-mock": "2.9.6",
     "vue-tsc": "^1.8.5"
   }
 }
