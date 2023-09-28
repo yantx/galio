@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "module": "ESNext",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "skipLibCheck": true,
+    "types": ["vite/client"],
+    "noImplicitAny": false,
+    "allowSyntheticDefaultImports": true,
+    
+    /* Bundler mode */
+    "moduleResolution": "Bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "preserve",
+    
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "baseUrl": ".",  // 解析非相对模块的基础地址，默认是当前目录
+    "paths": {
+      "@/*": [ "./src/*" ],
+    }
+  },
+  "include": ["src/**/*.js", "src/**/*.tsx", "src/**/*.vue", "mock/**/*.js", "mock/*.js"],
+  "exclude": ["node_modules", "dist"]
+}
