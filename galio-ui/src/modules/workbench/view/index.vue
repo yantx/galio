@@ -32,11 +32,22 @@
         </template>
         <div flex flex-wrap justify-between>
           <n-card
-            v-for="i in 10"
+            v-for="i in 8"
             :key="i"
             class="mb-10 mt-10 w-300 flex-shrink-0 cursor-pointer"
             hover:card-shadow
-            title="Vue Naive Admin"
+            title="Galio Admin"
+            size="small"
+          >
+            <p op-60>一个基于 Vue3.0、Vite、Naive UI 的轻量级后台管理模板</p>
+          </n-card>
+          <n-card class="mb-10 mt-10 w-300 flex-shrink-0 cursor-pointer" hover:card-shadow title="Unocss" size="small">
+            <p op-60>一个基于 Vue3.0、Vite、Naive UI 的轻量级后台管理模板</p>
+          </n-card>
+          <n-card
+            class="mb-10 mt-10 w-300 flex-shrink-0 cursor-pointer"
+            hover:card-shadow
+            title="Naive UI"
             size="small"
           >
             <p op-60>一个基于 Vue3.0、Vite、Naive UI 的轻量级后台管理模板</p>

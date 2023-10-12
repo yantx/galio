@@ -14,25 +14,16 @@ export default {
     {
       name: 'BaseComponents',
       path: 'index',
-      component: () => import('./index.vue'),
+      component: () => import('../view/button/index.vue'),
       meta: {
         title: '基础组件',
         icon: 'material-symbols:auto-awesome-outline-rounded',
       },
     },
     {
-      name: 'Unocss',
-      path: 'unocss',
-      component: () => import('./unocss/index.vue'),
-      meta: {
-        title: 'Unocss',
-        icon: 'material-symbols:auto-awesome-outline-rounded',
-      },
-    },
-    {
       name: 'KeepAlive',
       path: 'keep-alive',
-      component: () => import('./keep-alive/index.vue'),
+      component: () => import('../view/keep-alive/index.vue'),
       meta: {
         title: 'KeepAlive',
         icon: 'material-symbols:auto-awesome-outline-rounded',

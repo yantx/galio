@@ -52,7 +52,7 @@
 <script setup>
 import { lStorage, setToken } from '@/utils'
 import bgImg from '@/assets/images/login_bg.webp'
-import { login } from '@/api/auth'
+import { login } from '../api/auth'
 import { addDynamicRoutes } from '@/router'
 import { useStorage } from '@vueuse/core'
 

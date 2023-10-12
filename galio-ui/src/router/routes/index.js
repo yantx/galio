@@ -4,14 +4,14 @@ export const basicRoutes = [
   {
     name: '404',
     path: '/404',
-    component: () => import('@/views/exception/404.vue'),
+    component: () => import('@modules/exception/404.vue'),
     isHidden: true,
   },
 
   {
     name: 'LOGIN',
     path: '/login',
-    component: () => import('@/views/login/index.vue'),
+    component: () => import('@modules/login/view/index.vue'),
     isHidden: true,
     meta: {
       title: '登录页',
@@ -77,7 +77,7 @@ export const EMPTY_ROUTE = {
   component: null,
 }
 // modules文件夹下的路由都会作为动态路由
-const modules = import.meta.glob('@/views/**/route.js', { eager: true })
+const modules = import.meta.glob('@modules/**/router/index.js', { eager: true })
 const asyncRoutes = []
 Object.keys(modules).forEach((key) => {
   asyncRoutes.push(modules[key].default)

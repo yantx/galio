@@ -16,7 +16,7 @@ export default {
     {
       name: 'Crud',
       path: 'crud',
-      component: () => import('./table/index.vue'),
+      component: () => import('../view/table/index.vue'),
       meta: {
         title: 'CRUD表格',
         icon: 'ic:baseline-table-view',
@@ -28,7 +28,7 @@ export default {
     {
       name: 'MDEditor',
       path: 'md-editor',
-      component: () => import('./editor/md-editor.vue'),
+      component: () => import('../view/editor/md-editor.vue'),
       meta: {
         title: 'MD编辑器',
         icon: 'ri:markdown-line',
@@ -40,7 +40,7 @@ export default {
     {
       name: 'RichTextEditor',
       path: 'rich-text',
-      component: () => import('./editor/rich-text.vue'),
+      component: () => import('../view/editor/rich-text.vue'),
       meta: {
         title: '富文本编辑器',
         icon: 'ic:sharp-text-rotation-none',
@@ -52,7 +52,7 @@ export default {
     {
       name: 'Upload',
       path: 'upload',
-      component: () => import('./upload/index.vue'),
+      component: () => import('../view/upload/index.vue'),
       meta: {
         title: '图片上传',
         icon: 'mdi:upload',
