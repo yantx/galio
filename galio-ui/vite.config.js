@@ -17,19 +17,12 @@ export default defineConfig(({ command, mode }) => {
     resolve: {
       //设置别名
       alias: {
+        '~': path.resolve(__dirname),
         '@': path.resolve(__dirname, 'src'),
         '@modules': path.resolve(__dirname, 'src/modules'),
         '@assets': path.resolve(__dirname, 'src/assets'),
         '@store': path.resolve(__dirname, 'src/store'),
         '@components': path.resolve(__dirname, 'src/components'),
-      },
-    },
-    css: {
-      preprocessorOptions: {
-        //define global scss variable
-        scss: {
-          additionalData: `@import '@/styles/variables.scss';`,
-        },
       },
     },
     server: {

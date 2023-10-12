@@ -12,14 +12,14 @@ export default [
     response: ({ body }) => {
       if (['admin', 'editor'].includes(body?.name)) {
         return {
-          code: 0,
+          code: 20000,
           data: {
             token: token[body.name],
           },
         }
       } else {
         return {
-          code: -1,
+          code: 50001,
           message: '没有此用户',
         }
       }
@@ -30,7 +30,7 @@ export default [
     method: 'post',
     response: ({ headers }) => {
       return {
-        code: 0,
+        code: 20000,
         data: {
           token: resolveToken(headers?.authorization),
         },

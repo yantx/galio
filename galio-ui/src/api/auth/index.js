@@ -1,4 +1,4 @@
-import { defAxios as request } from '@/utils/http'
+import { defAxios as request } from '@/utils'
 
 export const login = (data) => {
   return request({

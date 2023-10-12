@@ -1,10 +1,7 @@
-import { isNullOrUndef, isString } from '@/utils/is'
 import { isWithoutToken, resolveResError } from './helpers'
-import { getToken } from '@/utils/token'
-import { toLogin } from '@/utils/auth'
+import { isNullOrUndef, isString, getToken, toLogin } from '@/utils'
 
 export function reqResolve(config) {
-  debugger
   // 防止缓存，给get请求加上时间戳
   if (config.method === 'get') {
     config.params = { ...config.params, t: new Date().getTime() }

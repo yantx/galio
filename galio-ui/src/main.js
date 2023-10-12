@@ -5,9 +5,17 @@ import { createApp } from 'vue'
 import { setupRouter } from '@/router'
 import { setupStore } from '@/store'
 import App from './App.vue'
+import { setupNaiveDiscreteApi } from './utils'
 
-const app = createApp(App)
-setupStore(app)
-setupRouter(app)
+async function setupApp() {
+  const app = createApp(App)
 
-app.mount('#app')
+  setupStore(app)
+  setupNaiveDiscreteApi()
+
+  await setupRouter(app)
+
+  app.mount('#app')
+}
+
+setupApp()

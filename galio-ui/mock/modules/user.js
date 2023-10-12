@@ -29,7 +29,7 @@ export default [
     response: ({ headers }) => {
       const token = resolveToken(headers?.authorization)
       return {
-        code: 0,
+        code: 20000,
         data: {
           ...(users[token] || users.guest),
         },

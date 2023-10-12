@@ -23,9 +23,10 @@
     "noFallthroughCasesInSwitch": true,
     "baseUrl": ".",  // 解析非相对模块的基础地址，默认是当前目录
     "paths": {
-      "@/*": [ "./src/*" ],
-    }
+      "~/*": ["./*"],
+      "@/*": ["src/*"]
+    },
   },
-  "include": ["src/**/*.js", "src/**/*.tsx", "src/**/*.vue", "mock/**/*.js", "mock/*.js"],
+  // "include": ["src/**/*.js", "src/**/*.tsx", "src/**/*.vue", "mock/**/*.js", "mock/*.js"],
   "exclude": ["node_modules", "dist"]
 }

@@ -1,43 +1,20 @@
-import { useUserStore } from '@/store/modules/user'
-import { usePermissionStore } from '@/store/modules/permission'
-import { NOT_FOUND_ROUTE } from '@/router/routes'
-import { getToken, removeToken } from '@/utils/token'
-import { toLogin } from '@/utils/auth'
+import { getToken, refreshAccessToken, isNullOrWhitespace } from '@/utils'
 
-const WHITE_LIST = ['/login']
+const WHITE_LIST = ['/login', '/404']
 export function createPermissionGuard(router) {
-  const userStore = useUserStore()
-  const permissionStore = usePermissionStore()
-  router.beforeEach(async (to, from, next) => {
+  router.beforeEach(async (to) => {
     const token = getToken()
-    if (token) {
-      if (to.path === '/login') {
-        next({ path: '/' })
-      } else {
-        if (userStore.userId) {
-          // 已经拿到用户信息
-          next()
-        } else {
-          await userStore.getUserInfo().catch((error) => {
-            removeToken()
-            toLogin()
-            $message.error(error.message || '获取用户信息失败！')
-            return
-          })
-          const accessRoutes = permissionStore.generateRoutes(userStore.role)
-          accessRoutes.forEach((route) => {
-            !router.hasRoute(route.name) && router.addRoute(route)
-          })
-          router.addRoute(NOT_FOUND_ROUTE)
-          next({ ...to, replace: true })
-        }
-      }
-    } else {
-      if (WHITE_LIST.includes(to.path)) {
-        next()
-      } else {
-        next({ path: '/login' })
-      }
+
+    /** 没有token的情况 */
+    if (isNullOrWhitespace(token)) {
+      if (WHITE_LIST.includes(to.path)) return true
+      return { path: 'login', query: { ...to.query, redirect: to.path } }
     }
+
+    /** 有token的情况 */
+    if (to.path === '/login') return { path: '/' }
+
+    refreshAccessToken()
+    return true
   })
 }

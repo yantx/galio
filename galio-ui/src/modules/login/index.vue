@@ -39,10 +39,10 @@
 
 <script setup>
 import { login } from '@/api/auth'
-import { lStorage } from '@/utils/cache'
-import { setToken } from '@/utils/token'
+import { lStorage, setToken } from '@/utils'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { addDynamicRoutes } from '@/router'
 
 const title = import.meta.env.VITE_APP_TITLE
 
@@ -72,7 +72,7 @@ async function handleLogin() {
   }
   try {
     const res = await login({ name, password: password.toString() })
-    if (res.code === 0) {
+    if (res.code === 20000) {
       $message.success('登录成功')
       setToken(res.data.token)
       if (isRemember.value) {
@@ -80,7 +80,15 @@ async function handleLogin() {
       } else {
         lStorage.remove('loginInfo')
       }
-      router.push('/')
+      addDynamicRoutes()
+      console.log(router.getRoutes())
+      if (query.redirect) {
+        const path = query.redirect
+        Reflect.deleteProperty(query, 'redirect')
+        router.push({ path, query })
+      } else {
+        router.push('/')
+      }
     } else {
       $message.warning(res.message)
     }

@@ -1,4 +1,4 @@
-import { defAxios as request } from '@/utils/http'
+import { defAxios as request } from '@/utils'
 
 export function getUsers(data = {}) {
   return request({
