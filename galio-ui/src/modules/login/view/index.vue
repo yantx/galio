@@ -53,7 +53,7 @@
 import { lStorage, setToken } from '@/utils'
 import bgImg from '@/assets/images/login_bg.webp'
 import { login } from '../api/auth'
-import { addDynamicRoutes } from '@/router'
+import { addRoutes } from '@/router'
 import { useStorage } from '@vueuse/core'
 
 const title = import.meta.env.VITE_TITLE
@@ -95,13 +95,13 @@ async function handleLogin() {
     } else {
       lStorage.remove('loginInfo')
     }
-    await addDynamicRoutes()
+    await addRoutes()
     if (query.redirect) {
       const path = query.redirect
       Reflect.deleteProperty(query, 'redirect')
       router.push({ path, query })
     } else {
-      router.push('/')
+      router.push(import.meta.env.VITE_ROUTE_HOME_NAME)
     }
   } catch (error) {
     console.error(error)

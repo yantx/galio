@@ -1,5 +1,7 @@
 import { defineStore } from 'pinia'
 import { getFunctions } from '@/api/function'
+import { useMemberStore } from '@/store'
+import { transformAuthRouteToVueRoutes, transformAuthRouteToMenu } from '@/utils'
 import { asyncRoutes, basicRoutes } from '@/router/routes'
 
 function hasPermission(route, role) {
@@ -33,10 +35,12 @@ function filterAsyncRoutes(routes = [], role) {
   return ret
 }
 
-export const usePermissionStore = defineStore('permission', {
+export const useRouterStore = defineStore('route-store', {
   state() {
     return {
       accessRoutes: [],
+      accessMenus: [],
+      authRouteMode: import.meta.env.VITE_AUTH_ROUTE_MODE,
     }
   },
   getters: {
@@ -44,16 +48,39 @@ export const usePermissionStore = defineStore('permission', {
       return basicRoutes.concat(this.accessRoutes)
     },
     menus() {
-      return this.routes.filter((route) => route.name && !route.isHidden)
+      return transformAuthRouteToMenu(this.accessRoutes)
     },
   },
   actions: {
-    generateRoutes(role = []) {
-      const accessRoutes = filterAsyncRoutes(asyncRoutes, role)
-      this.accessRoutes = accessRoutes
-      return accessRoutes
+    generateRoutes() {
+      if (this.authRouteMode === 'dynamic') {
+        return this.initDynamicRoute()
+      } else {
+        return this.initStaticRoute()
+      }
+      // return this.accessRoutes
     },
-    resetPermission() {
+    /** 初始化动态路由 */
+    initDynamicRoute() {
+      const memberStore = useMemberStore()
+      return this.handleAuthRoute(memberStore.menus)
+    },
+    /** 初始化静态路由 */
+    initStaticRoute() {
+      const memberStore = useMemberStore()
+      const staticRoutes = filterAsyncRoutes(asyncRoutes, memberStore.role)
+      return this.handleAuthRoute(staticRoutes)
+    },
+    /**
+     * 处理权限路由
+     * @param routes - 权限路由
+     */
+    handleAuthRoute(routes = []) {
+      const vueRoutes = transformAuthRouteToVueRoutes(routes)
+      this.accessRoutes = vueRoutes
+      return vueRoutes
+    },
+    resetRoute() {
       this.$reset()
     },
   },

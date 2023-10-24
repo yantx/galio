@@ -1,17 +1,17 @@
 <template>
   <n-dropdown :options="options" @select="handleSelect">
     <div flex cursor-pointer items-center>
-      <img :src="userStore.avatar" mr10 h-35 w-35 rounded-full />
-      <span>{{ userStore.name }}</span>
+      <img :src="memberStore.avatar" mr10 h-35 w-35 rounded-full />
+      <span>{{ memberStore.name }}</span>
     </div>
   </n-dropdown>
 </template>
 
 <script setup>
-import { useUserStore } from '@/store'
+import { useMemberStore } from '@/store'
 import { renderIcon } from '@/utils'
 
-const userStore = useUserStore()
+const memberStore = useMemberStore()
 
 const options = [
   {
@@ -28,7 +28,7 @@ function handleSelect(key) {
       type: 'info',
       content: '确认退出？',
       confirm() {
-        userStore.logout()
+        memberStore.logout()
         $message.success('已退出登录')
       },
     })

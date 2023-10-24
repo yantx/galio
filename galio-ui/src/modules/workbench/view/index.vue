@@ -3,9 +3,9 @@
     <div flex-1>
       <n-card rounded-10>
         <div flex items-center>
-          <img rounded-full width="60" :src="userStore.avatar" />
+          <img rounded-full width="60" :src="memberStore.avatar" />
           <div ml-20>
-            <p text-16>Hello, {{ userStore.name }}</p>
+            <p text-16>Hello, {{ memberStore.name }}</p>
             <p mt-5 text-12 op-60>今天又是元气满满的一天</p>
           </div>
           <div ml-auto flex items-center>
@@ -63,7 +63,7 @@
 </template>
 
 <script setup>
-import { useUserStore } from '@/store'
+import { useMemberStore } from '@/store'
 
-const userStore = useUserStore()
+const memberStore = useMemberStore()
 </script>

@@ -1,4 +1,4 @@
 import auth from './auth'
-import user from './user'
+import member from './member'
 
-export default [...auth, ...user]
+export default [...auth, ...member]

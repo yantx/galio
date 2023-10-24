@@ -41,6 +41,4 @@ import themeSetting from '@/settings/themeSetting'
 const appStore = useAppStore()
 
 const { header, tags } = themeSetting
-console.log(header)
-console.log(tags)
 </script>

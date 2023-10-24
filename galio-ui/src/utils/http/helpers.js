@@ -1,4 +1,4 @@
-import { useUserStore } from '@/store'
+import { useMemberStore } from '@/store'
 
 const WITHOUT_TOKEN_API = [{ url: '/auth/login', method: 'POST' }]
 
@@ -7,8 +7,8 @@ export function isWithoutToken({ url, method = '' }) {
 }
 
 export function addBaseParams(params) {
-  if (!params.userId) {
-    params.userId = useUserStore().userId
+  if (!params.memberId) {
+    params.memberId = useMemberStore().memberId
   }
 }
 
@@ -19,7 +19,7 @@ export function resolveResError(code, message) {
       break
     case 401:
       message = message ?? '登录已过期'
-      useUserStore().logout()
+      useMemberStore().logout()
       break
     case 403:
       message = message ?? '没有权限'

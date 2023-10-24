@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { basicRoutes, EMPTY_ROUTE, NOT_FOUND_ROUTE } from './routes'
 import { setupRouterGuard } from './guard'
 import { getToken, isNullOrWhitespace } from '@/utils'
-import { useUserStore, usePermissionStore } from '@/store'
+import { useMemberStore, useRouterStore } from '@/store'
 
 export const router = createRouter({
   history: createWebHistory('/'),
@@ -11,7 +11,7 @@ export const router = createRouter({
 })
 
 export async function setupRouter(app) {
-  await addDynamicRoutes()
+  await addRoutes()
   setupRouterGuard(router)
   app.use(router)
 }
@@ -26,7 +26,7 @@ export async function resetRouter() {
   })
 }
 
-export async function addDynamicRoutes() {
+export async function addRoutes() {
   const token = getToken()
 
   // 没有token情况
@@ -37,11 +37,10 @@ export async function addDynamicRoutes() {
 
   // 有token的情况
   try {
-    const userStore = useUserStore()
-    const permissionStore = usePermissionStore()
-    !userStore.userId && (await userStore.getUserInfo())
-    const accessRoutes = permissionStore.generateRoutes(userStore.role)
-    console.log(accessRoutes)
+    const memberStore = useMemberStore()
+    const routerStore = useRouterStore()
+    !memberStore.memberId && (await memberStore.getMemberInfo())
+    const accessRoutes = routerStore.generateRoutes()
     accessRoutes.forEach((route) => {
       !router.hasRoute(route.name) && router.addRoute(route)
     })

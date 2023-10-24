@@ -1,37 +1,37 @@
 import { defAxios as request } from '@/utils'
 
-export function getUsers(data = {}) {
+export function getMembers(data = {}) {
   return request({
-    url: '/users',
+    url: '/members',
     method: 'get',
     data,
   })
 }
 
-export function getUser(id) {
+export function getMember(id) {
   if (id) {
     return request({
-      url: `/user/${id}`,
+      url: `/member/${id}`,
       method: 'get',
     })
   }
   return request({
-    url: '/user',
+    url: '/member',
     method: 'get',
   })
 }
 
-export function saveUser(data = {}, id) {
+export function saveMember(data = {}, id) {
   if (id) {
     return request({
-      url: '/user',
+      url: '/member',
       method: 'put',
       data,
     })
   }
 
   return request({
-    url: `/user/${id}`,
+    url: `/member/${id}`,
     method: 'put',
     data,
   })
