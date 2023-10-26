@@ -8,7 +8,10 @@ const Layout = () => import('@/layout/index.vue')
  * @param routes - 路由
  */
 export function transformAuthRouteToMenu(routes = []) {
-  return routes.map((item) => getMenuItem(item)).sort((a, b) => a.order - b.order)
+  return routes
+    .filter((o) => !o.isHidden)
+    .map((item) => doTransformMenu(item))
+    .sort((a, b) => a.order - b.order)
 }
 
 /**
@@ -17,7 +20,10 @@ export function transformAuthRouteToMenu(routes = []) {
  * @description
  */
 export function transformAuthRouteToVueRoutes(routes = []) {
-  return routes.map((route) => transformAuthRouteToVueRoute(route)).flat(1)
+  const WHITE_LIST = ['/login', '/404']
+  return routes
+    .map((route) => (WHITE_LIST.includes(route.path) ? [route] : transformAuthRouteToVueRoute(route)))
+    .flat(1)
 }
 
 /**
@@ -72,7 +78,7 @@ function resolvePath(basePath, path) {
   )
 }
 
-function getMenuItem(route, basePath = '') {
+function doTransformMenu(route, basePath = '') {
   let menuItem = {
     label: (route.meta && route.meta.title) || route.name,
     key: route.name,
@@ -98,13 +104,15 @@ function getMenuItem(route, basePath = '') {
     const visibleItems = singleRoute.children ? singleRoute.children.filter((item) => item.name && !item.isHidden) : []
 
     if (visibleItems.length === 1) {
-      menuItem = getMenuItem(visibleItems[0], menuItem.path)
+      menuItem = doTransformMenu(visibleItems[0], menuItem.path)
     } else if (visibleItems.length > 1) {
-      menuItem.children = visibleItems.map((item) => getMenuItem(item, menuItem.path)).sort((a, b) => a.order - b.order)
+      menuItem.children = visibleItems
+        .map((item) => doTransformMenu(item, menuItem.path))
+        .sort((a, b) => a.order - b.order)
     }
   } else {
     menuItem.children = visibleChildren
-      .map((item) => getMenuItem(item, menuItem.path))
+      .map((item) => doTransformMenu(item, menuItem.path))
       .sort((a, b) => a.order - b.order)
   }
   return menuItem

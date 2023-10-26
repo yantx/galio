@@ -10,12 +10,19 @@ export const router = createRouter({
   scrollBehavior: () => ({ left: 0, top: 0 }),
 })
 
+/**
+ * 注册router组件
+ * @param app
+ */
 export async function setupRouter(app) {
-  await addRoutes()
+  await initAuthRoute()
   setupRouterGuard(router)
   app.use(router)
 }
 
+/**
+ * 重置路由
+ */
 export async function resetRouter() {
   const basicRouteNames = getRouteNames(basicRoutes)
   router.getRoutes().forEach((route) => {
@@ -26,7 +33,11 @@ export async function resetRouter() {
   })
 }
 
-export async function addRoutes() {
+/**
+ * 初始化路由信息
+ * @returns
+ */
+export async function initAuthRoute() {
   const token = getToken()
 
   // 没有token情况
