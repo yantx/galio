@@ -53,7 +53,7 @@
 import { lStorage, setToken } from '@/utils'
 import bgImg from '@/assets/images/login_bg.webp'
 import { login } from '../api/auth'
-import { addRoutes } from '@/router'
+import { initAuthRoute } from '@/router'
 import { useStorage } from '@vueuse/core'
 
 const title = import.meta.env.VITE_TITLE
@@ -88,20 +88,29 @@ async function handleLogin() {
     loading.value = true
     $message.loading('正在验证...')
     const res = await login({ name, password: password.toString() })
-    $message.success('登录成功')
-    setToken(res.data.token)
-    if (isRemember.value) {
-      lStorage.set('loginInfo', { name, password })
+    if (res.code === 20000) {
+      $message.success('登录成功')
+      // 设置用户信息缓存
+      setToken(res.data.token)
+      if (isRemember.value) {
+        lStorage.set('loginInfo', { name, password })
+      } else {
+        lStorage.remove('loginInfo')
+      }
+      // 初始化路由
+      await initAuthRoute()
+
+      // 登录后重定向页面
+      if (query.redirect) {
+        const path = query.redirect
+        Reflect.deleteProperty(query, 'redirect')
+        router.push({ path, query })
+      } else {
+        router.push(import.meta.env.VITE_ROUTE_HOME_NAME)
+      }
     } else {
-      lStorage.remove('loginInfo')
-    }
-    await addRoutes()
-    if (query.redirect) {
-      const path = query.redirect
-      Reflect.deleteProperty(query, 'redirect')
-      router.push({ path, query })
-    } else {
-      router.push(import.meta.env.VITE_ROUTE_HOME_NAME)
+      loading.value = false
+      $message.error(res.msg)
     }
   } catch (error) {
     console.error(error)
