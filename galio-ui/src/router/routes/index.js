@@ -28,24 +28,28 @@ export const basicRoutes = [
     },
     children: [
       {
-        name: 'LinkGithubSrc',
-        path: 'https://github.com/zclzone/vue-naive-admin',
+        name: 'LinkVueSrc',
+        path: 'vue',
+        component: () => import('@/components/iframe/index.vue'),
         meta: {
-          title: '源码 - github',
+          title: 'Vue',
           icon: 'mdi:github',
+          externalUrl: 'https://cn.vuejs.org/guide/introduction.html#what-is-vue',
         },
       },
       {
-        name: 'LinkGiteeSrc',
-        path: 'https://gitee.com/zclzone/vue-naive-admin',
+        name: 'LinkNaiveUISrc',
+        path: 'naive-ui',
+        component: () => import('@/components/iframe/index.vue'),
         meta: {
-          title: '源码 - gitee',
+          title: 'Naive UI',
           icon: 'simple-icons:gitee',
+          externalUrl: 'https://www.naiveui.com/zh-CN/',
         },
       },
       {
-        name: 'LinkDocs',
-        path: 'https://zclzone.github.io/vue-naive-admin-docs',
+        name: 'LinkBingSrc',
+        path: 'https://cn.bing.com/',
         meta: {
           title: '文档 - vuepress',
           icon: 'mdi:vuejs',
