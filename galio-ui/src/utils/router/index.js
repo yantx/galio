@@ -5,6 +5,45 @@ import { views } from '@/modules/view.js'
 const Layout = () => import('@/layout/index.vue')
 const IframePage = () => import('@/components/iframe/index.vue')
 const authRouteMode = import.meta.env.VITE_AUTH_ROUTE_MODE
+const isPermission = import.meta.env.VITE_USE_PERMISSION
+
+export function hasPermission(route, role) {
+  // * 不需要权限直接返回true
+  if (!route.meta?.requireAuth) return true
+
+  // * 登录用户没有角色或者路由没有设置角色判定为没有权限
+  const routeRole = route.meta?.role ? route.meta.role : []
+  if (!role.length || !routeRole.length) return false
+
+  // * 路由指定的角色包含任一登录用户角色则判定有权限
+  return role.some((item) => routeRole.includes(item))
+}
+
+/**
+ * 路由过滤鉴权
+ * @param {*} routes
+ * @param {*} role
+ * @returns
+ */
+export function filterAsyncRoutes(routes = [], role) {
+  const ret = []
+  routes.forEach((route) => {
+    if (isPermission && hasPermission(route, role)) {
+      const curRoute = {
+        ...route,
+        children: [],
+      }
+      if (route.children && route.children.length) {
+        curRoute.children = filterAsyncRoutes(route.children, role)
+      } else {
+        Reflect.deleteProperty(curRoute, 'children')
+      }
+      ret.push(curRoute)
+    }
+  })
+  return ret
+}
+
 /**
  * 将权限路由转换成菜单
  * @param routes - 路由

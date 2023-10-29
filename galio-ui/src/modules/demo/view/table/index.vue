@@ -92,7 +92,7 @@
 import { NButton, NSwitch } from 'naive-ui'
 import { formatDateTime, renderIcon, isNullOrUndef } from '@/utils'
 import { useCRUD } from '@/composables'
-import api from './api'
+import api from '../../api/table'
 
 defineOptions({ name: 'Crud' })
 
@@ -231,3 +231,4 @@ const {
   refresh: () => $table.value?.handleSearch(),
 })
 </script>
+../../api/api
