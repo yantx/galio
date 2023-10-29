@@ -2,7 +2,7 @@ const Layout = () => import('@/layout/index.vue')
 
 export const basicRoutes = [
   {
-    name: '404',
+    name: 'NotFound',
     path: '/404',
     component: () => import('@/components/not-found/index.vue'),
     isHidden: true,
@@ -16,46 +16,6 @@ export const basicRoutes = [
     meta: {
       title: '登录页',
     },
-  },
-  {
-    name: 'ExternalLink',
-    path: '/external-link',
-    component: Layout,
-    meta: {
-      title: '外部链接',
-      icon: 'mdi:link-variant',
-      order: 4,
-    },
-    children: [
-      {
-        name: 'LinkVueSrc',
-        path: 'vue',
-        component: () => import('@/components/iframe/index.vue'),
-        meta: {
-          title: 'Vue',
-          icon: 'mdi:github',
-          externalUrl: 'https://cn.vuejs.org/guide/introduction.html#what-is-vue',
-        },
-      },
-      {
-        name: 'LinkNaiveUISrc',
-        path: 'naive-ui',
-        component: () => import('@/components/iframe/index.vue'),
-        meta: {
-          title: 'Naive UI',
-          icon: 'simple-icons:gitee',
-          externalUrl: 'https://www.naiveui.com/zh-CN/',
-        },
-      },
-      {
-        name: 'LinkBingSrc',
-        path: 'https://cn.bing.com/',
-        meta: {
-          title: '文档 - vuepress',
-          icon: 'mdi:vuejs',
-        },
-      },
-    ],
   },
 ]
 
@@ -78,4 +38,44 @@ Object.keys(modules).forEach((key) => {
   asyncRoutes.push(modules[key].default)
 })
 
+asyncRoutes.push({
+  name: 'ExternalLink',
+  path: '/external-link',
+  component: Layout,
+  meta: {
+    title: '外部链接',
+    icon: 'mdi:link-variant',
+    order: 4,
+  },
+  children: [
+    {
+      name: 'LinkVueSrc',
+      path: 'vue',
+      component: () => import('@/components/iframe/index.vue'),
+      meta: {
+        title: 'Vue',
+        icon: 'mdi:github',
+        externalUrl: 'https://cn.vuejs.org/guide/introduction.html#what-is-vue',
+      },
+    },
+    {
+      name: 'LinkNaiveUISrc',
+      path: 'naive-ui',
+      component: () => import('@/components/iframe/index.vue'),
+      meta: {
+        title: 'Naive UI',
+        icon: 'simple-icons:gitee',
+        externalUrl: 'https://www.naiveui.com/zh-CN/',
+      },
+    },
+    {
+      name: 'LinkBingSrc',
+      path: 'https://cn.bing.com/',
+      meta: {
+        title: '文档 - vuepress',
+        icon: 'mdi:vuejs',
+      },
+    },
+  ],
+})
 export { asyncRoutes }

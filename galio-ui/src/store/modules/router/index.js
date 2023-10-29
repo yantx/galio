@@ -45,7 +45,7 @@ export const useRouterStore = defineStore('route-store', {
   },
   getters: {
     routes() {
-      return this.accessRoutes
+      return basicRoutes.concat(this.accessRoutes)
     },
     menus() {
       return transformAuthRouteToMenu(this.accessRoutes)
@@ -63,12 +63,12 @@ export const useRouterStore = defineStore('route-store', {
     /** 初始化动态路由 */
     initDynamicRoute() {
       const memberStore = useMemberStore()
-      return this.handleAuthRoute(basicRoutes.concat(memberStore.menus))
+      return this.handleAuthRoute(memberStore.menus)
     },
     /** 初始化静态路由 */
     initStaticRoute() {
       const memberStore = useMemberStore()
-      const staticRoutes = filterAsyncRoutes(basicRoutes.concat(asyncRoutes), memberStore.role)
+      const staticRoutes = filterAsyncRoutes(asyncRoutes, memberStore.role)
       return this.handleAuthRoute(staticRoutes)
     },
     /**
@@ -77,6 +77,7 @@ export const useRouterStore = defineStore('route-store', {
      */
     handleAuthRoute(routes = []) {
       const vueRoutes = transformAuthRouteToVueRoutes(routes)
+      console.log(vueRoutes)
       this.accessRoutes = vueRoutes
       return vueRoutes
     },

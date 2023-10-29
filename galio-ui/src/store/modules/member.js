@@ -36,7 +36,7 @@ export const useMemberStore = defineStore('member', {
         const res = await getMember()
         if (res.code === 20000) {
           const { id, name, avatar, role, menus, perms } = res.data
-          this.memberInfo = { id, name, avatar, role }
+          this.memberInfo = { id, name, avatar, role, menus }
           return Promise.resolve(res.data)
         } else {
           return Promise.reject(res)

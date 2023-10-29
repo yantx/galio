@@ -106,7 +106,7 @@ async function handleLogin() {
         Reflect.deleteProperty(query, 'redirect')
         router.push({ path, query })
       } else {
-        router.push(import.meta.env.VITE_ROUTE_HOME_NAME)
+        router.push({ name: import.meta.env.VITE_ROUTE_HOME_NAME })
       }
     } else {
       loading.value = false

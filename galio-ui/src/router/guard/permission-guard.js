@@ -10,7 +10,7 @@ export function createPermissionGuard(router) {
       return { path: 'login', query: { ...to.query, redirect: to.path } }
     }
     /** 有token的情况 */
-    if (to.path === '/login') return { path: import.meta.env.VITE_ROUTE_HOME_NAME }
+    if (to.path === '/login') return { name: import.meta.env.VITE_ROUTE_HOME_NAME }
 
     refreshAccessToken()
     return true
