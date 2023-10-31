@@ -20,7 +20,7 @@ public class SaPermissionImpl implements StpInterface {
     @Override
     public List<String> getPermissionList(Object loginId, String loginType) {
         LoginMemberDto loginMember = LoginHelper.getLoginMember();
-        return new ArrayList<>(loginMember.getFunctionPermission());
+        return new ArrayList<>(loginMember.getFunctionPerms());
     }
 
     /**
@@ -29,6 +29,6 @@ public class SaPermissionImpl implements StpInterface {
     @Override
     public List<String> getRoleList(Object loginId, String loginType) {
         LoginMemberDto loginMember = LoginHelper.getLoginMember();
-        return new ArrayList<>(loginMember.getRolePermission());
+        return new ArrayList<>(loginMember.getRolePerms());
     }
 }

@@ -72,14 +72,14 @@ public class LoginMemberDto implements Serializable {
     private String os;
 
     /**
-     * 菜单权限
+     * 权限标识
      */
-    private Set<String> functionPermission;
+    private Set<String> functionPerms;
 
     /**
-     * 角色权限
+     * 角色标识
      */
-    private Set<String> rolePermission;
+    private Set<String> rolePerms;
 
     /**
      * 登录账号

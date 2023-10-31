@@ -45,13 +45,13 @@ public class MemberBizServiceImpl implements MemberBizService {
         loginMemberDto.setRoles(ObjectUtil.copyList(roleList, RoleDto.class));
         // 超管不作限制，管理员所在应用内不做限制
         if (loginMemberDto.isAdmin() || loginMemberDto.isSuperAdmin()){
-            loginMemberDto.setFunctionPermission(Collections.singleton("*.*.*"));
-            loginMemberDto.setRolePermission(Collections.singleton(MemberConstants.SUPER_ADMIN_ROLE));
+            loginMemberDto.setFunctionPerms(Collections.singleton("*.*.*"));
+            loginMemberDto.setRolePerms(Collections.singleton(MemberConstants.SUPER_ADMIN_ROLE));
         }else {
-            loginMemberDto.setRolePermission(roleList.stream().map(Role::getRoleKey).collect(Collectors.toSet()));
+            loginMemberDto.setRolePerms(roleList.stream().map(Role::getRoleKey).collect(Collectors.toSet()));
             Set<Long> roleIds = roleList.stream().map(Role::getRoleId).collect(Collectors.toSet());
             List<Function> functionList = functionRepository.selectList(roleIds);
-            loginMemberDto.setFunctionPermission(functionList.stream().map(Function::getPerms).collect(Collectors.toSet()));
+            loginMemberDto.setFunctionPerms(functionList.stream().map(Function::getPerms).collect(Collectors.toSet()));
         }
 
         // 会员号所属雇员信息
