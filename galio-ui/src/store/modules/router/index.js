@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { getFunctions } from '@/api/function'
+import { getFunctions } from '~/src/modules/function/api'
 import { useMemberStore } from '@/store'
 import { transformAuthRouteToVueRoutes, transformAuthRouteToMenu, filterAsyncRoutes, hasPermission } from '@/utils'
 import { asyncRoutes, basicRoutes } from '@/router/routes'
@@ -30,9 +30,15 @@ export const useRouterStore = defineStore('route-store', {
       // return this.accessRoutes
     },
     /** 初始化动态路由 */
-    initDynamicRoute() {
-      const memberStore = useMemberStore()
-      return this.handleAuthRoute(memberStore.menus)
+    async initDynamicRoute() {
+      const res = await getFunctions()
+      if (res.code === 20000) {
+        const functionTree = res.data
+        return this.handleAuthRoute(functionTree)
+      } else {
+        $message.error(res.msg)
+        return {}
+      }
     },
     /** 初始化静态路由 */
     initStaticRoute() {

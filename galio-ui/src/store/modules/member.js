@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { getMember } from '~/src/api/member'
+import { getMember } from '~/src/modules/member/api'
 import { removeToken, toLogin } from '@/utils'
 import { resetRouter } from '@/router'
 import { useTagsStore, useRouterStore } from '@/store'
@@ -21,13 +21,10 @@ export const useMemberStore = defineStore('member', {
       return this.memberInfo?.avatar
     },
     role() {
-      return this.memberInfo?.role || []
+      return this.memberInfo?.rolePerms || []
     },
-    menus() {
-      return this.memberInfo?.menus || []
-    },
-    perms() {
-      return this.memberInfo?.perms || []
+    functionPerms() {
+      return this.memberInfo?.functionPerms || []
     },
   },
   actions: {
@@ -35,8 +32,8 @@ export const useMemberStore = defineStore('member', {
       try {
         const res = await getMember()
         if (res.code === 20000) {
-          const { id, name, avatar, role, menus, perms } = res.data
-          this.memberInfo = { id, name, avatar, role, menus }
+          const { id, username, avatar, rolePerms, functionPerms } = res.data
+          this.memberInfo = { id, username, avatar, rolePerms, functionPerms }
           return Promise.resolve(res.data)
         } else {
           return Promise.reject(res)
