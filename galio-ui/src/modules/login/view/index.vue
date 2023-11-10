@@ -110,7 +110,6 @@ async function handleLogin() {
       }
     } else {
       loading.value = false
-      $message.error(res.msg)
     }
   } catch (error) {
     console.error(error)

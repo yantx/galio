@@ -7,7 +7,7 @@ const token = {
 
 export default [
   {
-    url: '/auth/login',
+    url: '/mock/auth/login',
     method: 'post',
     response: ({ body }) => {
       if (['admin', 'editor'].includes(body?.name)) {
@@ -26,7 +26,7 @@ export default [
     },
   },
   {
-    url: '/auth/refreshToken',
+    url: '/mock/auth/refreshToken',
     method: 'post',
     response: ({ headers }) => {
       return {

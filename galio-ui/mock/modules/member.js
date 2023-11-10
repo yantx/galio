@@ -27,7 +27,7 @@ const users = {
 }
 export default [
   {
-    url: '/member',
+    url: '/mock/member',
     method: 'get',
     response: ({ headers }) => {
       const token = resolveToken(headers?.authorization)

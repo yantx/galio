@@ -1,16 +1,9 @@
-import { defAxios as request } from '@/utils'
+import { request, mockRequest } from '@/utils'
 
 export const login = (data) => {
-  return request({
-    url: '/auth/login',
-    method: 'post',
-    data,
-  })
+  return request.post('/auth/login', data)
 }
 
 export const refreshToken = () => {
-  return request({
-    url: '/auth/refreshToken',
-    method: 'post',
-  })
+  return mockRequest.post('/auth/refreshToken')
 }

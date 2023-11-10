@@ -169,7 +169,7 @@ const functions = [
 
 export default [
   {
-    url: '/functions',
+    url: '/mock/functions',
     method: 'get',
     response: ({ headers }) => {
       return {

@@ -1,38 +1,20 @@
-import { defAxios as request } from '@/utils'
+import { mockRequest } from '@/utils'
 
 export function getFunctions(data = {}) {
-  return request({
-    url: '/functions',
-    method: 'get',
-    data,
-  })
+  return mockRequest.get('/functions', data)
 }
 
 export function getFunction(id) {
   if (id) {
-    return request({
-      url: `/function/${id}`,
-      method: 'get',
-    })
+    return mockRequest.get(`/function/${id}`)
   }
-  return request({
-    url: '/function',
-    method: 'get',
-  })
+  return mockRequest.get('/functions')
 }
 
 export function saveFunction(data = {}, id) {
   if (id) {
-    return request({
-      url: '/function',
-      method: 'put',
-      data,
-    })
+    return mockRequest.put('/function', data)
   }
 
-  return request({
-    url: `/function/${id}`,
-    method: 'put',
-    data,
-  })
+  return mockRequest.put(`/function/${id}`, data)
 }

@@ -51,7 +51,7 @@ export async function initAuthRoute() {
     const memberStore = useMemberStore()
     const routerStore = useRouterStore()
     !memberStore.memberId && (await memberStore.getMemberInfo())
-    const accessRoutes = routerStore.generateRoutes()
+    const accessRoutes = await routerStore.generateRoutes()
     accessRoutes.forEach((route) => {
       !router.hasRoute(route.name) && router.addRoute(route)
     })
