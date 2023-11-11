@@ -79,6 +79,7 @@ function dynamicRouteFormat(item) {
       icon: item.icon,
       order: item.order,
       keepAlive: Boolean(item.isCache),
+      functionPerms: item.functionPerms,
     },
   }
 

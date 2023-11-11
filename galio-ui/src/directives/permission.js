@@ -1,11 +1,11 @@
 import { hasBtnPermission } from '@/utils'
 
 export default function setupPermissionDirective(app) {
-  function updateElVisible(el, permission) {
-    if (!permission) {
+  function updateElVisible(el, param) {
+    if (!param.perm) {
       throw new Error(`need roles: like v-permission="'member.add'"`)
     }
-    if (!hasBtnPermission(permission)) {
+    if (!hasBtnPermission(param.perm, param.perms)) {
       el.parentElement?.removeChild(el)
     }
   }

@@ -7,4 +7,6 @@ module.exports = {
     singleQuote: true,
     // 尾行结束不用分号
     semi: false,
+    
+    htmlWhitespaceSensitivity: "ignore"
   }

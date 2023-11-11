@@ -118,7 +118,7 @@ const functions = [
         path: 'index',
         name: 'BaseComponents',
         icon: 'material-symbols:auto-awesome-outline-rounded',
-        buttuns: ['addBtn', 'editBtn', 'queryBtn'],
+        functionPerms: ['addBtn', 'editBtn', 'queryBtn'],
       },
       {
         id: '3-2',
