@@ -23,6 +23,12 @@ export const useMemberStore = defineStore('member', {
     role() {
       return this.memberInfo?.rolePerms || []
     },
+    isAdmin() {
+      return this.memberInfo?.isAdmin
+    },
+    isSuperAdmin() {
+      return this.memberInfo?.isSuperAdmin
+    },
     functionPerms() {
       return this.memberInfo?.functionPerms || []
     },
@@ -32,7 +38,7 @@ export const useMemberStore = defineStore('member', {
       try {
         const res = await getMember()
         if (res.code === 20000) {
-          const { id, username, avatar, rolePerms, functionPerms } = res.data
+          const { id, username, avatar, rolePerms, isSuperAdmin, isAdmin, functionPerms } = res.data
           this.memberInfo = { id, username, avatar, rolePerms, functionPerms }
           return Promise.resolve(res.data)
         } else {

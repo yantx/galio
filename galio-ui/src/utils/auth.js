@@ -13,12 +13,12 @@ export function toLogin() {
 /**
  * 按钮鉴权函数
  * @param {String} permission - 当前按钮权限
- * @param {Array} btnPermissions - 用户所有按钮权限集
  * @returns Boolean true-有权限 false-无权限
  */
-export function hasBtnPermission(permission, btnPermissions) {
-  if (isNullOrWhitespace(btnPermissions)) {
-    btnPermissions = useMemberStore().functionPerms
-  }
-  return btnPermissions.includes(permission)
+export function hasBtnPermission(permission) {
+  const currentRoute = unref(router.currentRoute)
+  let btnPermissions = currentRoute.meta.functionPerms || useMemberStore().functionPerms
+  return (
+    !isNullOrWhitespace(btnPermissions) && (btnPermissions.includes('*.*.*') || btnPermissions.includes(permission))
+  )
 }
