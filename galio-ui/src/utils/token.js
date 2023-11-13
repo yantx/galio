@@ -1,5 +1,5 @@
 import { lStorage } from '@/utils'
-import { refreshToken } from '@/api/auth'
+import { refreshToken } from '@/modules/login/api/auth'
 
 const TOKEN_CODE = 'access_token'
 const DURATION = 6 * 60 * 60

@@ -27,7 +27,6 @@ export const useRouterStore = defineStore('route-store', {
       } else {
         return this.initStaticRoute()
       }
-      // return this.accessRoutes
     },
     /** 初始化动态路由 */
     async initDynamicRoute() {

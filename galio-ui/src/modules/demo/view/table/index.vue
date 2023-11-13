@@ -8,7 +8,7 @@
         </n-button>
         <n-button type="primary" class="ml-16" @click="handleAdd">
           <TheIcon icon="material-symbols:add" :size="18" class="mr-5" />
-          新建文章
+          新增
         </n-button>
       </div>
     </template>
@@ -231,4 +231,3 @@ const {
   refresh: () => $table.value?.handleSearch(),
 })
 </script>
-../../api/api
