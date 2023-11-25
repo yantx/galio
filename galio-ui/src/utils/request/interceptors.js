@@ -6,7 +6,6 @@ export function reqResolve(config) {
   if (config.method === 'get') {
     config.params = { ...config.params, t: new Date().getTime() }
   }
-
   // 处理不需要token的请求
   if (isWithoutToken(config)) {
     return config
@@ -19,7 +18,7 @@ export function reqResolve(config) {
      * * 跳转登录页重新登录，携带当前路由及参数，登录成功会回到原来的页面
      */
     toLogin()
-    return Promise.reject({ status: -1, message: '未登录' })
+    return Promise.reject({ status: -1, msg: '未登录' })
   }
 
   /**
@@ -41,17 +40,15 @@ export function resResolve(response) {
 
 export function resReject(error) {
   let code = error?.response?.status || error.status
-  let message = error.message || error.response.statusText
+  let msg = error.msg || error.message || error.response?.statusText
   if (isNullOrUndef(code)) {
     // 未知错误
     code = -1
-    message = '接口异常！'
-    return Promise.resolve({ code, message, error })
+    msg = msg || '接口异常！'
+    return Promise.resolve({ code, msg, error })
   } else if (Math.floor(code / 100) !== 2) {
-    // TODO xhr.js拦截生效 报错后 这里未提示消息框  使用$message提示报错信息页面只有提示框没有内容
-    message = resolveResError(code, message)
-    $message.error(message)
-    return Promise.resolve({ code, message, error })
+    msg = resolveResError(code, msg)
+    return Promise.resolve({ code, msg, error })
   } else {
     let url = error.config.url
     let res = error.response.data
@@ -66,7 +63,7 @@ export function resReject(error) {
         return res instanceof Blob || res + '' === '[object Blob]' ? res : res.data
       } else {
         let error = url + '后台服务异常'
-        const title = res.meta?.message || res.data
+        const title = res.meta?.msg || res.data
         if (title && isString(title)) {
           error += '信息:' + title
         }

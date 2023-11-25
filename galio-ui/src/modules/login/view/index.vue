@@ -40,9 +40,7 @@
         </div>
 
         <div mt-20>
-          <n-button h-50 w-full rounded-5 text-16 type="primary" :loading="loading" @click="handleLogin">
-            登录
-          </n-button>
+          <n-button h-50 w-full rounded-5 text-16 type="primary" :loading="loading" @click="handleLogin">登录</n-button>
         </div>
       </div>
     </div>
@@ -50,9 +48,9 @@
 </template>
 
 <script setup>
-import { lStorage, setToken } from '@/utils'
+import { lStorage, setToken, AESencrypt, RSAencrypt} from '@/utils'
 import bgImg from '@/assets/images/login_bg.webp'
-import { login } from '../api/auth'
+import { login, getPublicKey } from '../api/auth'
 import { initAuthRoute } from '@/router'
 import { useStorage } from '@vueuse/core'
 
@@ -77,6 +75,19 @@ function initLoginInfo() {
 }
 
 const isRemember = useStorage('isRemember', false)
+
+let publicKey
+initPublicKey()
+
+async function initPublicKey (){
+  const publicKeyRes = await getPublicKey()
+  if (publicKeyRes.code === 20000) {
+    publicKey = publicKeyRes.data
+  }else{
+    $message.error(publicKeyRes.msg)
+  }
+}
+
 const loading = ref(false)
 async function handleLogin() {
   const { name, password } = loginInfo.value
@@ -87,7 +98,12 @@ async function handleLogin() {
   try {
     loading.value = true
     $message.loading('正在验证...')
-    const res = await login({ name, password: password.toString() })
+    const AESkey = publicKey.substr(0, 16)
+    // 对称加密密码
+    let securityPassword = AESencrypt(password, AESkey, AESkey)
+    // 非对称加蜜对称加密的密钥
+    let securityKey = RSAencrypt(AESkey, publicKey)
+    const res = await login({ name, password: securityPassword, securityKey: securityKey})
     if (res.code === 20000) {
       $message.success('登录成功')
       // 设置用户信息缓存
@@ -109,6 +125,7 @@ async function handleLogin() {
         router.push({ name: import.meta.env.VITE_ROUTE_HOME_NAME })
       }
     } else {
+      $message.error(res.msg)
       loading.value = false
     }
   } catch (error) {

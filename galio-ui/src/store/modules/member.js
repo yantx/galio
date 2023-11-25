@@ -3,7 +3,6 @@ import { getMember } from '~/src/modules/member/api'
 import { removeToken, toLogin } from '@/utils'
 import { resetRouter } from '@/router'
 import { useTagsStore, useRouterStore } from '@/store'
-// todo member切换成member 防止前后定义不一致； 完成menus整合；增设btn权限；
 export const useMemberStore = defineStore('member', {
   state() {
     return {

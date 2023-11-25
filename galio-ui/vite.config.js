@@ -29,7 +29,7 @@ export default defineConfig(({ command, mode }) => {
       proxy: serverProxy,
     },
     build: {
-      target: 'es2020',
+      target: 'ESNext',
       outDir: 'dist',
       reportCompressedSize: false, // 启用/禁用 gzip 压缩大小报告
       chunkSizeWarningLimit: 1024, // chunk 大小警告的限制（单位kb）

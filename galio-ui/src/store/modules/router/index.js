@@ -51,7 +51,6 @@ export const useRouterStore = defineStore('route-store', {
      */
     handleAuthRoute(routes = []) {
       const vueRoutes = transformAuthRouteToVueRoutes(routes)
-      console.log(vueRoutes)
       this.accessRoutes = vueRoutes
       return vueRoutes
     },
