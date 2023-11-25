@@ -7,6 +7,7 @@ import { setupStore } from '@/store'
 import App from './App.vue'
 import { setupNaiveDiscreteApi } from './utils'
 import { setupDirectives } from './directives'
+import GComponents from '@/library/index.js'
 
 async function setupApp() {
   const app = createApp(App)
@@ -15,7 +16,7 @@ async function setupApp() {
   setupNaiveDiscreteApi()
   setupDirectives(app)
   await setupRouter(app)
-
+  app.use(GComponents)
   app.mount('#app')
 }
 

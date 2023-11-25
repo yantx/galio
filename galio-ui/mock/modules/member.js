@@ -4,7 +4,7 @@ const users = {
   admin: {
     id: 1,
     username: 'admin',
-    avatar: 'https://assets.qszone.com/images/avatar.jpg',
+    avatar: '640.jpg',
     email: 'Ronnie@123.com',
     rolePerms: ['admin'],
     functionPerms: ['system.member.add', 'system.member.view', 'system.member.edit'],
@@ -12,7 +12,7 @@ const users = {
   editor: {
     id: 2,
     username: 'editor',
-    avatar: 'https://assets.qszone.com/images/avatar.jpg',
+    avatar: '640-1.jpg',
     email: 'Ronnie@123.com',
     rolePerms: ['editor'],
     functionPerms: ['system.member.add', 'system.member.view', 'system.member.edit'],
@@ -20,7 +20,7 @@ const users = {
   guest: {
     id: 3,
     username: 'guest',
-    avatar: 'https://assets.qszone.com/images/avatar.jpg',
+    avatar: '640-2.jpg',
     rolePerms: [],
     functionPerms: ['system.member.add', 'system.member.view', 'system.member.edit'],
   },

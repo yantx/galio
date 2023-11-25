@@ -1,7 +1,7 @@
 <template>
   <n-dropdown :options="options" @select="handleSelect">
     <div flex cursor-pointer items-center>
-      <img :src="memberStore.avatar" mr10 h-35 w-35 rounded-full />
+      <g-avatar round size="medium" :src-val="memberStore.avatar" />
       <span>{{ memberStore.name }}</span>
     </div>
   </n-dropdown>
@@ -20,6 +20,14 @@ const options = [
     icon: renderIcon('mdi:exit-to-app', { size: '14px' }),
   },
 ]
+const getImage = (name) => {
+  // 其实就是将图片导为模块
+  // 获取图片模块
+  const picModules = import.meta.glob('@/assets/avatar/*', { eager: true })
+  // 获取指定的图片
+  const path = `/src/assets/avatar/${name}.jpg`
+  return picModules[path].default
+}
 
 function handleSelect(key) {
   if (key === 'logout') {

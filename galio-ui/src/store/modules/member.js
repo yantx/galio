@@ -14,7 +14,7 @@ export const useMemberStore = defineStore('member', {
       return this.memberInfo?.id
     },
     name() {
-      return this.memberInfo?.name
+      return this.memberInfo?.username
     },
     avatar() {
       return this.memberInfo?.avatar

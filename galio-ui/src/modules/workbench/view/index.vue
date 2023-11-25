@@ -3,7 +3,7 @@
     <div flex-1>
       <n-card rounded-10>
         <div flex items-center>
-          <img rounded-full width="60" :src="memberStore.avatar" />
+          <g-avatar round size="large" :src-val="memberStore.avatar" />
           <div ml-20>
             <p text-16>Hello, {{ memberStore.name }}</p>
             <p mt-5 text-12 op-60>今天又是元气满满的一天</p>
@@ -13,12 +13,12 @@
               <template #suffix>/ 10</template>
             </n-statistic>
             <n-statistic label="Stars" ml-80 w-100>
-              <a href="https://github.com/zclzone/vue-naive-admin">
-                <img alt="stars" src="https://badgen.net/github/stars/zclzone/vue-naive-admin" />
+              <a href="https://github.com/yantx/galio">
+                <img alt="stars" src="https://github.com/yantx/galio" />
               </a>
             </n-statistic>
             <n-statistic label="Forks" ml-80 w-100>
-              <a href="https://github.com/zclzone/vue-naive-admin">
+              <a href="https://github.com/yantx/galio">
                 <img alt="forks" src="https://badgen.net/github/forks/zclzone/vue-naive-admin" />
               </a>
             </n-statistic>

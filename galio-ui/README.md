@@ -24,3 +24,15 @@ This template should help get you started developing with Vue 3 in Vite. The tem
   ```vue
   <n-button v-permission="'system.member.add'" type="tertiary">
   ```
+
+## Mock中引用JSEncrypt工具类导致window is not defined 问题处理
+ 引入方式：
+ ```js
+  import JSEncrypt from 'jsencrypt/bin/jsencrypt.min'
+  let decrypt = new JSEncrypt()
+ ```
+ 解决方式：在jsencrypt.min.js文件中添加如下代码
+ ```js
+ const window=this
+ ```
+

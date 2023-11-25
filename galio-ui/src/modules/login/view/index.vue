@@ -48,7 +48,7 @@
 </template>
 
 <script setup>
-import { lStorage, setToken, AESencrypt, RSAencrypt} from '@/utils'
+import { lStorage, setToken, AESencrypt, RSAencrypt } from '@/utils'
 import bgImg from '@/assets/images/login_bg.webp'
 import { login, getPublicKey } from '../api/auth'
 import { initAuthRoute } from '@/router'
@@ -79,11 +79,11 @@ const isRemember = useStorage('isRemember', false)
 let publicKey
 initPublicKey()
 
-async function initPublicKey (){
+async function initPublicKey() {
   const publicKeyRes = await getPublicKey()
   if (publicKeyRes.code === 20000) {
     publicKey = publicKeyRes.data
-  }else{
+  } else {
     $message.error(publicKeyRes.msg)
   }
 }
@@ -103,7 +103,7 @@ async function handleLogin() {
     let securityPassword = AESencrypt(password, AESkey, AESkey)
     // 非对称加蜜对称加密的密钥
     let securityKey = RSAencrypt(AESkey, publicKey)
-    const res = await login({ name, password: securityPassword, securityKey: securityKey})
+    const res = await login({ name, password: securityPassword, securityKey: securityKey })
     if (res.code === 20000) {
       $message.success('登录成功')
       // 设置用户信息缓存
