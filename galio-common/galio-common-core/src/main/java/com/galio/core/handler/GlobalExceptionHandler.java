@@ -31,7 +31,8 @@ public class GlobalExceptionHandler {
     public BaseResponse MethodArgumentNotValidExceptionHandler(BindException e) {
         // 从异常对象中拿到ObjectError对象
         ObjectError objectError = e.getBindingResult().getAllErrors().get(0);
-        return BaseResponse.createFail(ResponseEnum.VALIDATE_ERROR);
+        log.error(objectError.getDefaultMessage());
+        return BaseResponse.createFail(ResponseEnum.VALIDATE_ERROR.withArgs(objectError.getDefaultMessage()));
     }
 
     @ExceptionHandler({NullPointerException.class})

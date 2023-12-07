@@ -1,6 +1,6 @@
 global.window = this 
 import { resolveToken } from '../util'
-import { RSAencrypt, RSAdencrypt, AESdecrypt, BcryptjsHash, BcryptjsCompare } from '../../src/utils/encrypt'
+import { rsaEncrypt, RSAdencrypt, AESdecrypt, BcryptjsHash, BcryptjsCompare } from '../../src/utils/crypto'
 
 const token = {
   admin: 'admin',
@@ -45,7 +45,7 @@ export default [
     url: '/mock/auth/login',
     method: 'post',
     response: ({ body }) => {
-      let result = loginAuth(body.name, body.password, body.securityKey)
+      let result = loginAuth(body.username, body.password, body.securityKey)
       return result
     },
   },

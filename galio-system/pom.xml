@@ -15,6 +15,7 @@
     <modules>
         <module>galio-system-api</module>
         <module>galio-system-biz</module>
+        <module>galio-system-repository</module>
     </modules>
 
     <properties>

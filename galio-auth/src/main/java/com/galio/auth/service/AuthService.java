@@ -2,7 +2,6 @@ package com.galio.auth.service;
 
 import cn.dev33.satoken.exception.NotLoginException;
 import cn.dev33.satoken.secure.BCrypt;
-import cn.dev33.satoken.secure.SaSecureUtil;
 import cn.dev33.satoken.stp.StpUtil;
 import com.galio.auth.enums.AuthResponseEnum;
 import com.galio.auth.properties.PasswordProperties;
@@ -21,8 +20,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.time.Duration;
-import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Supplier;
 
 /**
@@ -43,7 +44,7 @@ public class AuthService {
 
     private final MemberExchange memberExchange;
     private final PasswordProperties passwordProperties;
-    private HashMap<String,String> rsaKeys;
+    private Map<String,String> rsaKeys;
 
     /**
      * 获取公钥
@@ -51,19 +52,23 @@ public class AuthService {
      * @throws Exception
      */
     public String getPublicKey() throws Exception {
-        rsaKeys = SaSecureUtil.rsaGenerateKeyPair();
-        return rsaKeys.get("public");
+        rsaKeys = CryptoUtil.rsaGenerateKeyPair(CryptoUtil.RSA_KEY_SIZE_1024);
+        return rsaKeys.get(CryptoUtil.RSA_PUBLIC_KEY);
     }
 
     /**
      * 登录接口
      * @param username 登录名
      * @param password 密码-RSA公钥加密后
+     * @param securityKey 密钥 -RSA公钥加密后的aes密钥
      * @return LoginMemberDto对象
      * @throws CustomException
      */
-    public LoginMemberDto login(String username, String password) throws CustomException{
-        String relPass =  SaSecureUtil.rsaDecryptByPrivate(rsaKeys.get("private"), password);
+    public LoginMemberDto login(String username, String password, String securityKey) throws CustomException{
+
+        String aesKey =  CryptoUtil.rsaPrivateDecrypt(securityKey,rsaKeys.get(CryptoUtil.RSA_PRIVATE_KEY));
+        String relPass = CryptoUtil.aesDecrypt(aesKey, password);
+
         checkLogin(username, () -> !BCrypt.checkpw(relPass, getPassword(username)));
         // 登录验证成功后查询用户信息
         LoginMemberDto memberDto = memberExchange.getMemberInfo(username);

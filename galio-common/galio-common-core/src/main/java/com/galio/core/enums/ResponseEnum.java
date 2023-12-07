@@ -74,4 +74,14 @@ public enum ResponseEnum implements StatusCode{
         this.args = args;
         return this;
     }
+
+    /**
+     * 自定义响应消息
+     * @param customMessage
+     * @return
+     */
+    public ResponseEnum replaceMsg(String customMessage) {
+        this.msg = customMessage;
+        return this;
+    }
 }

@@ -31,7 +31,7 @@ public class ${ClassName}ServiceImpl implements ${ClassName}Service {
      * 查询${functionName}
      */
     @Override
-    public ${ClassName} queryById(${pkColumn.javaType} ${pkColumn.javaField}) {
+    public ${ClassName} getById(${pkColumn.javaType} ${pkColumn.javaField}) {
         return ${className}Repository.selectById(${pkColumn.javaField});
     }
 
@@ -40,7 +40,7 @@ public class ${ClassName}ServiceImpl implements ${ClassName}Service {
          * 查询${functionName}列表
          */
         @Override
-        public Page<${ClassName}> queryPageList(PageRequestDto pageRequestDto) {
+        public Page<${ClassName}> listPage(PageRequestDto pageRequestDto) {
             return ${className}Repository.selectPage(pageRequestDto.build());
         }
     #end
@@ -49,7 +49,7 @@ public class ${ClassName}ServiceImpl implements ${ClassName}Service {
      * 查询${functionName}列表
      */
     @Override
-    public List<${ClassName}> queryList(${ClassName}Dto dto) {
+    public List<${ClassName}> list(${ClassName}Dto dto) {
         ${ClassName} entity = ObjectUtil.copyObject(dto, ${ClassName}.class);
         return ${className}Repository.selectList(entity);
     }
@@ -58,7 +58,7 @@ public class ${ClassName}ServiceImpl implements ${ClassName}Service {
      * 新增${functionName}
      */
     @Override
-    public Boolean insertByDto(${ClassName}Dto dto) {
+    public Boolean save(${ClassName}Dto dto) {
         ${ClassName} add = ObjectUtil.copyObject(dto, ${ClassName}.class);
         validEntityBeforeSave(add);
         boolean flag = ${className}Repository.insert(add) > 0;
@@ -73,7 +73,7 @@ public class ${ClassName}ServiceImpl implements ${ClassName}Service {
      * 修改${functionName}
      */
     @Override
-    public Boolean updateByDto(${ClassName}Dto dto) {
+    public Boolean update(${ClassName}Dto dto) {
         ${ClassName} update = ObjectUtil.copyObject(dto, ${ClassName}.class);
         validEntityBeforeSave(update);
         return ${className}Repository.updateById(update) > 0;

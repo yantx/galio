@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 @Validated
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/auth")
 public class AuthController {
 
     private final AuthService authService;
@@ -44,7 +43,7 @@ public class AuthController {
     @Operation(summary = "登录接口")
     @PostMapping("login")
     public LoginMemberDto login(@Validated @RequestBody LoginDto loginDto) {
-         return authService.login(loginDto.getUsername(), loginDto.getPassword());
+         return authService.login(loginDto.getUsername(), loginDto.getPassword(),loginDto.getSecurityKey());
     }
     @Operation(summary = "查询用户token")
     @GetMapping("token/{username}")

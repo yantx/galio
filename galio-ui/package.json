@@ -22,7 +22,7 @@
     "bcryptjs": "^2.4.3",
     "crypto-js": "^4.2.0",
     "dayjs": "^1.11.10",
-    "jsencrypt": "3.3.2",
+    "jsencrypt-ext": "2.1.2",
     "lodash-es": "^4.17.21",
     "md-editor-v3": "^4.7.0",
     "pinia": "^2.1.6",

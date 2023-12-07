@@ -26,7 +26,14 @@ public class LoginDto {
      * 密码
      */
     @Schema(description = "登录密码")
-    @NotBlank(message = "{member.username.not.blank}")
-    @Length(min = MemberConstants.PASSWORD_MIN_LENGTH, max = MemberConstants.PASSWORD_MAX_LENGTH, message = "{member.password.length.valid}")
+    @NotBlank(message = "{member.password.not.blank}")
     private String password;
+
+    /**
+     * 安全口令 经过非对称加密后的对称加密密钥
+     */
+    @Schema(description = "安全口令")
+    @NotBlank(message = "{member.key.not.blank}")
+    private String securityKey;
+
 }

@@ -50,7 +50,7 @@ public class ${ClassName}Controller {
     @SaCheckPermission("${permissionPrefix}:page")
     @PostMapping("/page")
     public PageVo findPage(@RequestBody ${ClassName}PageRequestDto pageRequestDto) {
-        IPage<${ClassName}> pageData = ${className}Service.queryPageList(pageRequestDto);
+        IPage<${ClassName}> pageData = ${className}Service.listPage(pageRequestDto);
         return PageVo.build(pageData);
     }
 #elseif($table.tree)
@@ -59,7 +59,7 @@ public class ${ClassName}Controller {
     @SaCheckPermission("${permissionPrefix}:list")
     @PostMapping("/list")
     public List<${ClassName}Vo> findList(${ClassName}Dto dto) {
-        List<${ClassName}> ${className}List = ${className}Service.queryList(dto);
+        List<${ClassName}> ${className}List = ${className}Service.list(dto);
         return ObjectUtil.copyList(${className}List,${ClassName}Vo.class);
     }
 #end
@@ -74,7 +74,7 @@ public class ${ClassName}Controller {
     @SaCheckPermission("${permissionPrefix}:query")
     @GetMapping("/{${pkColumn.javaField}}")
     public ${ClassName}Vo getInfo(@NotNull(message = "主键不能为空") @PathVariable ${pkColumn.javaType} ${pkColumn.javaField}) {
-        ${ClassName} ${className} = ${className}Service.queryById(${pkColumn.javaField});
+        ${ClassName} ${className} = ${className}Service.getById(${pkColumn.javaField});
         return ObjectUtil.copyObject(${className}, ${ClassName}Vo.class);
     }
 
@@ -86,7 +86,7 @@ public class ${ClassName}Controller {
     @SaCheckPermission("${permissionPrefix}:add")
     @PostMapping()
     public Object add(@Validated(InsertGroup.class) @RequestBody ${ClassName}Dto dto) {
-        return ${className}Service.insertByDto(dto);
+        return ${className}Service.save(dto);
     }
 
     /**
@@ -97,7 +97,7 @@ public class ${ClassName}Controller {
     @SaCheckPermission("${permissionPrefix}:edit")
     @PutMapping()
     public Object edit(@Validated(UpdateGroup.class) @RequestBody ${ClassName}Dto dto) {
-        return ${className}Service.updateByDto(dto);
+        return ${className}Service.update(dto);
     }
 
     /**

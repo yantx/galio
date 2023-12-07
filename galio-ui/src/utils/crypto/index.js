@@ -1,5 +1,5 @@
 // 引入JSEncrypt文件
-import JSEncrypt from 'jsencrypt/bin/jsencrypt.min'
+import JSEncrypt from 'jsencrypt-ext'
 import CryptoJS from 'crypto-js'
 import Bcryptjs from 'bcryptjs'
 
@@ -27,27 +27,31 @@ pvchxjUz7tJ/XrnENsWjj9rfRfeyqxLKBWGE66MaGUPf7g95cF/ZZ8CFr5Sj8znM
 jj7EU9yY0TUQogo=
 `
 
-// 加密方法
-export function RSAencrypt (pas, publicKey = defaultPublicKey) {
+/**
+ * 加密方法
+ * @param  pas 源内容
+ * @param  publicKey 公钥
+ * @returns 密文
+ */
+export function rsaEncrypt(pas, publicKey = defaultPublicKey) {
   // 实例化jsEncrypt对象
-
   let encryptor = new JSEncrypt()
-
-  // 设置公钥
-
   encryptor.setPublicKey(publicKey)
 
   return encryptor.encrypt(pas)
 }
 
-//解密方法
-export function RSAdencrypt (pas, privateKey = defaultPrivateKey) {
+/**
+ * 解密方法
+ * @param securityData 密文
+ * @param privateKey 私钥
+ * @returns 解密结果
+ */
+export function rsaDencrypt(securityData, privateKey = defaultPrivateKey) {
   //实例化jsEncrypt对象
-
   let decrypt = new JSEncrypt()
 
   //设置私钥
-
   decrypt.setPrivateKey(privateKey)
 
   return decrypt.decrypt(pas)
@@ -62,7 +66,7 @@ const defaultAESiv = 'ABCDEF1234123412' //十六位十六进制数作为密钥�
  */
 
 //解密方法
-export function AESdecrypt (word, key = defaultAESkey, iv = defaultAESiv){
+export function aesDecrypt(word, key = defaultAESkey, iv = defaultAESiv) {
   key = CryptoJS.enc.Utf8.parse(key)
   iv = CryptoJS.enc.Utf8.parse(iv)
   let encryptedHexStr = CryptoJS.enc.Hex.parse(word)
@@ -73,7 +77,7 @@ export function AESdecrypt (word, key = defaultAESkey, iv = defaultAESiv){
 }
 
 //加密方法
-export function  AESencrypt (word, key = defaultAESkey, iv = defaultAESiv){
+export function aesEncrypt(word, key = defaultAESkey, iv = defaultAESiv) {
   key = CryptoJS.enc.Utf8.parse(key)
   iv = CryptoJS.enc.Utf8.parse(iv)
   let srcs = CryptoJS.enc.Utf8.parse(word)
@@ -86,7 +90,7 @@ export function  AESencrypt (word, key = defaultAESkey, iv = defaultAESiv){
  *    - data  要加密的数据
  *    - slat  用于哈希密码的盐。如果指定为数字，则将使用指定的轮数生成盐并将其使用。推荐 10
  */
-export function BcryptjsHash (data, salt = 10) {
+export function BcryptjsHash(data, salt = 10) {
   const hashData = Bcryptjs.hashSync(data, salt)
   return hashData
 }
@@ -97,8 +101,7 @@ export function BcryptjsHash (data, salt = 10) {
  *    - data        要比较的数据, 使用登录时传递过来的密码
  *    - encrypted   要比较的数据, 使用从数据库中查询出来的加密过的密码
  */
-export function BcryptjsCompare (data, encrypted) {
+export function BcryptjsCompare(data, encrypted) {
   const isOk = Bcryptjs.compareSync(data, encrypted)
   return isOk
 }
-

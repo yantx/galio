@@ -1,12 +1,12 @@
-import { request, mockRequest } from '@/utils'
+import { request } from '@/utils'
 
 export const login = (data) => {
-  return mockRequest.post('auth/login', data)
+  return request.post('auth/login', data)
 }
 
 export const getPublicKey = () => {
-  return mockRequest.get('auth/getPublicKey')
+  return request.get('auth/getPublicKey')
 }
 export const refreshToken = () => {
-  return mockRequest.post('/auth/refreshToken')
+  return request.post('/auth/refreshToken')
 }

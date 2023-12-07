@@ -1,9 +1,12 @@
 import { useMemberStore } from '@/store'
 
-const WITHOUT_TOKEN_API = [{ url: 'auth/login', method: 'POST' },{ url: 'auth/getPublicKey', method: 'GET' }]
+const WITHOUT_TOKEN_API = [
+  { url: 'auth/login', method: 'POST' },
+  { url: 'auth/getPublicKey', method: 'GET' },
+]
 
 export function isWithoutToken({ url, method = '' }) {
-  let prefixFlag = url.indexOf('/') === 0;
+  let prefixFlag = url.indexOf('/') === 0
   url = prefixFlag ? url.substr(0) : url
   return WITHOUT_TOKEN_API.some((item) => item.url === url && item.method === method.toUpperCase())
 }

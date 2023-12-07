@@ -1,20 +1,20 @@
-import { mockRequest } from '@/utils'
+import { request } from '@/utils'
 
 export function getFunctions(data = {}) {
-  return mockRequest.get('/functions', data)
+  return request.get('/functions', data)
 }
 
 export function getFunction(id) {
   if (id) {
-    return mockRequest.get(`/function/${id}`)
+    return request.get(`/function/${id}`)
   }
-  return mockRequest.get('/functions')
+  return request.get('/functions')
 }
 
 export function saveFunction(data = {}, id) {
   if (id) {
-    return mockRequest.put('/function', data)
+    return request.put('/function', data)
   }
 
-  return mockRequest.put(`/function/${id}`, data)
+  return request.put(`/function/${id}`, data)
 }

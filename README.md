@@ -4,8 +4,10 @@
 ## 功能架构
 项目基于springcloud2022搭建 服务交互基于HTTP-Interface实现、网关服务采用spring-gateway，注册&配置中心采用Nacos、服务鉴权使用Sa-Token、前端采用vue+NaiveUI+TypeScript+Pnpm;
 
-## 版本迭代
-当前为搭建初期预计10月出第一版V1.0
+## TODO清单
+  1、登录密码错误提示null次
+  2、非对称加密后端重启后前端不刷新页面会导致空指针
+  3、不存在此用户时 微服务之间的错误提示未传递到页面 报错不是不存在此用户而是代码异常信息
 
 
 

@@ -16,7 +16,7 @@
         </h5>
         <div mt-30>
           <n-input
-            v-model:value="loginInfo.name"
+            v-model:value="loginInfo.username"
             autofocus
             class="h-50 items-center pl-10 text-16"
             placeholder="admin"
@@ -48,7 +48,7 @@
 </template>
 
 <script setup>
-import { lStorage, setToken, AESencrypt, RSAencrypt } from '@/utils'
+import { lStorage, setToken, aesEncrypt, rsaEncrypt } from '@/utils'
 import bgImg from '@/assets/images/login_bg.webp'
 import { login, getPublicKey } from '../api/auth'
 import { initAuthRoute } from '@/router'
@@ -60,7 +60,7 @@ const router = useRouter()
 const { query } = useRoute()
 
 const loginInfo = ref({
-  name: '',
+  username: '',
   password: '',
 })
 
@@ -69,7 +69,7 @@ initLoginInfo()
 function initLoginInfo() {
   const localLoginInfo = lStorage.get('loginInfo')
   if (localLoginInfo) {
-    loginInfo.value.name = localLoginInfo.name || ''
+    loginInfo.value.username = localLoginInfo.username || ''
     loginInfo.value.password = localLoginInfo.password || ''
   }
 }
@@ -90,8 +90,8 @@ async function initPublicKey() {
 
 const loading = ref(false)
 async function handleLogin() {
-  const { name, password } = loginInfo.value
-  if (!name || !password) {
+  const { username, password } = loginInfo.value
+  if (!username || !password) {
     $message.warning('请输入用户名和密码')
     return
   }
@@ -100,16 +100,16 @@ async function handleLogin() {
     $message.loading('正在验证...')
     const AESkey = publicKey.substr(0, 16)
     // 对称加密密码
-    let securityPassword = AESencrypt(password, AESkey, AESkey)
+    let securityPassword = aesEncrypt(password, AESkey)
     // 非对称加蜜对称加密的密钥
-    let securityKey = RSAencrypt(AESkey, publicKey)
-    const res = await login({ name, password: securityPassword, securityKey: securityKey })
+    let securityKey = rsaEncrypt(AESkey, publicKey)
+    const res = await login({ username, password: securityPassword, securityKey: securityKey })
     if (res.code === 20000) {
       $message.success('登录成功')
       // 设置用户信息缓存
       setToken(res.data.token)
       if (isRemember.value) {
-        lStorage.set('loginInfo', { name, password })
+        lStorage.set('loginInfo', { username, password })
       } else {
         lStorage.remove('loginInfo')
       }
