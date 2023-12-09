@@ -1,6 +1,6 @@
-global.window = this 
+global.window = this
 import { resolveToken } from '../util'
-import { rsaEncrypt, RSAdencrypt, AESdecrypt, BcryptjsHash, BcryptjsCompare } from '../../src/utils/crypto'
+import { rsaEncrypt, rsaDencrypt, aesDecrypt, BcryptjsHash, BcryptjsCompare } from '../../src/utils/crypto'
 
 const token = {
   admin: 'admin',
