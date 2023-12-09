@@ -106,19 +106,21 @@ public class WebClientConfig {
 
         @Override
         public Flux<DataBuffer> getBody() {
-            return this.flux.map(dataBuffer -> {
+            return this.flux.handle((dataBuffer, sink) -> {
                 byte[] content = new byte[dataBuffer.readableByteCount()];
                 dataBuffer.read(content);
                 DataBufferUtils.release(dataBuffer);
                 String bodyStr = new String(content, StandardCharsets.UTF_8);
-                BaseResponse baseResponse = JsonUtils.toObject(bodyStr, BaseResponse.class);
+                BaseResponse<?> baseResponse = JsonUtils.toObject(bodyStr, BaseResponse.class);
                 log.info("BaseResponse: {} ", JsonUtils.toString(baseResponse));
+                assert baseResponse != null;
                 if (baseResponse.getCode() != ResponseEnum.SUCCESS.getCode()) {
-                    throw new CustomException(baseResponse.getCode(), baseResponse.getMsg());
+                    return;
                 }
                 byte[] bytes;
                 if (ObjectUtil.isNull(baseResponse.getData())) {
-                    return dataBuffer;
+                    sink.next(dataBuffer);
+                    return;
                 }
                 if (baseResponse.getData() instanceof Boolean) {
                     bytes = (Boolean) baseResponse.getData() ? "true".getBytes() : "false".getBytes();
@@ -128,7 +130,7 @@ public class WebClientConfig {
                 NettyDataBufferFactory nettyDataBufferFactory = new NettyDataBufferFactory(ByteBufAllocator.DEFAULT);
                 DataBuffer buffer = nettyDataBufferFactory.allocateBuffer(bytes.length);
                 buffer.write(bytes);
-                return buffer;
+                sink.next(buffer);
             });
         }
     }

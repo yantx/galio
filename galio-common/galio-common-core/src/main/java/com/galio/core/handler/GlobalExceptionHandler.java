@@ -83,7 +83,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(RuntimeException.class)
     public BaseResponse handleRuntimeException(RuntimeException e, HttpServletRequest request) {
         String ex =StringUtil.isNotEmpty(e.getMessage())? e.toString() : e.toString() +": " + e.getCause();
-        log.error("[{}] URL:{} [ex] ", request.getMethod(), request.getRequestURI(), e);
+        log.error("[{}] URL:{} [RuntimeException] ", request.getMethod(), request.getRequestURI(), e);
         return BaseResponse.createFail(ResponseEnum.INTERNAL_SERVER_ERROR.withArgs(ex));
     }
     /**
@@ -92,7 +92,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = Exception.class)
     public BaseResponse handlerException(Exception e, HttpServletRequest request) {
         String ex =StringUtil.isNotEmpty(e.getMessage())? e.toString() : e.toString() +": " + e.getCause();
-        log.error("[{}] URL:{} [ex] ", request.getMethod(), request.getRequestURI(), e);
+        log.error("[{}] URL:{} [Exception] ", request.getMethod(), request.getRequestURI(), e);
         return BaseResponse.createFail(ResponseEnum.INTERNAL_SERVER_ERROR.withArgs(ex));
     }
 

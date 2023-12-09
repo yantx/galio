@@ -81,7 +81,7 @@ public class AuthService {
     public String getPassword(String username){
         String safePassword = memberExchange.getPassword(username);
         if(StringUtil.isEmpty(safePassword)){
-            recordAccessLog(username, CommonConstants.LOGIN_FAIL, MessageUtils.message(ResponseEnum.MEMBER_NOT_EXITS.getMsg()));
+            recordAccessLog(username, CommonConstants.LOGIN_FAIL, MessageUtils.message(ResponseEnum.MEMBER_NOT_EXITS.getMsg(), username));
             throw new CustomException(ResponseEnum.MEMBER_NOT_EXITS.withArgs(username));
         }
         return safePassword;
@@ -125,7 +125,7 @@ public class AuthService {
         accessLogEvent.setMsg(message);
         accessLogEvent.setIpaddr(ServletUtils.getClientIP());
         SpringUtils.getContext().publishEvent(accessLogEvent);
-        log.debug("username: {}, status: {}, message:{}", username, accessLogEvent.getStatus(), message);
+        log.debug("username: {}, status: {}, message:{}", username, status, message);
     }
 
     /**
