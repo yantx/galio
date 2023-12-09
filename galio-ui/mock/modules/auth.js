@@ -1,6 +1,6 @@
 global.window = this
 import { resolveToken } from '../util'
-import { rsaEncrypt, rsaDencrypt, aesDecrypt, BcryptjsHash, BcryptjsCompare } from '../../src/utils/crypto'
+import {rsaDencrypt, aesDecrypt, BcryptjsHash, BcryptjsCompare} from '../../src/utils/crypto'
 
 const token = {
   admin: 'admin',
@@ -17,9 +17,9 @@ function loginAuth(username, password, key) {
     // 获取存储的用户密码 此处应是bcrypt加密后的数据
     let pass = BcryptjsHash(memberPass[username])
     // 使用RSA解密对称加密的密钥
-    let aesKey = RSAdencrypt(key)
+    let aesKey = rsaDencrypt(key)
     // 使用aeskey解密password 获取对称加密后的password 与 pass做对比
-    let pas = AESdecrypt(password, aesKey, aesKey)
+    let pas = aesDecrypt(password, aesKey, aesKey)
     if (BcryptjsCompare(pas, pass)) {
       return {
         code: 20000,
