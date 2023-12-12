@@ -3,7 +3,8 @@ package com.galio.gateway.filter;
 import cn.dev33.satoken.reactor.filter.SaReactorFilter;
 import cn.dev33.satoken.router.SaRouter;
 import cn.dev33.satoken.stp.StpUtil;
-import cn.dev33.satoken.util.SaResult;
+import com.galio.core.enums.ResponseEnum;
+import com.galio.core.model.BaseResponse;
 import com.galio.gateway.config.properties.IgnoreWhiteProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -27,15 +28,9 @@ public class AuthFilter {
             .addInclude("/**")
             .addExclude("/favicon.ico", "/actuator/**")
             // 鉴权方法：每次访问进入
-            .setAuth(obj -> {
-                SaRouter.match("/**")
-                    .notMatch(ignoreWhite.getWhites())
-                    .check(r -> {
-                        StpUtil.checkLogin();
-                    });
-            }).setError(e -> {
-                    log.error(e.getMessage(),e);
-                    return SaResult.error(e.getMessage());
-                });
+            .setAuth(obj -> SaRouter.match("/**")
+                .notMatch(ignoreWhite.getWhites())
+                .check(r -> StpUtil.checkLogin()))
+                .setError(e -> BaseResponse.createFail(ResponseEnum.UNAUTHORIZED.withArgs(e.getMessage())));
     }
 }
