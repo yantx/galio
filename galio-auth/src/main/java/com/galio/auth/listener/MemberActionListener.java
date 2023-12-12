@@ -7,7 +7,7 @@ import com.galio.core.constant.CacheConstants;
 import com.galio.core.utils.ObjectUtil;
 import com.galio.core.utils.ServletUtils;
 import com.galio.redis.util.RedisUtils;
-import com.galio.satoken.tools.helper.LoginHelper;
+import com.galio.satoken.tools.helper.MemberContextHelper;
 import com.galio.system.dto.LoginMemberDto;
 import com.galio.system.model.MemberOnline;
 import eu.bitwalker.useragentutils.UserAgent;
@@ -17,6 +17,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
+import java.util.Objects;
 
 /**
  * @Author: galio
@@ -36,10 +37,10 @@ public class MemberActionListener implements SaTokenListener {
      */
     @Override
     public void doLogin(String loginType, Object loginId, String tokenValue, SaLoginModel loginModel) {
-        String userAgentStr = ServletUtils.getRequest().getHeader("User-Agent");
+        String userAgentStr = Objects.requireNonNull(ServletUtils.getRequest()).getHeader("User-Agent");
         UserAgent userAgent = UserAgent.parseUserAgentString(userAgentStr);
         String ip = ServletUtils.getClientIP();
-        LoginMemberDto accountDTO = LoginHelper.getLoginMember();
+        LoginMemberDto accountDTO = MemberContextHelper.getLoginMember();
         MemberOnline memberOnline = new MemberOnline();
         memberOnline.setIpaddr(ip);
 //        memberOnline.setLoginLocation(AddressUtils.getRealAddressByIP(ip));

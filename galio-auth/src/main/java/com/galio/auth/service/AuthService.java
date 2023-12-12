@@ -14,14 +14,13 @@ import com.galio.core.exception.CustomException;
 import com.galio.core.utils.*;
 import com.galio.redis.util.RedisUtils;
 import com.galio.satoken.tools.helper.LoginHelper;
+import com.galio.satoken.tools.helper.MemberContextHelper;
 import com.galio.system.api.MemberExchange;
 import com.galio.system.dto.LoginMemberDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.time.Duration;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -49,9 +48,8 @@ public class AuthService {
     /**
      * 获取公钥
      * @return 公钥
-     * @throws Exception
      */
-    public String getPublicKey() throws Exception {
+    public String getPublicKey() {
         rsaKeys = CryptoUtil.rsaGenerateKeyPair(CryptoUtil.RSA_KEY_SIZE_1024);
         return rsaKeys.get(CryptoUtil.RSA_PUBLIC_KEY);
     }
@@ -62,7 +60,6 @@ public class AuthService {
      * @param password 密码-RSA公钥加密后
      * @param securityKey 密钥 -RSA公钥加密后的aes密钥
      * @return LoginMemberDto对象
-     * @throws CustomException
      */
     public LoginMemberDto login(String username, String password, String securityKey) throws CustomException{
 
@@ -104,7 +101,7 @@ public class AuthService {
      */
     public void logout() {
         try {
-            LoginMemberDto loginUser = LoginHelper.getLoginMember();
+            LoginMemberDto loginUser = MemberContextHelper.getLoginMember();
             StpUtil.logout();
             recordAccessLog(loginUser.getUsername(), CommonConstants.LOGOUT, MessageUtils.message("member.logout.success"));
         } catch (NotLoginException ignored) {

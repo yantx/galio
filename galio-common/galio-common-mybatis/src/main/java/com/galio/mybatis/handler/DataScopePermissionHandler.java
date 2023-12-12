@@ -11,7 +11,7 @@ import com.galio.mybatis.annotation.DataPermission;
 import com.galio.mybatis.enums.DataScopeType;
 import com.galio.mybatis.enums.MybatisResponseEnum;
 import com.galio.mybatis.helper.DataPermissionHelper;
-import com.galio.satoken.tools.helper.LoginHelper;
+import com.galio.satoken.tools.helper.MemberContextHelper;
 import com.galio.system.dto.LoginMemberDto;
 import com.galio.system.dto.RoleDto;
 import lombok.extern.slf4j.Slf4j;
@@ -78,7 +78,7 @@ public class DataScopePermissionHandler {
             }
             LoginMemberDto loginMemberDto = DataPermissionHelper.getVariable("user");
             if (ObjectUtil.isNull(loginMemberDto)) {
-                loginMemberDto = LoginHelper.getLoginMember();
+                loginMemberDto = MemberContextHelper.getLoginMember();
                 DataPermissionHelper.setVariable("user" , loginMemberDto);
             }
             // 如果是超级管理员，则不过滤数据

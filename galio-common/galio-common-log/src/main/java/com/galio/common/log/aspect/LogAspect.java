@@ -4,7 +4,7 @@ import com.galio.common.log.annotation.OperLog;
 import com.galio.common.log.enums.OperStatus;
 import com.galio.common.log.event.OperLogEvent;
 import com.galio.core.utils.*;
-import com.galio.satoken.tools.helper.LoginHelper;
+import com.galio.satoken.tools.helper.MemberContextHelper;
 import io.netty.handler.codec.http.HttpMethod;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -62,8 +62,8 @@ public class LogAspect {
             operLog.setStatus(OperStatus.SUCCESS.ordinal());
             // 请求的地址
             operLog.setOperIp(ServletUtils.getClientIP());
-            operLog.setOperUrl(StringUtil.substring(ServletUtils.getRequest().getRequestURI(), 0, 255));
-            String username = LoginHelper.getUsername();
+            operLog.setOperUrl(StringUtil.substring(Objects.requireNonNull(ServletUtils.getRequest()).getRequestURI(), 0, 255));
+            String username = MemberContextHelper.getUsername();
             if (StringUtil.isNotBlank(username)) {
                 operLog.setOperName(username);
             }
@@ -132,20 +132,16 @@ public class LogAspect {
      */
     private String argsArrayToString(Object[] paramsArray) {
         StringBuilder params = new StringBuilder();
-        if (paramsArray != null && paramsArray.length > 0) {
+        if (paramsArray != null) {
             for (Object o : paramsArray) {
                 if (ObjectUtil.isNotNull(o) && !isFilterObject(o)) {
-                    try {
-                        String str = JsonUtils.toString(o);
-                        LinkedHashMap<String, Object> map = JsonUtils.toObject(str, LinkedHashMap.class);
-                        if (ObjectUtil.isNotNull(map) && !map.isEmpty()) {
-                            map.keySet().removeIf(key -> Arrays.asList(EXCLUDE_PROPERTIES).contains(key));
-                            str = JsonUtils.toString(map);
-                        }
-                        params.append(str).append(" ");
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    String str = JsonUtils.toString(o);
+                    LinkedHashMap<String, Object> map = JsonUtils.toObject(str, LinkedHashMap.class);
+                    if (ObjectUtil.isNotNull(map) && !map.isEmpty()) {
+                        map.keySet().removeIf(key -> Arrays.asList(EXCLUDE_PROPERTIES).contains(key));
+                        str = JsonUtils.toString(map);
                     }
+                    params.append(str).append(" ");
                 }
             }
         }
