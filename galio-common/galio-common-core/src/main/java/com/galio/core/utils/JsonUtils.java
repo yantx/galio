@@ -111,6 +111,7 @@ public class JsonUtils {
      * @param clazz 自定义对象的class对象
      * @return 自定义对象
      */
+    @SuppressWarnings("unchecked")
     public static <T> T toObject(String str, Class<T> clazz){
         if(StringUtils.isEmpty(str) || clazz == null){
             return null;
@@ -128,9 +129,8 @@ public class JsonUtils {
      *
      * @param str 源字符串
      * @param typeReference 包含elementType与CollectionType的typeReference
-     * @param <T>
-     * @return
      */
+    @SuppressWarnings("unchecked")
     public static <T> T toObject(String str, TypeReference<T> typeReference) {
         if (StringUtils.isEmpty(str) || typeReference == null) {
             return null;
@@ -150,14 +150,13 @@ public class JsonUtils {
      * @param collectionClass 需要反序列化的集合类型 由于这里的类型未定，且为了防止与返回值类型T冲突，故采用<?>表示泛型
      * @param elementClasses  集合中的元素类型（可多个）   此处同上通过<?>...表示多个未知泛型
      * @param <T>             返回值的泛型类型是由javatype获取的
-     * @return
      */
     public static <T> T toObject(String str, Class<?> collectionClass, Class<?>... elementClasses) {
         JavaType javaType = OBJECT_MAPPER.getTypeFactory().constructParametricType(collectionClass, elementClasses);
         try {
             return OBJECT_MAPPER.readValue(str, javaType);
         } catch (IOException e) {
-            log.warn("Parse String to Object error : {}" + e.getMessage());
+            log.warn("Parse String to Object error : {}", e.getMessage());
             return null;
         }
     }
