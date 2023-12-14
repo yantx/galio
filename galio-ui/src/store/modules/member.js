@@ -41,6 +41,7 @@ export const useMemberStore = defineStore('member', {
           this.memberInfo = { id, username, avatar, rolePerms, functionPerms }
           return Promise.resolve(res.data)
         } else {
+          $message.error('getMemberInfo: ' + res.msg)
           return Promise.reject(res)
         }
       } catch (error) {

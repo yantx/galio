@@ -54,7 +54,7 @@ export function rsaDencrypt(securityData, privateKey = defaultPrivateKey) {
   //设置私钥
   decrypt.setPrivateKey(privateKey)
 
-  return decrypt.decrypt(pas)
+  return decrypt.decrypt(securityData)
 }
 
 const defaultAESkey = '1234123412ABCDEF' //十六位十六进制数作为密钥
