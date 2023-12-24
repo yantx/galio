@@ -15,11 +15,13 @@
     "prettier": "prettier --write"
   },
   "dependencies": {
+    "@ant-design/colors": "^7.0.0",
     "@vueuse/core": "^10.4.1",
     "@wangeditor/editor": "^5.1.23",
     "@wangeditor/editor-for-vue": "^5.1.12",
     "axios": "^1.5.0",
     "bcryptjs": "^2.4.3",
+    "colord": "^2.9.3",
     "crypto-js": "^4.2.0",
     "dayjs": "^1.11.10",
     "jsencrypt-ext": "2.1.2",

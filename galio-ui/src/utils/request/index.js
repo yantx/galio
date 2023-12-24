@@ -6,6 +6,6 @@ let defaultConfig = {
   timeout: import.meta.env.VITE_APP_API_TIMEOUT || 12000,
 }
 
-export const request = createAxios(defaultConfig)
+export const request = createAxios({ baseURL: '/mock', timeout: defaultConfig.timeout })
 
 export const mockRequest = createAxios({ baseURL: '/mock', timeout: defaultConfig.timeout })

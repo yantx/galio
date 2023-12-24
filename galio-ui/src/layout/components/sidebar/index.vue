@@ -1,6 +1,6 @@
 <script setup>
-import SideLogo from './components/SideLogo.vue'
-import SideMenu from './components/SideMenu.vue'
+import SideLogo from '../logo/index.vue'
+import SideMenu from '../menu/index.vue'
 </script>
 
 <template>
