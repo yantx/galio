@@ -165,6 +165,24 @@ const functions = [
       },
     ],
   },
+  {
+    id: '5',
+    title: '系统工具',
+    name: 'SystemTool',
+    path: 'tool',
+    icon: 'carbon:tool-kit',
+    order: 5,
+    functionType: '1',
+    children: [
+      {
+        id: '5-1',
+        title: '代码生成器',
+        path: 'codeGenerator',
+        name: 'CodeGenerator',
+        icon: 'file-icons:graphql-codegenerator',
+      },
+    ],
+  },
 ]
 
 export default [

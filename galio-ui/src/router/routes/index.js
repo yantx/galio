@@ -32,7 +32,7 @@ export const EMPTY_ROUTE = {
   component: null,
 }
 // modules文件夹下的路由都会作为动态路由
-const modules = import.meta.glob('@/modules/**/router/index.js', { eager: true })
+const modules = import.meta.glob('@/modules/**/route/index.js', { eager: true })
 const asyncRoutes = []
 Object.keys(modules).forEach((key) => {
   asyncRoutes.push(modules[key].default)

@@ -108,6 +108,7 @@ function transformAuthRouteToVueRoute(item) {
       name: `${item.name}Parent`,
       path: parentPath,
       component: Layout,
+      singleLayout: true,
       redirect: isHomeRoute(item.name) ? item.path : parentPath + '/' + item.path,
       children: [item],
     }
@@ -168,8 +169,8 @@ function doTransformMenu(route, basePath = '') {
 
   if (!visibleChildren.length) return menuItem
 
-  if (visibleChildren.length === 1) {
-    // 单个子路由处理
+  if (route.singleLayout) {
+    //TODO:  单个子路由处理 不能直接隐藏掉父路由 部分自动生成的父路由自动隐藏可以
     const singleRoute = visibleChildren[0]
     menuItem = {
       ...menuItem,
