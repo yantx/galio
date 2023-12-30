@@ -29,6 +29,7 @@
         <AppMain />
       </section>
     </article>
+    <ThemeAffix></ThemeAffix>
   </n-layout>
 </template>
 
@@ -37,6 +38,7 @@ import AppHeader from './components/header/index.vue'
 import SideBar from './components/sidebar/index.vue'
 import AppMain from './components/AppMain.vue'
 import AppTags from './components/tags/index.vue'
+import ThemeAffix from './components/themeAffix/index.vue'
 import { useAppStore } from '@/store'
 import themeSetting from '@/settings/themeSetting'
 
