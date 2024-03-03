@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.galio.system.mapper.DatasetMapper">
+
+    <resultMap type="com.galio.system.entity.Dataset" id="DatasetResult">
+    <result property="datasetId" column="dataset_id"/>
+    <result property="datasourceId" column="datasource_id"/>
+    <result property="datasetCode" column="dataset_code"/>
+    <result property="datasetName" column="dataset_name"/>
+    <result property="dataContent" column="data_content"/>
+    <result property="fetchType" column="fetch_type"/>
+    <result property="dataTable" column="data_table"/>
+    <result property="primaryKey" column="primary_key"/>
+    <result property="labelCol" column="label_col"/>
+    <result property="whereClause" column="where_clause"/>
+    <result property="orderCol" column="order_col"/>
+    <result property="appId" column="app_id"/>
+    <result property="remark" column="remark"/>
+    <result property="createBy" column="create_by"/>
+    <result property="createTime" column="create_time"/>
+    <result property="updateBy" column="update_by"/>
+    <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+
+</mapper>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.galio.system.mapper.GroupMapper">
+
+    <resultMap type="com.galio.system.entity.Group" id="GroupResult">
+        <result property="groupId" column="group_id"/>
+        <result property="groupCode" column="group_code"/>
+        <result property="groupName" column="group_name"/>
+        <result property="orderNum" column="order_num"/>
+        <result property="status" column="status"/>
+        <result property="appId" column="app_id"/>
+        <result property="remark" column="remark"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="column_list">
+        sg.group_id
+        ,sg.group_code,sg.group_name,sg.order_num,sg.status,sg.app_id,sg.remark,sg.create_by,sg.create_time,sg.update_by,sg.update_time
+    </sql>
+
+    <select id="selectListByMemberId" parameterType="long" resultMap="GroupResult">
+        select
+        <include refid="column_list"></include>
+        from sys_group sg
+        left join sys_member_group smg on sg.group_id = smg.group_id
+        where smg.member_id = #{memberId}
+    </select>
+
+</mapper>
