@@ -1,0 +1,39 @@
+server:
+  port: 9001
+spring:
+  application:
+    name: galio-gen
+  profiles:
+    active: @profiles.active@
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      # 池中维护的最小空闲连接数，默认为 10 个。
+      minimum-idle: 20
+      # 池中最大连接数，包括闲置和使用中的连接，默认为 10 个。
+      maximum-pool-size: 20
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:32768/postgres?currentSchema=galio_sys&useUnicode=true&characterEncoding=utf8&useSSL=true&autoReconnect=true&reWriteBatchedInserts=true
+    username: postgres
+    password: postgres
+
+---
+# nacos 配置
+spring:
+  cloud:
+    nacos:
+      server-addr: ${nacos.server-addr}
+      discovery:
+        group: ${nacos.discovery.group}
+        namespace: ${nacos.discovery.namespace}
+      config:
+        group: ${nacos.config.group}
+        namespace: ${nacos.config.namespace}
+        server-addr: ${nacos.server-addr}
+
+---
+galio:
+  code:
+    templateGroup: vm
+    module: true
+    excludedir: boot

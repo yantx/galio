@@ -1,0 +1,47 @@
+package ${packageName}.model.entity;
+
+import com.baomidou.mybatisplus.annotation.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+#foreach ($import in $importList)
+import ${import};
+#end
+import com.galio.core.model.BaseEntity;
+
+/**
+ * @Author: ${author}
+ * @Date: ${datetime}
+ * @Description: ${functionName}对象
+ */
+#if($table.crud || $table.sub)
+#set($Entity="BaseEntity")
+#elseif($table.tree)
+#set($Entity="TreeEntity<${ClassName}>")
+#end
+@Data
+@EqualsAndHashCode(callSuper = false)
+@TableName("${tableName}")
+public class ${ClassName} extends $Entity {
+
+    private static final long serialVersionUID=1L;
+
+#foreach ($column in $columns)
+#if(!$table.isSuperColumn($column.fieldName))
+    /**
+     * $column.columnComment
+     */
+#if($column.fieldName=='delFlag')
+    @TableLogic
+#end
+#if($column.fieldName=='version')
+    @Version
+#end
+#if($column.isPk==1)
+    @TableId(value = "$column.columnName")
+#end
+    private $column.fieldType $column.fieldName;
+#end
+#end
+
+}

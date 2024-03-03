@@ -1,0 +1,42 @@
+import axios from 'axios'
+import Vue from 'vue'
+
+#if(${cfg.prePath})
+    #set($restUrl="/"+$cfg.moduleName+"/"+$cfg.prePath+"/"+${table.entityPath})
+#else
+    #set($restUrl="/"+$cfg.moduleName+"/"+${table.entityPath})
+#end
+#set($restUrl=$restUrl.toLowerCase())
+#set($entryLower=$entity.toLowerCase())
+#set($viewModuleNameLower=$cfg.viewModuleName.toLowerCase())
+export default {
+  // 添加
+  add4${entryLower}: obj => {
+    return Vue.axios.post('${restUrl}', obj)
+  },
+  // 修改
+  update4${entryLower}: (id, obj) => {
+    return Vue.axios.put(`${restUrl}/${cfg.s}{id}`, obj)
+  },
+  // 删除单条
+  del4${entryLower}: id => {
+    return Vue.axios.delete(`${restUrl}/${cfg.s}{id}`)
+  },
+  // 删除多条
+  dels4${entryLower}: ids => {
+    return Vue.axios.post('${restUrl}/dels', ids)
+  },
+  // 查询单条
+  sel4${entryLower}: id => {
+    return Vue.axios.get(`${restUrl}/${cfg.s}{id}`)
+  },
+  // 分页查询
+  selpage4${entryLower}: params => {
+    return Vue.axios.post('${restUrl}/selpage', params)
+  },
+  // 导出Excel
+  excelData4${entryLower}: params => {
+    return Vue.axios.post('${restUrl}/excel', params, { responseType: 'arraybuffer' })
+  }
+
+}

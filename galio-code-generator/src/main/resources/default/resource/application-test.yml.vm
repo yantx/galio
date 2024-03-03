@@ -1,0 +1,16 @@
+sentinel:
+  server-addr: ${cfg.dev_sentinel_addr}
+  port:  ${cfg.dev_sentinel_port}
+
+spring:
+  datasource:
+    url: '${cfg.dev_datasource_url}'
+    username: ${cfg.dev_datasource_username}
+    password: '${cfg.dev_datasource_password}'
+
+logging:
+  level:
+    root: INFO
+    com.galio: INFO
+    com.alibaba: INFO
+

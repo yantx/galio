@@ -1,0 +1,22 @@
+sentinel:
+  server-addr: ${cfg.prod_sentinel_addr}
+  port:  ${cfg.prod_sentinel_port}
+spring:
+  datasource:
+    url: '${cfg.prod_datasource_url}'
+    username: ${cfg.prod_datasource_username}
+    password: '${cfg.prod_datasource_password}'
+tiny:
+  datasource:
+    enabled: true
+    dbType: ${cfg.datasource_dbType}
+    driverClassName: ${cfg.datasource_driver}
+    url: ${cfg.prod_datasource_url}
+    username: ${cfg.prod_datasource_username}
+    password: ${cfg.prod_datasource_password}
+
+logging:
+  level:
+    root: ERROR
+    com.galio: INFO
+    com.alibaba: ERROR

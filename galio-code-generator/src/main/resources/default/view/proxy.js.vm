@@ -1,0 +1,8 @@
+module.exports = {
+  '/api/${cfg.moduleName}': {
+    target: '${cfg.gatewayUrl}',
+    pathRewrite: {
+      '^/api': ''
+    }
+  }
+}

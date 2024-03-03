@@ -1,0 +1,39 @@
+package ${packageName}.model.dto;
+
+import com.galio.core.model.PageRequestDto;
+import com.galio.core.validate.SelectGroup;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
+import jakarta.validation.constraints.*;
+import lombok.EqualsAndHashCode;
+
+#foreach ($import in $importList)
+import ${import};
+#end
+
+/**
+ * @Author: ${author}
+ * @Date: ${datetime}
+ * @Description: ${functionName}查询入参
+ */
+
+@Data
+@Schema(description = "${functionName}查询入参")
+@EqualsAndHashCode(callSuper = true)
+public class ${ClassName}PageReqDTO extends PageRequestDto {
+
+#foreach ($column in $columns)
+#if(!$table.isSuperColumn($column.fieldName) && $column.query)
+    /**
+     * $column.columnComment
+     */
+#if($column.isRequired == 1)
+    @NotBlank(message = "$column.columnComment不能为空", groups = { SelectGroup.class })
+#end
+    @Schema(description = "$column.columnComment")
+    private $column.fieldType $column.fieldName;
+
+#end
+#end
+
+}

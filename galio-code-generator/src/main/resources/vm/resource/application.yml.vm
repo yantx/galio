@@ -1,0 +1,21 @@
+server:
+  port: ${port}
+spring:
+  application:
+    name: ${moduleName}
+  profiles:
+    active: @profiles.active@
+
+---
+# nacos 配置
+spring:
+  cloud:
+    nacos:
+      server-addr: ${s}{nacos.server-addr}
+      discovery:
+        group: ${s}{nacos.discovery.group}
+        namespace: ${s}{nacos.discovery.namespace}
+      config:
+        group: ${s}{nacos.config.group}
+        namespace: ${s}{nacos.config.namespace}
+        server-addr: ${s}{nacos.server-addr}

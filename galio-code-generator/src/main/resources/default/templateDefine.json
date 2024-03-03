@@ -1,0 +1,122 @@
+[
+  {
+    "name": "Dockerfile.vm",
+    "relativePath": "resource",
+    "outPath": "/${moduleName}",
+    "outFileName": "Dockerfile"
+  },
+  {
+    "name": "startup.sh.vm",
+    "relativePath": "resource",
+    "outPath": "/${moduleName}",
+    "outFileName": "startup.sh"
+  },
+  {
+    "name": "App.java.vm",
+    "relativePath": "resource",
+    "outPath": "/${moduleName}/src/main/java/${packagePath}",
+    "outFileName": "${appClassName}.java"
+  },
+  {
+    "name": "application.yml.vm",
+    "relativePath": "resource",
+    "outPath": "/${moduleName}/src/main/resources",
+    "outFileName": "application.yml"
+  },
+  {
+    "name": "application-dev.yml.vm",
+    "relativePath": "resource",
+    "outPath": "/${moduleName}/src/main/resources",
+    "outFileName": "application-dev.yml"
+  },
+  {
+    "name": "application-docker.yml.vm",
+    "relativePath": "resource",
+    "outPath": "/${moduleName}/src/main/resources",
+    "outFileName": "application-docker.yml"
+  },
+  {
+    "name": "application-prod.yml.vm",
+    "relativePath": "resource",
+    "outPath": "/${moduleName}/src/main/resources",
+    "outFileName": "application-prod.yml"
+  },
+  {
+    "name": "application-test.yml.vm",
+    "relativePath": "resource",
+    "outPath": "/${moduleName}/src/main/resources",
+    "outFileName": "application-test.yml"
+  },
+  {
+    "name": "bootstrap.yml.vm",
+    "relativePath": "resource",
+    "outPath": "/${moduleName}/src/main/resources",
+    "outFileName": "bootstrap.yml"
+  },
+  {
+    "name": "bootstrap-dev.yml.vm",
+    "relativePath": "resource",
+    "outPath": "/${moduleName}/src/main/resources",
+    "outFileName": "bootstrap-dev.yml"
+  },
+  {
+    "name": "bootstrap-docker.yml.vm",
+    "relativePath": "resource",
+    "outPath": "/${moduleName}/src/main/resources",
+    "outFileName": "bootstrap-docker.yml"
+  },
+  {
+    "name": "bootstrap-prod.yml.vm",
+    "relativePath": "resource",
+    "outPath": "/${moduleName}/src/main/resources",
+    "outFileName": "bootstrap-prod.yml"
+  },
+  {
+    "name": "bootstrap-test.yml.vm",
+    "relativePath": "resource",
+    "outPath": "/${moduleName}/src/main/resources",
+    "outFileName": "bootstrap-test.yml"
+  },
+  {
+    "name": "log4j2.xml.vm",
+    "relativePath": "resource",
+    "outPath": "/${moduleName}/src/main/resources",
+    "outFileName": "log4j2.xml"
+  },
+  {
+    "name": "pom.xml.vm",
+    "relativePath": "resource",
+    "outPath": "/${moduleName}",
+    "outFileName": "pom.xml"
+  },
+  {
+    "name": "Index.vue.vm",
+    "relativePath": "view",
+    "outPath": "/${viewModuleName}/views/${entityLower}",
+    "outFileName": "Index.vue"
+  },
+  {
+    "name": "Item.vue.vm",
+    "relativePath": "view",
+    "outPath": "/${viewModuleName}/views/${entityLower}",
+    "outFileName": "Item.vue"
+  },
+  {
+    "name": "router.js.vm",
+    "relativePath": "view",
+    "outPath": "/${viewModuleName}/router",
+    "outFileName": "${entityLower}_index.js"
+  },
+  {
+    "name": "api.js.vm",
+    "relativePath": "view",
+    "outPath": "/${viewModuleName}/api",
+    "outFileName": "api_${entityLower}.js"
+  },
+  {
+    "name": "proxy.js.vm",
+    "relativePath": "view",
+    "outPath": "/${viewModuleName}",
+    "outFileName": "dev.server.proxy.js"
+  }
+]

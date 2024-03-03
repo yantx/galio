@@ -1,0 +1,204 @@
+package ${package.Controller};
+
+import cn.afterturn.easypoi.excel.ExcelExportUtil;
+import cn.afterturn.easypoi.excel.entity.ExportParams;
+import cn.hutool.core.util.NumberUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.galio.tinyframework.core.web.TinyResponse;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import org.apache.commons.lang3.StringUtils;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+import java.util.Map;
+#foreach($pkg in ${table.importPackages})
+import ${pkg};
+#end
+import ${package.Entity}.${entity};
+#if(${swagger2})
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+#end
+import ${package.Service}.${table.serviceName};
+
+
+#if(${restControllerStyle})
+import org.springframework.web.bind.annotation.RestController;
+#else
+import org.springframework.stereotype.Controller;
+#end
+#if(${superControllerClassPackage})
+import ${superControllerClassPackage};
+#end
+
+/**
+ * <p>
+ * $!{table.comment} 前端控制器
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+#if(${restControllerStyle})
+@RestController
+#else
+@Controller
+#end
+#if(${swagger2})
+@Api(value = "XX业务")
+#end
+#set($prePath=$cfg.prePath.toLowerCase())
+#set($entryLower=$entity.toLowerCase())
+@RequestMapping("#if(${cfg.prePath})/${prePath}#end/#if(${controllerMappingHyphenStyle})${controllerMappingHyphen}#else${entryLower}#end")
+#if(${kotlin})
+class ${table.controllerName}#if(${superControllerClass}) : ${superControllerClass}()#end
+#else
+#if(${superControllerClass})
+public class ${table.controllerName} extends ${superControllerClass} {
+#else
+public class ${table.controllerName} {
+#end
+    @Autowired
+   private  ${table.serviceName}  service;
+
+ #foreach($field in ${table.fields})
+  #if(${field.keyFlag})
+   #set($keyPropertyName=${field.propertyName})
+   #set($keyPropertyType=${field.propertyType})
+   #set($keyPropertyNameLower=$keyPropertyName.toLowerCase())
+  #end
+ #end
+
+    @PostMapping
+    #if(${swagger2})
+    @ApiOperation(value = "创建")
+    #end
+    public void save(@RequestBody ${entity} obj) throws Exception {
+        service.save(obj);
+    }
+
+    @PutMapping("/{${keyPropertyNameLower}}")
+    #if(${swagger2})
+    @ApiOperation(value = "更新")
+    #end
+    public void update(@PathVariable(name = "${keyPropertyNameLower}") ${keyPropertyType} ${keyPropertyNameLower},@RequestBody ${entity} obj) throws Exception {
+        service.updateById(obj);
+     }
+
+    @DeleteMapping("/{${keyPropertyNameLower}}")
+    #if(${swagger2})
+    @ApiOperation(value = "按ID删除")
+    #end
+    public void remove(@PathVariable(name = "${keyPropertyNameLower}") ${keyPropertyType} ${keyPropertyNameLower}) throws Exception {
+          service.removeById(${keyPropertyNameLower});
+  }
+   @GetMapping("/{${keyPropertyNameLower}}")
+   #if(${swagger2})
+   @ApiOperation(value = "按ID查询")
+   #end
+   @TinyResponse
+    public ${entity} select(@PathVariable(name = "${keyPropertyNameLower}") ${keyPropertyType} ${keyPropertyNameLower}) {
+       ${entity} obj = service.getById(${keyPropertyNameLower});
+       return obj;
+  }
+
+
+   @PostMapping("/dels")
+   @ApiOperation(value = "按ID删除多个")
+    public void removes(@RequestBody List<${keyPropertyType}> ${keyPropertyNameLower}s) throws Exception {
+        service.removeByIds(${keyPropertyNameLower}s);
+    }
+
+
+    @PostMapping("/delby")
+    #if(${swagger2})
+    @ApiOperation(value = "条件删除")
+    #end
+    public void deleteBy(@RequestBody(required = false) Map<String, String> params) {
+        QueryWrapper<${entity}> query = getQuery(params);
+        
+        if(!query.isEmptyOfWhere()) {
+        service.remove(query);
+        }
+    }
+
+
+
+
+
+    @PostMapping("/selby")
+    #if(${swagger2})
+    @ApiOperation(value = "条件查询")
+    #end
+    @TinyResponse
+    public List<${entity}> selectBy(@RequestBody(required = false) Map<String, String> params) {
+        QueryWrapper<${entity}> query = getQuery(params);
+        
+        List<${entity}> objs = service.list(query);
+        return objs;
+    }
+
+    @PostMapping("/selpage")
+    #if(${swagger2})
+    @ApiOperation(value = "分页查询")
+    #end
+    @TinyResponse
+    public IPage<${entity}> selectPage(@RequestBody Map<String, String> params) {
+        Long pageSize = 10L;
+        Long pageIndex = 0L;
+        String key4PageSize = "pageSize";
+        String key4PageIndex = "pageIndex";
+        if (params.containsKey(key4PageSize) && NumberUtil.isLong(params.get(key4PageSize))) {
+        pageSize = NumberUtil.parseLong(params.get(key4PageSize));
+        }
+        if (params.containsKey(key4PageIndex) && NumberUtil.isLong(params.get(key4PageIndex))) {
+        pageIndex = NumberUtil.parseLong(params.get(key4PageIndex));
+        }
+        QueryWrapper<${entity}> query = getQuery(params);
+
+        Page<${entity}> page = new Page<${entity}>(pageIndex, pageSize);
+        IPage<${entity}> result = service.page(page, query);
+        return result;
+        }
+    @PostMapping("/excel")
+    @ApiOperation(value = "导出数据")
+    @TinyResponse
+    public void excel(HttpServletResponse response, HttpServletRequest request,
+            @RequestBody Map<String, String> params) throws Exception {
+        QueryWrapper<${entity}> query = getQuery(params);
+
+        List<${entity}> data = service.list(query);
+        Workbook workbook = ExcelExportUtil.exportExcel(new ExportParams(null, "${entity}"),
+        ${entity}.class, data);
+        String fileName = String.format("${entity}_%d.xls", System.currentTimeMillis());
+        response.setHeader("Content-Disposition", "attachment;Filename="+ fileName);
+        response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+        response.flushBuffer();
+        workbook.write(response.getOutputStream());
+    }
+	/**
+     * 定义数据查询条件
+     * @param params
+     * @return
+     */
+    private  QueryWrapper<${entity}> getQuery(Map<String, String> params){
+       QueryWrapper<${entity}> query  = new QueryWrapper<>();
+       if(params==null||params.size()<1) { return  query;}
+       for (Map.Entry<String, String> entry:params.entrySet()){
+           if(StringUtils.isBlank(entry.getValue())){continue;}
+#foreach($field in ${table.fields})
+           if("${field.propertyName}".equals(entry.getKey())){
+               query.eq("${field.name}",entry.getValue());
+           }
+#end
+       }
+       return  query;
+    }
+        
+}
+
+#end

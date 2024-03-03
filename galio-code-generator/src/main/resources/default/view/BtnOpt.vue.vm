@@ -1,0 +1,64 @@
+<template>
+  <div style="float:left;font-size:16px;">
+    <el-tooltip content="详情">
+      <svg-icon
+        style="cursor: pointer;margin:0 0 0 5px"
+        icon-class="detail"
+        @click.native="detailData()"
+      />
+    </el-tooltip>
+    <el-tooltip content="修改">
+      <svg-icon
+        style="cursor: pointer; margin:0 0 0 5px"
+        icon-class="edit"
+        @click.native="updateData()"
+      />
+    </el-tooltip>
+    <el-tooltip content="删除">
+      <svg-icon
+        style="cursor: pointer; margin:0 0 0 5px"
+        icon-class="delete"
+        @click.native="deleteData()"
+      />
+    </el-tooltip>
+  </div>
+</template>
+
+<script>
+import Vue from 'vue'
+
+export default {
+  name: 'ExampleAlarmRuleSetBtnOpt',
+  components: {},
+  props: {},
+  data () {
+    return {
+      showdelete: true
+    }
+  },
+  computed: {},
+  watch: {
+    params: {
+      /* 可以在这里处理传进来的数据，可以处理有些操作是否呈现,没有必要显示灰色 */
+      handler: function (newVal, oldVal) {
+        if (!this.params.isenble) { this.showdelete = false }
+      },
+      immediate: true
+    }
+  },
+  methods: {
+    updateData () {
+      this.params.context.componentParent.toUpdate(this.params.node.data, this.params.node.rowIndex)
+    },
+    detailData () {
+      this.params.context.componentParent.toDetail(this.params.node.data, this.params.node.rowIndex)
+    },
+    deleteData () {
+      this.params.context.componentParent.toDelete(this.params.node.data, this.params.node.rowIndex)
+    }
+  }
+}
+</script>
+
+<style lang="css" scoped>
+</style>

@@ -1,0 +1,11 @@
+FROM 192.168.0.2/system/openjdk:8u222-jre
+
+LABEL version="1.0" maintainer="${author}@email.com"
+
+VOLUME ["/tmp"]
+
+COPY target/*.jar /app/${cfg.moduleName}.jar
+
+CMD ["java", "-Djava.security.egd=file:/dev/./urandom", "-XX:+UnlockExperimentalVMOptions", "-XX:+UseCGroupMemoryLimitForHeap", "-jar", "/app/${cfg.moduleName}.jar"]
+
+EXPOSE ${cfg.port}

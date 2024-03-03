@@ -1,0 +1,6 @@
+nacos:
+  server-addr: ${cfg.prod_nacos_addr}
+  username: ${cfg.prod_nacos_username}
+  password: ${cfg.prod__nacos_password}
+  namespace: ${cfg.prod_nacos_namespace}
+

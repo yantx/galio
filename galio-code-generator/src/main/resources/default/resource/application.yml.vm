@@ -1,0 +1,89 @@
+server:
+  port: ${cfg.port}
+
+spring:
+  cloud:
+    nacos:
+      # 服务发现
+      discovery:
+        server-addr:  ${cfg.s}{nacos.server-addr}
+        username:  ${cfg.s}{nacos.username}
+        password:  ${cfg.s}{nacos.password}
+        namespace:  ${cfg.s}{nacos.namespace}
+    # 熔断限流
+    sentinel:
+      transport:
+        dashboard:  ${cfg.s}{sentinel.server-addr}
+        port:  ${cfg.s}{sentinel.port}
+      eager: true
+      log:
+        dir: ./logs/sentinel
+        switch-pid: true
+      datasource:
+        flow:
+          nacos:
+            server-addr:  ${cfg.s}{nacos.server-addr}
+            namespace:  ${cfg.s}{nacos.namespace}
+            dataId: sentinel-flow- ${cfg.s}{spring.application.name}
+            groupId: SENTINEL_GROUP
+            rule-type: flow
+        degrade:
+          nacos:
+            server-addr:  ${cfg.s}{nacos.server-addr}
+            namespace:  ${cfg.s}{nacos.namespace}
+            dataId: sentinel-degrade- ${cfg.s}{spring.application.name}
+            groupId: SENTINEL_GROUP
+            rule-type: degrade
+        system:
+          nacos:
+            server-addr:  ${cfg.s}{nacos.server-addr}
+            namespace:  ${cfg.s}{nacos.namespace}
+            dataId: sentinel-system- ${cfg.s}{spring.application.name}
+            groupId: SENTINEL_GROUP
+            rule-type: system
+        authority:
+          nacos:
+            server-addr:  ${cfg.s}{nacos.server-addr}
+            namespace:  ${cfg.s}{nacos.namespace}
+            dataId: sentinel-authority- ${cfg.s}{spring.application.name}
+            groupId: SENTINEL_GROUP
+            rule-type: authority
+        param-flow:
+          nacos:
+            server-addr:  ${cfg.s}{nacos.server-addr}
+            namespace:  ${cfg.s}{nacos.namespace}
+            dataId: sentinel-paramflow- ${cfg.s}{spring.application.name}
+            groupId: SENTINEL_GROUP
+            rule-type: param-flow
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+## Manage
+management:
+  endpoint:
+    metrics:
+      enabled: true
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  metrics:
+    tags:
+      application:  ${cfg.s}{spring.application.name}
+
+# 配置sql打印日志
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+    #swagger api信息
+swagger:
+  api:
+    version: 1.0.0
+  contact:
+    name: ${author}
+    email: ${author}@galio.com
+

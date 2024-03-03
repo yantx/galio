@@ -1,0 +1,5 @@
+nacos:
+  server-addr:  ${cfg.s}{NACOS_SERVER_ADDR:nacos}
+  username:  ${cfg.s}{NACOS_USERNAME:nacos}
+  password:  ${cfg.s}{NACOS_PASSWORD:nacos}
+  namespace:  ${cfg.s}{NACOS_NAMESPACE:public}

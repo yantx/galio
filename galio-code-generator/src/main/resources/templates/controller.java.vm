@@ -1,0 +1,14 @@
+package ${package}.controller
+
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class ${className}Controller{
+
+    public void get${Object}(){
+    }
+
+    public void set${Object}(){
+    }
+
+}

@@ -1,0 +1,117 @@
+package ${packageName}.controller;
+
+import cn.dev33.satoken.annotation.SaCheckPermission;
+import com.galio.common.log.annotation.OperLog;
+import com.galio.common.log.enums.OperTypeEnum;
+import com.galio.core.validate.InsertGroup;
+import com.galio.core.validate.UpdateGroup;
+    #if($table.crud || $table.sub)
+import ${packageName}.model.dto.${ClassName}PageRequestDTO;
+import com.galio.mybatis.page.PageVO;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+#end
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+import ${packageName}.model.entiry.${ClassName};
+import ${packageName}.model.vo.${ClassName}VO;
+import ${packageName}.model.dto.${ClassName}DTO;
+import ${packageName}.model.converter.${ClassName}Converter;
+import ${packageName}.service.${ClassName}Service;
+
+import java.util.List;
+import java.util.Arrays;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+
+/**
+ * @Author: ${author}
+ * @Date: ${datetime}
+ * @Description: ${functionName}接口
+ * 前端访问路由地址为:/${moduleName}/${businessName}
+ */
+@Validated
+@RestController
+@RequiredArgsConstructor
+@Tag(name = "${functionName}API")
+@RequestMapping("/${businessName}")
+public class ${ClassName}Controller {
+
+    private final ${ClassName}Service ${className}Service;
+    private final ${ClassName}Converter ${className}Converter;
+
+    /**
+     * 查询${functionName}列表
+     */
+#if($table.crud || $table.sub)
+    @OperLog(operModul = "分页查询${functionName}列表", operType = OperTypeEnum.SELECT)
+    @Operation(summary = "分页查询${functionName}列表")
+    @SaCheckPermission("${permissionPrefix}:page")
+    @PostMapping("/page")
+    public PageVo findPage(@RequestBody ${ClassName}PageReqDTO dto) {
+        IPage<${ClassName}> pageData = ${className}Service.listPage(dto);
+        return PageVo.build(pageData);
+    }
+#elseif($table.tree)
+    @OperLog(operModul = "查询${functionName}列表", operType = OperTypeEnum.SELECT)
+    @Operation(summary = "查询${functionName}列表")
+    @SaCheckPermission("${permissionPrefix}:list")
+    @PostMapping("/list")
+    public List<${ClassName}VO> findList(${ClassName}ListReqDTO dto) {
+        List<${ClassName}> ${className}List = ${className}Service.list(dto);
+        return ${className}Converter.entitysToVOs(${className}List);
+    }
+#end
+
+    /**
+     * 获取${functionName}详细信息
+     *
+     * @param ${pkColumn.fieldName} 主键
+     */
+    @OperLog(operModul = "查询${functionName}详情", operType = OperTypeEnum.SELECT)
+    @Operation(summary = "查询${functionName}详情")
+    @SaCheckPermission("${permissionPrefix}:query")
+    @GetMapping("/{${pkColumn.fieldName}}")
+    public ${ClassName}VO getInfo(@NotNull(message = "主键不能为空") @PathVariable ${pkColumn.fieldType} ${pkColumn.fieldName}) {
+        ${ClassName} ${className} = ${className}Service.getById(${pkColumn.fieldName});
+        return ${className}Converter.entityToVO(${className});
+
+    }
+
+    /**
+     * 新增${functionName}
+     */
+    @OperLog(operModul = "新增${functionName}", operType = OperTypeEnum.INSERT)
+    @Operation(summary = "新增${functionName}")
+    @SaCheckPermission("${permissionPrefix}:add")
+    @PostMapping()
+    public Object add(@Validated(InsertGroup.class) @RequestBody ${ClassName}SaveDTO dto) {
+        return ${className}Service.save(dto);
+    }
+
+    /**
+     * 修改${functionName}
+     */
+    @OperLog(operModul = "修改${functionName}", operType = OperTypeEnum.UPDATE)
+    @Operation(summary = "修改${functionName}")
+    @SaCheckPermission("${permissionPrefix}:edit")
+    @PutMapping()
+    public Object edit(@Validated(UpdateGroup.class) @RequestBody ${ClassName}SaveDTO dto) {
+        return ${className}Service.update(dto);
+    }
+
+    /**
+     * 删除${functionName}
+     *
+     * @param ${pkColumn.fieldName}s 主键串
+     */
+    @OperLog(operModul = "删除${functionName}", operType = OperTypeEnum.DELETE)
+    @Operation(summary = "删除${functionName}")
+    @SaCheckPermission("${permissionPrefix}:remove")
+    @DeleteMapping("/{${pkColumn.fieldName}s}")
+    public Object remove(@NotEmpty(message = "主键不能为空") @PathVariable ${pkColumn.fieldType}[] ${pkColumn.fieldName}s) {
+        return ${className}Service.deleteWithValidByIds(Arrays.asList(${pkColumn.fieldName}s));
+    }
+}

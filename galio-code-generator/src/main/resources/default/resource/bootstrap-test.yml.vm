@@ -1,0 +1,6 @@
+nacos:
+  server-addr: ${cfg.dev_nacos_addr}
+  username: ${cfg.dev_nacos_username}
+  password: ${cfg.dev_nacos_password}
+  namespace: ${cfg.dev_nacos_namespace}
+

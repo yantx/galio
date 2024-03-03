@@ -1,0 +1,22 @@
+package ${packageName}.model.converter;
+
+import ${packageName}.model.dto.${ClassName}DTO;
+import ${packageName}.model.vo.${ClassName}VO;
+import ${packageName}.model.entity.${ClassName};
+import org.mapstruct.Mapper;
+import java.util.List;
+
+/**
+ * @Author: ${author}
+ * @Date: ${datetime}
+ * @Description: ${functionName}转换器
+ */
+@Mapper(componentModel = "spring")
+public interface ${ClassName}Converter {
+
+
+    ${ClassName}DTO entityToDTO(${ClassName} entity);
+    ${ClassName}VO entityToVO(${ClassName} entity);
+    ${ClassName} dtoToEntity(${ClassName}DTO dto);
+    List<${ClassName}VO> entitiesToVOs(List<${ClassName}> entities);
+}

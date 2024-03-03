@@ -1,0 +1,18 @@
+sentinel:
+  server-addr: ${cfg.dev_sentinel_addr}
+  port:  ${cfg.dev_sentinel_port}
+
+tiny:
+  datasource:
+    enabled: true
+    dbType: ${cfg.datasource_dbType}
+    driverClassName: ${cfg.datasource_driver}
+    url: ${cfg.dev_datasource_url}
+    username: ${cfg.dev_datasource_username}
+    password: ${cfg.dev_datasource_password}
+
+logging:
+  level:
+    root: INFO
+    com.galio: INFO
+    com.alibaba: ERROR

@@ -1,0 +1,96 @@
+package ${packageName}.service.impl;
+
+#if($table.crud || $table.sub)
+import com.galio.core.model.PageRequestDto;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+#end
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import ${packageName}.model.dto.${ClassName}DTO;
+import ${packageName}.model.converter.${ClassName}Converter;
+import ${packageName}.model.entity.${ClassName};
+import ${packageName}.repository.${ClassName}Repository;
+import ${packageName}.service.${ClassName}Service;
+
+import java.util.List;
+import java.util.Collection;
+
+/**
+ * @Author: ${author}
+ * @Date: ${datetime}
+ * @Description: ${functionName}Service业务层处理
+ */
+@RequiredArgsConstructor
+@Service
+public class ${ClassName}ServiceImpl implements ${ClassName}Service {
+
+    private final ${ClassName}Repository ${className}Repository;
+    private final ${ClassName}Converter ${className}Converter;
+
+    /**
+     * 查询${functionName}
+     */
+    @Override
+    public ${ClassName} getById(${pkColumn.fieldType} ${pkColumn.fieldName}) {
+        return ${className}Repository.selectById(${pkColumn.fieldName});
+    }
+
+    #if($table.crud || $table.sub)
+        /**
+         * 查询${functionName}列表
+         */
+        @Override
+        public Page<${ClassName}> listPage(${ClassName}PageReqDTO pageRequestDto) {
+            return ${className}Repository.selectPage(pageRequestDto.build());
+        }
+    #end
+
+    /**
+     * 查询${functionName}列表
+     */
+    @Override
+    public List<${ClassName}> list(${ClassName}ListReqDTO dto) {
+        ${ClassName} entity = ${className}Converter.dtoToEntity(dto);
+        return ${className}Repository.selectList(entity);
+    }
+
+    /**
+     * 新增${functionName}
+     */
+    @Override
+    public Boolean save(${ClassName}SaveDTO dto) {
+        ${ClassName} add = ${className}Converter.dtoToEntity(dto);
+        validEntityBeforeSave(add);
+        boolean flag = ${className}Repository.insert(add) > 0;
+        #set($pk=$pkColumn.fieldName.substring(0,1).toUpperCase() + ${pkColumn.fieldName.substring(1)})
+        if (flag) {
+            dto.set$pk(add.get$pk());
+        }
+        return flag;
+    }
+
+    /**
+     * 修改${functionName}
+     */
+    @Override
+    public Boolean update(${ClassName}SaveDTO dto) {
+        ${ClassName} update = ${className}Converter.dtoToEntity(dto);
+        validEntityBeforeSave(update);
+        return ${className}Repository.updateById(update) > 0;
+    }
+
+    /**
+     * 保存前的数据校验
+     */
+    private void validEntityBeforeSave(${ClassName} entity) {
+        //TODO 做一些数据校验,如唯一约束
+    }
+
+    /**
+     * 批量删除${functionName}
+     */
+    @Override
+    public Boolean deleteWithValidByIds(Collection<${pkColumn.fieldType}> ids) {
+        return ${className}Repository.deleteBatchIds(ids) > 0;
+    }
+}

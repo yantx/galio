@@ -1,0 +1,140 @@
+[
+  {
+    "name": "App.java.vm",
+    "relativePath": "java",
+    "outPath": "/${moduleName}/src/main/java/${packagePath}",
+    "outFileName": "${appClassName}.java"
+  },
+  {
+    "name": "Controller.java.vm",
+    "relativePath": "java",
+    "outPath": "/${moduleName}/src/main/java/${packagePath}/controller",
+    "outFileName": "${ClassName}Controller.java"
+  },
+  {
+    "name": "Service.java.vm",
+    "relativePath": "java",
+    "outPath": "/${moduleName}/src/main/java/${packagePath}/service",
+    "outFileName": "${ClassName}Service.java"
+  },
+  {
+    "name": "ServiceImpl.java.vm",
+    "relativePath": "java",
+    "outPath": "/${moduleName}/src/main/java/${packagePath}/service/impl",
+    "outFileName": "${ClassName}ServiceImpl.java"
+  },
+  {
+    "name": "Mapper.java.vm",
+    "relativePath": "java",
+    "outPath": "/${moduleName}/src/main/java/${packagePath}/mapper",
+    "outFileName": "${ClassName}Mapper.java"
+  },
+  {
+    "name": "Repository.java.vm",
+    "relativePath": "java",
+    "outPath": "/${moduleName}/src/main/java/${packagePath}/repository",
+    "outFileName": "${ClassName}Repository.java"
+  },
+  {
+    "name": "Entity.java.vm",
+    "relativePath": "java",
+    "outPath": "/${moduleName}/src/main/java/${packagePath}/model/entity",
+    "outFileName": "${ClassName}.java"
+  },
+  {
+    "name": "SaveDTO.java.vm",
+    "relativePath": "java",
+    "outPath": "/${moduleName}/src/main/java/${packagePath}/model/dto",
+    "outFileName": "${ClassName}SaveDTO.java"
+  },
+  {
+    "name": "QueryListReqDTO.java.vm",
+    "relativePath": "java",
+    "outPath": "/${moduleName}/src/main/java/${packagePath}/model/dto",
+    "outFileName": "${ClassName}ListReqDTO.java"
+  },
+  {
+    "name": "QueryPageReqDTO.java.vm",
+    "relativePath": "java",
+    "outPath": "/${moduleName}/src/main/java/${packagePath}/model/dto",
+    "outFileName": "${ClassName}PageReqDTO.java"
+  },
+  {
+    "name": "VO.java.vm",
+    "relativePath": "java",
+    "outPath": "/${moduleName}/src/main/java/${packagePath}/model/vo",
+    "outFileName": "${ClassName}VO.java"
+  },
+  {
+    "name": "Converter.java.vm",
+    "relativePath": "java",
+    "outPath": "/${moduleName}/src/main/java/${packagePath}/model/converter",
+    "outFileName": "${ClassName}Converter.java"
+  },
+  {
+    "name": "application.yml.vm",
+    "relativePath": "resource",
+    "outPath": "/${moduleName}/src/main/resources",
+    "outFileName": "application.yml"
+  },
+  {
+    "name": "application-dev.yml.vm",
+    "relativePath": "resource",
+    "outPath": "/${moduleName}/src/main/resources",
+    "outFileName": "application-dev.yml"
+  },
+  {
+    "name": "application-prod.yml.vm",
+    "relativePath": "resource",
+    "outPath": "/${moduleName}/src/main/resources",
+    "outFileName": "application-prod.yml"
+  },
+  {
+    "name": "application-test.yml.vm",
+    "relativePath": "resource",
+    "outPath": "/${moduleName}/src/main/resources",
+    "outFileName": "application-test.yml"
+  },
+  {
+    "name": "logback.xml.vm",
+    "relativePath": "resource",
+    "outPath": "/${moduleName}/src/main/resources",
+    "outFileName": "logback.xml"
+  },
+  {
+    "name": "pom.xml.vm",
+    "relativePath": "resource",
+    "outPath": "/${moduleName}",
+    "outFileName": "pom.xml"
+  },
+  {
+    "name": "Index.vue.vm",
+    "relativePath": "view",
+    "outPath": "/${viewModuleName}/views/${entityLower}",
+    "outFileName": "Index.vue"
+  },
+  {
+    "name": "Item.vue.vm",
+    "relativePath": "view",
+    "outPath": "/${viewModuleName}/views/${entityLower}",
+    "outFileName": "Item.vue"
+  },
+  {
+    "name": "router.js.vm",
+    "relativePath": "view",
+    "outPath": "/${viewModuleName}/router",
+    "outFileName": "${entityLower}_index.js"
+  },
+  {
+    "name": "api.js.vm",
+    "relativePath": "view",
+    "outPath": "/${viewModuleName}/api",
+    "outFileName": "api_${entityLower}.js"
+  },
+  {
+    "name": "proxy.js.vm",
+    "relativePath": "view",
+    "outPath": "/${viewModuleName}",
+    "outFileName": "dev.server.proxy.js"
+  }
+]

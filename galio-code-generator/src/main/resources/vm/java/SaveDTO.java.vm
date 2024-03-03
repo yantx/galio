@@ -1,0 +1,54 @@
+package ${packageName}.model.dto;
+
+import com.galio.core.validate.InsertGroup;
+import com.galio.core.validate.UpdateGroup;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
+import jakarta.validation.constraints.*;
+
+#foreach ($import in $importList)
+import ${import};
+#end
+import com.galio.core.model.BaseEntity;
+
+/**
+ * @Author: ${author}
+ * @Date: ${datetime}
+ * @Description: ${functionName}业务对象
+ */
+#if($table.crud || $table.sub)
+#set($Entity="BaseEntity")
+#elseif($table.tree)
+#set($Entity="TreeEntity<${ClassName}DTO>")
+#end
+
+@Data
+@Schema(description = "${functionName}业务对象")
+public class ${ClassName}DTO extends BaseEntity {
+
+#foreach ($column in $columns)
+#if(!$table.isSuperColumn($column.fieldName) && ($column.query || $column.isInsert || $column.isEdit))
+    /**
+     * $column.columnComment
+     */
+#if($column.isInsert && $column.isEdit)
+#set($Group="InsertGroup.class, UpdateGroup.class")
+#elseif($column.isInsert)
+#set($Group="InsertGroup.class")
+#elseif($column.isEdit)
+#set($Group="UpdateGroup.class")
+#end
+#if($column.isRequired == 1)
+#if($column.fieldType == 'String')
+    @NotBlank(message = "$column.columnComment不能为空", groups = { $Group })
+#else
+    @NotNull(message = "$column.columnComment不能为空", groups = { $Group })
+#end
+#end
+    @Schema(description = "$column.columnComment")
+    private $column.fieldType $column.fieldName;
+
+#end
+#end
+
+}

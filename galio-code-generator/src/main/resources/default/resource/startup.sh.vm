@@ -1,0 +1,4 @@
+#!/bin/sh
+
+JAVA_OPTS='-Xms256m -Xmx256m'
+nohup java ${cfg.s}JAVA_OPTS -jar ${cfg.moduleName}-${cfg.moduleVersion} > ../../logs/${cfg.moduleName}.log 2>&1 &

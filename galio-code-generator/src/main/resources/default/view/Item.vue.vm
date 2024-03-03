@@ -1,0 +1,173 @@
+<template>
+  <div class="currentCard">
+    <el-card
+      class="box-card"
+      shadow="never"
+    >
+      <div slot="header">
+        <el-link
+          class="vm"
+          @click="back()"
+          :underline="false"
+        >
+          <svg-icon
+            class="f-12 mr-10"
+            icon-class="back"
+          />
+        </el-link>
+        <span class="card-header vm">{{ operateTitle }}</span>
+      </div>
+      <div class="mt-10">
+        <el-form
+          :model="item"
+          :rules="rules"
+          ref="itemForm"
+          label-width="100px"
+        >
+#foreach($field in ${table.fields})
+  #if(${field.keyFlag})
+  #else
+          <el-form-item
+    #if("$!field.comment" != "")
+            label="${field.comment}"
+    #else
+            label="${field.propertyName}"
+    #end
+            prop="${field.propertyName}"
+          >
+            <el-input
+              v-model="item.${field.propertyName}"
+              style="width:300px"
+            ></el-input>
+          </el-form-item>
+  #end
+#end
+          <el-form-item>
+            <el-button
+              v-show="showBtn"
+              type="primary"
+              @click="submitForm('itemForm')"
+            >
+              保存
+            </el-button>
+            <el-button
+              v-show="showBtn"
+              @click="resetForm('itemForm')"
+            >
+              重置
+            </el-button>
+            <el-button @click="back()">
+              返回
+            </el-button>
+          </el-form-item>
+        </el-form>
+      </div>
+    </el-card>
+  </div>
+</template>
+<script>
+    #set($entryLower=$entity.toLowerCase())
+    #set($viewModuleNameLower=$cfg.viewModuleName.toLowerCase())
+import { mapActions, mapGetters } from 'vuex'
+import Api from '@/modules/${viewModuleNameLower}/api/api_${entryLower}.js'
+import OperateViewMixin from '@/share/mixins/OperateViewMixin'
+import Vue from 'vue'
+
+export default {
+  data () {
+    return {
+      // operateTitle:窗口名称
+      // type:操作状态，值为update/detail/add
+      // showBtn:是否显示保存按钮
+      // id:对象ID
+      // item:对象
+      // rules:对象form校验规则
+      operateTitle: '新增',
+      type: '',
+      backUrl: '/${viewModuleNameLower}/${entryLower}/index',
+      showBtn: true,
+      id: 0,
+      item: {},
+      rules: {
+        showname: [
+          { required: true, message: '请输入值', trigger: 'blur' },
+          { min: 1, max: 100, message: '长度在 1 到 100 个字符', trigger: 'blur' }
+        ]
+      }
+    }
+  },
+  methods: {
+    back () {
+      // 返回操作
+      this.${cfg.varDescriptor}router.push(this.backUrl)
+    },
+    submitForm (formName) {
+      this.${cfg.varDescriptor}refs[formName].validate((valid) => {
+        if (valid) {
+          this.saveOrUpdate()
+        } else {
+          this.${cfg.varDescriptor}message({
+            type: 'info',
+            message: '请校验'
+          })
+        }
+      })
+    },
+    resetForm (formName) {
+      // 重置按钮
+      this.${cfg.varDescriptor}refs[formName].resetFields()
+    },
+    saveOrUpdate () {
+      // 保存或更新操作
+      if (this.type === 'update') {
+        Api.update4${entryLower}(this.id, this.item).then(data => {
+          this.${cfg.varDescriptor}message({
+            type: 'info',
+            message: '修改成功'
+          })
+          this.${cfg.varDescriptor}router.push(this.backUrl)
+        })
+      } else if (this.type === 'add') {
+        Api.add4${entryLower}(this.item).then(data => {
+          this.${cfg.varDescriptor}message({
+            type: 'info',
+            message: '保存成功'
+          })
+          this.${cfg.varDescriptor}router.push(this.backUrl)
+        })
+      }
+    }
+  },
+
+  mounted () {
+    // 界面初始化接收参数
+    if (_.isEmpty(this.${cfg.varDescriptor}route.query)) {
+      this.back()
+      return
+    }
+    this.type = this.${cfg.varDescriptor}route.query.type
+    switch (this.type) {
+      case 'add':
+        this.operateTitle = '新增'
+        break
+      case 'detail':
+        this.operateTitle = '详情'
+        this.showBtn = false
+        break
+      case 'update':
+        this.operateTitle = '修改'
+        break
+    }
+
+    // 获取数据
+    if (this.type === 'detail' || this.type === 'update') {
+      this.id = this.${cfg.varDescriptor}route.query.id
+      Api.sel4${entryLower}(this.id).then(data => {
+        if (data !== null) {
+          this.item = data
+        }
+      })
+    }
+  }
+}
+</script>

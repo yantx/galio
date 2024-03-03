@@ -1,0 +1,15 @@
+# test环境
+spring:
+  config:
+    import:
+      - optional:nacos:application-common.yml
+      - optional:nacos:datasource.yml
+      - optional:nacos:${spring.application.name}.yml
+nacos:
+  server-addr: 123.249.127.25:8848
+  discovery:
+    group: DEFAULT_GROUP
+    namespace: test
+  config:
+    group: DEFAULT_GROUP
+    namespace: test

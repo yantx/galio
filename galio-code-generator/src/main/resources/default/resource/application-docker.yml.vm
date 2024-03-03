@@ -1,0 +1,18 @@
+sentinel:
+  server-addr:  ${cfg.s}{SENTINEL_SERVER_ADDR:sentinel}
+  port:  ${cfg.s}{SENTINEL_PORT:7008}
+
+tiny:
+  datasource:
+    enabled: true
+    dbType: ${cfg.datasource_dbType}
+    driverClassName: ${cfg.datasource_driver}
+    url: jdbc: ${cfg.s}{DB_VENDOR:mysql}:// ${cfg.s}{DB_SERVER:mysql}: ${cfg.s}{DB_PORT:3306}/ ${cfg.s}{DB_DATABASE:tiny_sample}?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&allowPublicKeyRetrieval=true}
+    username: ${cfg.s}{DB_USER:tiny_sample}
+    password: ${cfg.s}{DB_PASSWORD:123456a?}
+
+logging:
+  level:
+    root:  ${cfg.s}{LOG_LEVEL:ERROR}
+    com.galio:  ${cfg.s}{LOG_LEVEL:ERROR}
+    com.alibaba:  ${cfg.s}{LOG_LEVEL:ERROR}

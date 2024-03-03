@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.galio.generator.mapper.GeneratorMapper">
+
+    <resultMap id="BaseResultMap" type="com.galio.generator.model.TableInfo">
+        <result property="appId" column="app_id" jdbcType="BIGINT"/>
+        <result property="tableName" column="table_name" jdbcType="VARCHAR"/>
+        <result property="tableComment" column="table_comment" jdbcType="VARCHAR"/>
+        <result property="className" column="class_name" jdbcType="VARCHAR"/>
+        <result property="tplCategory" column="tpl_category" jdbcType="VARCHAR"/>
+        <result property="packageName" column="package_name" jdbcType="VARCHAR"/>
+        <result property="moduleName" column="module_name" jdbcType="VARCHAR"/>
+        <result property="businessName" column="business_name" jdbcType="VARCHAR"/>
+        <result property="functionName" column="function_name" jdbcType="VARCHAR"/>
+        <result property="genType" column="gen_type" jdbcType="CHAR"/>
+        <result property="genPath" column="gen_path" jdbcType="VARCHAR"/>
+        <result property="options" column="options" jdbcType="VARCHAR"/>
+        <collection  property="columns"  javaType="java.util.List"  resultMap="TableColumnResult" />
+    </resultMap>
+
+    <resultMap id="TableColumnResult" type="com.galio.generator.model.TableColumn">
+        <result property="columnName" column="column_name" jdbcType="VARCHAR"/>
+        <result property="columnComment" column="column_comment" jdbcType="VARCHAR"/>
+        <result property="columnType" column="column_type" jdbcType="VARCHAR"/>
+        <result property="fieldName" column="field_name" jdbcType="VARCHAR"/>
+        <result property="fieldType" column="field_type" jdbcType="VARCHAR"/>
+        <result property="isPk" column="is_pk" jdbcType="CHAR"/>
+        <result property="isIncrement" column="is_increment" jdbcType="CHAR"/>
+        <result property="isRequired" column="is_required" jdbcType="CHAR"/>
+        <result property="isInsert" column="is_insert" jdbcType="CHAR"/>
+        <result property="isEdit" column="is_edit" jdbcType="CHAR"/>
+        <result property="isList" column="is_list" jdbcType="CHAR"/>
+        <result property="isQuery" column="is_query" jdbcType="CHAR"/>
+        <result property="queryType" column="query_type" jdbcType="VARCHAR"/>
+        <result property="htmlType" column="html_type" jdbcType="VARCHAR"/>
+        <result property="dictType" column="dict_type" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="selectDbTableListByNames" resultMap="BaseResultMap">
+            select table_name, table_comment
+            from (
+            SELECT c.relname AS table_name,
+            obj_description(c.oid) AS table_comment
+            FROM pg_class c
+            LEFT JOIN pg_namespace n ON n.oid = c.relnamespace
+            WHERE (c.relkind = ANY (ARRAY ['r'::"char", 'p'::"char"]))
+            AND c.relname != 'spatial_%'::text
+            AND n.nspname = 'galio_sys'::name
+            AND n.nspname <![CDATA[ <> ]]> ''::name
+            ) list_table
+            where table_name NOT LIKE 'gen_%'
+            and table_name in
+            <foreach collection="tableNames" item="name" open="(" separator="," close=")">
+                #{name}
+            </foreach>
+    </select>
+
+    <select id="selectTableByName" parameterType="String" resultMap="BaseResultMap">
+            select table_name, table_comment
+            from (
+            SELECT c.relname AS table_name,
+            obj_description(c.oid) AS table_comment
+            FROM pg_class c
+            LEFT JOIN pg_namespace n ON n.oid = c.relnamespace
+            WHERE (c.relkind = ANY (ARRAY ['r'::"char", 'p'::"char"]))
+            AND c.relname != 'spatial_%'::text
+            AND n.nspname = 'galio_sys'::name
+            AND n.nspname <![CDATA[ <> ]]> ''::name
+            ) list_table
+            where table_name NOT LIKE 'gen_%'
+            and table_name = #{tableName}
+    </select>
+    <select id="selectDbTableColumnsByName" parameterType="String" resultMap="TableColumnResult">
+        SELECT column_name, is_required, is_pk, sort, column_comment, is_increment, column_type
+        FROM (
+        SELECT c.relname AS table_name,
+        a.attname AS column_name,
+        d.description AS column_comment,
+        CASE WHEN a.attnotnull AND con.conname IS NULL THEN 1 ELSE 0
+        END AS is_required,
+        CASE WHEN con.conname IS NOT NULL THEN 1 ELSE 0
+        END AS is_pk,
+        a.attnum AS sort,
+        CASE WHEN "position"(pg_get_expr(ad.adbin, ad.adrelid),
+        ((c.relname::text || '_'::text) || a.attname::text) || '_seq'::text) > 0 THEN 1 ELSE 0
+        END AS is_increment,
+        btrim(
+        CASE WHEN t.typelem <![CDATA[ <> ]]> 0::oid AND t.typlen = '-1'::integer THEN 'ARRAY'::text ELSE
+        CASE WHEN t.typtype = 'd'::"char" THEN format_type(t.typbasetype, NULL::integer)
+        ELSE format_type(a.atttypid, NULL::integer) END
+        END, '"'::text
+        ) AS column_type
+        FROM pg_attribute a
+        JOIN (pg_class c JOIN pg_namespace n ON c.relnamespace = n.oid) ON a.attrelid = c.oid
+        LEFT JOIN pg_description d ON d.objoid = c.oid AND a.attnum = d.objsubid
+        LEFT JOIN pg_constraint con ON con.conrelid = c.oid AND (a.attnum = ANY (con.conkey))
+        LEFT JOIN pg_attrdef ad ON a.attrelid = ad.adrelid AND a.attnum = ad.adnum
+        LEFT JOIN pg_type t ON a.atttypid = t.oid
+        WHERE (c.relkind = ANY (ARRAY ['r'::"char", 'p'::"char"]))
+        AND a.attnum > 0
+        AND n.nspname = 'galio_sys'::name
+        ORDER BY c.relname, a.attnum
+        ) temp
+        WHERE table_name = (#{tableName})
+    </select>
+</mapper>

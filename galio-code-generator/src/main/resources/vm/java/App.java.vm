@@ -1,0 +1,17 @@
+package ${packageName};
+
+import org.springframework.boot.Banner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@MapperScan("${s}{mybatis-plus.mapperPackage}")
+@SpringBootApplication(scanBasePackages = "${packageName}")
+public class ${appClassName} {
+
+    public static void main(String[] args) {
+        SpringApplication springApplication = new SpringApplication(${appClassName}.class);
+        springApplication.setBannerMode(Banner.Mode.OFF);
+        springApplication.run(args);
+    }
+
+}

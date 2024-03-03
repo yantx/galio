@@ -1,0 +1,13 @@
+package ${packageName}.mapper;
+
+import com.galio.mybatis.mapper.BaseMapperPlus;
+import ${packageName}.model.entity.${ClassName};
+
+/**
+ * @Author: ${author}
+ * @Date: ${datetime}
+ * @Description: ${functionName}Mapper接口
+ */
+public interface ${ClassName}Mapper extends BaseMapperPlus<${ClassName}Mapper, ${ClassName}> {
+
+}

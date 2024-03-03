@@ -1,0 +1,14 @@
+spring:
+  profiles:
+    active: @spring.profiles.active@
+  application:
+    name: ${cfg.moduleName}
+  cloud:
+    nacos:
+      # 配置中心
+      config:
+        server-addr:  ${cfg.s}{nacos.server-addr}
+        file-extension: yaml
+        username:  ${cfg.s}{nacos.username}
+        password:  ${cfg.s}{nacos.password}
+        namespace:  ${cfg.s}{nacos.namespace}

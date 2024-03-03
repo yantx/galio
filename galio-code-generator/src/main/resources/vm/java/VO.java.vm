@@ -1,0 +1,37 @@
+package ${packageName}.model.vo;
+
+#foreach ($import in $importList)
+import ${import};
+#end
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
+
+/**
+ * @Author: ${author}
+ * @Date: ${datetime}
+ * @Description: ${functionName}视图对象
+ */
+@Data
+@Schema(description = "${functionName}视图对象")
+public class ${ClassName}VO implements Serializable{
+
+    private static final long serialVersionUID = 1L;
+
+#foreach ($column in $columns)
+#if($column.isList)
+    /**
+     * $column.columnComment
+     */
+#set($parentheseIndex=$column.columnComment.indexOf("（"))
+#if($parentheseIndex != -1)
+#set($comment=$column.columnComment.substring(0, $parentheseIndex))
+#else
+#set($comment=$column.columnComment)
+#end
+    @Schema(description = "$column.columnComment")
+    private $column.fieldType $column.fieldName;
+
+#end
+#end
+
+}

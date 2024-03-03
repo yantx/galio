@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Configuration status="OFF" monitorInterval="30" packages="com.galio.tinyframework.core.log">
+    <Properties>
+        <Property name="APP">${cfg.appModule}</Property>
+        <Property name="PID">????</Property>
+        <Property name="LOG_EXCEPTION_CONVERSION_WORD">%xwEx</Property>
+        <Property name="LOG_LEVEL_PATTERN">%5p</Property>
+        <Property name="ELK_LOG_PATTERN_FULL">
+            %d{yyyy-MM-dd HH:mm:ss.SSS} ${cfg.s}{LOG_LEVEL_PATTERN} %X{X-B3-TraceId} %X{X-B3-SpanId} %X{X-Span-Export}
+            ${cfg.s}{sys:PID} --- [%15.15t] %-40.40c{1.} : %m%n${cfg.s}{sys:LOG_EXCEPTION_CONVERSION_WORD}
+        </Property>
+        <Property name="ELK_LOG_PATTERN">${cfg.s}{sys:PID} %c{3.}.%t %m%n</Property>
+        <Property name="ELK_LOG_PATTERN_SIMPLE">%m%n</Property>
+        <Property name="MAX_SIZE">200 MB</Property>
+        <Property name="MAX_NUM">3</Property>
+    </Properties>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${cfg.s}{ELK_LOG_PATTERN_FULL}"/>
+        </Console>
+        <RollingFile name="normal" fileName="logs/${cfg.s}{APP}.log" filePattern="logs/${cfg.s}{APP}-%i.log">
+            <EfkJsonPatternLayout pattern="${cfg.s}{ELK_LOG_PATTERN_FULL}" app="${cfg.s}{APP}"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="${cfg.s}{MAX_SIZE}"/>
+            </Policies>
+            <DefaultRolloverStrategy max="${cfg.s}{MAX_NUM}"/>
+        </RollingFile>
+        <RollingFile name="slowsql" fileName="logs/slowsql/${cfg.s}{APP}.log" filePattern="logs/slowsql/${cfg.s}{APP}-%i.log">
+            <EfkJsonPatternLayout pattern="${cfg.s}{ELK_LOG_PATTERN_SIMPLE}" app="${cfg.s}{APP}"/>
+            <!--<MarkerFilter marker="慢SQL" onMatch="ACCEPT" onMismatch="DENY"/>-->
+            <Policies>
+                <SizeBasedTriggeringPolicy size="${cfg.s}{MAX_SIZE}"/>
+            </Policies>
+            <DefaultRolloverStrategy max="${cfg.s}{MAX_NUM}"/>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <Root level="INFO">
+            <MarkerFilter marker="慢SQL" onMatch="DENY" onMismatch="ACCEPT"/>
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="normal"/>
+        </Root>
+        <logger name="com.galio.tinyframework.datasource" level="debug">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="normal"/>
+        </logger>
+        <logger name="com.galio.tinyframework.datasource" level="debug">
+            <MarkerFilter marker="慢SQL" onMatch="ACCEPT" onMismatch="DENY"/>
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="slowsql"/>
+        </logger>
+    </Loggers>
+</Configuration>
