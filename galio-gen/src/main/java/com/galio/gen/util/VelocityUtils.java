@@ -1,9 +1,7 @@
 package com.galio.gen.util;
 
-import com.galio.core.enums.ResponseEnum;
-import com.galio.core.exception.CustomException;
 import com.galio.core.utils.Assert;
-import com.galio.core.utils.DateUtil;
+import com.galio.core.utils.DateTimeUtil;
 import com.galio.core.utils.JsonUtils;
 import com.galio.core.utils.StringUtil;
 import com.galio.gen.constant.GenConstants;
@@ -17,7 +15,6 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.apache.velocity.VelocityContext;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
 /**
@@ -67,7 +64,7 @@ public class VelocityUtils {
         velocityContext.put("basePackage", getPackagePrefix(packageName));
         velocityContext.put("packageName", packageName);
         velocityContext.put("author", genTable.getFunctionAuthor());
-        velocityContext.put("datetime", DateUtil.getLocalDateStr());
+        velocityContext.put("datetime", DateTimeUtil.getLocalDateStr());
         velocityContext.put("pkColumn", genTable.getPkColumn());
         velocityContext.put("importList", getImportList(genTable));
         velocityContext.put("permissionPrefix", getPermissionPrefix(moduleName, businessName));
@@ -136,7 +133,7 @@ public class VelocityUtils {
         List<String> templates = new ArrayList<String>();
         templates.add("vm/java/entity.java.vm");
         templates.add("vm/java/dto.java.vm");
-        templates.add("vm/java/queryDto.java.vm");
+        templates.add("vm/java/queryDTO.java.vm");
         templates.add("vm/java/vo.java.vm");
         templates.add("vm/java/mapper.java.vm");
         templates.add("vm/java/repository.java.vm");
@@ -176,7 +173,7 @@ public class VelocityUtils {
         templateMap.put("vm/java/entity.java.vm", (params) -> StringUtil.format("{}/model/{}.java", javaPathFun.apply(params.getPackageName()), params.getClassName()));
         templateMap.put("vm/java/vo.java.vm", (params) -> StringUtil.format("{}/model/vo/{}VO.java", javaPathFun.apply(params.getPackageName()), params.getClassName()));
         templateMap.put("vm/java/dto.java.vm", (params) -> StringUtil.format("{}/model/dto/{}DTO.java", javaPathFun.apply(params.getPackageName()), params.getClassName()));
-        templateMap.put("vm/java/queryDto.java.vm", (params) -> StringUtil.format("{}/model/dto/{}PageReqDTO.java", javaPathFun.apply(params.getPackageName()), params.getClassName()));
+        templateMap.put("vm/java/queryDTO.java.vm", (params) -> StringUtil.format("{}/model/dto/{}PageReqDTO.java", javaPathFun.apply(params.getPackageName()), params.getClassName()));
         templateMap.put("vm/java/sub-entity.java.vm", (params) -> StringUtil.format("{}/model/{}.java", javaPathFun.apply(params.getPackageName()), params.getClassName()));
         templateMap.put("vm/java/mapper.java.vm", (params) -> StringUtil.format("{}/mapper/{}Mapper.java", javaPathFun.apply(params.getPackageName()), params.getClassName()));
         templateMap.put("vm/java/repository.java.vm", (params) -> StringUtil.format("{}/repository/{}Repository.java", javaPathFun.apply(params.getPackageName()), params.getClassName()));
@@ -338,7 +335,7 @@ public class VelocityUtils {
      */
     public static int getExpandColumn(GenTable genTable) {
         String options = genTable.getOptions();
-        LinkedHashMap<String, Object> paramsObj = JsonUtils.toObject(options, LinkedHashMap.class);
+        LinkedHashMap paramsObj = JsonUtils.toObject(options, LinkedHashMap.class);
         String treeName = JsonUtils.toString(paramsObj.get(GenConstants.TREE_NAME));
         int num = 0;
         for (GenTableColumn column : genTable.getColumns()) {

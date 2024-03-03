@@ -18,9 +18,9 @@ import com.galio.gen.service.IGenTableService;
 import com.galio.gen.util.GenUtils;
 import com.galio.gen.util.VelocityInitializer;
 import com.galio.gen.util.VelocityUtils;
-import com.galio.core.model.PageRequestDto;
+import com.galio.core.model.PageRequestDTO;
 import com.galio.mybatis.page.MybatisPageConvertHelper;
-import com.galio.mybatis.page.PageVo;
+import com.galio.mybatis.page.PageVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -71,8 +71,8 @@ public class IGenTableServiceImpl implements IGenTableService {
     }
 
     @Override
-    public PageVo<GenTable> selectPageGenTableList(PageRequestDto pageQuery) {
-        return PageVo.build(genTableMapper.selectPage(MybatisPageConvertHelper.build(pageQuery),buildGenTableQueryWrapper(new GenTable())));
+    public PageVO<GenTable> selectPageGenTableList(PageRequestDTO pageQuery) {
+        return PageVO.build(genTableMapper.selectPage(MybatisPageConvertHelper.build(pageQuery),buildGenTableQueryWrapper(new GenTable())));
     }
 
     private QueryWrapper<GenTable> buildGenTableQueryWrapper(GenTable genTable) {
@@ -86,8 +86,8 @@ public class IGenTableServiceImpl implements IGenTableService {
 
 
     @Override
-    public PageVo<GenTable> selectPageDbTableList(PageRequestDto pageQuery) {
-        return PageVo.build(genTableMapper.selectPageDbTableList(MybatisPageConvertHelper.build(pageQuery), new GenTable()));
+    public PageVO<GenTable> selectPageDbTableList(PageRequestDTO pageQuery) {
+        return PageVO.build(genTableMapper.selectPageDbTableList(MybatisPageConvertHelper.build(pageQuery), new GenTable()));
     }
 
     /**

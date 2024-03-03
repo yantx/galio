@@ -1,44 +1,31 @@
 import request from '@/utils/request'
 
-// 查询${functionName}列表
-export function list${BusinessName}(query) {
-  return request({
-    url: '/${moduleName}/${businessName}/list',
-    method: 'get',
-    params: query
-  })
+// 分页查询${functionName}列表
+export function list${BusinessName}(param) {
+  return request.post('/${moduleName}/${businessName}/page',param)
 }
 
 // 查询${functionName}详细
 export function get${BusinessName}(${pkColumn.javaField}) {
-  return request({
-    url: '/${moduleName}/${businessName}/' + ${pkColumn.javaField},
-    method: 'get'
-  })
+  return request.get('/${moduleName}/${businessName}/' + ${pkColumn.javaField})
 }
 
 // 新增${functionName}
 export function add${BusinessName}(data) {
-  return request({
-    url: '/${moduleName}/${businessName}',
-    method: 'post',
-    data: data
-  })
+  return request.post('/${moduleName}/${businessName}', data)
 }
 
 // 修改${functionName}
 export function update${BusinessName}(data) {
-  return request({
-    url: '/${moduleName}/${businessName}',
-    method: 'put',
-    data: data
-  })
+  return request.put('/${moduleName}/${businessName}', data)
 }
 
 // 删除${functionName}
 export function del${BusinessName}(${pkColumn.javaField}) {
-  return request({
-    url: '/${moduleName}/${businessName}/' + ${pkColumn.javaField},
-    method: 'delete'
-  })
+  return request.delete('/${moduleName}/${businessName}/' + ${pkColumn.javaField})
+}
+
+// 批量删除${functionName}
+export function del${BusinessName}(${pkColumn.javaField}s) {
+  return request.delete('/${moduleName}/${businessName}/' + ${pkColumn.javaField}s)
 }

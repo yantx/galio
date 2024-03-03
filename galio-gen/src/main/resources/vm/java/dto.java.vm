@@ -28,7 +28,7 @@ import com.galio.core.model.TreeEntity;
 
 @Data
 @Schema(description = "${functionName}业务对象")
-public class ${ClassName}Dto extends ${Entity} {
+public class ${ClassName}DTO extends ${Entity} {
 
 #foreach ($column in $columns)
 #if(!$table.isSuperColumn($column.javaField) && ($column.query || $column.isInsert || $column.isEdit))

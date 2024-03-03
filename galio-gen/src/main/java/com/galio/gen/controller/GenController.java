@@ -5,7 +5,7 @@ import com.galio.gen.model.GenTable;
 import com.galio.gen.model.GenTableColumn;
 import com.galio.gen.service.IGenTableColumnService;
 import com.galio.gen.service.IGenTableService;
-import com.galio.core.model.PageRequestDto;
+import com.galio.core.model.PageRequestDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
@@ -38,9 +38,9 @@ public class GenController{
     /**
      * 查询代码生成列表
      */
-    @PostMapping("/list")
+    @PostMapping("table/list")
     @Operation(summary = "查询代码生成列表")
-    public Object genList(@RequestBody PageRequestDto pageQuery) {
+    public Object genList(@RequestBody PageRequestDTO pageQuery) {
         return genTableService.selectPageGenTableList(pageQuery);
     }
 
@@ -67,7 +67,7 @@ public class GenController{
      */
     @PostMapping("/db/list")
     @Operation(summary = "查询数据库列表")
-    public Object dataList(@RequestBody PageRequestDto pageQuery) {
+    public Object dbList(@RequestBody PageRequestDTO pageQuery) {
         return genTableService.selectPageDbTableList(pageQuery);
     }
 
@@ -86,11 +86,11 @@ public class GenController{
     /**
      * 导入表结构（保存）
      *
-     * @param tables 表名串
+     * @param tables 表名串 table_name1,table_name2,...
      */
-    @PostMapping("/importTable")
+    @GetMapping("/importTable")
     @Operation(summary = "导入表结构")
-    public void importTableSave(String tables){
+    public void importTableSave(@RequestParam("tables") String tables){
         String[] tableNames = Convert.toStrArray(tables);
         // 查询表信息
         List<GenTable> tableList = genTableService.selectDbTableListByNames(tableNames);
@@ -98,11 +98,11 @@ public class GenController{
     }
 
     /**
-     * 修改保存代码生成业务
+     * 修改数据表关联的代码生成属性
      */
     @PutMapping
-    @Operation(summary = "修改保存代码生成业务")
-    public Object editSave(@Validated @RequestBody GenTable genTable) {
+    @Operation(summary = "修改数据表关联的代码生成属性")
+    public Object edit(@Validated @RequestBody GenTable genTable) {
         genTableService.validateEdit(genTable);
         genTableService.updateGenTable(genTable);
         return null;
@@ -113,9 +113,9 @@ public class GenController{
      *
      * @param tableIds 表主键串
      */
-    @DeleteMapping("/{tableIds}")
+    @DeleteMapping()
     @Operation(summary = "删除代码生成")
-    public Object remove(@PathVariable Long[] tableIds) {
+    public Object remove(@RequestParam("tableIds") Long[] tableIds) {
         genTableService.deleteGenTableByIds(tableIds);
         return null;
     }
@@ -169,13 +169,13 @@ public class GenController{
     /**
      * 批量生成代码
      *
-     * @param tables 表名串
+     * @param tableNames 表名串
      */
     @GetMapping("/batchGenCode")
     @Operation(summary = "批量生成代码")
-    public void batchGenCode(HttpServletResponse response, String tables) throws IOException {
-        String[] tableNames = Convert.toStrArray(tables);
-        byte[] data = genTableService.downloadCode(tableNames);
+    public void batchGenCode(HttpServletResponse response, @RequestParam("tableNames") String tableNames) throws IOException {
+        String[] tableNameArray = Convert.toStrArray(tableNames);
+        byte[] data = genTableService.downloadCode(tableNameArray);
         genCode(response, data);
     }
 

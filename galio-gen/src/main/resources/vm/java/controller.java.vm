@@ -8,7 +8,7 @@ import com.galio.core.validate.InsertGroup;
 import com.galio.core.validate.UpdateGroup;
     #if($table.crud || $table.sub)
 import ${packageName}.model.dto.${ClassName}PageRequestDto;
-import com.galio.mybatis.page.PageVo;
+import com.galio.mybatis.page.PageVO;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 #end
 import io.swagger.v3.oas.annotations.Operation;
@@ -49,9 +49,9 @@ public class ${ClassName}Controller {
     @Operation(summary = "分页查询${functionName}列表")
     @SaCheckPermission("${permissionPrefix}:page")
     @PostMapping("/page")
-    public PageVo findPage(@RequestBody ${ClassName}PageRequestDto pageRequestDto) {
+    public PageVO findPage(@RequestBody ${ClassName}PageRequestDto pageRequestDto) {
         IPage<${ClassName}> pageData = ${className}Service.listPage(pageRequestDto);
-        return PageVo.build(pageData);
+        return PageVO.build(pageData);
     }
 #elseif($table.tree)
     @OperLog(operModul = "查询${functionName}列表", operType = OperTypeEnum.SELECT)

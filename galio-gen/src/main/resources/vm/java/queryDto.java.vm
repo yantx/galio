@@ -18,7 +18,7 @@ import ${import};
 
 @Data
 @Schema(description = "${functionName}业务对象")
-public class ${ClassName}PageReqDto extends PageRequestDto {
+public class ${ClassName}PageReqDTO extends PageRequestDto {
 
 #foreach ($column in $columns)
 #if(!$table.isSuperColumn($column.javaField) && $column.query)
