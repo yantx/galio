@@ -1,10 +1,10 @@
 package com.galio.auth.controller;
 
-import com.galio.auth.dto.LoginDto;
+import com.galio.auth.dto.LoginDTO;
 import com.galio.auth.service.AuthService;
 import com.galio.core.exception.CustomException;
 import com.galio.core.model.BaseResponse;
-import com.galio.system.dto.LoginMemberDto;
+import com.galio.system.dto.LoginMemberDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -36,14 +36,14 @@ public class AuthController {
 
     /**
      * 登录接口
-     * @param loginDto 登录表单对象  username-登录名 password-登录密码
-     * @return LoginMemberDto对象
+     * @param loginDTO 登录表单对象  username-登录名 password-登录密码
+     * @return LoginMemberDTO对象
      * @throws CustomException
      */
     @Operation(summary = "登录接口")
     @PostMapping("login")
-    public LoginMemberDto login(@Validated @RequestBody LoginDto loginDto) {
-         return authService.login(loginDto.getUsername(), loginDto.getPassword(),loginDto.getSecurityKey());
+    public LoginMemberDTO login(@Validated @RequestBody LoginDTO loginDTO) {
+         return authService.login(loginDTO.getUsername(), loginDTO.getPassword(),loginDTO.getSecurityKey());
     }
     @Operation(summary = "查询用户token")
     @GetMapping("token/{username}")

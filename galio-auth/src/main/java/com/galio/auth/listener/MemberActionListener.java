@@ -8,7 +8,7 @@ import com.galio.core.utils.ObjectUtil;
 import com.galio.core.utils.ServletUtils;
 import com.galio.redis.util.RedisUtils;
 import com.galio.satoken.tools.helper.MemberContextHelper;
-import com.galio.system.dto.LoginMemberDto;
+import com.galio.system.dto.LoginMemberDTO;
 import com.galio.system.model.MemberOnline;
 import eu.bitwalker.useragentutils.UserAgent;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +40,7 @@ public class MemberActionListener implements SaTokenListener {
         String userAgentStr = Objects.requireNonNull(ServletUtils.getRequest()).getHeader("User-Agent");
         UserAgent userAgent = UserAgent.parseUserAgentString(userAgentStr);
         String ip = ServletUtils.getClientIP();
-        LoginMemberDto accountDTO = MemberContextHelper.getLoginMember();
+        LoginMemberDTO accountDTO = MemberContextHelper.getLoginMember();
         MemberOnline memberOnline = new MemberOnline();
         memberOnline.setIpaddr(ip);
 //        memberOnline.setLoginLocation(AddressUtils.getRealAddressByIP(ip));

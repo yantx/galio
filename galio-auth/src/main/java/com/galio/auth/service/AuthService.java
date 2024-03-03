@@ -16,7 +16,7 @@ import com.galio.redis.util.RedisUtils;
 import com.galio.satoken.tools.helper.LoginHelper;
 import com.galio.satoken.tools.helper.MemberContextHelper;
 import com.galio.system.api.MemberExchange;
-import com.galio.system.dto.LoginMemberDto;
+import com.galio.system.dto.LoginMemberDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -59,21 +59,21 @@ public class AuthService {
      * @param username 登录名
      * @param password 密码-RSA公钥加密后
      * @param securityKey 密钥 -RSA公钥加密后的aes密钥
-     * @return LoginMemberDto对象
+     * @return LoginMemberDTO对象
      */
-    public LoginMemberDto login(String username, String password, String securityKey) throws CustomException{
+    public LoginMemberDTO login(String username, String password, String securityKey) throws CustomException{
 
         String aesKey =  CryptoUtil.rsaPrivateDecrypt(securityKey,rsaKeys.get(CryptoUtil.RSA_PRIVATE_KEY));
         String relPass = CryptoUtil.aesDecrypt(aesKey, password);
 
         checkLogin(username, () -> !BCrypt.checkpw(relPass, getPassword(username)));
         // 登录验证成功后查询用户信息
-        LoginMemberDto memberDto = memberExchange.getMemberInfo(username);
+        LoginMemberDTO memberDTO = memberExchange.getMemberInfo(username);
         // 获取登录token 目前仅PC端
-        LoginHelper.loginByDevice(memberDto, OperSideEnum.PC);
-        memberDto.setToken(StpUtil.getTokenValue());
+        LoginHelper.loginByDevice(memberDTO, OperSideEnum.PC);
+        memberDTO.setToken(StpUtil.getTokenValue());
         recordAccessLog(username, CommonConstants.LOGIN_SUCCESS, MessageUtils.message("member.login.success"));
-        return memberDto;
+        return memberDTO;
     }
     public String getPassword(String username){
         String safePassword = memberExchange.getPassword(username);
@@ -90,9 +90,9 @@ public class AuthService {
         String safePassword = memberExchange.getPassword(username);
         Assert.notNull(safePassword, ResponseEnum.MEMBER_NOT_EXITS.withArgs(username));
         // 登录验证成功后查询用户信息并返回给前端
-        LoginMemberDto memberDto = memberExchange.getMemberInfo(username);
+        LoginMemberDTO memberDTO = memberExchange.getMemberInfo(username);
         // 获取登录token 目前仅PC端
-        LoginHelper.loginByDevice(memberDto, OperSideEnum.PC);
+        LoginHelper.loginByDevice(memberDTO, OperSideEnum.PC);
         return StpUtil.getTokenValue();
     }
 
@@ -101,7 +101,7 @@ public class AuthService {
      */
     public void logout() {
         try {
-            LoginMemberDto loginUser = MemberContextHelper.getLoginMember();
+            LoginMemberDTO loginUser = MemberContextHelper.getLoginMember();
             StpUtil.logout();
             recordAccessLog(loginUser.getUsername(), CommonConstants.LOGOUT, MessageUtils.message("member.logout.success"));
         } catch (NotLoginException ignored) {
