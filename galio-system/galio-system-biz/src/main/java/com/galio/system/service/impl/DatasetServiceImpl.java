@@ -1,13 +1,13 @@
 package com.galio.system.service.impl;
 
 import com.galio.core.utils.ObjectUtil;
-import com.galio.core.model.PageRequestDto;
+import com.galio.core.model.PageRequestDTO;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.galio.mybatis.page.MybatisPageConvertHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import com.galio.system.dto.DatasetDto;
-import com.galio.system.model.Dataset;
+import com.galio.system.dto.DatasetDTO;
+import com.galio.system.entity.Dataset;
 import com.galio.system.repository.DatasetRepository;
 import com.galio.system.service.DatasetService;
 
@@ -30,7 +30,7 @@ public class DatasetServiceImpl implements DatasetService {
      * 查询数据集信息
      */
     @Override
-    public Dataset queryById(Long datasetId) {
+    public Dataset getById(Long datasetId) {
         return datasetRepository.selectById(datasetId);
     }
 
@@ -38,15 +38,15 @@ public class DatasetServiceImpl implements DatasetService {
          * 查询数据集信息列表
          */
         @Override
-        public Page<Dataset> queryPageList(PageRequestDto pageRequestDto) {
-            return datasetRepository.selectPage(MybatisPageConvertHelper.build(pageRequestDto));
+        public Page<Dataset> listPage(PageRequestDTO pageRequestDTO) {
+            return datasetRepository.selectPage(MybatisPageConvertHelper.build(pageRequestDTO));
         }
 
     /**
      * 查询数据集信息列表
      */
     @Override
-    public List<Dataset> queryList(DatasetDto dto) {
+    public List<Dataset> list(DatasetDTO dto) {
         Dataset entity = ObjectUtil.copyObject(dto, Dataset.class);
         
         return datasetRepository.selectList(entity);
@@ -56,7 +56,7 @@ public class DatasetServiceImpl implements DatasetService {
      * 新增数据集信息
      */
     @Override
-    public Boolean insertByDto(DatasetDto dto) {
+    public Boolean save(DatasetDTO dto) {
         Dataset add = ObjectUtil.copyObject(dto, Dataset.class);
         validEntityBeforeSave(add);
         boolean flag = datasetRepository.insert(add) > 0;
@@ -70,7 +70,7 @@ public class DatasetServiceImpl implements DatasetService {
      * 修改数据集信息
      */
     @Override
-    public Boolean updateByDto(DatasetDto dto) {
+    public Boolean update(DatasetDTO dto) {
         Dataset update = ObjectUtil.copyObject(dto, Dataset.class);
         validEntityBeforeSave(update);
         return datasetRepository.updateById(update) > 0;

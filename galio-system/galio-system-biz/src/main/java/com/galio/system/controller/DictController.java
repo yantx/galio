@@ -4,17 +4,17 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.galio.core.utils.ObjectUtil;
 import com.galio.core.validate.InsertGroup;
 import com.galio.core.validate.UpdateGroup;
-import com.galio.core.model.PageRequestDto;
-import com.galio.mybatis.page.PageVo;
+import com.galio.core.model.PageRequestDTO;
+import com.galio.mybatis.page.PageVO;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import com.galio.system.model.Dict;
+import com.galio.system.entity.Dict;
 import com.galio.system.model.vo.DictVo;
-import com.galio.system.dto.DictDto;
+import com.galio.system.dto.DictDTO;
 import com.galio.system.service.DictService;
 
 import java.util.Arrays;
@@ -42,9 +42,9 @@ public class DictController {
     @Operation(summary = "查询字典列表")
     @SaCheckPermission("system:dict:page")
     @PostMapping("/page")
-    public PageVo page(@RequestBody PageRequestDto pageRequestDto) {
-        IPage<Dict> pageData = dictService.queryPageList(pageRequestDto);
-        return PageVo.build(pageData);
+    public PageVO page(@RequestBody PageRequestDTO pageRequestDTO) {
+        IPage<Dict> pageData = dictService.listPage(pageRequestDTO);
+        return PageVO.build(pageData);
     }
 
     /**
@@ -56,7 +56,7 @@ public class DictController {
     @SaCheckPermission("system:dict:query")
     @GetMapping("/{dictId}")
     public DictVo getInfo(@NotNull(message = "主键不能为空") @PathVariable Long dictId) {
-        Dict dict = dictService.queryById(dictId);
+        Dict dict = dictService.getById(dictId);
         return ObjectUtil.copyObject(dict, DictVo.class);
     }
 
@@ -66,8 +66,8 @@ public class DictController {
     @Operation(summary = "新增字典")
     @SaCheckPermission("system:dict:add")
     @PostMapping()
-    public Object add(@Validated(InsertGroup.class) @RequestBody DictDto dto) {
-        return dictService.insertByDto(dto);
+    public Object add(@Validated(InsertGroup.class) @RequestBody DictDTO dto) {
+        return dictService.save(dto);
     }
 
     /**
@@ -76,8 +76,8 @@ public class DictController {
     @Operation(summary = "修改字典")
     @SaCheckPermission("system:dict:edit")
     @PutMapping()
-    public Object edit(@Validated(UpdateGroup.class) @RequestBody DictDto dto) {
-        return dictService.updateByDto(dto);
+    public Object edit(@Validated(UpdateGroup.class) @RequestBody DictDTO dto) {
+        return dictService.update(dto);
     }
 
     /**

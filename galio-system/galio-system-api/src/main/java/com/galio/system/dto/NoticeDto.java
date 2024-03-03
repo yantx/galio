@@ -16,7 +16,7 @@ import lombok.Data;
 
 @Data
 @Schema(description = "通知公告业务对象")
-public class NoticeDto extends BaseEntity {
+public class NoticeDTO extends BaseEntity {
 
     /**
      * 主键

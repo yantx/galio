@@ -19,7 +19,7 @@ import java.util.List;
 
 @Data
 @Schema(description = "群组信息业务对象")
-public class GroupDto extends BaseEntity {
+public class GroupDTO extends BaseEntity {
 
     /**
      * 主键

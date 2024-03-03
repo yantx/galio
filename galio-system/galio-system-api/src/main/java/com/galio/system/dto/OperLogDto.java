@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 
 @Data
 @Schema(description = "操作日志记录业务对象")
-public class OperLogDto extends BaseEntity {
+public class OperLogDTO extends BaseEntity {
 
     /**
      * 主键

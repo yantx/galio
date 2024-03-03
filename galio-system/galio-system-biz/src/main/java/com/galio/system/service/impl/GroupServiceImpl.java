@@ -1,17 +1,17 @@
 package com.galio.system.service.impl;
 
 import com.galio.core.utils.ObjectUtil;
-import com.galio.core.model.PageRequestDto;
+import com.galio.core.model.PageRequestDTO;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.galio.mybatis.page.MybatisPageConvertHelper;
-import com.galio.system.dto.MemberDto;
-import com.galio.system.model.GroupRole;
-import com.galio.system.model.MemberRole;
+import com.galio.system.dto.MemberDTO;
+import com.galio.system.entity.GroupRole;
+import com.galio.system.entity.MemberRole;
 import com.galio.system.repository.GroupRoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import com.galio.system.dto.GroupDto;
-import com.galio.system.model.Group;
+import com.galio.system.dto.GroupDTO;
+import com.galio.system.entity.Group;
 import com.galio.system.repository.GroupRepository;
 import com.galio.system.service.GroupService;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,7 +37,7 @@ public class GroupServiceImpl implements GroupService {
      * 查询群组信息
      */
     @Override
-    public Group queryById(Long groupId) {
+    public Group getById(Long groupId) {
         return groupRepository.selectById(groupId);
     }
 
@@ -45,15 +45,15 @@ public class GroupServiceImpl implements GroupService {
          * 查询群组信息列表
          */
         @Override
-        public Page<Group> queryPageList(PageRequestDto pageRequestDto) {
-            return groupRepository.selectPage(MybatisPageConvertHelper.build(pageRequestDto));
+        public Page<Group> listPage(PageRequestDTO pageRequestDTO) {
+            return groupRepository.selectPage(MybatisPageConvertHelper.build(pageRequestDTO));
         }
 
     /**
      * 查询群组信息列表
      */
     @Override
-    public List<Group> queryList(GroupDto dto) {
+    public List<Group> list(GroupDTO dto) {
         Group entity = ObjectUtil.copyObject(dto, Group.class);
         
         return groupRepository.selectList(entity);
@@ -64,7 +64,7 @@ public class GroupServiceImpl implements GroupService {
      */
     @Override
     @Transactional
-    public Boolean insertByDto(GroupDto dto) {
+    public Boolean save(GroupDTO dto) {
         Group add = ObjectUtil.copyObject(dto, Group.class);
         validEntityBeforeSave(add);
         boolean flag = groupRepository.insert(add) > 0;
@@ -80,7 +80,7 @@ public class GroupServiceImpl implements GroupService {
      */
     @Override
     @Transactional
-    public Boolean updateByDto(GroupDto dto) {
+    public Boolean update(GroupDTO dto) {
         Group update = ObjectUtil.copyObject(dto, Group.class);
         validEntityBeforeSave(update);
         boolean flag = groupRepository.updateById(update) > 0;
@@ -109,7 +109,7 @@ public class GroupServiceImpl implements GroupService {
         }
         return flag;
     }
-    public boolean relevanceRoleInfo(GroupDto dto){
+    public boolean relevanceRoleInfo(GroupDTO dto){
         if (ObjectUtil.isEmpty(dto.getRoleIds())){
             return true;
         }

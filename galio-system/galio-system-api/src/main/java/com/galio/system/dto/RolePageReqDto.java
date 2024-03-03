@@ -1,6 +1,6 @@
 package com.galio.system.dto;
 
-import com.galio.core.model.PageRequestDto;
+import com.galio.core.model.PageRequestDTO;
 import com.galio.core.validate.SelectGroup;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -15,7 +15,7 @@ import jakarta.validation.constraints.*;
 
 @Data
 @Schema(description = "角色分页查询对象")
-public class RolePageReqDto extends PageRequestDto {
+public class RolePageReqDTO extends PageRequestDTO {
 
     /**
      * 角色名称

@@ -4,17 +4,17 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.galio.core.utils.ObjectUtil;
 import com.galio.core.validate.InsertGroup;
 import com.galio.core.validate.UpdateGroup;
-import com.galio.core.model.PageRequestDto;
-import com.galio.mybatis.page.PageVo;
+import com.galio.core.model.PageRequestDTO;
+import com.galio.mybatis.page.PageVO;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import com.galio.system.model.Org;
+import com.galio.system.entity.Org;
 import com.galio.system.model.vo.OrgVo;
-import com.galio.system.dto.OrgDto;
+import com.galio.system.dto.OrgDTO;
 import com.galio.system.service.OrgService;
 
 import java.util.Arrays;
@@ -42,9 +42,9 @@ public class OrgController {
     @Operation(summary = "查询机构列表")
     @SaCheckPermission("system:org:page")
     @PostMapping("/page")
-    public PageVo page(@RequestBody PageRequestDto pageRequestDto) {
-        IPage<Org> pageData = orgService.queryPageList(pageRequestDto);
-        return PageVo.build(pageData);
+    public PageVO page(@RequestBody PageRequestDTO pageRequestDTO) {
+        IPage<Org> pageData = orgService.listPage(pageRequestDTO);
+        return PageVO.build(pageData);
     }
 
     /**
@@ -56,7 +56,7 @@ public class OrgController {
     @SaCheckPermission("system:org:query")
     @GetMapping("/{orgId}")
     public OrgVo getInfo(@NotNull(message = "主键不能为空") @PathVariable Long orgId) {
-        Org org = orgService.queryById(orgId);
+        Org org = orgService.getById(orgId);
         return ObjectUtil.copyObject(org, OrgVo.class);
     }
 
@@ -66,8 +66,8 @@ public class OrgController {
     @Operation(summary = "新增机构")
     @SaCheckPermission("system:org:add")
     @PostMapping()
-    public Object add(@Validated(InsertGroup.class) @RequestBody OrgDto dto) {
-        return orgService.insertByDto(dto);
+    public Object add(@Validated(InsertGroup.class) @RequestBody OrgDTO dto) {
+        return orgService.save(dto);
     }
 
     /**
@@ -76,8 +76,8 @@ public class OrgController {
     @Operation(summary = "修改机构")
     @SaCheckPermission("system:org:edit")
     @PutMapping()
-    public Object edit(@Validated(UpdateGroup.class) @RequestBody OrgDto dto) {
-        return orgService.updateByDto(dto);
+    public Object edit(@Validated(UpdateGroup.class) @RequestBody OrgDTO dto) {
+        return orgService.update(dto);
     }
 
     /**

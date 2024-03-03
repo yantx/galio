@@ -4,17 +4,17 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.galio.core.utils.ObjectUtil;
 import com.galio.core.validate.InsertGroup;
 import com.galio.core.validate.UpdateGroup;
-import com.galio.core.model.PageRequestDto;
-import com.galio.mybatis.page.PageVo;
+import com.galio.core.model.PageRequestDTO;
+import com.galio.mybatis.page.PageVO;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import com.galio.system.model.Config;
+import com.galio.system.entity.Config;
 import com.galio.system.model.vo.ConfigVo;
-import com.galio.system.dto.ConfigDto;
+import com.galio.system.dto.ConfigDTO;
 import com.galio.system.service.ConfigService;
 
 import java.util.Arrays;
@@ -42,9 +42,9 @@ public class ConfigController {
     @Operation(summary = "查询系统配置信息列表")
     @SaCheckPermission("system:config:page")
     @PostMapping("/page")
-    public PageVo page(@RequestBody PageRequestDto pageRequestDto) {
-        IPage<Config> pageData = configService.queryPageList(pageRequestDto);
-        return PageVo.build(pageData);
+    public PageVO page(@RequestBody PageRequestDTO pageRequestDTO) {
+        IPage<Config> pageData = configService.listPage(pageRequestDTO);
+        return PageVO.build(pageData);
     }
 
     /**
@@ -56,7 +56,7 @@ public class ConfigController {
     @SaCheckPermission("system:config:query")
     @GetMapping("/{configId}")
     public ConfigVo getInfo(@NotNull(message = "主键不能为空") @PathVariable Long configId) {
-        Config config = configService.queryById(configId);
+        Config config = configService.getById(configId);
         return ObjectUtil.copyObject(config, ConfigVo.class);
     }
 
@@ -66,8 +66,8 @@ public class ConfigController {
     @Operation(summary = "新增系统配置信息")
     @SaCheckPermission("system:config:add")
     @PostMapping()
-    public Object add(@Validated(InsertGroup.class) @RequestBody ConfigDto dto) {
-        return configService.insertByDto(dto);
+    public Object add(@Validated(InsertGroup.class) @RequestBody ConfigDTO dto) {
+        return configService.save(dto);
     }
 
     /**
@@ -76,8 +76,8 @@ public class ConfigController {
     @Operation(summary = "修改系统配置信息")
     @SaCheckPermission("system:config:edit")
     @PutMapping()
-    public Object edit(@Validated(UpdateGroup.class) @RequestBody ConfigDto dto) {
-        return configService.updateByDto(dto);
+    public Object edit(@Validated(UpdateGroup.class) @RequestBody ConfigDTO dto) {
+        return configService.update(dto);
     }
 
     /**

@@ -1,13 +1,13 @@
 package com.galio.system.service.impl;
 
 import com.galio.core.utils.ObjectUtil;
-import com.galio.core.model.PageRequestDto;
+import com.galio.core.model.PageRequestDTO;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.galio.mybatis.page.MybatisPageConvertHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import com.galio.system.dto.OperLogDto;
-import com.galio.system.model.OperLog;
+import com.galio.system.dto.OperLogDTO;
+import com.galio.system.entity.OperLog;
 import com.galio.system.repository.OperLogRepository;
 import com.galio.system.service.OperLogService;
 
@@ -30,7 +30,7 @@ public class OperLogServiceImpl implements OperLogService {
      * 查询操作日志记录
      */
     @Override
-    public OperLog queryById(Long operId) {
+    public OperLog getById(Long operId) {
         return operLogRepository.selectById(operId);
     }
 
@@ -38,15 +38,15 @@ public class OperLogServiceImpl implements OperLogService {
          * 查询操作日志记录列表
          */
         @Override
-        public Page<OperLog> queryPageList(PageRequestDto pageRequestDto) {
-            return operLogRepository.selectPage(MybatisPageConvertHelper.build(pageRequestDto));
+        public Page<OperLog> listPage(PageRequestDTO pageRequestDTO) {
+            return operLogRepository.selectPage(MybatisPageConvertHelper.build(pageRequestDTO));
         }
 
     /**
      * 查询操作日志记录列表
      */
     @Override
-    public List<OperLog> queryList(OperLogDto dto) {
+    public List<OperLog> list(OperLogDTO dto) {
         OperLog entity = ObjectUtil.copyObject(dto, OperLog.class);
         
         return operLogRepository.selectList(entity);
@@ -56,7 +56,7 @@ public class OperLogServiceImpl implements OperLogService {
      * 新增操作日志记录
      */
     @Override
-    public Boolean insertByDto(OperLogDto dto) {
+    public Boolean save(OperLogDTO dto) {
         OperLog add = ObjectUtil.copyObject(dto, OperLog.class);
         validEntityBeforeSave(add);
         boolean flag = operLogRepository.insert(add) > 0;
@@ -70,7 +70,7 @@ public class OperLogServiceImpl implements OperLogService {
      * 修改操作日志记录
      */
     @Override
-    public Boolean updateByDto(OperLogDto dto) {
+    public Boolean update(OperLogDTO dto) {
         OperLog update = ObjectUtil.copyObject(dto, OperLog.class);
         validEntityBeforeSave(update);
         return operLogRepository.updateById(update) > 0;

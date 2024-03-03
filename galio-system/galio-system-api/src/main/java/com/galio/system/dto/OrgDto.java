@@ -16,7 +16,7 @@ import lombok.Data;
 
 @Data
 @Schema(description = "机构业务对象")
-public class OrgDto extends BaseEntity {
+public class OrgDTO extends BaseEntity {
 
     /**
      * 主键

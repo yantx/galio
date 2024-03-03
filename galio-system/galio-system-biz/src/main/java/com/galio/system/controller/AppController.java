@@ -6,17 +6,17 @@ import com.galio.common.log.enums.OperTypeEnum;
 import com.galio.core.utils.ObjectUtil;
 import com.galio.core.validate.InsertGroup;
 import com.galio.core.validate.UpdateGroup;
-import com.galio.mybatis.page.PageVo;
+import com.galio.mybatis.page.PageVO;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.galio.system.dto.AppPageReqDto;
+import com.galio.system.dto.AppPageReqDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import com.galio.system.model.App;
+import com.galio.system.entity.App;
 import com.galio.system.model.vo.AppVo;
-import com.galio.system.dto.AppDto;
+import com.galio.system.dto.AppDTO;
 import com.galio.system.service.AppService;
 
 import java.util.Arrays;
@@ -46,9 +46,9 @@ public class AppController {
     @SaCheckPermission("system:app:page")
     @PostMapping("/page")
     @OperLog(operModul = "应用信息-分页查询应用信息列表", operType = OperTypeEnum.SELECT)
-    public PageVo page(@RequestBody AppPageReqDto pageRequestDto) {
-        IPage<App> pageData = appService.queryPageList(pageRequestDto);
-        return PageVo.build(pageData);
+    public PageVO page(@RequestBody AppPageReqDTO pageRequestDTO) {
+        IPage<App> pageData = appService.listPage(pageRequestDTO);
+        return PageVO.build(pageData);
     }
 
     /**
@@ -60,7 +60,7 @@ public class AppController {
     @SaCheckPermission("system:app:query")
     @GetMapping("/{appId}")
     public AppVo getInfo(@NotNull(message = "主键不能为空") @PathVariable Long appId) {
-        App app = appService.queryById(appId);
+        App app = appService.getById(appId);
         return ObjectUtil.copyObject(app, AppVo.class);
     }
 
@@ -70,8 +70,8 @@ public class AppController {
     @Operation(summary = "新增应用信息")
     @SaCheckPermission("system:app:add")
     @PostMapping()
-    public Object add(@Validated(InsertGroup.class) @RequestBody AppDto dto) {
-        return appService.insertByDto(dto);
+    public Object add(@Validated(InsertGroup.class) @RequestBody AppDTO dto) {
+        return appService.save(dto);
     }
 
     /**
@@ -80,8 +80,8 @@ public class AppController {
     @Operation(summary = "修改应用信息")
     @SaCheckPermission("system:app:edit")
     @PutMapping()
-    public Object edit(@Validated(UpdateGroup.class) @RequestBody AppDto dto) {
-        return appService.updateByDto(dto);
+    public Object edit(@Validated(UpdateGroup.class) @RequestBody AppDTO dto) {
+        return appService.update(dto);
     }
 
     /**

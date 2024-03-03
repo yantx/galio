@@ -1,18 +1,17 @@
 package com.galio.system.service.impl;
 
 import com.galio.core.utils.ObjectUtil;
-import com.galio.core.model.PageRequestDto;
+import com.galio.core.model.PageRequestDTO;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.galio.mybatis.page.MybatisPageConvertHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import com.galio.system.dto.OrgDto;
-import com.galio.system.model.Org;
+import com.galio.system.dto.OrgDTO;
+import com.galio.system.entity.Org;
 import com.galio.system.repository.OrgRepository;
 import com.galio.system.service.OrgService;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Collection;
 
 /**
@@ -30,7 +29,7 @@ public class OrgServiceImpl implements OrgService {
      * 查询机构
      */
     @Override
-    public Org queryById(Long orgId) {
+    public Org getById(Long orgId) {
         return orgRepository.selectById(orgId);
     }
 
@@ -38,15 +37,15 @@ public class OrgServiceImpl implements OrgService {
          * 查询机构列表
          */
         @Override
-        public Page<Org> queryPageList(PageRequestDto pageRequestDto) {
-            return orgRepository.selectPage(MybatisPageConvertHelper.build(pageRequestDto));
+        public Page<Org> listPage(PageRequestDTO pageRequestDTO) {
+            return orgRepository.selectPage(MybatisPageConvertHelper.build(pageRequestDTO));
         }
 
     /**
      * 查询机构列表
      */
     @Override
-    public List<Org> queryList(OrgDto dto) {
+    public List<Org> list(OrgDTO dto) {
         Org entity = ObjectUtil.copyObject(dto, Org.class);
         
         return orgRepository.selectList(entity);
@@ -56,7 +55,7 @@ public class OrgServiceImpl implements OrgService {
      * 新增机构
      */
     @Override
-    public Boolean insertByDto(OrgDto dto) {
+    public Boolean save(OrgDTO dto) {
         Org add = ObjectUtil.copyObject(dto, Org.class);
         validEntityBeforeSave(add);
         boolean flag = orgRepository.insert(add) > 0;
@@ -70,7 +69,7 @@ public class OrgServiceImpl implements OrgService {
      * 修改机构
      */
     @Override
-    public Boolean updateByDto(OrgDto dto) {
+    public Boolean update(OrgDTO dto) {
         Org update = ObjectUtil.copyObject(dto, Org.class);
         validEntityBeforeSave(update);
         return orgRepository.updateById(update) > 0;

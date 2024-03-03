@@ -1,8 +1,8 @@
 package com.galio.system.service;
 
-import com.galio.core.model.PageRequestDto;
-import com.galio.system.dto.DictItemDto;
-import com.galio.system.model.DictItem;
+import com.galio.core.model.PageRequestDTO;
+import com.galio.system.dto.DictItemDTO;
+import com.galio.system.entity.DictItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import java.util.Collection;
@@ -18,27 +18,27 @@ public interface DictItemService {
     /**
      * 查询字典项
      */
-    DictItem queryById(Long dictItemId);
+    DictItem getById(Long dictItemId);
 
     /**
      * 查询字典项列表
      */
-    Page<DictItem> queryPageList(PageRequestDto pageRequestDto);
+    Page<DictItem> listPage(PageRequestDTO pageRequestDTO);
 
     /**
      * 查询字典项列表
      */
-    List<DictItem> queryList(DictItemDto dto);
+    List<DictItem> list(DictItemDTO dto);
 
     /**
      * 修改字典项
      */
-    Boolean insertByDto(DictItemDto dto);
+    Boolean save(DictItemDTO dto);
 
     /**
      * 修改字典项
      */
-    Boolean updateByDto(DictItemDto dto);
+    Boolean update(DictItemDTO dto);
 
     /**
      * 校验并批量删除字典项信息

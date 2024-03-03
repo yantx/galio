@@ -1,9 +1,10 @@
 package com.galio.system.service;
 
-import com.galio.system.dto.MemberDto;
-import com.galio.system.model.Member;
-import com.galio.core.model.PageRequestDto;
+import com.galio.system.dto.MemberDTO;
+import com.galio.system.entity.Member;
+import com.galio.core.model.PageRequestDTO;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.galio.system.model.vo.MemberVo;
 
 import java.util.Collection;
 import java.util.List;
@@ -18,28 +19,28 @@ public interface MemberService {
     /**
      * 查询成员信息
      */
-    Member queryById(Long memberId);
-    Member queryByName(String username);
+    MemberVo getById(Long memberId);
+    MemberVo getByName(String username);
 
     /**
      * 查询成员信息列表
      */
-    Page<Member> queryPageList(PageRequestDto pageRequestDto);
+    Page<MemberVo> listPage(PageRequestDTO pageRequestDTO);
 
     /**
      * 查询成员信息列表
      */
-    List<Member> queryList(MemberDto dto);
+    List<MemberVo> list(MemberDTO dto);
 
     /**
      * 修改成员信息
      */
-    Boolean insertByDto(MemberDto dto);
+    Boolean save(MemberDTO dto);
 
     /**
      * 修改成员信息
      */
-    Boolean updateByDto(MemberDto dto);
+    Boolean update(MemberDTO dto);
 
     /**
      * 校验并批量删除成员信息信息

@@ -1,13 +1,13 @@
 package com.galio.system.service.impl;
 
 import com.galio.core.utils.ObjectUtil;
-import com.galio.core.model.PageRequestDto;
+import com.galio.core.model.PageRequestDTO;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.galio.mybatis.page.MybatisPageConvertHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import com.galio.system.dto.DatasourceDto;
-import com.galio.system.model.Datasource;
+import com.galio.system.dto.DatasourceDTO;
+import com.galio.system.entity.Datasource;
 import com.galio.system.repository.DatasourceRepository;
 import com.galio.system.service.DatasourceService;
 
@@ -30,7 +30,7 @@ public class DatasourceServiceImpl implements DatasourceService {
      * 查询数据源信息
      */
     @Override
-    public Datasource queryById(Long datasourceId) {
+    public Datasource getById(Long datasourceId) {
         return datasourceRepository.selectById(datasourceId);
     }
 
@@ -38,15 +38,15 @@ public class DatasourceServiceImpl implements DatasourceService {
          * 查询数据源信息列表
          */
         @Override
-        public Page<Datasource> queryPageList(PageRequestDto pageRequestDto) {
-            return datasourceRepository.selectPage(MybatisPageConvertHelper.build(pageRequestDto));
+        public Page<Datasource> listPage(PageRequestDTO pageRequestDTO) {
+            return datasourceRepository.selectPage(MybatisPageConvertHelper.build(pageRequestDTO));
         }
 
     /**
      * 查询数据源信息列表
      */
     @Override
-    public List<Datasource> queryList(DatasourceDto dto) {
+    public List<Datasource> list(DatasourceDTO dto) {
         Datasource entity = ObjectUtil.copyObject(dto, Datasource.class);
         
         return datasourceRepository.selectList(entity);
@@ -56,7 +56,7 @@ public class DatasourceServiceImpl implements DatasourceService {
      * 新增数据源信息
      */
     @Override
-    public Boolean insertByDto(DatasourceDto dto) {
+    public Boolean save(DatasourceDTO dto) {
         Datasource add = ObjectUtil.copyObject(dto, Datasource.class);
         validEntityBeforeSave(add);
         boolean flag = datasourceRepository.insert(add) > 0;
@@ -70,7 +70,7 @@ public class DatasourceServiceImpl implements DatasourceService {
      * 修改数据源信息
      */
     @Override
-    public Boolean updateByDto(DatasourceDto dto) {
+    public Boolean update(DatasourceDTO dto) {
         Datasource update = ObjectUtil.copyObject(dto, Datasource.class);
         validEntityBeforeSave(update);
         return datasourceRepository.updateById(update) > 0;

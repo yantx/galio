@@ -2,10 +2,11 @@ package com.galio.system.service.impl;
 
 import com.galio.core.constant.MemberConstants;
 import com.galio.core.utils.ObjectUtil;
-import com.galio.system.dto.EmployeeDto;
-import com.galio.system.dto.LoginMemberDto;
-import com.galio.system.dto.RoleDto;
-import com.galio.system.model.*;
+import com.galio.system.dto.EmployeeDTO;
+import com.galio.system.dto.LoginMemberDTO;
+import com.galio.system.dto.RoleDTO;
+import com.galio.system.entity.*;
+import com.galio.system.model.vo.MemberVo;
 import com.galio.system.repository.*;
 import com.galio.system.service.MemberBizService;
 import com.galio.system.service.MemberService;
@@ -36,44 +37,46 @@ public class MemberBizServiceImpl implements MemberBizService {
 
 
     @Override
-    public LoginMemberDto queryMemberInfo(String username) {
-        Member member = memberService.queryByName(username);
-        LoginMemberDto loginMemberDto = ObjectUtil.copyObject(member, LoginMemberDto.class);
+    public LoginMemberDTO queryMemberInfo(String username) {
+        MemberVo member = memberService.getByName(username);
+        LoginMemberDTO loginMemberDTO = ObjectUtil.copyObject(member, LoginMemberDTO.class);
 
         // 角色功能权限
         List<Role> roleList = queryRoleWithMember(member.getMemberId());
-        loginMemberDto.setRoles(ObjectUtil.copyList(roleList, RoleDto.class));
+        assert loginMemberDTO != null;
+        loginMemberDTO.setRoles(ObjectUtil.copyList(roleList, RoleDTO.class));
         // 超管不作限制，管理员所在应用内不做限制
-        if (loginMemberDto.isAdmin() || loginMemberDto.isSuperAdmin()){
-            loginMemberDto.setFunctionPerms(Collections.singleton("*.*.*"));
-            loginMemberDto.setRolePerms(Collections.singleton(MemberConstants.SUPER_ADMIN_ROLE));
+        if (loginMemberDTO.isAdmin() || loginMemberDTO.isSuperAdmin()){
+            loginMemberDTO.setFunctionPerms(Collections.singleton("*.*.*"));
+            loginMemberDTO.setRolePerms(Collections.singleton(MemberConstants.SUPER_ADMIN_ROLE));
         }else {
-            loginMemberDto.setRolePerms(roleList.stream().map(Role::getRoleKey).collect(Collectors.toSet()));
+            loginMemberDTO.setRolePerms(roleList.stream().map(Role::getRoleKey).collect(Collectors.toSet()));
             Set<Long> roleIds = roleList.stream().map(Role::getRoleId).collect(Collectors.toSet());
-            List<Function> functionList = functionRepository.selectList(roleIds);
-            loginMemberDto.setFunctionPerms(functionList.stream().map(Function::getPerms).collect(Collectors.toSet()));
+            List<Function> functionList = functionRepository.selectByRoles(roleIds);
+            loginMemberDTO.setFunctionPerms(functionList.stream().map(Function::getPerms).collect(Collectors.toSet()));
         }
 
         // 会员号所属雇员信息
         Employee employee = employeeRepository.selectById(member.getEmployeeId());
-        loginMemberDto.setEmployee(ObjectUtil.copyObject(employee, EmployeeDto.class));
+        loginMemberDTO.setEmployee(ObjectUtil.copyObject(employee, EmployeeDTO.class));
 
         // 机构信息
         Org org = orgRepository.selectById(employee.getOrgId());
-        loginMemberDto.setOrgId(org.getOrgId());
-        loginMemberDto.setOrgName(org.getOrgName());
+        loginMemberDTO.setOrgId(org.getOrgId());
+        loginMemberDTO.setOrgName(org.getOrgName());
         if (org.getParentId() != null){
             Org parentOrg = orgRepository.selectById(employee.getOrgId());
-            loginMemberDto.setParentOrgName(parentOrg.getOrgName());
+            loginMemberDTO.setParentOrgName(parentOrg.getOrgName());
         }
-        return loginMemberDto;
+        return loginMemberDTO;
     }
 
     /**
      * 获取会员角色
-     * @param memberId
-     * @return
+     * @param memberId 会员ID
+     * @return 角色集合
      */
+    @Override
     public List<Role> queryRoleWithMember(Long memberId){
         List<Role> roleList = roleRepository.selectByMemberId(memberId);
         List<Group> groupList = groupRepository.selectListByMember(memberId);

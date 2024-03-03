@@ -16,7 +16,7 @@ import lombok.Data;
 
 @Data
 @Schema(description = "字典项业务对象")
-public class DictItemDto extends BaseEntity {
+public class DictItemDTO extends BaseEntity {
 
     /**
      * 主键

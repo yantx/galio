@@ -1,7 +1,7 @@
 package com.galio.system.api;
 
 import com.galio.core.exception.CustomException;
-import com.galio.system.dto.LoginMemberDto;
+import com.galio.system.dto.LoginMemberDTO;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.service.annotation.GetExchange;
 import org.springframework.web.service.annotation.HttpExchange;
@@ -20,7 +20,7 @@ public interface MemberExchange {
      * @return 会员信息
      */
     @GetExchange(value = "/getInfoByUsername")
-    LoginMemberDto getMemberInfo(@RequestParam(value = "username") String username) throws CustomException;
+    LoginMemberDTO getMemberInfo(@RequestParam(value = "username") String username) throws CustomException;
 
     /**
      * 通过登录名查询会员密码
@@ -37,6 +37,6 @@ public interface MemberExchange {
      * @param mobilePhone 手机号
      * @return 会员信息
      */
-    LoginMemberDto getMemberInfoByMobilePhone(String mobilePhone);
+    LoginMemberDTO getMemberInfoByMobilePhone(String mobilePhone);
 
 }

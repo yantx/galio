@@ -16,7 +16,7 @@ import java.util.List;
 
 @Data
 @Schema(description = "成员信息业务对象")
-public class MemberDto extends BaseEntity {
+public class MemberDTO extends BaseEntity {
 
     /**
      * 主键

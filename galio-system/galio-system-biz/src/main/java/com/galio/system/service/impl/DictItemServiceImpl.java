@@ -1,13 +1,13 @@
 package com.galio.system.service.impl;
 
 import com.galio.core.utils.ObjectUtil;
-import com.galio.core.model.PageRequestDto;
+import com.galio.core.model.PageRequestDTO;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.galio.mybatis.page.MybatisPageConvertHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import com.galio.system.dto.DictItemDto;
-import com.galio.system.model.DictItem;
+import com.galio.system.dto.DictItemDTO;
+import com.galio.system.entity.DictItem;
 import com.galio.system.repository.DictItemRepository;
 import com.galio.system.service.DictItemService;
 
@@ -30,7 +30,7 @@ public class DictItemServiceImpl implements DictItemService {
      * 查询字典项
      */
     @Override
-    public DictItem queryById(Long dictItemId) {
+    public DictItem getById(Long dictItemId) {
         return dictItemRepository.selectById(dictItemId);
     }
 
@@ -38,15 +38,15 @@ public class DictItemServiceImpl implements DictItemService {
          * 查询字典项列表
          */
         @Override
-        public Page<DictItem> queryPageList(PageRequestDto pageRequestDto) {
-            return dictItemRepository.selectPage(MybatisPageConvertHelper.build(pageRequestDto));
+        public Page<DictItem> listPage(PageRequestDTO pageRequestDTO) {
+            return dictItemRepository.selectPage(MybatisPageConvertHelper.build(pageRequestDTO));
         }
 
     /**
      * 查询字典项列表
      */
     @Override
-    public List<DictItem> queryList(DictItemDto dto) {
+    public List<DictItem> list(DictItemDTO dto) {
         DictItem entity = ObjectUtil.copyObject(dto, DictItem.class);
         
         return dictItemRepository.selectList(entity);
@@ -56,7 +56,7 @@ public class DictItemServiceImpl implements DictItemService {
      * 新增字典项
      */
     @Override
-    public Boolean insertByDto(DictItemDto dto) {
+    public Boolean save(DictItemDTO dto) {
         DictItem add = ObjectUtil.copyObject(dto, DictItem.class);
         validEntityBeforeSave(add);
         boolean flag = dictItemRepository.insert(add) > 0;
@@ -70,7 +70,7 @@ public class DictItemServiceImpl implements DictItemService {
      * 修改字典项
      */
     @Override
-    public Boolean updateByDto(DictItemDto dto) {
+    public Boolean update(DictItemDTO dto) {
         DictItem update = ObjectUtil.copyObject(dto, DictItem.class);
         validEntityBeforeSave(update);
         return dictItemRepository.updateById(update) > 0;

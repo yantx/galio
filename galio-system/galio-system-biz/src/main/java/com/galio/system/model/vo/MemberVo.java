@@ -13,8 +13,6 @@ import lombok.Data;
 @Schema(description = "成员信息视图对象")
 public class MemberVo {
 
-    private static final long serialVersionUID = 1L;
-
     /**
      * 主键
      */

@@ -1,6 +1,9 @@
 package com.galio.system.service;
 
-import com.galio.system.dto.LoginMemberDto;
+import com.galio.system.dto.LoginMemberDTO;
+import com.galio.system.entity.Role;
+
+import java.util.List;
 
 /**
  * @Author: galio
@@ -9,5 +12,6 @@ import com.galio.system.dto.LoginMemberDto;
  */
 public interface MemberBizService {
 
-    LoginMemberDto queryMemberInfo(String username);
+    LoginMemberDTO queryMemberInfo(String username);
+    List<Role> queryRoleWithMember(Long memberId);
 }

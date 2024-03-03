@@ -16,7 +16,7 @@ import lombok.Data;
 
 @Data
 @Schema(description = "数据源信息业务对象")
-public class DatasourceDto extends BaseEntity {
+public class DatasourceDTO extends BaseEntity {
 
     /**
      * 数据源id

@@ -4,17 +4,17 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.galio.core.utils.ObjectUtil;
 import com.galio.core.validate.InsertGroup;
 import com.galio.core.validate.UpdateGroup;
-import com.galio.core.model.PageRequestDto;
-import com.galio.mybatis.page.PageVo;
+import com.galio.core.model.PageRequestDTO;
+import com.galio.mybatis.page.PageVO;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import com.galio.system.model.OperLog;
+import com.galio.system.entity.OperLog;
 import com.galio.system.model.vo.OperLogVo;
-import com.galio.system.dto.OperLogDto;
+import com.galio.system.dto.OperLogDTO;
 import com.galio.system.service.OperLogService;
 
 import java.util.Arrays;
@@ -42,9 +42,9 @@ public class OperLogController {
     @Operation(summary = "查询操作日志记录列表")
     @SaCheckPermission("system:operLog:page")
     @PostMapping("/page")
-    public PageVo page(@RequestBody PageRequestDto pageRequestDto) {
-        IPage<OperLog> pageData = operLogService.queryPageList(pageRequestDto);
-        return PageVo.build(pageData);
+    public PageVO page(@RequestBody PageRequestDTO pageRequestDTO) {
+        IPage<OperLog> pageData = operLogService.listPage(pageRequestDTO);
+        return PageVO.build(pageData);
     }
 
     /**
@@ -56,7 +56,7 @@ public class OperLogController {
     @SaCheckPermission("system:operLog:query")
     @GetMapping("/{operId}")
     public OperLogVo getInfo(@NotNull(message = "主键不能为空") @PathVariable Long operId) {
-        OperLog operLog = operLogService.queryById(operId);
+        OperLog operLog = operLogService.getById(operId);
         return ObjectUtil.copyObject(operLog, OperLogVo.class);
     }
 
@@ -66,8 +66,8 @@ public class OperLogController {
     @Operation(summary = "新增操作日志记录")
     @SaCheckPermission("system:operLog:add")
     @PostMapping()
-    public Object add(@Validated(InsertGroup.class) @RequestBody OperLogDto dto) {
-        return operLogService.insertByDto(dto);
+    public Object add(@Validated(InsertGroup.class) @RequestBody OperLogDTO dto) {
+        return operLogService.save(dto);
     }
 
     /**
@@ -76,8 +76,8 @@ public class OperLogController {
     @Operation(summary = "修改操作日志记录")
     @SaCheckPermission("system:operLog:edit")
     @PutMapping()
-    public Object edit(@Validated(UpdateGroup.class) @RequestBody OperLogDto dto) {
-        return operLogService.updateByDto(dto);
+    public Object edit(@Validated(UpdateGroup.class) @RequestBody OperLogDTO dto) {
+        return operLogService.update(dto);
     }
 
     /**

@@ -4,17 +4,17 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.galio.core.utils.ObjectUtil;
 import com.galio.core.validate.InsertGroup;
 import com.galio.core.validate.UpdateGroup;
-import com.galio.core.model.PageRequestDto;
-import com.galio.mybatis.page.PageVo;
+import com.galio.core.model.PageRequestDTO;
+import com.galio.mybatis.page.PageVO;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import com.galio.system.model.Datasource;
+import com.galio.system.entity.Datasource;
 import com.galio.system.model.vo.DatasourceVo;
-import com.galio.system.dto.DatasourceDto;
+import com.galio.system.dto.DatasourceDTO;
 import com.galio.system.service.DatasourceService;
 
 import java.util.Arrays;
@@ -42,9 +42,9 @@ public class DatasourceController {
     @Operation(summary = "查询数据源信息列表")
     @SaCheckPermission("system:datasource:page")
     @PostMapping("/page")
-    public PageVo page(@RequestBody PageRequestDto pageRequestDto) {
-        IPage<Datasource> pageData = datasourceService.queryPageList(pageRequestDto);
-        return PageVo.build(pageData);
+    public PageVO page(@RequestBody PageRequestDTO pageRequestDTO) {
+        IPage<Datasource> pageData = datasourceService.listPage(pageRequestDTO);
+        return PageVO.build(pageData);
     }
 
     /**
@@ -56,7 +56,7 @@ public class DatasourceController {
     @SaCheckPermission("system:datasource:query")
     @GetMapping("/{datasourceId}")
     public DatasourceVo getInfo(@NotNull(message = "主键不能为空") @PathVariable Long datasourceId) {
-        Datasource datasource = datasourceService.queryById(datasourceId);
+        Datasource datasource = datasourceService.getById(datasourceId);
         return ObjectUtil.copyObject(datasource, DatasourceVo.class);
     }
 
@@ -66,8 +66,8 @@ public class DatasourceController {
     @Operation(summary = "新增数据源信息")
     @SaCheckPermission("system:datasource:add")
     @PostMapping()
-    public Object add(@Validated(InsertGroup.class) @RequestBody DatasourceDto dto) {
-        return datasourceService.insertByDto(dto);
+    public Object add(@Validated(InsertGroup.class) @RequestBody DatasourceDTO dto) {
+        return datasourceService.save(dto);
     }
 
     /**
@@ -76,8 +76,8 @@ public class DatasourceController {
     @Operation(summary = "修改数据源信息")
     @SaCheckPermission("system:datasource:edit")
     @PutMapping()
-    public Object edit(@Validated(UpdateGroup.class) @RequestBody DatasourceDto dto) {
-        return datasourceService.updateByDto(dto);
+    public Object edit(@Validated(UpdateGroup.class) @RequestBody DatasourceDTO dto) {
+        return datasourceService.update(dto);
     }
 
     /**

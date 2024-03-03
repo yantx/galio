@@ -1,6 +1,6 @@
 package com.galio.system.api;
 
-import com.galio.system.dto.DictItemDto;
+import com.galio.system.dto.DictItemDTO;
 import org.springframework.web.service.annotation.HttpExchange;
 
 import java.util.List;
@@ -24,7 +24,7 @@ public interface DictItemExchange {
      * @return 字典项集合信息
      */
 
-    List<DictItemDto> getDictItemByDictId(String dictId);
+    List<DictItemDTO> getDictItemByDictId(String dictId);
 
     /**
      * 根据字典编号查询字典项数据
@@ -32,7 +32,7 @@ public interface DictItemExchange {
      * @param dictCode 字典编号
      * @return 字典项集合信息
      */
-    List<DictItemDto> getDictItemByDictCode(String dictCode);
+    List<DictItemDTO> getDictItemByDictCode(String dictCode);
 
     /**
      * 根据字典类型和字典值获取字典标签

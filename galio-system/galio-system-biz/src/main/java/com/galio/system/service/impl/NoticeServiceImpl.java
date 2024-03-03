@@ -1,13 +1,13 @@
 package com.galio.system.service.impl;
 
 import com.galio.core.utils.ObjectUtil;
-import com.galio.core.model.PageRequestDto;
+import com.galio.core.model.PageRequestDTO;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.galio.mybatis.page.MybatisPageConvertHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import com.galio.system.dto.NoticeDto;
-import com.galio.system.model.Notice;
+import com.galio.system.dto.NoticeDTO;
+import com.galio.system.entity.Notice;
 import com.galio.system.repository.NoticeRepository;
 import com.galio.system.service.NoticeService;
 
@@ -30,7 +30,7 @@ public class NoticeServiceImpl implements NoticeService {
      * 查询通知公告
      */
     @Override
-    public Notice queryById(Long noticeId) {
+    public Notice getById(Long noticeId) {
         return noticeRepository.selectById(noticeId);
     }
 
@@ -38,15 +38,15 @@ public class NoticeServiceImpl implements NoticeService {
          * 查询通知公告列表
          */
         @Override
-        public Page<Notice> queryPageList(PageRequestDto pageRequestDto) {
-            return noticeRepository.selectPage(MybatisPageConvertHelper.build(pageRequestDto));
+        public Page<Notice> listPage(PageRequestDTO pageRequestDTO) {
+            return noticeRepository.selectPage(MybatisPageConvertHelper.build(pageRequestDTO));
         }
 
     /**
      * 查询通知公告列表
      */
     @Override
-    public List<Notice> queryList(NoticeDto dto) {
+    public List<Notice> list(NoticeDTO dto) {
         Notice entity = ObjectUtil.copyObject(dto, Notice.class);
         
         return noticeRepository.selectList(entity);
@@ -56,7 +56,7 @@ public class NoticeServiceImpl implements NoticeService {
      * 新增通知公告
      */
     @Override
-    public Boolean insertByDto(NoticeDto dto) {
+    public Boolean save(NoticeDTO dto) {
         Notice add = ObjectUtil.copyObject(dto, Notice.class);
         validEntityBeforeSave(add);
         boolean flag = noticeRepository.insert(add) > 0;
@@ -70,7 +70,7 @@ public class NoticeServiceImpl implements NoticeService {
      * 修改通知公告
      */
     @Override
-    public Boolean updateByDto(NoticeDto dto) {
+    public Boolean update(NoticeDTO dto) {
         Notice update = ObjectUtil.copyObject(dto, Notice.class);
         validEntityBeforeSave(update);
         return noticeRepository.updateById(update) > 0;

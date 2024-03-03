@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 
 @Data
 @Schema(description = "系统访问记录业务对象")
-public class AccessLogDto {
+public class AccessLogDTO {
 
     /**
      * 主键

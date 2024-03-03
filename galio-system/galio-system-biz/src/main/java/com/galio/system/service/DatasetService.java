@@ -1,8 +1,8 @@
 package com.galio.system.service;
 
-import com.galio.core.model.PageRequestDto;
-import com.galio.system.dto.DatasetDto;
-import com.galio.system.model.Dataset;
+import com.galio.core.model.PageRequestDTO;
+import com.galio.system.dto.DatasetDTO;
+import com.galio.system.entity.Dataset;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import java.util.Collection;
@@ -18,27 +18,27 @@ public interface DatasetService {
     /**
      * 查询数据集信息
      */
-    Dataset queryById(Long datasetId);
+    Dataset getById(Long datasetId);
 
     /**
      * 查询数据集信息列表
      */
-    Page<Dataset> queryPageList(PageRequestDto pageRequestDto);
+    Page<Dataset> listPage(PageRequestDTO pageRequestDTO);
 
     /**
      * 查询数据集信息列表
      */
-    List<Dataset> queryList(DatasetDto dto);
+    List<Dataset> list(DatasetDTO dto);
 
     /**
      * 修改数据集信息
      */
-    Boolean insertByDto(DatasetDto dto);
+    Boolean save(DatasetDTO dto);
 
     /**
      * 修改数据集信息
      */
-    Boolean updateByDto(DatasetDto dto);
+    Boolean update(DatasetDTO dto);
 
     /**
      * 校验并批量删除数据集信息信息

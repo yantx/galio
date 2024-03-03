@@ -1,18 +1,17 @@
 package com.galio.system.service.impl;
 
-import com.galio.core.utils.ObjectUtil;
-import com.galio.core.model.PageRequestDto;
+import com.galio.core.model.PageRequestDTO;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.galio.mybatis.page.MybatisPageConvertHelper;
+import com.galio.system.model.converter.EmployeeConvert;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import com.galio.system.dto.EmployeeDto;
-import com.galio.system.model.Employee;
+import com.galio.system.dto.EmployeeDTO;
+import com.galio.system.entity.Employee;
 import com.galio.system.repository.EmployeeRepository;
 import com.galio.system.service.EmployeeService;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Collection;
 
 /**
@@ -25,12 +24,13 @@ import java.util.Collection;
 public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
+    private final EmployeeConvert convert;
 
     /**
      * 查询雇员
      */
     @Override
-    public Employee queryById(Long employeeId) {
+    public Employee getById(Long employeeId) {
         return employeeRepository.selectById(employeeId);
     }
 
@@ -38,16 +38,16 @@ public class EmployeeServiceImpl implements EmployeeService {
          * 查询雇员列表
          */
         @Override
-        public Page<Employee> queryPageList(PageRequestDto pageRequestDto) {
-            return employeeRepository.selectPage(MybatisPageConvertHelper.build(pageRequestDto));
+        public Page<Employee> listPage(PageRequestDTO pageRequestDTO) {
+            return employeeRepository.selectPage(MybatisPageConvertHelper.build(pageRequestDTO));
         }
 
     /**
      * 查询雇员列表
      */
     @Override
-    public List<Employee> queryList(EmployeeDto dto) {
-        Employee entity = ObjectUtil.copyObject(dto, Employee.class);
+    public List<Employee> list(EmployeeDTO dto) {
+        Employee entity = convert.dtoToEntity(dto);
         
         return employeeRepository.selectList(entity);
     }
@@ -56,8 +56,8 @@ public class EmployeeServiceImpl implements EmployeeService {
      * 新增雇员
      */
     @Override
-    public Boolean insertByDto(EmployeeDto dto) {
-        Employee add = ObjectUtil.copyObject(dto, Employee.class);
+    public Boolean save(EmployeeDTO dto) {
+        Employee add = convert.dtoToEntity(dto);
         validEntityBeforeSave(add);
         boolean flag = employeeRepository.insert(add) > 0;
         if (flag) {
@@ -70,8 +70,8 @@ public class EmployeeServiceImpl implements EmployeeService {
      * 修改雇员
      */
     @Override
-    public Boolean updateByDto(EmployeeDto dto) {
-        Employee update = ObjectUtil.copyObject(dto, Employee.class);
+    public Boolean update(EmployeeDTO dto) {
+        Employee update = convert.dtoToEntity(dto);
         validEntityBeforeSave(update);
         return employeeRepository.updateById(update) > 0;
     }

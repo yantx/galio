@@ -1,11 +1,7 @@
 package com.galio.system.dto;
 
 import com.galio.core.model.BaseEntity;
-import com.galio.core.validate.InsertGroup;
-import com.galio.core.validate.UpdateGroup;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 /**
@@ -16,7 +12,7 @@ import lombok.Data;
 
 @Data
 @Schema(description = "应用信息业务对象")
-public class AppDto extends BaseEntity {
+public class AppDTO extends BaseEntity {
 
     /**
      * 应用ID

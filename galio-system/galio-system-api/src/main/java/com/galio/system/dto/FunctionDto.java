@@ -16,7 +16,7 @@ import lombok.Data;
 
 @Data
 @Schema(description = "功能业务对象")
-public class FunctionDto extends BaseEntity {
+public class FunctionDTO extends BaseEntity {
 
     /**
      * 主键

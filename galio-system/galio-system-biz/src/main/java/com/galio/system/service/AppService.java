@@ -1,8 +1,8 @@
 package com.galio.system.service;
 
-import com.galio.system.dto.AppDto;
-import com.galio.system.dto.AppPageReqDto;
-import com.galio.system.model.App;
+import com.galio.system.dto.AppDTO;
+import com.galio.system.dto.AppPageReqDTO;
+import com.galio.system.entity.App;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import java.util.Collection;
@@ -18,27 +18,27 @@ public interface AppService {
     /**
      * 查询应用信息
      */
-    App queryById(Long appId);
+    App getById(Long appId);
 
     /**
      * 查询应用信息列表
      */
-    Page<App> queryPageList(AppPageReqDto pageRequestDto);
+    Page<App> listPage(AppPageReqDTO pageRequestDTO);
 
     /**
      * 查询应用信息列表
      */
-    List<App> queryList(AppDto dto);
+    List<App> list(AppDTO dto);
 
     /**
      * 修改应用信息
      */
-    Boolean insertByDto(AppDto dto);
+    Boolean save(AppDTO dto);
 
     /**
      * 修改应用信息
      */
-    Boolean updateByDto(AppDto dto);
+    Boolean update(AppDTO dto);
 
     /**
      * 校验并批量删除应用信息信息

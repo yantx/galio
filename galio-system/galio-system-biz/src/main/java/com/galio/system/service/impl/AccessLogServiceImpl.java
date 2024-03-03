@@ -1,13 +1,14 @@
 package com.galio.system.service.impl;
 
-import com.galio.core.utils.ObjectUtil;
-import com.galio.core.model.PageRequestDto;
+import com.galio.core.model.PageRequestDTO;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.galio.mybatis.page.MybatisPageConvertHelper;
+import com.galio.system.model.converter.AccessLogConvert;
+import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import com.galio.system.dto.AccessLogDto;
-import com.galio.system.model.AccessLog;
+import com.galio.system.dto.AccessLogDTO;
+import com.galio.system.entity.AccessLog;
 import com.galio.system.repository.AccessLogRepository;
 import com.galio.system.service.AccessLogService;
 
@@ -24,12 +25,14 @@ import java.util.Collection;
 public class AccessLogServiceImpl implements AccessLogService {
 
     private final AccessLogRepository accessLogRepository;
+    @Resource
+    private AccessLogConvert accessLogConvert;
 
     /**
      * 查询系统访问记录
      */
     @Override
-    public AccessLog queryById(Long accessId) {
+    public AccessLog getById(Long accessId) {
         return accessLogRepository.selectById(accessId);
     }
 
@@ -37,17 +40,16 @@ public class AccessLogServiceImpl implements AccessLogService {
      * 查询系统访问记录列表
      */
     @Override
-    public Page<AccessLog> queryPageList(PageRequestDto pageRequestDto) {
-        return accessLogRepository.selectPage(MybatisPageConvertHelper.build(pageRequestDto));
+    public Page<AccessLog> listPage(PageRequestDTO pageRequestDTO) {
+        return accessLogRepository.selectPage(MybatisPageConvertHelper.build(pageRequestDTO));
     }
 
     /**
      * 查询系统访问记录列表
      */
     @Override
-    public List<AccessLog> queryList(AccessLogDto dto) {
-        AccessLog entity = ObjectUtil.copyObject(dto, AccessLog.class);
-
+    public List<AccessLog> list(AccessLogDTO dto) {
+        AccessLog entity = accessLogConvert.dtoToEntity(dto);
         return accessLogRepository.selectList(entity);
     }
 
@@ -55,8 +57,8 @@ public class AccessLogServiceImpl implements AccessLogService {
      * 新增系统访问记录
      */
     @Override
-    public Boolean insertByDto(AccessLogDto dto) {
-        AccessLog add = ObjectUtil.copyObject(dto, AccessLog.class);
+    public Boolean save(AccessLogDTO dto) {
+        AccessLog add = accessLogConvert.dtoToEntity(dto);
         validEntityBeforeSave(add);
         boolean flag = accessLogRepository.insert(add) > 0;
         if (flag) {
@@ -69,8 +71,8 @@ public class AccessLogServiceImpl implements AccessLogService {
      * 修改系统访问记录
      */
     @Override
-    public Boolean updateByDto(AccessLogDto dto) {
-        AccessLog update = ObjectUtil.copyObject(dto, AccessLog.class);
+    public Boolean update(AccessLogDTO dto) {
+        AccessLog update = accessLogConvert.dtoToEntity(dto);
         validEntityBeforeSave(update);
         return accessLogRepository.updateById(update) > 0;
     }

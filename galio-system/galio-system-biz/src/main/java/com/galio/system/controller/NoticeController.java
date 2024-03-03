@@ -4,17 +4,17 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.galio.core.utils.ObjectUtil;
 import com.galio.core.validate.InsertGroup;
 import com.galio.core.validate.UpdateGroup;
-import com.galio.core.model.PageRequestDto;
-import com.galio.mybatis.page.PageVo;
+import com.galio.core.model.PageRequestDTO;
+import com.galio.mybatis.page.PageVO;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import com.galio.system.model.Notice;
+import com.galio.system.entity.Notice;
 import com.galio.system.model.vo.NoticeVo;
-import com.galio.system.dto.NoticeDto;
+import com.galio.system.dto.NoticeDTO;
 import com.galio.system.service.NoticeService;
 
 import java.util.Arrays;
@@ -42,9 +42,9 @@ public class NoticeController {
     @Operation(summary = "查询通知公告列表")
     @SaCheckPermission("system:notice:page")
     @PostMapping("/page")
-    public PageVo page(@RequestBody PageRequestDto pageRequestDto) {
-        IPage<Notice> pageData = noticeService.queryPageList(pageRequestDto);
-        return PageVo.build(pageData);
+    public PageVO page(@RequestBody PageRequestDTO pageRequestDTO) {
+        IPage<Notice> pageData = noticeService.listPage(pageRequestDTO);
+        return PageVO.build(pageData);
     }
 
     /**
@@ -56,7 +56,7 @@ public class NoticeController {
     @SaCheckPermission("system:notice:query")
     @GetMapping("/{noticeId}")
     public NoticeVo getInfo(@NotNull(message = "主键不能为空") @PathVariable Long noticeId) {
-        Notice notice = noticeService.queryById(noticeId);
+        Notice notice = noticeService.getById(noticeId);
         return ObjectUtil.copyObject(notice, NoticeVo.class);
     }
 
@@ -66,8 +66,8 @@ public class NoticeController {
     @Operation(summary = "新增通知公告")
     @SaCheckPermission("system:notice:add")
     @PostMapping()
-    public Object add(@Validated(InsertGroup.class) @RequestBody NoticeDto dto) {
-        return noticeService.insertByDto(dto);
+    public Object add(@Validated(InsertGroup.class) @RequestBody NoticeDTO dto) {
+        return noticeService.save(dto);
     }
 
     /**
@@ -76,8 +76,8 @@ public class NoticeController {
     @Operation(summary = "修改通知公告")
     @SaCheckPermission("system:notice:edit")
     @PutMapping()
-    public Object edit(@Validated(UpdateGroup.class) @RequestBody NoticeDto dto) {
-        return noticeService.updateByDto(dto);
+    public Object edit(@Validated(UpdateGroup.class) @RequestBody NoticeDTO dto) {
+        return noticeService.update(dto);
     }
 
     /**

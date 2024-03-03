@@ -4,17 +4,17 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.galio.core.utils.ObjectUtil;
 import com.galio.core.validate.InsertGroup;
 import com.galio.core.validate.UpdateGroup;
-import com.galio.core.model.PageRequestDto;
-import com.galio.mybatis.page.PageVo;
+import com.galio.core.model.PageRequestDTO;
+import com.galio.mybatis.page.PageVO;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import com.galio.system.model.Dataset;
+import com.galio.system.entity.Dataset;
 import com.galio.system.model.vo.DatasetVo;
-import com.galio.system.dto.DatasetDto;
+import com.galio.system.dto.DatasetDTO;
 import com.galio.system.service.DatasetService;
 
 import java.util.Arrays;
@@ -42,9 +42,9 @@ public class DatasetController {
     @Operation(summary = "查询数据集信息列表")
     @SaCheckPermission("system:dataset:page")
     @PostMapping("/page")
-    public PageVo page(@RequestBody PageRequestDto pageRequestDto) {
-        IPage<Dataset> pageData = datasetService.queryPageList(pageRequestDto);
-        return PageVo.build(pageData);
+    public PageVO page(@RequestBody PageRequestDTO pageRequestDTO) {
+        IPage<Dataset> pageData = datasetService.listPage(pageRequestDTO);
+        return PageVO.build(pageData);
     }
 
     /**
@@ -56,7 +56,7 @@ public class DatasetController {
     @SaCheckPermission("system:dataset:query")
     @GetMapping("/{datasetId}")
     public DatasetVo getInfo(@NotNull(message = "主键不能为空") @PathVariable Long datasetId) {
-        Dataset dataset = datasetService.queryById(datasetId);
+        Dataset dataset = datasetService.getById(datasetId);
         return ObjectUtil.copyObject(dataset, DatasetVo.class);
     }
 
@@ -66,8 +66,8 @@ public class DatasetController {
     @Operation(summary = "新增数据集信息")
     @SaCheckPermission("system:dataset:add")
     @PostMapping()
-    public Object add(@Validated(InsertGroup.class) @RequestBody DatasetDto dto) {
-        return datasetService.insertByDto(dto);
+    public Object add(@Validated(InsertGroup.class) @RequestBody DatasetDTO dto) {
+        return datasetService.save(dto);
     }
 
     /**
@@ -76,8 +76,8 @@ public class DatasetController {
     @Operation(summary = "修改数据集信息")
     @SaCheckPermission("system:dataset:edit")
     @PutMapping()
-    public Object edit(@Validated(UpdateGroup.class) @RequestBody DatasetDto dto) {
-        return datasetService.updateByDto(dto);
+    public Object edit(@Validated(UpdateGroup.class) @RequestBody DatasetDTO dto) {
+        return datasetService.update(dto);
     }
 
     /**

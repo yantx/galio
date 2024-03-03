@@ -1,8 +1,8 @@
 package com.galio.system.service;
 
-import com.galio.core.model.PageRequestDto;
-import com.galio.system.dto.EmployeeDto;
-import com.galio.system.model.Employee;
+import com.galio.core.model.PageRequestDTO;
+import com.galio.system.dto.EmployeeDTO;
+import com.galio.system.entity.Employee;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import java.util.Collection;
@@ -18,27 +18,27 @@ public interface EmployeeService {
     /**
      * 查询雇员
      */
-    Employee queryById(Long employeeId);
+    Employee getById(Long employeeId);
 
     /**
      * 查询雇员列表
      */
-    Page<Employee> queryPageList(PageRequestDto pageRequestDto);
+    Page<Employee> listPage(PageRequestDTO pageRequestDTO);
 
     /**
      * 查询雇员列表
      */
-    List<Employee> queryList(EmployeeDto dto);
+    List<Employee> list(EmployeeDTO dto);
 
     /**
      * 修改雇员
      */
-    Boolean insertByDto(EmployeeDto dto);
+    Boolean save(EmployeeDTO dto);
 
     /**
      * 修改雇员
      */
-    Boolean updateByDto(EmployeeDto dto);
+    Boolean update(EmployeeDTO dto);
 
     /**
      * 校验并批量删除雇员信息

@@ -1,20 +1,19 @@
 package com.galio.system.controller;
 
-import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.galio.core.utils.ObjectUtil;
 import com.galio.core.validate.InsertGroup;
 import com.galio.core.validate.UpdateGroup;
-import com.galio.core.model.PageRequestDto;
-import com.galio.mybatis.page.PageVo;
+import com.galio.core.model.PageRequestDTO;
+import com.galio.mybatis.page.PageVO;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import com.galio.system.model.AccessLog;
+import com.galio.system.entity.AccessLog;
 import com.galio.system.model.vo.AccessLogVo;
-import com.galio.system.dto.AccessLogDto;
+import com.galio.system.dto.AccessLogDTO;
 import com.galio.system.service.AccessLogService;
 
 import java.util.Arrays;
@@ -41,9 +40,9 @@ public class AccessLogController {
      */
     @Operation(summary = "查询系统访问记录列表")
     @PostMapping("/page")
-    public PageVo page(@RequestBody PageRequestDto pageRequestDto) {
-        IPage<AccessLog> pageData = accessLogService.queryPageList(pageRequestDto);
-        return PageVo.build(pageData);
+    public PageVO page(@RequestBody PageRequestDTO pageRequestDTO) {
+        IPage<AccessLog> pageData = accessLogService.listPage(pageRequestDTO);
+        return PageVO.build(pageData);
     }
 
     /**
@@ -54,7 +53,7 @@ public class AccessLogController {
     @Operation(summary = "查询系统访问记录详情")
     @GetMapping("/{accessId}")
     public AccessLogVo getInfo(@NotNull(message = "主键不能为空") @PathVariable Long accessId) {
-        AccessLog accessLog = accessLogService.queryById(accessId);
+        AccessLog accessLog = accessLogService.getById(accessId);
         return ObjectUtil.copyObject(accessLog, AccessLogVo.class);
     }
 
@@ -63,8 +62,8 @@ public class AccessLogController {
      */
     @Operation(summary = "新增系统访问记录")
     @PostMapping()
-    public Boolean add(@Validated(InsertGroup.class) @RequestBody AccessLogDto dto) {
-        return accessLogService.insertByDto(dto);
+    public Boolean add(@Validated(InsertGroup.class) @RequestBody AccessLogDTO dto) {
+        return accessLogService.save(dto);
     }
 
     /**
@@ -72,8 +71,8 @@ public class AccessLogController {
      */
     @Operation(summary = "修改系统访问记录")
     @PutMapping()
-    public Object edit(@Validated(UpdateGroup.class) @RequestBody AccessLogDto dto) {
-        return accessLogService.updateByDto(dto);
+    public Object edit(@Validated(UpdateGroup.class) @RequestBody AccessLogDTO dto) {
+        return accessLogService.update(dto);
     }
 
     /**

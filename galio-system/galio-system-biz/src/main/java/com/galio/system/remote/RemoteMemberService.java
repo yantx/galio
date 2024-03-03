@@ -2,8 +2,8 @@ package com.galio.system.remote;
 
 import com.galio.core.enums.ResponseEnum;
 import com.galio.core.utils.Assert;
-import com.galio.system.dto.LoginMemberDto;
-import com.galio.system.model.Member;
+import com.galio.system.dto.LoginMemberDTO;
+import com.galio.system.model.vo.MemberVo;
 import com.galio.system.service.MemberBizService;
 import com.galio.system.service.MemberService;
 import jakarta.validation.constraints.NotNull;
@@ -31,15 +31,15 @@ public class RemoteMemberService {
      * @param username 登录名
      */
     @GetMapping(value = "/getInfoByUsername")
-    public LoginMemberDto getInfoByUsername(@NotNull(message = "登录名不能为空") @RequestParam String username) {
-        LoginMemberDto member = memberBizService.queryMemberInfo(username);
+    public LoginMemberDTO getInfoByUsername(@NotNull(message = "登录名不能为空") @RequestParam String username) {
+        LoginMemberDTO member = memberBizService.queryMemberInfo(username);
         Assert.notNull(member, ResponseEnum.MEMBER_NOT_EXITS.withArgs(username));
         return member;
     }
 
     @GetMapping(value = "/getPassword")
     public String getPassword(@NotNull(message = "登录名不能为空") @RequestParam String username) {
-        Member member = memberService.queryByName(username);
+        MemberVo member = memberService.getByName(username);
         Assert.notNull(member, ResponseEnum.MEMBER_NOT_EXITS.withArgs(username));
         return member.getPassword();
     }

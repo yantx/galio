@@ -1,6 +1,6 @@
 package com.galio.system.dto;
 
-import com.galio.core.model.PageRequestDto;
+import com.galio.core.model.PageRequestDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -13,7 +13,7 @@ import lombok.Data;
 
 @Data
 @Schema(description = "字典业务对象")
-public class DictPageReqDto extends PageRequestDto {
+public class DictPageReqDTO extends PageRequestDTO {
 
     /**
      * 字典名称

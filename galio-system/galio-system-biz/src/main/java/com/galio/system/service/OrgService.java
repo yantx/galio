@@ -1,8 +1,8 @@
 package com.galio.system.service;
 
-import com.galio.core.model.PageRequestDto;
-import com.galio.system.dto.OrgDto;
-import com.galio.system.model.Org;
+import com.galio.core.model.PageRequestDTO;
+import com.galio.system.dto.OrgDTO;
+import com.galio.system.entity.Org;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import java.util.Collection;
@@ -18,27 +18,27 @@ public interface OrgService {
     /**
      * 查询机构
      */
-    Org queryById(Long orgId);
+    Org getById(Long orgId);
 
     /**
      * 查询机构列表
      */
-    Page<Org> queryPageList(PageRequestDto pageRequestDto);
+    Page<Org> listPage(PageRequestDTO pageRequestDTO);
 
     /**
      * 查询机构列表
      */
-    List<Org> queryList(OrgDto dto);
+    List<Org> list(OrgDTO dto);
 
     /**
      * 修改机构
      */
-    Boolean insertByDto(OrgDto dto);
+    Boolean save(OrgDTO dto);
 
     /**
      * 修改机构
      */
-    Boolean updateByDto(OrgDto dto);
+    Boolean update(OrgDTO dto);
 
     /**
      * 校验并批量删除机构信息

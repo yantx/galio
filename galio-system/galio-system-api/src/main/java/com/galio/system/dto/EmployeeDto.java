@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 
 @Data
 @Schema(description = "雇员业务对象")
-public class EmployeeDto extends BaseEntity {
+public class EmployeeDTO extends BaseEntity {
 
     /**
      * 主键

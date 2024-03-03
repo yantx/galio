@@ -1,8 +1,8 @@
 package com.galio.system.service;
 
-import com.galio.system.dto.GroupDto;
-import com.galio.system.model.Group;
-import com.galio.core.model.PageRequestDto;
+import com.galio.system.dto.GroupDTO;
+import com.galio.system.entity.Group;
+import com.galio.core.model.PageRequestDTO;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import java.util.Collection;
@@ -18,27 +18,27 @@ public interface GroupService {
     /**
      * 查询群组信息
      */
-    Group queryById(Long groupId);
+    Group getById(Long groupId);
 
     /**
      * 查询群组信息列表
      */
-    Page<Group> queryPageList(PageRequestDto pageRequestDto);
+    Page<Group> listPage(PageRequestDTO pageRequestDTO);
 
     /**
      * 查询群组信息列表
      */
-    List<Group> queryList(GroupDto dto);
+    List<Group> list(GroupDTO dto);
 
     /**
      * 修改群组信息
      */
-    Boolean insertByDto(GroupDto dto);
+    Boolean save(GroupDTO dto);
 
     /**
      * 修改群组信息
      */
-    Boolean updateByDto(GroupDto dto);
+    Boolean update(GroupDTO dto);
 
     /**
      * 校验并批量删除群组信息信息

@@ -13,7 +13,7 @@ import java.util.List;
  */
 @Data
 @Schema(description = "角色业务对象")
-public class RoleDto extends BaseEntity {
+public class RoleDTO extends BaseEntity {
     /**
      * 角色ID
      */

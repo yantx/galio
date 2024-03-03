@@ -1,6 +1,6 @@
 package com.galio.system.api;
 
-import com.galio.system.dto.AccessLogDto;
+import com.galio.system.dto.AccessLogDTO;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.service.annotation.HttpExchange;
 import org.springframework.web.service.annotation.PostExchange;
@@ -14,5 +14,5 @@ import org.springframework.web.service.annotation.PostExchange;
 public interface AccessLogExchange {
 
     @PostExchange()
-    Boolean add(@RequestBody AccessLogDto dto);
+    Boolean add(@RequestBody AccessLogDTO dto);
 }

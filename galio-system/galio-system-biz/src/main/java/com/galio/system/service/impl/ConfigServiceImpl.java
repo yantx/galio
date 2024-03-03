@@ -2,14 +2,14 @@ package com.galio.system.service.impl;
 
 import com.galio.core.constant.CacheConstants;
 import com.galio.core.utils.ObjectUtil;
-import com.galio.core.model.PageRequestDto;
+import com.galio.core.model.PageRequestDTO;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.galio.mybatis.page.MybatisPageConvertHelper;
 import com.galio.redis.util.CacheUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import com.galio.system.dto.ConfigDto;
-import com.galio.system.model.Config;
+import com.galio.system.dto.ConfigDTO;
+import com.galio.system.entity.Config;
 import com.galio.system.repository.ConfigRepository;
 import com.galio.system.service.ConfigService;
 
@@ -32,7 +32,7 @@ public class ConfigServiceImpl implements ConfigService {
      * 查询系统配置信息
      */
     @Override
-    public Config queryById(Long configId) {
+    public Config getById(Long configId) {
         return configRepository.selectById(configId);
     }
 
@@ -40,15 +40,15 @@ public class ConfigServiceImpl implements ConfigService {
      * 查询系统配置信息列表
      */
     @Override
-    public Page<Config> queryPageList(PageRequestDto pageRequestDto) {
-        return configRepository.selectPage(MybatisPageConvertHelper.build(pageRequestDto));
+    public Page<Config> listPage(PageRequestDTO pageRequestDTO) {
+        return configRepository.selectPage(MybatisPageConvertHelper.build(pageRequestDTO));
     }
 
     /**
      * 查询系统配置信息列表
      */
     @Override
-    public List<Config> queryList(ConfigDto dto) {
+    public List<Config> list(ConfigDTO dto) {
         Config entity = ObjectUtil.copyObject(dto, Config.class);
         
         return configRepository.selectList(entity);
@@ -58,7 +58,7 @@ public class ConfigServiceImpl implements ConfigService {
      * 新增系统配置信息
      */
     @Override
-    public Boolean insertByDto(ConfigDto dto) {
+    public Boolean save(ConfigDTO dto) {
         Config add = ObjectUtil.copyObject(dto, Config.class);
         validEntityBeforeSave(add);
         boolean flag = configRepository.insert(add) > 0;
@@ -72,7 +72,7 @@ public class ConfigServiceImpl implements ConfigService {
      * 修改系统配置信息
      */
     @Override
-    public Boolean updateByDto(ConfigDto dto) {
+    public Boolean update(ConfigDTO dto) {
         Config update = ObjectUtil.copyObject(dto, Config.class);
         validEntityBeforeSave(update);
         return configRepository.updateById(update) > 0;
@@ -96,7 +96,7 @@ public class ConfigServiceImpl implements ConfigService {
 
     @Override
     public void loadingConfigCache() {
-        List<Config> configsList = queryList(new ConfigDto());
+        List<Config> configsList = list(new ConfigDTO());
         configsList.forEach(config ->
                 CacheUtils.put(CacheConstants.SYS_CONFIG_NAMESPACE, config.getConfigKey(), config.getConfigValue()));
     }

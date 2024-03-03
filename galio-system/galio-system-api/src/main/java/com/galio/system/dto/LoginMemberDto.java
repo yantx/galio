@@ -16,7 +16,7 @@ import java.util.Set;
  */
 @Data
 @NoArgsConstructor
-public class LoginMemberDto implements Serializable {
+public class LoginMemberDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -94,12 +94,12 @@ public class LoginMemberDto implements Serializable {
     /**
      * 角色对象集
      */
-    private List<RoleDto> roles;
+    private List<RoleDTO> roles;
 
     /**
      * 登录账号所属的人员信息
      */
-    private EmployeeDto employee;
+    private EmployeeDTO employee;
 
     private Long appId;
 

@@ -16,7 +16,7 @@ import lombok.Data;
 
 @Data
 @Schema(description = "系统配置信息业务对象")
-public class ConfigDto extends BaseEntity {
+public class ConfigDTO extends BaseEntity {
 
     /**
      * 参数表主键

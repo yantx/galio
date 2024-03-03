@@ -1,6 +1,6 @@
 package com.galio.system.dto;
 
-import com.galio.core.model.PageRequestDto;
+import com.galio.core.model.PageRequestDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -13,7 +13,7 @@ import lombok.Data;
 
 @Data
 @Schema(description = "机构分页查询对象")
-public class OrgPageReqDto extends PageRequestDto {
+public class OrgPageReqDTO extends PageRequestDTO {
 
     /**
      * 机构名

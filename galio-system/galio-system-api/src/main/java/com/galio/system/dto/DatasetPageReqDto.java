@@ -1,6 +1,6 @@
 package com.galio.system.dto;
 
-import com.galio.core.model.PageRequestDto;
+import com.galio.core.model.PageRequestDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -13,7 +13,7 @@ import lombok.Data;
 
 @Data
 @Schema(description = "数据集信息业务对象")
-public class DatasetPageReqDto extends PageRequestDto {
+public class DatasetPageReqDTO extends PageRequestDTO {
 
     /**
      * 数据集代码

@@ -1,19 +1,19 @@
 package com.galio.system.service.impl;
 
 import com.galio.core.utils.ObjectUtil;
-import com.galio.core.model.PageRequestDto;
+import com.galio.core.model.PageRequestDTO;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.galio.mybatis.page.MybatisPageConvertHelper;
-import com.galio.system.dto.MemberDto;
-import com.galio.system.model.MemberRole;
-import com.galio.system.model.RoleDataset;
-import com.galio.system.model.RoleFunction;
+import com.galio.system.dto.MemberDTO;
+import com.galio.system.entity.MemberRole;
+import com.galio.system.entity.RoleDataset;
+import com.galio.system.entity.RoleFunction;
 import com.galio.system.repository.RoleDatasetRepository;
 import com.galio.system.repository.RoleFunctionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import com.galio.system.dto.RoleDto;
-import com.galio.system.model.Role;
+import com.galio.system.dto.RoleDTO;
+import com.galio.system.entity.Role;
 import com.galio.system.repository.RoleRepository;
 import com.galio.system.service.RoleService;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,7 +41,7 @@ public class RoleServiceImpl implements RoleService {
      * 查询角色信息
      */
     @Override
-    public Role queryById(Long roleId) {
+    public Role getById(Long roleId) {
         return roleRepository.selectById(roleId);
     }
 
@@ -49,8 +49,8 @@ public class RoleServiceImpl implements RoleService {
      * 查询角色信息列表
      */
     @Override
-    public Page<Role> queryPageList(PageRequestDto pageRequestDto) {
-        return roleRepository.selectPage(MybatisPageConvertHelper.build(pageRequestDto));
+    public Page<Role> listPage(PageRequestDTO pageRequestDTO) {
+        return roleRepository.selectPage(MybatisPageConvertHelper.build(pageRequestDTO));
     }
 
     /**
@@ -67,7 +67,7 @@ public class RoleServiceImpl implements RoleService {
      * 查询角色信息列表
      */
     @Override
-    public List<Role> queryList(RoleDto dto) {
+    public List<Role> list(RoleDTO dto) {
         Role entity = ObjectUtil.copyObject(dto, Role.class);
 
         return roleRepository.selectList(entity);
@@ -78,7 +78,7 @@ public class RoleServiceImpl implements RoleService {
      */
     @Override
     @Transactional
-    public Boolean insertByDto(RoleDto dto) {
+    public Boolean save(RoleDTO dto) {
         Role add = ObjectUtil.copyObject(dto, Role.class);
         validEntityBeforeSave(add);
         boolean flag = roleRepository.insert(add) > 0;
@@ -94,7 +94,7 @@ public class RoleServiceImpl implements RoleService {
      */
     @Override
     @Transactional
-    public Boolean updateByDto(RoleDto dto) {
+    public Boolean update(RoleDTO dto) {
         Role update = ObjectUtil.copyObject(dto, Role.class);
         validEntityBeforeSave(update);
         boolean flag = roleRepository.updateById(update) > 0;
@@ -125,7 +125,7 @@ public class RoleServiceImpl implements RoleService {
         return flag;
     }
 
-    public boolean relevanceFunctionInfo(RoleDto dto) {
+    public boolean relevanceFunctionInfo(RoleDTO dto) {
         if (ObjectUtil.isEmpty(dto.getFunctionIds())) {
             return true;
         }
@@ -135,7 +135,7 @@ public class RoleServiceImpl implements RoleService {
         return roleFunctionRepository.insertBatch(roleFunctions);
     }
 
-    public boolean relevanceDatasetInfo(RoleDto dto) {
+    public boolean relevanceDatasetInfo(RoleDTO dto) {
         if (ObjectUtil.isEmpty(dto.getDatasetIds())) {
             return true;
         }
