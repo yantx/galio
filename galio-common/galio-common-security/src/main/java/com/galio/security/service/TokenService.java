@@ -10,7 +10,7 @@ import com.galio.core.utils.id.IdUtils;
 import com.galio.redis.util.RedisUtils;
 import com.galio.security.utils.JwtUtils;
 import com.galio.security.utils.SecurityUtils;
-import com.galio.system.dto.LoginMemberDto;
+import com.galio.system.dto.LoginMemberDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Component;
 
@@ -39,7 +39,7 @@ public class TokenService {
     /**
      * 创建令牌
      */
-    public Map<String, Object> createToken(LoginMemberDto loginMember) {
+    public Map<String, Object> createToken(LoginMemberDTO loginMember) {
         String token = IdUtils.fastUUID();
         Long memberId = loginMember.getMemberId();
         String userName = loginMember.getUsername();
@@ -67,7 +67,7 @@ public class TokenService {
      *
      * @return 用户信息
      */
-    public LoginMemberDto getLoginMember() {
+    public LoginMemberDTO getLoginMember() {
         return getLoginMember(ServletUtils.getRequest());
     }
 
@@ -76,7 +76,7 @@ public class TokenService {
      *
      * @return 用户信息
      */
-    public LoginMemberDto getLoginMember(HttpServletRequest request) {
+    public LoginMemberDTO getLoginMember(HttpServletRequest request) {
         // 获取请求携带的令牌
         String token = SecurityUtils.getToken(request);
         return getLoginMember(token);
@@ -87,23 +87,23 @@ public class TokenService {
      *
      * @return 用户信息
      */
-    public LoginMemberDto getLoginMember(String token) {
-        LoginMemberDto memberDto = null;
+    public LoginMemberDTO getLoginMember(String token) {
+        LoginMemberDTO memberDTO = null;
         try {
             if (StringUtil.isNotEmpty(token)) {
                 String memberKey = JwtUtils.getMemberKey(token);
-                memberDto = RedisUtils.getCacheObject(getTokenKey(memberKey));
-                return memberDto;
+                memberDTO = RedisUtils.getCacheObject(getTokenKey(memberKey));
+                return memberDTO;
             }
         } catch (Exception e) {
         }
-        return memberDto;
+        return memberDTO;
     }
 
     /**
      * 设置用户身份信息
      */
-    public void setLoginMemberDto(LoginMemberDto loginMember) {
+    public void setLoginMemberDTO(LoginMemberDTO loginMember) {
         if (ObjectUtil.isNotNull(loginMember) && StringUtil.isNotEmpty(loginMember.getToken())) {
             refreshToken(loginMember);
         }
@@ -112,7 +112,7 @@ public class TokenService {
     /**
      * 删除用户缓存信息
      */
-    public void delLoginMemberDto(String token) {
+    public void delLoginMemberDTO(String token) {
         if (StringUtil.isNotEmpty(token)) {
             String userkey = JwtUtils.getMemberKey(token);
             RedisUtils.deleteObject(getTokenKey(userkey));
@@ -124,7 +124,7 @@ public class TokenService {
      *
      * @param loginMember
      */
-    public void verifyToken(LoginMemberDto loginMember) {
+    public void verifyToken(LoginMemberDTO loginMember) {
         long expireTime = loginMember.getExpireTime();
         long currentTime = System.currentTimeMillis();
         if (expireTime - currentTime <= MILLIS_MINUTE_TEN) {
@@ -137,7 +137,7 @@ public class TokenService {
      *
      * @param loginMember 登录信息
      */
-    public void refreshToken(LoginMemberDto loginMember) {
+    public void refreshToken(LoginMemberDTO loginMember) {
         loginMember.setLoginTime(System.currentTimeMillis());
         loginMember.setExpireTime(loginMember.getLoginTime() + expireTime * MILLIS_MINUTE);
         // 根据uuid将loginMember缓存

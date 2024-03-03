@@ -314,7 +314,6 @@ public class Convert {
     public static String[] toStrArray(String str) {
         return toStrArray("," , str);
     }
-
     /**
      * 转换为String数组<br>
      *

@@ -6,7 +6,7 @@ import com.galio.core.enums.ResponseEnum;
 import com.galio.core.exception.CustomException;
 import com.galio.core.utils.ObjectUtil;
 import com.galio.core.utils.StringUtil;
-import com.galio.system.dto.LoginMemberDto;
+import com.galio.system.dto.LoginMemberDTO;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -23,19 +23,19 @@ public class MemberContextHelper {
     /**
      * 设置用户数据(多级缓存)
      */
-    public static void setLoginMember(LoginMemberDto loginMember) {
+    public static void setLoginMember(LoginMemberDTO loginMember) {
         StpUtil.getTokenSession().set(LoginHelper.LOGIN_MEMBER_KEY, loginMember);
     }
 
     /**
      * 获取用户(多级缓存)
      */
-    public static LoginMemberDto getLoginMember() {
-        LoginMemberDto loginMember = (LoginMemberDto) SaHolder.getStorage().get(LoginHelper.LOGIN_MEMBER_KEY);
+    public static LoginMemberDTO getLoginMember() {
+        LoginMemberDTO loginMember = (LoginMemberDTO) SaHolder.getStorage().get(LoginHelper.LOGIN_MEMBER_KEY);
         if (loginMember != null) {
             return loginMember;
         }
-        loginMember = (LoginMemberDto) StpUtil.getTokenSession().get(LoginHelper.LOGIN_MEMBER_KEY);
+        loginMember = (LoginMemberDTO) StpUtil.getTokenSession().get(LoginHelper.LOGIN_MEMBER_KEY);
         SaHolder.getStorage().set(LoginHelper.LOGIN_MEMBER_KEY, loginMember);
         return loginMember;
     }
@@ -44,7 +44,7 @@ public class MemberContextHelper {
      * 获取用户id
      */
     public static Long getMemberId() {
-        LoginMemberDto loginMember = getLoginMember();
+        LoginMemberDTO loginMember = getLoginMember();
         if (ObjectUtil.isNull(loginMember)) {
             String loginId = StpUtil.getLoginIdAsString();
             String[] strArr = StringUtil.split(loginId, JOIN_CODE);

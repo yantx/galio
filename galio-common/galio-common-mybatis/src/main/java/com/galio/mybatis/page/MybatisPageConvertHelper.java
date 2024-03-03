@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.galio.core.constant.CommonConstants;
 import com.galio.core.enums.ResponseEnum;
 import com.galio.core.exception.CustomException;
-import com.galio.core.model.PageRequestDto;
+import com.galio.core.model.PageRequestDTO;
 import com.galio.core.utils.ObjectUtil;
 import com.galio.core.utils.SqlUtil;
 import com.galio.core.utils.StringUtil;
@@ -32,14 +32,14 @@ public class MybatisPageConvertHelper {
      */
     public static final int DEFAULT_PAGE_SIZE = Integer.MAX_VALUE;
 
-    public static <T> Page<T> build(PageRequestDto pageRequestDto) {
-        Integer pageNum = ObjectUtil.defaultIfNull(pageRequestDto.getCurrentPage(), DEFAULT_CURRENT_PAGE);
-        Integer pageSize = ObjectUtil.defaultIfNull(pageRequestDto.getPageSize(), DEFAULT_PAGE_SIZE);
+    public static <T> Page<T> build(PageRequestDTO pageRequestDTO) {
+        Integer pageNum = ObjectUtil.defaultIfNull(pageRequestDTO.getPageNumber(), DEFAULT_CURRENT_PAGE);
+        Integer pageSize = ObjectUtil.defaultIfNull(pageRequestDTO.getPageSize(), DEFAULT_PAGE_SIZE);
         if (pageNum <= 0) {
             pageNum = DEFAULT_CURRENT_PAGE;
         }
         Page<T> page = new Page<>(pageNum, pageSize);
-        List<OrderItem> orderItems = buildOrderItem(pageRequestDto);
+        List<OrderItem> orderItems = buildOrderItem(pageRequestDTO);
         if (CollectionUtils.isNotEmpty(orderItems)) {
             page.addOrder(orderItems);
         }
@@ -55,19 +55,19 @@ public class MybatisPageConvertHelper {
      * {isAsc:"desc",orderByColumn:"id,createTime"} order by id desc,create_time desc
      * {isAsc:"asc,desc",orderByColumn:"id,createTime"} order by id asc,create_time desc
      */
-    private static List<OrderItem> buildOrderItem(PageRequestDto pageRequestDto) {
-        if (StringUtils.isBlank(pageRequestDto.getOrderByColumn()) || StringUtils.isBlank(pageRequestDto.getIsAsc())) {
+    private static List<OrderItem> buildOrderItem(PageRequestDTO pageRequestDTO) {
+        if (StringUtils.isBlank(pageRequestDTO.getOrderByColumn()) || StringUtils.isBlank(pageRequestDTO.getIsAsc())) {
             return null;
         }
-        String orderBy = SqlUtil.escapeOrderBySql(pageRequestDto.getOrderByColumn());
+        String orderBy = SqlUtil.escapeOrderBySql(pageRequestDTO.getOrderByColumn());
         orderBy = StringUtil.humpToLine(orderBy);
 
         String isAsc;
         // 兼容前端排序类型
-        isAsc = StringUtils.replaceEach(pageRequestDto.getIsAsc(), new String[]{"ascending", "descending"}, new String[]{"asc", "desc"});
-        pageRequestDto.setIsAsc(isAsc);
+        isAsc = StringUtils.replaceEach(pageRequestDTO.getIsAsc(), new String[]{"ascending", "descending"}, new String[]{"asc", "desc"});
+        pageRequestDTO.setIsAsc(isAsc);
         String[] orderByArr = orderBy.split(",");
-        String[] isAscArr = pageRequestDto.getIsAsc().split(",");
+        String[] isAscArr = pageRequestDTO.getIsAsc().split(",");
         if (isAscArr.length != 1 && isAscArr.length != orderByArr.length) {
             throw new CustomException(ResponseEnum.VALIDATE_ERROR);
         }

@@ -55,9 +55,8 @@ public class ObjectUtil extends ObjectUtils {
         } else if (obj instanceof Optional) {
             Optional<?> optional = (Optional) obj;
             return !optional.isPresent();
-        } else if (obj instanceof CharSequence) {
-            CharSequence charSequence = (CharSequence) obj;
-            return charSequence.length() == 0;
+        } else if (obj instanceof CharSequence charSequence) {
+            return charSequence.isEmpty();
         } else if (obj.getClass().isArray()) {
             return Array.getLength(obj) == 0;
         } else if (obj instanceof Collection) {

@@ -3,18 +3,23 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>galio-common</artifactId>
+        <artifactId>galio-bom</artifactId>
         <groupId>com.galio</groupId>
         <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../galio-bom/pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>galio-common-satoken</artifactId>
+    <artifactId>galio-common</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>galio-common-satoken-core</module>
-        <module>galio-common-satoken-security</module>
-        <module>galio-common-satoken-tools</module>
+        <module>galio-common-core</module>
+        <module>galio-common-doc</module>
+        <module>galio-common-http</module>
+        <module>galio-common-log</module>
+        <module>galio-common-mybatis</module>
+        <module>galio-common-redis</module>
+        <module>galio-common-satoken</module>
     </modules>
 
 </project>

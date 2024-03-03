@@ -3,7 +3,7 @@ package com.galio.satoken.tools.helper;
 import cn.dev33.satoken.context.SaHolder;
 import cn.dev33.satoken.stp.StpUtil;
 import com.galio.core.enums.OperSideEnum;
-import com.galio.system.dto.LoginMemberDto;
+import com.galio.system.dto.LoginMemberDTO;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -23,7 +23,7 @@ public class LoginHelper {
      *
      * @param loginMember 登录用户信息
      */
-    public static void login(LoginMemberDto loginMember) {
+    public static void login(LoginMemberDTO loginMember) {
         SaHolder.getStorage().set(LOGIN_MEMBER_KEY, loginMember);
         StpUtil.login(loginMember.getMemberId());
         MemberContextHelper.setLoginMember(loginMember);
@@ -35,7 +35,7 @@ public class LoginHelper {
      *
      * @param loginMember 登录用户信息
      */
-    public static void loginByDevice(LoginMemberDto loginMember, OperSideEnum operSideEnum) {
+    public static void loginByDevice(LoginMemberDTO loginMember, OperSideEnum operSideEnum) {
         SaHolder.getStorage().set(LOGIN_MEMBER_KEY, loginMember);
         StpUtil.login(loginMember.getMemberId(), operSideEnum.getValue());
         MemberContextHelper.setLoginMember(loginMember);

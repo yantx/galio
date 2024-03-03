@@ -8,6 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.Serializable;
+
 /**
  * @Author: galio
  * @Date: 2022-11-30
@@ -17,8 +19,9 @@ import org.apache.commons.lang3.StringUtils;
 @Schema(description="响应数据对象")
 @Data
 @NoArgsConstructor
-public class BaseResponse<T> {
+public class BaseResponse<T> implements Serializable {
 
+    private static final long serialVersionUID = 1L;	// 序列化版本号
     // 状态码
     @Schema(description = "状态码20000表示成功")
     private int code;
@@ -32,7 +35,7 @@ public class BaseResponse<T> {
     private Object data;
 
     public static <T> BaseResponse<T> createSuccess() {
-        return createResponse(ResponseEnum.SUCCESS.getCode(), ResponseEnum.SUCCESS.getMsg(), null);
+        return createSuccess(ResponseEnum.SUCCESS);
     }
     public static <T> BaseResponse<T> createSuccess(StatusCode statusCode) {
         return createResponse(statusCode.getCode(), statusCode.getMsg(), null, statusCode.getArgs());
@@ -41,16 +44,13 @@ public class BaseResponse<T> {
         return createResponse(ResponseEnum.SUCCESS.getCode(), ResponseEnum.SUCCESS.getMsg(), data);
     }
     public static <T> BaseResponse<T> createFail() {
-        return createResponse(ResponseEnum.FAILED.getCode(), ResponseEnum.FAILED.getMsg(), null);
+        return createFail(ResponseEnum.FAILED);
     }
     public static <T> BaseResponse<T> createFail(String msg, Object... args) {
         return createResponse(ResponseEnum.FAILED.getCode(), msg, null, args);
     }
     public static <T> BaseResponse<T> createFail(StatusCode statusCode) {
         return createResponse(statusCode.getCode(), statusCode.getMsg(), null, statusCode.getArgs());
-    }
-    public static <T> BaseResponse<T> createFailWithData(T data) {
-        return createResponse(ResponseEnum.FAILED.getCode(), ResponseEnum.FAILED.getMsg(), data);
     }
     public static <T> BaseResponse<T> createResponse(int code, String msg) {
         return createResponse(code, msg, null);
@@ -67,5 +67,14 @@ public class BaseResponse<T> {
             message = MessageUtils.message(message, args);
         }
         return message;
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "code=" + code +
+                ", msg='" + msg + '\'' +
+                ", data=" + data +
+                '}';
     }
 }

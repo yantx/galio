@@ -17,7 +17,7 @@ import java.util.List;
  * @Date: 2023-02-25
  * @Description: 时间工具类
  */
-public class DateUtil {
+public class DateTimeUtil {
 
     /**
      * 星期日;

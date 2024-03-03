@@ -2,7 +2,7 @@ package com.galio.satoken.tools.permission;
 
 import cn.dev33.satoken.stp.StpInterface;
 import com.galio.satoken.tools.helper.MemberContextHelper;
-import com.galio.system.dto.LoginMemberDto;
+import com.galio.system.dto.LoginMemberDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ public class SaPermissionImpl implements StpInterface {
      */
     @Override
     public List<String> getPermissionList(Object loginId, String loginType) {
-        LoginMemberDto loginMember = MemberContextHelper.getLoginMember();
+        LoginMemberDTO loginMember = MemberContextHelper.getLoginMember();
         return new ArrayList<>(loginMember.getFunctionPerms());
     }
 
@@ -28,7 +28,7 @@ public class SaPermissionImpl implements StpInterface {
      */
     @Override
     public List<String> getRoleList(Object loginId, String loginType) {
-        LoginMemberDto loginMember = MemberContextHelper.getLoginMember();
+        LoginMemberDTO loginMember = MemberContextHelper.getLoginMember();
         return new ArrayList<>(loginMember.getRolePerms());
     }
 }

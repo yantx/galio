@@ -16,8 +16,6 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 public class TreeEntity<T> extends BaseEntity {
 
-    private static final long serialVersionUID = 1L;
-
     /**
      * 父节点名称
      */

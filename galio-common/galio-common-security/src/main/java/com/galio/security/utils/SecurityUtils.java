@@ -5,7 +5,7 @@ import com.galio.core.utils.ServletUtils;
 import com.galio.core.utils.StringUtil;
 import com.galio.security.constant.TokenConstants;
 import com.galio.security.holder.SecurityContextHolder;
-import com.galio.system.dto.LoginMemberDto;
+import com.galio.system.dto.LoginMemberDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -43,9 +43,9 @@ public class SecurityUtils
     /**
      * 获取登录用户信息
      */
-    public static LoginMemberDto getLoginMember()
+    public static LoginMemberDTO getLoginMember()
     {
-        return SecurityContextHolder.get(SecurityConstants.LOGIN_MEMBER, LoginMemberDto.class);
+        return SecurityContextHolder.get(SecurityConstants.LOGIN_MEMBER, LoginMemberDTO.class);
     }
 
     /**

@@ -12,8 +12,8 @@ import com.galio.mybatis.enums.DataScopeType;
 import com.galio.mybatis.enums.MybatisResponseEnum;
 import com.galio.mybatis.helper.DataPermissionHelper;
 import com.galio.satoken.tools.helper.MemberContextHelper;
-import com.galio.system.dto.LoginMemberDto;
-import com.galio.system.dto.RoleDto;
+import com.galio.system.dto.LoginMemberDTO;
+import com.galio.system.dto.RoleDTO;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.expression.Expression;
@@ -76,16 +76,16 @@ public class DataScopePermissionHandler {
                 invalidCacheSet.add(mappedStatementId);
                 return where;
             }
-            LoginMemberDto loginMemberDto = DataPermissionHelper.getVariable("user");
-            if (ObjectUtil.isNull(loginMemberDto)) {
-                loginMemberDto = MemberContextHelper.getLoginMember();
-                DataPermissionHelper.setVariable("user" , loginMemberDto);
+            LoginMemberDTO loginMemberDTO = DataPermissionHelper.getVariable("user");
+            if (ObjectUtil.isNull(loginMemberDTO)) {
+                loginMemberDTO = MemberContextHelper.getLoginMember();
+                DataPermissionHelper.setVariable("user" , loginMemberDTO);
             }
             // 如果是超级管理员，则不过滤数据
-            if (ObjectUtil.isNull(loginMemberDto) || loginMemberDto.isSuperAdmin()) {
+            if (ObjectUtil.isNull(loginMemberDTO) || loginMemberDTO.isSuperAdmin()) {
                 return where;
-            }else if (loginMemberDto.isAdmin()){
-                return CCJSqlParserUtil.parseExpression(" app_id = " + loginMemberDto.getAppId());
+            }else if (loginMemberDTO.isAdmin()){
+                return CCJSqlParserUtil.parseExpression(" app_id = " + loginMemberDTO.getAppId());
             }
             String dataFilterSql = buildDataFilter(dataColumns, isSelect);
             if (StringUtil.isBlank(dataFilterSql)) {
@@ -111,12 +111,12 @@ public class DataScopePermissionHandler {
     private String buildDataFilter(DataColumn[] dataColumns, boolean isSelect) {
         // 更新或删除需满足所有条件
         String joinStr = isSelect ? " OR " : " AND ";
-        LoginMemberDto memberDto = DataPermissionHelper.getVariable("user");
+        LoginMemberDTO memberDTO = DataPermissionHelper.getVariable("user");
         StandardEvaluationContext context = new StandardEvaluationContext();
         context.setBeanResolver(beanResolver);
         DataPermissionHelper.getContext().forEach(context::setVariable);
         Set<String> conditions = new HashSet<>();
-        for (RoleDto role : memberDto.getRoles()) {
+        for (RoleDTO role : memberDTO.getRoles()) {
             // 获取角色权限泛型
             DataScopeType type = DataScopeType.findCode(role.getDataScope());
             if (ObjectUtil.isNull(type)) {

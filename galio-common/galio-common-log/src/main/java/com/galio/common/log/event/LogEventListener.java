@@ -3,8 +3,8 @@ package com.galio.common.log.event;
 import com.galio.core.utils.ObjectUtil;
 import com.galio.system.api.AccessLogExchange;
 import com.galio.system.api.OperLogExchange;
-import com.galio.system.dto.AccessLogDto;
-import com.galio.system.dto.OperLogDto;
+import com.galio.system.dto.AccessLogDTO;
+import com.galio.system.dto.OperLogDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
@@ -28,15 +28,15 @@ public class LogEventListener {
     @Async
     @EventListener
     public void saveLog(OperLogEvent operLogEvent) {
-        OperLogDto operLogDto = ObjectUtil.copyObject(operLogEvent, OperLogDto.class);
-        operLogExchange.add(operLogDto);
+        OperLogDTO operLogDTO = ObjectUtil.copyObject(operLogEvent, OperLogDTO.class);
+        operLogExchange.add(operLogDTO);
     }
 
     @Async
     @EventListener
     public void saveAccessLog(AccessLogEvent accessLogEvent) {
-        AccessLogDto accessLogDto = ObjectUtil.copyObject(accessLogEvent, AccessLogDto.class);
-        accessLogExchange.add(accessLogDto);
+        AccessLogDTO accessLogDTO = ObjectUtil.copyObject(accessLogEvent, AccessLogDTO.class);
+        accessLogExchange.add(accessLogDTO);
     }
 
 }

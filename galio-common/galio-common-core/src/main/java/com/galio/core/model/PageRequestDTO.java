@@ -12,7 +12,7 @@ import java.io.Serializable;
  */
 @Data
 @Schema(description = "分页查询参数" )
-public class PageRequestDto implements Serializable {
+public class PageRequestDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -26,7 +26,7 @@ public class PageRequestDto implements Serializable {
      * 当前页数
      */
     @Schema(description = "当前页码")
-    private Integer currentPage;
+    private Integer pageNumber;
 
     /**
      * 排序列

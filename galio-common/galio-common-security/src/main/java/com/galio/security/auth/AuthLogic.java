@@ -11,8 +11,8 @@ import com.galio.security.annotation.RequiresRoles;
 import com.galio.security.holder.SecurityContextHolder;
 import com.galio.security.service.TokenService;
 import com.galio.security.utils.SecurityUtils;
-import com.galio.system.dto.LoginMemberDto;
-import com.galio.system.dto.RoleDto;
+import com.galio.system.dto.LoginMemberDTO;
+import com.galio.system.dto.RoleDTO;
 import org.springframework.util.PatternMatchUtils;
 
 import java.util.Collection;
@@ -53,7 +53,7 @@ public class AuthLogic {
      * 会话注销，根据指定Token
      */
     public void logoutByToken(String token) {
-        tokenService.delLoginMemberDto(token);
+        tokenService.delLoginMemberDTO(token);
     }
 
     /**
@@ -68,12 +68,12 @@ public class AuthLogic {
      *
      * @return 用户缓存信息
      */
-    public LoginMemberDto getLoginMember() {
+    public LoginMemberDTO getLoginMember() {
         String token = SecurityUtils.getToken();
         if (token == null) {
             throw new CustomException(ResponseCodeEnum.NO_TOKEN);
         }
-        LoginMemberDto loginMember = SecurityUtils.getLoginMember();
+        LoginMemberDTO loginMember = SecurityUtils.getLoginMember();
         if (loginMember == null) {
             throw new CustomException(ResponseCodeEnum.NO_TOKEN);
         }
@@ -86,7 +86,7 @@ public class AuthLogic {
      * @param token 前端传递的认证信息
      * @return 用户缓存信息
      */
-    public LoginMemberDto getLoginMember(String token) {
+    public LoginMemberDTO getLoginMember(String token) {
         return tokenService.getLoginMember(token);
     }
 
@@ -95,7 +95,7 @@ public class AuthLogic {
      *
      * @param loginMember 当前用户信息
      */
-    public void verifyLoginMemberDtoExpire(LoginMemberDto loginMember) {
+    public void verifyLoginMemberDTOExpire(LoginMemberDTO loginMember) {
         tokenService.verifyToken(loginMember);
     }
 
@@ -275,9 +275,9 @@ public class AuthLogic {
      */
     public Set<String> getRoleList() {
         try {
-            LoginMemberDto loginMember = getLoginMember();
-            Set<RoleDto>  roles = loginMember.getRoles();
-            return roles.stream().map(RoleDto::getRoleKey).collect(Collectors.toSet());
+            LoginMemberDTO loginMember = getLoginMember();
+            Set<RoleDTO>  roles = loginMember.getRoles();
+            return roles.stream().map(RoleDTO::getRoleKey).collect(Collectors.toSet());
         } catch (Exception e) {
             return new HashSet<>();
         }
@@ -290,7 +290,7 @@ public class AuthLogic {
      */
     public Set<String> getPermiList() {
         try {
-            LoginMemberDto loginMember = getLoginMember();
+            LoginMemberDTO loginMember = getLoginMember();
             return loginMember.getPermissions();
         } catch (Exception e) {
             return new HashSet<>();

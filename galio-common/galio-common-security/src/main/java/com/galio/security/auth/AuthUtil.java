@@ -2,7 +2,7 @@ package com.galio.security.auth;
 
 import com.galio.security.annotation.RequiresPermissions;
 import com.galio.security.annotation.RequiresRoles;
-import com.galio.system.dto.LoginMemberDto;
+import com.galio.system.dto.LoginMemberDTO;
 
 /**
  * @Author: galio
@@ -48,7 +48,7 @@ public class AuthUtil
      * @param token 指定token
      * @return 用户信息
      */
-    public static LoginMemberDto getLoginMember(String token)
+    public static LoginMemberDTO getLoginMember(String token)
     {
         return authLogic.getLoginMember(token);
     }
@@ -58,9 +58,9 @@ public class AuthUtil
      * 
      * @param loginMember 用户信息
      */
-    public static void verifyLoginMemberDtoExpire(LoginMemberDto loginMember)
+    public static void verifyLoginMemberDTOExpire(LoginMemberDTO loginMember)
     {
-        authLogic.verifyLoginMemberDtoExpire(loginMember);
+        authLogic.verifyLoginMemberDTOExpire(loginMember);
     }
 
     /**

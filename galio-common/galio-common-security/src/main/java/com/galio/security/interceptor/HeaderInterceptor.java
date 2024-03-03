@@ -7,7 +7,7 @@ import com.galio.security.holder.SecurityContextHolder;
 import com.galio.core.utils.ServletUtils;
 import com.galio.security.auth.AuthUtil;
 import com.galio.security.utils.SecurityUtils;
-import com.galio.system.dto.LoginMemberDto;
+import com.galio.system.dto.LoginMemberDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.method.HandlerMethod;
@@ -32,9 +32,9 @@ public class HeaderInterceptor implements AsyncHandlerInterceptor {
 
         String token = SecurityUtils.getToken();
         if (StringUtil.isNotEmpty(token)) {
-            LoginMemberDto loginMember = AuthUtil.getLoginMember(token);
+            LoginMemberDTO loginMember = AuthUtil.getLoginMember(token);
             if (ObjectUtil.isNotNull(loginMember)) {
-                AuthUtil.verifyLoginMemberDtoExpire(loginMember);
+                AuthUtil.verifyLoginMemberDTOExpire(loginMember);
                 SecurityContextHolder.set(SecurityConstants.LOGIN_MEMBER, loginMember);
             }
         }
