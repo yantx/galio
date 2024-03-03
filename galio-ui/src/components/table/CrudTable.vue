@@ -64,7 +64,7 @@ const props = defineProps({
    * ! 约定接口入参出参
    * * 分页模式需约定分页接口入参
    *    @pageSize 分页参数：一页展示多少条，默认10
-   *    @pageNo   分页参数：页码，默认1
+   *    @pageNumber   分页参数：页码，默认1
    * * 需约定接口出参
    *    @pageData 分页模式必须,非分页模式如果没有pageData则取上一层data
    *    @total    分页模式必须，非分页模式如果没有total则取上一层data.length
@@ -79,7 +79,7 @@ const emit = defineEmits(['update:queryItems', 'onChecked', 'onDataChange'])
 const loading = ref(false)
 const initQuery = { ...props.queryItems }
 const tableData = ref([])
-const pagination = reactive({ page: 1, pageSize: 10 })
+const pagination = reactive({ pageNumber: 1, pageSize: 10 })
 
 async function handleQuery() {
   try {
@@ -87,7 +87,7 @@ async function handleQuery() {
     let paginationParams = {}
     // 如果非分页模式或者使用前端分页,则无需传分页参数
     if (props.isPagination && props.remote) {
-      paginationParams = { pageNo: pagination.page, pageSize: pagination.pageSize }
+      paginationParams = { pageNumber: pagination.pageNumber, pageSize: pagination.pageSize }
     }
     const { data } = await props.getData({
       ...props.queryItems,
@@ -105,7 +105,7 @@ async function handleQuery() {
   }
 }
 function handleSearch() {
-  pagination.page = 1
+  pagination.pageNumber = 1
   handleQuery()
 }
 async function handleReset() {
@@ -115,11 +115,11 @@ async function handleReset() {
   }
   emit('update:queryItems', { ...queryItems, ...initQuery })
   await nextTick()
-  pagination.page = 1
+  pagination.pageNumber = 1
   handleQuery()
 }
 function onPageChange(currentPage) {
-  pagination.page = currentPage
+  pagination.pageNumber = currentPage
   if (props.remote) {
     handleQuery()
   }

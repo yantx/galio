@@ -1,15 +1,23 @@
 <template>
-  <CommonPage show-footer title="文章">
+  <CommonPage>
     <template #action>
-      <div>
-        <n-button type="primary" secondary @click="$table?.handleExport()">
-          <TheIcon icon="mdi:download" :size="18" class="mr-5" />
-          导出
-        </n-button>
-        <n-button type="primary" class="ml-16" @click="handleAdd">
-          <TheIcon icon="material-symbols:add" :size="18" class="mr-5" />
-          新增
-        </n-button>
+      <div bg="#fff" min-h-60 flex items-start justify-between b-1 rounded-8 p-15 w-full text-14 bc-ccc dark:bg-black>
+        <n-space wrap :size="[35, 15]">
+          <QueryBarItem label="数据库" :label-width="50">
+            <n-select
+              v-model:value="databaseName"
+              filterable
+              label-field="database"
+              value-field="database"
+              placeholder="请选择数据库"
+              :options="databaseOptions"
+            />
+          </QueryBarItem>
+        </n-space>
+
+        <div flex-shrink-0>
+          <!-- <n-button attr-type="button" @click="handleDelete">使用此表生成</n-button> -->
+        </div>
       </div>
     </template>
 
@@ -19,22 +27,22 @@
       :extra-params="extraParams"
       :scroll-x="1200"
       :columns="columns"
-      :get-data="api.getPosts"
+      :get-data="api.getTableList"
       @on-checked="onChecked"
       @on-data-change="(data) => (tableData = data)"
     >
       <template #queryBar>
-        <QueryBarItem label="标题" :label-width="50">
+        <QueryBarItem label="表名" :label-width="50">
           <n-input
             v-model:value="queryItems.title"
             type="text"
-            placeholder="请输入标题"
+            placeholder="请输入表名"
             @keypress.enter="$table?.handleSearch"
           />
         </QueryBarItem>
       </template>
     </CrudTable>
-    <!-- 新增/编辑/查看 -->
+    <!-- 编辑 -->
     <CrudModal
       v-model:visible="modalVisible"
       :title="modalTitle"
@@ -94,7 +102,7 @@ import { formatDateTime, renderIcon, isNullOrUndef } from '@/utils'
 import { useCRUD } from '@/composables'
 import api from '../../api/index'
 
-defineOptions({ name: 'Crud' })
+defineOptions({ name: 'CodeGenerator' })
 
 const $table = ref(null)
 /** 表格数据，触发搜索的时候会更新这个值 */
@@ -103,7 +111,10 @@ const tableData = ref([])
 const queryItems = ref({})
 /** 补充参数（可选） */
 const extraParams = ref({})
-
+/** 数据库列表下拉菜单使用 */
+const databaseOptions = ref([])
+const databaseName = ref(null)
+getDatabaseList()
 onActivated(() => {
   $table.value?.handleSearch()
 })
@@ -111,22 +122,13 @@ onActivated(() => {
 const columns = [
   { type: 'selection', fixed: 'left' },
   {
-    title: '发布',
-    key: 'isPublish',
+    title: '表名称',
+    key: 'tableName',
     width: 60,
     align: 'center',
-    fixed: 'left',
-    render(row) {
-      return h(NSwitch, {
-        size: 'small',
-        rubberBand: false,
-        value: row['isPublish'],
-        loading: !!row.publishing,
-        onUpdateValue: () => handlePublish(row),
-      })
-    },
+    ellipsis: { tooltip: true },
   },
-  { title: '标题', key: 'title', width: 150, ellipsis: { tooltip: true } },
+  { title: '表描述', key: 'tableComment', width: 150, ellipsis: { tooltip: true } },
   { title: '分类', key: 'category', width: 80, ellipsis: { tooltip: true } },
   { title: '创建人', key: 'author', width: 80 },
   {
@@ -162,7 +164,7 @@ const columns = [
             secondary: true,
             onClick: () => handleView(row),
           },
-          { default: () => '查看', icon: renderIcon('majesticons:eye-line', { size: 14 }) },
+          { default: () => '预览代码', icon: renderIcon('majesticons:eye-line', { size: 14 }) },
         ),
         h(
           NButton,
@@ -173,6 +175,16 @@ const columns = [
             onClick: () => handleEdit(row),
           },
           { default: () => '编辑', icon: renderIcon('material-symbols:edit-outline', { size: 14 }) },
+        ),
+        h(
+          NButton,
+          {
+            size: 'small',
+            type: 'primary',
+            style: 'margin-left: 15px;',
+            onClick: () => handleEdit(row),
+          },
+          { default: () => '生成代码', icon: renderIcon('material-symbols:edit-outline', { size: 14 }) },
         ),
 
         h(
@@ -198,16 +210,11 @@ function onChecked(rowKeys) {
   if (rowKeys.length) $message.info(`选中${rowKeys.join(' ')}`)
 }
 
-// 发布
-function handlePublish(row) {
-  if (isNullOrUndef(row.id)) return
-
-  row.publishing = true
-  setTimeout(() => {
-    row.isPublish = !row.isPublish
-    row.publishing = false
-    $message?.success(row.isPublish ? '已发布' : '已取消发布')
-  }, 1000)
+// 选中事件
+function getDatabaseList() {
+  api.getDatabases().then((res) => {
+    res.code = 20000 && (databaseOptions.value = res.data)
+  })
 }
 
 const {

@@ -13,5 +13,5 @@ export const views = {
   Upload: () => import('@/modules/demo/view/upload/index.vue'),
   BaseComponents: () => import('@/modules/base/view/button/index.vue'),
   KeepAlive: () => import('@/modules/base/view/keep-alive/index.vue'),
-  CodeGenerator: () => import('@/modules/system-tool/view/gen/list.vue'),
+  CodeGenerator: () => import('@/modules/system-tool/view/gen/table.vue'),
 }

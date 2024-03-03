@@ -1,5 +1,5 @@
 <template>
-  <CommonPage show-footer title="文章">
+  <CommonPage show-footer show-header title="文章">
     <template #action>
       <div>
         <n-button type="primary" secondary @click="$table?.handleExport()">
@@ -51,7 +51,7 @@
         :disabled="modalAction === 'view'"
       >
         <n-form-item label="作者" path="author">
-          <n-input v-model:value="modalForm.author" disabled />
+          <n-input v-model:value="modalForm.author" placeholder="请输入作者" />
         </n-form-item>
         <n-form-item
           label="文章标题"
@@ -224,7 +224,7 @@ const {
   modalFormRef,
 } = useCRUD({
   name: '文章',
-  initForm: { author: '大脸怪' },
+  initForm: { author: 'Galio' },
   doCreate: api.addPost,
   doDelete: api.deletePost,
   doUpdate: api.updatePost,

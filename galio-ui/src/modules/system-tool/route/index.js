@@ -14,7 +14,7 @@ export default {
     {
       name: 'CodeGenerator',
       path: 'index',
-      component: () => import('../view/gen/list.vue'),
+      component: () => import('../view/gen/table.vue'),
       meta: {
         title: '代码生成器',
         icon: 'file-icons:graphql-codegenerator',
