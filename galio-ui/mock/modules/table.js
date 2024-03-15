@@ -35,7 +35,7 @@ function resultSuccess(data, { msg = 'ok' } = {}) {
 export default [
   //表格数据列表
   {
-    url: '/mock/tbale/list',
+    url: '/mock/table/list',
     timeout: 1000,
     method: 'get',
     response: ({ query }) => {

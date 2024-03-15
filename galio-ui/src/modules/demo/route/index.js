@@ -15,7 +15,7 @@ export default {
     {
       name: 'Crud',
       path: 'crud',
-      component: () => import('../view/table/index.vue'),
+      component: () => import('../view/crud/index.vue'),
       meta: {
         title: 'CRUD表格',
         icon: 'ic:baseline-table-view',
