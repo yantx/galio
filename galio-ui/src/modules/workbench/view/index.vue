@@ -1,5 +1,5 @@
 <template>
-  <AppPage :show-footer="true">
+  <AppPage show-footer>
     <div flex-1>
       <n-card rounded-10>
         <div flex items-center>

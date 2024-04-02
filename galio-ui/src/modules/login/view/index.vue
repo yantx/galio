@@ -53,6 +53,7 @@ import bgImg from '@/assets/images/login_bg.webp'
 import { login, getPublicKey } from '../api/auth'
 import { initAuthRoute } from '@/router'
 import { useStorage } from '@vueuse/core'
+import { useDictStore } from '@/store'
 
 const title = import.meta.env.VITE_TITLE
 
@@ -115,7 +116,8 @@ async function handleLogin() {
       }
       // 初始化路由
       await initAuthRoute()
-
+      // 初始化字典
+      useDictStore().loadDict()
       // 登录后重定向页面
       if (query.redirect) {
         const path = query.redirect

@@ -36,3 +36,5 @@ This template should help get you started developing with Vue 3 in Vite. The tem
  const window=this
  ```
 
+## 开发清单
+1. 表格排序、单元格内容超长省略、操作按钮样式优化、页面单列字段表头可筛选字段内容、斑马线开关

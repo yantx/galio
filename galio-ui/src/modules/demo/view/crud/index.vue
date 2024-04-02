@@ -1,100 +1,115 @@
 <template>
-  <CommonPage show-footer show-header title="文章">
-    <template #action>
-      <div>
-        <n-button type="primary" secondary @click="$table?.handleExport()">
-          <TheIcon icon="mdi:download" :size="18" class="mr-5" />
-          导出
-        </n-button>
-        <n-button type="primary" class="ml-16" @click="handleAdd">
-          <TheIcon icon="material-symbols:add" :size="18" class="mr-5" />
-          新增
-        </n-button>
-      </div>
-    </template>
-
-    <CrudTable
-      ref="$table"
-      v-model:query-items="queryItems"
-      :extra-params="extraParams"
-      :scroll-x="1200"
-      :columns="columns"
-      :get-data="api.getPosts"
-      @on-checked="onChecked"
-      @on-data-change="(data) => (tableData = data)"
-    >
-      <template #queryBar>
-        <QueryBarItem label="标题" :label-width="50">
-          <n-input
-            v-model:value="queryItems.title"
-            type="text"
-            placeholder="请输入标题"
-            @keypress.enter="$table?.handleSearch"
-          />
-        </QueryBarItem>
-      </template>
-    </CrudTable>
-    <!-- 新增/编辑/查看 -->
-    <CrudModal
-      v-model:visible="modalVisible"
-      :title="modalTitle"
-      :loading="modalLoading"
-      :show-footer="modalAction !== 'view'"
-      @on-save="handleSave"
-    >
-      <n-form
-        ref="modalFormRef"
-        label-placement="left"
-        label-align="left"
-        :label-width="80"
-        :model="modalForm"
-        :disabled="modalAction === 'view'"
-      >
-        <n-form-item label="作者" path="author">
-          <n-input v-model:value="modalForm.author" placeholder="请输入作者" />
-        </n-form-item>
-        <n-form-item
-          label="文章标题"
-          path="title"
-          :rule="{
-            required: true,
-            message: '请输入文章标题',
-            trigger: ['input', 'blur'],
-          }"
+  <AppPage show-footer>
+    <n-space vertical size="large">
+      <n-card>
+        <!-- 查询条件 -->
+        <QueryBar
+          v-model:query-items="queryItems"
+          show-query
+          mb-10
+          size="small"
+          @search="$table?.handleSearch"
+          @reset="$table?.handleReset"
         >
-          <n-input v-model:value="modalForm.title" placeholder="请输入文章标题" />
-        </n-form-item>
-        <n-form-item
-          label="文章内容"
-          path="content"
-          :rule="{
-            required: true,
-            message: '请输入文章内容',
-            trigger: ['input', 'blur'],
-          }"
+          <template #queryItems>
+            <QueryBarItem label="标题" :label-width="50">
+              <n-input
+                v-model:value="queryItems.title"
+                type="text"
+                placeholder="请输入标题"
+                @keypress.enter="$table?.handleSearch"
+              />
+            </QueryBarItem>
+          </template>
+        </QueryBar>
+      </n-card>
+      <n-card>
+        <!-- 操作按钮 -->
+        <n-flex mb-10>
+          <n-button type="primary" size="small" secondary @click="$table?.handleExport()">
+            <TheIcon icon="mdi:download" :size="12" class="mr-5" />
+            导出
+          </n-button>
+          <n-button type="primary" size="small" @click="handleAdd">
+            <TheIcon icon="material-symbols:add" :size="12" class="mr-5" />
+            新增
+          </n-button>
+        </n-flex>
+        <!-- 数据表格 -->
+        <CrudTable
+          ref="$table"
+          v-model:query-items="queryItems"
+          :extra-params="extraParams"
+          :scroll-x="1200"
+          :columns="columns"
+          :get-data="api.getPosts"
+          @on-checked="onChecked"
+          @on-data-change="(data) => (tableData = data)"
+        ></CrudTable>
+        <!-- 新增/编辑/查看窗口 -->
+        <CrudModal
+          v-model:visible="modalVisible"
+          :title="modalTitle"
+          :loading="modalLoading"
+          :show-footer="modalAction !== 'view'"
+          @on-save="handleSave"
         >
-          <n-input
-            v-model:value="modalForm.content"
-            placeholder="请输入文章内容"
-            type="textarea"
-            :autosize="{
-              minRows: 3,
-              maxRows: 5,
-            }"
-          />
-        </n-form-item>
-      </n-form>
-    </CrudModal>
-  </CommonPage>
+          <n-form
+            ref="modalFormRef"
+            label-placement="left"
+            label-align="left"
+            :label-width="80"
+            :model="modalForm"
+            :disabled="modalAction === 'view'"
+          >
+            <n-form-item label="作者" path="author">
+              <n-input v-model:value="modalForm.author" placeholder="请输入作者" />
+            </n-form-item>
+            <n-form-item
+              label="文章标题"
+              path="title"
+              :rule="{
+                required: true,
+                message: '请输入文章标题',
+                trigger: ['input', 'blur'],
+              }"
+            >
+              <n-input v-model:value="modalForm.title" placeholder="请输入文章标题" />
+            </n-form-item>
+            <n-form-item
+              label="文章内容"
+              path="content"
+              :rule="{
+                required: true,
+                message: '请输入文章内容',
+                trigger: ['input', 'blur'],
+              }"
+            >
+              <n-input
+                v-model:value="modalForm.content"
+                placeholder="请输入文章内容"
+                type="textarea"
+                :autosize="{
+                  minRows: 3,
+                  maxRows: 5,
+                }"
+              />
+            </n-form-item>
+          </n-form>
+        </CrudModal>
+      </n-card>
+    </n-space>
+  </AppPage>
 </template>
 
 <script setup>
-import { NButton, NSwitch } from 'naive-ui'
+import { NButton, NSwitch, NTag } from 'naive-ui'
 import { formatDateTime, renderIcon, isNullOrUndef } from '@/utils'
 import { useCRUD } from '@/composables'
 import api from '../../api/crud'
+import { onActivated, onMounted } from 'vue'
 
-defineOptions({ name: 'Crud' })
+defineOptions({ name: 'CrudIndex1' })
 
 const $table = ref(null)
 /** 表格数据，触发搜索的时候会更新这个值 */
@@ -104,12 +119,29 @@ const queryItems = ref({})
 /** 补充参数（可选） */
 const extraParams = ref({})
 
-onActivated(() => {
+onMounted(() => {
   $table.value?.handleSearch()
 })
-
+const sortStatesRef = ref([])
+const sortKeyMapOrderRef = computed(() =>
+  sortStatesRef.value.reduce((result, { columnKey, order }) => {
+    result[columnKey] = order
+    return result
+  }, {}),
+)
 const columns = [
   { type: 'selection', fixed: 'left' },
+  {
+    title: '序号',
+    key: 'id',
+    width: 60,
+    align: 'center',
+    fixed: 'left',
+    sortOrder: sortKeyMapOrderRef.value.id || false,
+    sorter(rowA, rowB) {
+      return rowA.id - rowB.id
+    },
+  },
   {
     title: '发布',
     key: 'isPublish',
@@ -127,7 +159,21 @@ const columns = [
     },
   },
   { title: '标题', key: 'title', width: 150, ellipsis: { tooltip: true } },
-  { title: '分类', key: 'category', width: 80, ellipsis: { tooltip: true } },
+  {
+    title: '分类',
+    key: 'category',
+    width: 80,
+    render(row) {
+      return h(
+        NTag,
+        {
+          type: 'info',
+          size: 'small',
+        },
+        { default: () => row.category },
+      )
+    },
+  },
   { title: '创建人', key: 'author', width: 80 },
   {
     title: '创建时间',
@@ -174,7 +220,6 @@ const columns = [
           },
           { default: () => '编辑', icon: renderIcon('material-symbols:edit-outline', { size: 14 }) },
         ),
-
         h(
           NButton,
           {
@@ -230,4 +275,4 @@ const {
   doUpdate: api.updatePost,
   refresh: () => $table.value?.handleSearch(),
 })
-</script>../../api/crud
+</script>

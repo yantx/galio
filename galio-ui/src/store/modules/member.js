@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { getMember } from '~/src/modules/member/api'
 import { removeToken, toLogin } from '@/utils'
 import { resetRouter } from '@/router'
-import { useTagsStore, useRouterStore } from '@/store'
+import { useTagsStore } from '@/store'
 export const useMemberStore = defineStore('member', {
   state() {
     return {

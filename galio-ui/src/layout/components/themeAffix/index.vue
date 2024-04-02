@@ -1,10 +1,10 @@
 <template>
-  <n-affix :bottom="60" :right="30" :trigger-bottom="60">
-    <n-button circle @click="isDrawer = !isDrawer">
-      <template #icon>
+  <n-affix :bottom="60" :right="50" :trigger-bottom="60">
+    <n-float-button @click="isDrawer = !isDrawer">
+      <n-icon>
         <icon-fluent:magic-wand-16-regular />
-      </template>
-    </n-button>
+      </n-icon>
+    </n-float-button>
   </n-affix>
   <n-drawer v-model:show="isDrawer" :width="width" :placement="placement">
     <n-drawer-content :title="title" :native-scrollbar="false">

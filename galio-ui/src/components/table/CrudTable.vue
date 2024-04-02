@@ -1,8 +1,4 @@
 <template>
-  <QueryBar v-if="$slots.queryBar" mb-30 @search="handleSearch" @reset="handleReset">
-    <slot name="queryBar" />
-  </QueryBar>
-
   <n-data-table
     :remote="remote"
     :loading="loading"
@@ -13,6 +9,7 @@
     :pagination="isPagination ? pagination : false"
     @update:checked-row-keys="onChecked"
     @update:page="onPageChange"
+    @update:sorter="handleUpdateSorter"
   />
 </template>
 
@@ -80,6 +77,7 @@ const loading = ref(false)
 const initQuery = { ...props.queryItems }
 const tableData = ref([])
 const pagination = reactive({ pageNumber: 1, pageSize: 10 })
+const sorter = reactive({ orderByColumn: null, isAsc: null })
 
 async function handleQuery() {
   try {
@@ -128,6 +126,12 @@ function onChecked(rowKeys) {
   if (props.columns.some((item) => item.type === 'selection')) {
     emit('onChecked', rowKeys)
   }
+}
+function handleUpdateSorter(sorters) {
+  console.log(sorters)
+  sorter.sortColumn = sorters.map((item) => item.columnKey).join(',')
+  sorter.sortOrder = sorters.map((item) => item.order).join(',')
+  handleQuery()
 }
 function handleExport(columns = props.columns, data = tableData.value) {
   if (!data?.length) return $message.warning('没有数据')
