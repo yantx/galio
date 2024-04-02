@@ -1,6 +1,6 @@
 import { request } from '@/utils'
 export function getDictData(params) {
-  return request.get('/system/dict/list', { params })
+  return request.post('/system/dict/list', { params })
 }
 
 export function getDictPage(params) {

@@ -1,5 +1,5 @@
 <template>
-  <n-tag v-if="dictItemlabel" type="info">{ dictItemlabel }</n-tag>
+  <n-tag type="info">{{ dictLabel }}</n-tag>
 </template>
 
 <script setup>
@@ -21,13 +21,6 @@ const props = defineProps({
     default: '',
   },
 })
-const dictItemlabel = () => getDictLabel()
-
-function getDictLabel() {
-  try {
-    useDictStore().getDictLabel({ dictKey: props.dictKey, dictItemValue: props.dictItemValue })
-  } catch (error) {
-    return ''
-  }
-}
+const dictStore = useDictStore()
+const dictLabel = dictStore.getDictLabel(props.dictKey, props.dictItemValue)
 </script>

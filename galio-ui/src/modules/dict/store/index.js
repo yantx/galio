@@ -7,18 +7,12 @@ export const useDictStore = defineStore('dict', {
     }
   },
   getters: {
-    /**
-     * Get dictionary item by dictCode
-     * @param {string} dictCode dictionary code
-     * @return {object} dictionary item, return {orderNum : 0, label : 'test', value : 'test', cssClass : 'test', listClass : 'test', isDefault: true }
-     */
-    getDictItems(dictKey) {
-      // Get dictionary item by dictKey
-      return this.dictData.filter((item) => item.dictCode === dictKey)
+    getDictItems: (state) => (dictKey) => {
+      return state.dictData.filter((item) => item.dictCode === dictKey)
     },
-    getDictLabel(dictKey, dictItemValue) {
-      // Get dictionary item label by dictKey and dictItemValue
-      return getDictItems(dictKey).find((item) => item.value === dictItemValue).label
+    getDictLabel: (state) => (dictKey, dictItemValue) => {
+      const dictItem = state.dictData.find((item) => item.dictCode === dictKey && item.value === dictItemValue)
+      return dictItem ? dictItem.label : ''
     },
   },
   actions: {
