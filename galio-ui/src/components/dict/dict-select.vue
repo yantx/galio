@@ -1,5 +1,13 @@
 <template>
-  <n-select v-model:value="localValue" :options="dictItems" @update:value="handleCheckedChange" />
+  <n-select
+    v-model:value="localValue"
+    :multiple="multiple"
+    :filterable="filterable"
+    :clearable="clearable"
+    :options="dictItems"
+    :size="size"
+    @update:value="handleCheckedChange"
+  />
 </template>
 
 <script setup>
@@ -17,6 +25,22 @@ const props = defineProps({
   dictKey: {
     type: String,
     default: '',
+  },
+  multiple: {
+    type: Boolean,
+    default: false,
+  },
+  filterable: {
+    type: Boolean,
+    default: false,
+  },
+  clearable: {
+    type: Boolean,
+    default: true,
+  },
+  size: {
+    type: String,
+    default: null, //tiny | small | medium | large
   },
 })
 
