@@ -6,20 +6,20 @@
         <QueryBar
           v-model:query-items="queryItems"
           show-query
-          mb-10
-          size="small"
           @search="$table?.handleSearch"
           @reset="$table?.handleReset"
         >
-          <template #queryItems>
-            <QueryBarItem label="标题" :label-width="50">
-              <n-input
-                v-model:value="queryItems.title"
-                type="text"
-                placeholder="请输入标题"
-                @keypress.enter="$table?.handleSearch"
-              />
-            </QueryBarItem>
+          <template #formItems>
+            <n-grid :x-gap="30" :cols="4">
+              <n-form-item-gi label="标题" path="title">
+                <n-input
+                  v-model:value="queryItems.title"
+                  type="text"
+                  placeholder="请输入标题"
+                  @keypress.enter="$table?.handleSearch"
+                />
+              </n-form-item-gi>
+            </n-grid>
           </template>
         </QueryBar>
       </n-card>
