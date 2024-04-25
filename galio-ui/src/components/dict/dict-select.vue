@@ -6,6 +6,7 @@
     :clearable="clearable"
     :options="dictItems"
     :size="size"
+    :placeholder="placeholder"
     @update:value="handleCheckedChange"
   />
 </template>
@@ -41,6 +42,10 @@ const props = defineProps({
   size: {
     type: String,
     default: null, //tiny | small | medium | large
+  },
+  placeholder: {
+    type: String,
+    default: '请选择',
   },
 })
 

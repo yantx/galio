@@ -7,7 +7,15 @@ const users = {
     avatar: '640.jpg',
     email: 'Ronnie@123.com',
     rolePerms: ['admin'],
-    functionPerms: ['system.member.add', 'system.member.view', 'system.member.edit'],
+    functionPerms: [
+      'system.member.add',
+      'system.member.view',
+      'system.member.edit',
+      'demo.crud.add',
+      'demo.crud.view',
+      'demo.crud.edit',
+      'demo.crud.delete',
+    ],
   },
   editor: {
     id: 2,
@@ -15,14 +23,21 @@ const users = {
     avatar: '640-1.jpg',
     email: 'Ronnie@123.com',
     rolePerms: ['editor'],
-    functionPerms: ['system.member.add', 'system.member.view', 'system.member.edit'],
+    functionPerms: [
+      'system.member.add',
+      'system.member.view',
+      'system.member.edit',
+      'demo.crud.view',
+      'demo.crud.edit',
+    ],
   },
   guest: {
     id: 3,
     username: 'guest',
     avatar: '640-2.jpg',
+    email: 'guest@123.com',
     rolePerms: [],
-    functionPerms: ['system.member.add', 'system.member.view', 'system.member.edit'],
+    functionPerms: ['demo.crud.add', 'system.member.view', 'system.member.edit'],
   },
 }
 export default [

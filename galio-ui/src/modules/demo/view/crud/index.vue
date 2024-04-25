@@ -30,7 +30,7 @@
             <TheIcon icon="mdi:download" :size="12" class="mr-5" />
             导出
           </n-button>
-          <n-button type="primary" size="small" @click="handleAdd">
+          <n-button v-permission="'demo.crud.add'" type="primary" size="small" @click="handleAdd">
             <TheIcon icon="material-symbols:add" :size="12" class="mr-5" />
             新增
           </n-button>
@@ -108,6 +108,7 @@ import { formatDateTime, renderIcon, isNullOrUndef } from '@/utils'
 import { useCRUD } from '@/composables'
 import api from '../../api/crud'
 import { onActivated, onMounted } from 'vue'
+import { hasBtnPermission } from '@/utils/auth'
 
 defineOptions({ name: 'CrudIndex1' })
 
@@ -200,39 +201,47 @@ const columns = [
     hideInExcel: true,
     render(row) {
       return [
-        h(
-          NButton,
-          {
-            size: 'small',
-            type: 'primary',
-            secondary: true,
-            onClick: () => handleView(row),
-          },
-          { default: () => '查看', icon: renderIcon('majesticons:eye-line', { size: 14 }) },
-        ),
-        h(
-          NButton,
-          {
-            size: 'small',
-            type: 'primary',
-            style: 'margin-left: 15px;',
-            onClick: () => handleEdit(row),
-          },
-          { default: () => '编辑', icon: renderIcon('material-symbols:edit-outline', { size: 14 }) },
-        ),
-        h(
-          NButton,
-          {
-            size: 'small',
-            type: 'error',
-            style: 'margin-left: 15px;',
-            onClick: () => handleDelete(row.id),
-          },
-          {
-            default: () => '删除',
-            icon: renderIcon('material-symbols:delete-outline', { size: 14 }),
-          },
-        ),
+        hasBtnPermission('demo.crud.view')
+          ? h(
+              NButton,
+              {
+                size: 'small',
+                type: 'primary',
+                secondary: true,
+                onClick: () => handleView(row),
+                directives: [{ name: 'permission', value: 'demo.crud.view' }],
+              },
+              { default: () => '查看', icon: renderIcon('majesticons:eye-line', { size: 14 }) },
+            )
+          : null,
+        hasBtnPermission('demo.crud.edit')
+          ? h(
+              NButton,
+              {
+                size: 'small',
+                type: 'primary',
+                style: 'margin-left: 15px;',
+                onClick: () => handleEdit(row),
+                directives: [{ name: 'if', value: hasBtnPermission('demo.crud.edit') }],
+              },
+              { default: () => '编辑', icon: renderIcon('material-symbols:edit-outline', { size: 14 }) },
+            )
+          : null,
+        hasBtnPermission('demo.crud.delete')
+          ? h(
+              NButton,
+              {
+                size: 'small',
+                type: 'error',
+                style: 'margin-left: 15px;',
+                onClick: () => handleDelete(row.id),
+              },
+              {
+                default: () => '删除',
+                icon: renderIcon('material-symbols:delete-outline', { size: 14 }),
+              },
+            )
+          : null,
       ]
     },
   },
