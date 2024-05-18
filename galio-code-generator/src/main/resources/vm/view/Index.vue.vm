@@ -1,389 +1,362 @@
 <template>
-  <div class="currentCard">
-    <!-- 查询条件 -->
-    <el-collapse
-      accordion
-      v-model="activeName"
-      class="card-bg"
-    >
-      <el-collapse-item name="1">
-        <template slot="title">
-          <div class="innerHeader">
-            查询条件
-          </div>
-        </template>
-        <div
-          style="display: flex;"
-          class="card-search"
+  <AppPage show-footer>
+    <n-space vertical size="large">
+      <n-card>
+        <!-- 查询条件 -->
+        <QueryBar
+            v-model:query-items="queryItems"
+            show-query
+            @search="${s}table?.handleSearch"
+            @reset="${s}table?.handleReset"
         >
-          <el-form
-            :inline="true"
-            :model="formList"
-            size="mini"
-            label-width="80px"
-          >
-#foreach($field in ${table.fields})	
-#if(${field.keyFlag})
-#else
-#if("$!field.comment" != "")
-            <el-form-item label="${field.comment}">
-              <el-input
-                placeholder="请输入${field.comment}"
-#else
-            <el-form-item label="${field.propertyName}">
-              <el-input
-                placeholder="请输入内容"
-#end
-                v-model="formList.${field.propertyName}"
-                style="width: 200px"
-                @keyup.enter.native="getData"
-              ></el-input>
-            </el-form-item>
-#end
-#end
-          </el-form>
-        </div>
-      </el-collapse-item>
-    </el-collapse>
-    <!-- 操作按钮区 -->
-    <div style="margin:10px 0;">
-      <el-button
-        type="success"
-        icon="el-icon-document-add"
-        @click="addData()"
-      >
-        新增
-      </el-button>
-      <el-button
-        type="warning"
-        icon="el-icon-document-delete"
-        @click="deleteDataMany()"
-      >
-        删除
-      </el-button>
-      <el-dropdown
-        style="margin-left:8px;"
-        split-button
-        type="primary"
-      >
-        更多功能
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>功能1</el-dropdown-item>
-          <el-dropdown-item>功能2</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
-      <div style="float:right;">
-        <el-button
-          type="primary"
-          @click="queryData"
-          icon="el-icon-search"
-          :loading="isSearch"
+          <template #formItems>
+            <n-grid :x-gap="30" :cols="4">
+                #foreach($column in $columns)
+                    #if($column.query)
+                        #set($dictType=$column.dictType)
+                        #set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
+                        #set($parentheseIndex=$column.columnComment.indexOf("（"))
+                        #if($parentheseIndex != -1)
+                            #set($comment=$column.columnComment.substring(0, $parentheseIndex))
+                        #else
+                            #set($comment=$column.columnComment)
+                        #end
+                        #if($column.htmlType == "input" || $column.htmlType == "textarea")
+                          <n-form-item-gi label="${comment}" path="${column.javaField}">
+                            <n-input
+                                v-model="queryItems.${column.javaField}"
+                                placeholder="请输入${comment}"
+                                clearable
+                                @keypress.enter="${s}table?.handleSearch"
+                            />
+                          </n-form-item-gi>
+                        #elseif(($column.htmlType == "select") && "" != $dictType)
+                          <n-form-item-gi label="${comment}" path="${column.javaField}">
+                            <dict-select dictKey="$dictType"></dict-select>
+                          </n-form-item-gi>
+                        #elseif($column.htmlType == "datetime" && $column.queryType != "BETWEEN")
+                          <n-form-item-gi label="${comment}" path="${column.javaField}">
+                            <n-date-picker clearable
+                                           v-model="queryItems.${column.javaField}"
+                                           type="datetime"
+                                           value-format="yyyy-MM-dd HH:mm:ss"
+                                           placeholder="请选择${comment}">
+                            </n-date-picker>
+                          </n-form-item-gi>
+                        #elseif($column.htmlType == "datetime" && $column.queryType == "BETWEEN")
+                          <n-form-item-gi label="${comment}" style="width: 308px">
+                            <el-date-picker
+                                v-model="daterange${AttrName}"
+                                value-format="yyyy-MM-dd HH:mm:ss"
+                                type="datetimerange"
+                            ></el-date-picker>
+                          </n-form-item-gi>
+                        #end
+                    #end
+                #end
+            </n-grid>
+          </template>
+        </QueryBar>
+      </n-card>
+      <n-card>
+        <!-- 操作按钮 -->
+        <n-flex mb-10>
+          <n-button v-permission="'${moduleName}:${businessName}:export'" type="primary" size="small" secondary
+                    @click="${s}table?.handleExport()">
+            <TheIcon icon="mdi:download" :size="12" class="mr-5"/>
+            导出
+          </n-button>
+          <n-button v-permission="'${moduleName}:${businessName}:add'" type="primary" size="small" @click="handleAdd">
+            <TheIcon icon="material-symbols:add" :size="12" class="mr-5"/>
+            新增
+          </n-button>
+          <n-button v-permission="'${moduleName}:${businessName}:delete'" type="danger" size="small"
+                    @click="handleDeletes(rowKeysRef)">
+            <TheIcon icon="material-symbols:delete" :size="12" class="mr-5"/>
+            删除
+          </n-button>
+        </n-flex>
+        <!-- 数据表格 -->
+        <CrudTable
+            ref="${s}table"
+            v-model:query-items="queryItems"
+            :extra-params="extraParams"
+            :scroll-x="1200"
+            :columns="columns"
+            :rowKey="${pkColumn.javaField}"
+            :get-data="api.${businessName}Page"
+            @on-checked="onChecked"
+            @on-data-change="(data) => (tableData = data)"
+        ></CrudTable>
+        <!-- 新增/编辑/查看窗口 -->
+        <CrudModal
+            v-model:visible="modalVisible"
+            :title="modalTitle"
+            :loading="modalLoading"
+            :show-footer="modalAction !== 'view'"
+            @on-save="handleSave"
         >
-          查询
-        </el-button>
-        <el-button
-          @click="resetData"
-          icon="el-icon-close"
-        >
-          清空
-        </el-button>
-        <el-button
-          @click="excelData"
-        >
-          导出数据
-        </el-button>
-      </div>
-    </div>
-
-    <!-- 表格呈现 -->
-    <el-table
-      :data="tableData"
-      :height="screenHeight - otherHeight"
-      tooltip-effect="dark"
-      style="width:100%"
-      size="mini"
-      @selection-change="selectionChanged"
-    >
-      <el-table-column
-        type="selection"
-        width="55"
-        sortable
-      >
-      </el-table-column>
-#foreach($field in ${table.fields})
-      <el-table-column
-        prop="${field.propertyName}"
-    #if("$!field.comment" != "")
-        label="${field.comment}"
-    #else
-        label="${field.propertyName}"
-    #end
-        width="180"
-        sortable
-      >
-      </el-table-column>
-#end
-      <el-table-column
-        fixed="right"
-        label="操作"
-        width="180"
-      >
-        <template slot-scope="scope">
-          <el-link
-            @click="toUpdate(scope.row,scope.$index)"
-            type="text"
-            size="small"
-            :underline="false"
+          <n-form
+              ref="modalFormRef"
+              label-placement="left"
+              label-align="left"
+              :label-width="80"
+              :model="modalForm"
+              :disabled="modalAction === 'view'"
           >
-            <i class="iconfont iconIcon-Edit"></i>
-          </el-link>
-          <el-link
-            @click="toDetail(scope.row,scope.$index)"
-            type="text"
-            size="small"
-            :underline="false"
-          >
-            <i class="iconfont iconIcon-Details1"></i>
-          </el-link>
-          <el-link
-            @click="toDelete(scope.row,scope.$index)"
-            type="text"
-            size="small"
-            :underline="false"
-          >
-            <i class="iconfont iconIcon-Delete"></i>
-          </el-link>
-        </template>
-      </el-table-column>
-    </el-table>
-    <el-pagination
-      class="customPage mt-10"
-      background
-      :page-sizes="[10, 20, 50]"
-      :current-page="formList.pageIndex"
-      :page-size="formList.pageSize"
-      :total="formList.total"
-      layout="sizes,total, ->, prev, pager, next"
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-    />
-  </div>
+              #foreach($column in $columns)
+                  #set($field=$column.javaField)
+                  #if($column.insert && !$column.pk)
+                      #set($parentheseIndex=$column.columnComment.indexOf("（"))
+                      #if($parentheseIndex != -1)
+                          #set($comment=$column.columnComment.substring(0, $parentheseIndex))
+                      #else
+                          #set($comment=$column.columnComment)
+                      #end
+                      #set($dictType=$column.dictType)
+                      #if($column.htmlType == "input")
+                        <n-form-item label="${comment}" prop="${field}">
+                          <n-input v-model="modalForm.${field}" placeholder="请输入${comment}"/>
+                        </n-form-item>
+                      #elseif($column.htmlType == "imageUpload")
+                        <n-form-item label="${comment}" prop="${field}">
+                          <image-upload v-model="modalForm.${field}"/>
+                        </n-form-item>
+                      #elseif($column.htmlType == "fileUpload")
+                        <n-form-item label="${comment}" prop="${field}">
+                          <file-upload v-model="modalForm.${field}"/>
+                        </n-form-item>
+                      #elseif($column.htmlType == "editor")
+                        <n-form-item label="${comment}">
+                          <editor v-model="modalForm.${field}" :min-height="192"/>
+                        </n-form-item>
+                      #elseif($column.htmlType == "select" && "" != $dictType)
+                        <n-form-item label="${comment}" prop="${field}">
+                          <dict-select dictKey="$dictType" v-model:value="modalForm.${field}"></dict-select>
+                        </n-form-item>
+                      #elseif($column.htmlType == "select" && $dictType)
+                        <n-form-item label="${comment}" prop="${field}">
+                          <n-select v-model:value="modalForm.${field}" :options="options" />
+                        </n-form-item>
+                      #elseif($column.htmlType == "checkbox" && "" != $dictType)
+                        <n-form-item label="${comment}" prop="${field}">
+                          <dict-checkbox-group dictKey="$dictType" v-model:value="modalForm.${field}"></dict-checkbox-group>
+                        </n-form-item>
+                      #elseif($column.htmlType == "checkbox" && $dictType)
+                        <n-form-item label="${comment}" prop="${field}">
+                          <n-checkbox-group v-model:value="modalForm.${field}">
+                            <n-space item-style="display: flex;">
+                              <n-checkbox value="0" label="请选择" />
+                            </n-space>
+                          </n-checkbox-group>
+                        </n-form-item>
+                      #elseif($column.htmlType == "radio" && "" != $dictType)
+                        <n-form-item label="${comment}" prop="${field}">
+                          <dict-radio-group dictKey="$dictType" v-model:value="modalForm.${field}"></dict-radio-group>
+                        </n-form-item>
+                      #elseif($column.htmlType == "radio" && $dictType)
+                        <n-form-item label="${comment}" prop="${field}">
+                          <n-radio-group v-model:value="modalForm.${field}">
+                            <n-radio label="1">请选择字典生成</n-radio>
+                          </n-radio-group>
+                        </n-form-item>
+                      #elseif($column.htmlType == "datetime")
+                        <n-form-item label="${comment}" prop="${field}">
+                          <n-date-picker clearable
+                                          v-model:value="modalForm.${field}"
+                                          type="datetime"
+                                          value-format="yyyy-MM-dd HH:mm:ss"
+                                          placeholder="请选择${comment}">
+                          </n-date-picker>
+                        </n-form-item>
+                      #elseif($column.htmlType == "textarea")
+                        <n-form-item label="${comment}" prop="${field}">
+                          <n-input v-model:value="modalForm.${field}" type="textarea" placeholder="请输入内容"/>
+                        </n-form-item>
+                      #end
+                  #end
+              #end
+          </n-form>
+        </CrudModal>
+      </n-card>
+    </n-space>
+  </AppPage>
 </template>
-#set($entryLower=$entity.toLowerCase())
-#set($viewModuleNameLower=$cfg.viewModuleName.toLowerCase())
-#foreach($field in ${table.fields})
-  #if(${field.keyFlag})
-    #set($keyPropertyName=${field.propertyName})
-    #set($keyPropertyType=${field.propertyType})
-  #end
-#end
-<script>
-import * as OperatorLog from '@/framework/api/log.js'
-import Api from '@/modules/${viewModuleNameLower}/api/api_${entryLower}.js'
-import { LogType } from '@/share/models/LogType.js'
-import SearchViewMixin from '@/share/mixins/SearchViewMixin'
-import Vue from 'vue'
 
-export default {
-  name: '${entity}Index',
-  data () {
-    return {
-      // context: 父对象
-      // screenHeight:控制高度自适应-页面高度
-      // otherHeight:控制高度自适应-表格外的高度
-      // isSearch:控制搜索状态
-      // detailUrl:详情页面地址
-      // selectedRows:选中行对象
-      // formList:搜索条件对象
-      // formList:分页控制对象
-      // tableData:表格数据
-      // OperatorLogParam:用于记录日志
-      context: { componentParent: this },
-      screenHeight: window.innerHeight,
-      otherHeight: 310,
-      isSearch: false,
-      detailUrl: '/${viewModuleNameLower}/${entryLower}/item',
-      selectedRows: {},
-      formList: {
-#foreach($field in ${table.fields})	
-#if(${field.keyFlag})
-#else
-        ${field.propertyName}: '',
-#end
-#end	
-        pageIndex: 1,
-        pageSize: 10,
-        total: 1000
+<script setup>
+  import {NButton, NSwitch, NTag,NImage} from 'naive-ui'
+  import {formatDateTime, renderIcon, isNullOrUndef} from '@/utils'
+  import {useCRUD} from '@/composables'
+  import api from '../../api/${businessName}'
+  import {onMounted} from 'vue'
+  import { hasBtnPermission } from '@/utils/auth'
+
+  defineOptions({name: '${BusinessName}Index'})
+
+  const ${s}table = ref(null)
+  /** 表格数据，触发搜索的时候会更新这个值 */
+  const tableData = ref([])
+  /** QueryBar筛选参数（可选） */
+  const queryItems = ref({})
+  /** 补充参数（可选） */
+  const extraParams = ref({})
+  /** 表格选中行keys */
+  const rowKeysRef = ref([])
+
+  onMounted(() => {
+          ${s}table.value?.handleSearch()
+  })
+  const sortStatesRef = ref([])
+  const sortKeyMapOrderRef = computed(() =>
+      sortStatesRef.value.reduce((result, {columnKey, order}) => {
+        result[columnKey] = order
+        return result
+      }, {}),
+  )
+  const columns = [
+      { type: 'selection', fixed: 'left' },
+      #foreach($column in $columns)
+          #set($javaField=$column.javaField)
+          #set($parentheseIndex=$column.columnComment.indexOf("（"))
+          #if($parentheseIndex != -1)
+              #set($comment=$column.columnComment.substring(0, $parentheseIndex))
+          #else
+              #set($comment=$column.columnComment)
+          #end
+          #if($column.pk)
+            {
+              title: '${comment}',
+              key: '${javaField}',
+              width: 60,
+              align: 'center',
+              fixed: 'left',
+              sortOrder: sortKeyMapOrderRef.value.${javaField} || false,
+              sorter(rowA, rowB) {
+                return rowA.${javaField} - rowB.${javaField}
+              },
+            },
+          #elseif($column.list && $column.htmlType == "datetime")
+            {
+              title: '${comment}',
+              key: '${javaField}',
+              width: 150,
+              render(row) {
+                return h('span', formatDateTime(row['${javaField}']))
+              },
+            },
+          #elseif($column.list && $column.htmlType == "imageUpload")
+            {
+              title: '${comment}',
+              key: '${javaField}',
+              width: 80,
+              align: 'center',
+              fixed: 'right',
+              hideInExcel: true,
+              render(row) {
+                h(NImage, {
+                  width: 50,
+                  height: 50,
+                  src: "'" + row['${javaField}'] + "'",
+                })
+              },
+            },
+          #elseif($column.list && $column.dictType && "" != $column.dictType)
+            {
+              title: '${comment}',
+              key: '${javaField}',
+              width: 80,
+              align: 'center',
+              fixed: 'right',
+              hideInExcel: true,
+              render(row) {
+                h('dict-tag', {
+                  dictKey: '${column.dictType}',
+                  dictItemValue: $column.htmlType == "checkbox" ? (row.${javaField} ? row.${javaField}.split(',') : []) : row.${javaField}
+                })
+              },
+            },
+          #elseif($column.list && "" != $javaField)
+            { title: '${comment}', key: '${javaField}', width: 150, ellipsis: { tooltip: true } },
+          #end
+      #end
+    {
+      title: '操作',
+      width: 240,
+      align: 'center',
+      fixed: 'right',
+      hideInExcel: true,
+      render(row) {
+        return [
+          hasBtnPermission('${moduleName}:${businessName}:view')
+              ? h(
+                  NButton,
+                  {
+                    size: 'small',
+                    type: 'primary',
+                    secondary: true,
+                    onClick: () => handleView(row),
+                  },
+                  { default: () => '查看', icon: renderIcon('majesticons:eye-line', { size: 14 }) },
+              )
+              : null,
+          hasBtnPermission('${moduleName}:${businessName}:edit')
+              ? h(
+                  NButton,
+                  {
+                    size: 'small',
+                    type: 'primary',
+                    style: 'margin-left: 15px;',
+                    onClick: () => handleEdit(row),
+                  },
+                  { default: () => '编辑', icon: renderIcon('material-symbols:edit-outline', { size: 14 }) },
+              )
+              : null,
+          hasBtnPermission('${moduleName}:${businessName}:delete')
+              ? h(
+                  NButton,
+                  {
+                    size: 'small',
+                    type: 'error',
+                    style: 'margin-left: 15px;',
+                    onClick: () => handleDelete(row.id),
+                  },
+                  {
+                    default: () => '删除',
+                    icon: renderIcon('material-symbols:delete-outline', { size: 14 }),
+                  },
+              )
+              : null,
+        ]
       },
-      activeName: '1',
-      tableData: [],
-      OperatorLogParam: {
-        operateContent: '',
-        operateFeatures: '',
-        operateState: '',
-        operateType: ''
-      }
     }
-  },
-  methods: {
-    addData () {
-      // 添加记录
-      this.${varDescriptor}router.push({
-        path: this.detailUrl,
-        query: { type: 'add' }
-      })
-    },
-    toUpdate (data, index) {
-      // 更新方法
-      this.${varDescriptor}router.push({
-        path: this.detailUrl,
-        query: { type: 'update', id: data.${keyPropertyName} }
-      })
-    },
-    toDetail (data, index) {
-      // 查看详情
-      this.${varDescriptor}router.push({
-        path: this.detailUrl,
-        query: { type: 'detail', id: data.${keyPropertyName} }
-      })
-    },
-    toDelete (data, index) {
-      // 删除单条记录
-      this.${varDescriptor}confirm('<p style="word-break: break-all">确认删除？</p>', '删除', {
-        dangerouslyUseHTMLString: true,
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-        center: true
-      }).then(() => {
-        Api.del4${entryLower}(data.${keyPropertyName}).then(data => {
-          this.getData()
-        })
-      }).catch(() => {
-        this.${varDescriptor}message({
-          type: 'info',
-          message: '已取消删除'
-        })
-      })
-    },
-    deleteDataMany () {
-      // 删除多条记录
-      const datas = this.selectedRows
-      const dataids = []
-      if (!datas || !datas.length || datas.length === 0) {
-        this.${varDescriptor}message.warning('请选择数据')
-      } else {
-        for (const i of datas) {
-          dataids.push(i.${keyPropertyName})
-        }
-        this.${varDescriptor}confirm('<p style="word-break: break-all">确认删除？</p>', '删除', {
-          dangerouslyUseHTMLString: true,
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning',
-          center: true
-        }).then(() => {
-          Api.dels4${entryLower}(dataids).then(data => {
-            this.getData()
+  ]
 
-            // 日志记录
-            // this.OperatorLogParam.operateContent = JSON.stringify(dataids)
-            // this.OperatorLogParam.operateFeatures = '删除记录'
-            // this.OperatorLogParam.operateType = LogType.Query
-            // this.OperatorLogParam.operateState = '成功'
-            // OperatorLog.setOperationLog(this.OperatorLogParam)
-          })
-        }).catch(() => {
-          this.${varDescriptor}message({
-            type: 'info',
-            message: '已取消删除'
-          })
-        })
-      }
-    },
-    queryData () {
-      // 查询事件
-      this.isSearch = true
-      this.formList.pageIndex = 1
-      this.getData()
-    },
-    resetData () {
-      // 重置事件
-      this.isSearch = false
-      for (const key in this.formList) {
-        this.formList[key] = ''
-      }
-    },
-    excelData () {
-      const params = {}
-      Api.excelData4${entryLower}(params).then(data => {
-        const blob = new Blob([data], { type: 'application/vnd.ms-excel' })
-        const blobUrl = URL.createObjectURL(blob)
-        const a = document.createElement('a')
-        a.href = blobUrl
-		#if("$!table.comment" != "")
-        a.download = '${table.comment}.xls'
-		#else
-		a.download = '${entity}.xls'
-		#end
-        a.click()
-        window.URL.revokeObjectURL(blobUrl)
-      }
-      )
-    },
-    getData () {
-      // 查询方法
-
-      // 后台请求
-      Api.selpage4${entryLower}(this.formList).then(data => {
-        if (data !== null) {
-          const tablelist = data.records
-          this.tableData = tablelist
-          this.formList.total = data.total
-          this.isSearch = false
-
-          // 日志记录
-          // this.OperatorLogParam.operateContent = JSON.stringify(params)
-          // this.OperatorLogParam.operateFeatures = '查询列表'
-          // this.OperatorLogParam.operateType = LogType.Query
-          // this.OperatorLogParam.operateState = '成功'
-          // OperatorLog.setOperationLog(this.OperatorLogParam)
-        }
-      })
-    },
-    handleCurrentChange (val) {
-      // 页码切换事件
-      this.formList.pageIndex = val
-      this.getData()
-    },
-    handleSizeChange (val) {
-      // 页面条数变化事件
-      this.formList.pageSize = val
-      this.getData()
-    },
-    selectionChanged (val) {
-      // 选中行变化事件
-      this.selectedRows = val
-    }
-  },
-  mounted () {
-    const that = this
-    that.getData()
-    window.onresize = () => {
-      return (() => {
-        that.screenHeight = window.innerHeight
-      })()
-    }
-  },
-  activated () {
-    this.getData()
+  // 选中事件
+  function onChecked(rowKeys) {
+    rowKeysRef.value = rowKeys
+    if (rowKeys.length) ${s}message.info(`选中${s}{rowKeys.join(' ')}`)
   }
-}
-</script>
 
-<style lang="css" scoped>
-/* 单页面样式 */
->>>.el-table .cell {
-  white-space: nowrap
-}
-</style>
+  const {
+    modalVisible,
+    modalAction,
+    modalTitle,
+    modalLoading,
+    handleAdd,
+    handleDelete,
+    handleDeletes,
+    handleEdit,
+    handleView,
+    handleSave,
+    modalForm,
+    modalFormRef,
+  } = useCRUD({
+    name: '${functionName}',
+    initForm: {author: ${author}},
+    doCreate: api.${businessName}Add,
+    doDelete: api.${businessName}Del,
+    doDeletes: api.${businessName}Dels,
+    doUpdate: api.${businessName}Update,
+    refresh: () => ${s}table.value?.handleSearch(),
+  })
+</script>

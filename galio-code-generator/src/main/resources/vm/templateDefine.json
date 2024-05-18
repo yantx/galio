@@ -114,10 +114,10 @@
     "outFileName": "Index.vue"
   },
   {
-    "name": "Item.vue.vm",
+    "name": "index.js.vm",
     "relativePath": "view",
-    "outPath": "/${viewModuleName}/views/${entityLower}",
-    "outFileName": "Item.vue"
+    "outPath": "/${viewModuleName}",
+    "outFileName": "index.js"
   },
   {
     "name": "router.js.vm",
