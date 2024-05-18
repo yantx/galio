@@ -6,7 +6,7 @@ const ACTIONS = {
   add: '新增',
 }
 
-export default function ({ name, initForm = {}, doCreate, doDelete, doUpdate, refresh }) {
+export default function ({ name, initForm = {}, doCreate, doDelete, doDeletes, doUpdate, refresh }) {
   const modalVisible = ref(false)
   const modalAction = ref('')
   const modalTitle = computed(() => ACTIONS[modalAction.value] + name)
@@ -71,11 +71,29 @@ export default function ({ name, initForm = {}, doCreate, doDelete, doUpdate, re
   function handleDelete(id, confirmOptions) {
     if (isNullOrWhitespace(id)) return
     $dialog.confirm({
-      content: '确定删除？',
+      content: '确定删除编号为"' + id + '"的数据项',
       async confirm() {
         try {
           modalLoading.value = true
           const data = await doDelete(id)
+          $message.success('删除成功')
+          modalLoading.value = false
+          refresh(data)
+        } catch (error) {
+          modalLoading.value = false
+        }
+      },
+      ...confirmOptions,
+    })
+  }
+
+  function handleDeletes(ids, confirmOptions) {
+    $dialog.confirm({
+      content: '确定删除编号为"' + ids.join(',') + '"的数据项',
+      async confirm() {
+        try {
+          modalLoading.value = true
+          const data = await doDeletes(ids)
           $message.success('删除成功')
           modalLoading.value = false
           refresh(data)
@@ -94,6 +112,7 @@ export default function ({ name, initForm = {}, doCreate, doDelete, doUpdate, re
     modalLoading,
     handleAdd,
     handleDelete,
+    handleDeletes,
     handleEdit,
     handleView,
     handleSave,

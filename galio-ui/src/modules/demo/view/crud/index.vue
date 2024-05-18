@@ -30,9 +30,13 @@
             <TheIcon icon="mdi:download" :size="12" class="mr-5" />
             导出
           </n-button>
-          <n-button v-permission="'demo.crud.add'" type="primary" size="small" @click="handleAdd">
+          <n-button v-permission="'demo:crud:add'" type="primary" size="small" @click="handleAdd">
             <TheIcon icon="material-symbols:add" :size="12" class="mr-5" />
             新增
+          </n-button>
+          <n-button v-permission="'demo:crud:delete'" type="error" size="small" @click="handleDeletes(rowKeysRef)">
+            <TheIcon icon="material-symbols:delete" :size="12" class="mr-5" />
+            删除
           </n-button>
         </n-flex>
         <!-- 数据表格 -->
@@ -110,7 +114,7 @@ import api from '../../api/crud'
 import { onActivated, onMounted } from 'vue'
 import { hasBtnPermission } from '@/utils/auth'
 
-defineOptions({ name: 'CrudIndex1' })
+defineOptions({ name: 'CrudIndex' })
 
 const $table = ref(null)
 /** 表格数据，触发搜索的时候会更新这个值 */
@@ -119,6 +123,8 @@ const tableData = ref([])
 const queryItems = ref({})
 /** 补充参数（可选） */
 const extraParams = ref({})
+/** 表格选中行keys */
+const rowKeysRef = ref([])
 
 onMounted(() => {
   $table.value?.handleSearch()
@@ -201,7 +207,7 @@ const columns = [
     hideInExcel: true,
     render(row) {
       return [
-        hasBtnPermission('demo.crud.view')
+        hasBtnPermission('demo:crud:view')
           ? h(
               NButton,
               {
@@ -209,12 +215,11 @@ const columns = [
                 type: 'primary',
                 secondary: true,
                 onClick: () => handleView(row),
-                directives: [{ name: 'permission', value: 'demo.crud.view' }],
               },
               { default: () => '查看', icon: renderIcon('majesticons:eye-line', { size: 14 }) },
             )
           : null,
-        hasBtnPermission('demo.crud.edit')
+        hasBtnPermission('demo:crud:edit')
           ? h(
               NButton,
               {
@@ -222,12 +227,11 @@ const columns = [
                 type: 'primary',
                 style: 'margin-left: 15px;',
                 onClick: () => handleEdit(row),
-                directives: [{ name: 'if', value: hasBtnPermission('demo.crud.edit') }],
               },
               { default: () => '编辑', icon: renderIcon('material-symbols:edit-outline', { size: 14 }) },
             )
           : null,
-        hasBtnPermission('demo.crud.delete')
+        hasBtnPermission('demo:crud:delete')
           ? h(
               NButton,
               {
@@ -249,6 +253,7 @@ const columns = [
 
 // 选中事件
 function onChecked(rowKeys) {
+  rowKeysRef.value = rowKeys
   if (rowKeys.length) $message.info(`选中${rowKeys.join(' ')}`)
 }
 
@@ -271,6 +276,7 @@ const {
   modalLoading,
   handleAdd,
   handleDelete,
+  handleDeletes,
   handleEdit,
   handleView,
   handleSave,
@@ -281,6 +287,7 @@ const {
   initForm: { author: 'Galio' },
   doCreate: api.addPost,
   doDelete: api.deletePost,
+  doDeletes: api.deletePosts,
   doUpdate: api.updatePost,
   refresh: () => $table.value?.handleSearch(),
 })
