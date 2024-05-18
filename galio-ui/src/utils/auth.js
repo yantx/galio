@@ -19,6 +19,6 @@ export function hasBtnPermission(permission) {
   const currentRoute = unref(router.currentRoute)
   let btnPermissions = currentRoute.meta.functionPerms || useMemberStore().functionPerms
   return (
-    !isNullOrWhitespace(btnPermissions) && (btnPermissions.includes('*.*.*') || btnPermissions.includes(permission))
+    !isNullOrWhitespace(btnPermissions) && (btnPermissions.includes('*:*:*') || btnPermissions.includes(permission))
   )
 }

@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { getFunctions } from '~/src/modules/function/api'
 import { useMemberStore } from '@/store'
-import { transformAuthRouteToVueRoutes, transformAuthRouteToMenu, filterAsyncRoutes, hasPermission } from '@/utils'
+import { transformAuthRouteToVueRoutes, transformAuthRouteToMenu, filterAsyncRoutes } from '@/utils'
 import { asyncRoutes, basicRoutes } from '@/router/routes'
 
 export const useRouterStore = defineStore('route-store', {
