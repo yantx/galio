@@ -1,6 +1,6 @@
 import { isDef, isNullOrUndef, isNullOrWhitespace } from '@/utils'
 import { renderCustomIcon, renderIcon, isExternal } from '@/utils'
-import { views } from '@/modules/view.js'
+import { views } from '@/modules/moduleInit'
 
 const Layout = () => import('@/layout/index.vue')
 const IframePage = () => import('@/components/iframe/index.vue')
