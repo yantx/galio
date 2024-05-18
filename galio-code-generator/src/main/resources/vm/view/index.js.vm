@@ -1,0 +1,7 @@
+const view = {
+    ${BusinessName}: () => import('@/modules/${businessName}/view/index.vue'),
+}
+
+export default {
+  view,
+}

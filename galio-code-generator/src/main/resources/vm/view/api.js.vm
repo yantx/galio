@@ -1,42 +1,27 @@
-import axios from 'axios'
-import Vue from 'vue'
+import { request } from '@/utils'
 
 #if(${prePath})
-    #set($restUrl="/"+$cfg.moduleName+"/"+$cfg.prePath+"/"+${table.entityPath})
+    #set($restUrl="/"+$moduleName+"/"+$prePath+"/"+${entityPath})
 #else
-    #set($restUrl="/"+$cfg.moduleName+"/"+${table.entityPath})
+    #set($restUrl="/"+$moduleName+"/"+${table.entityPath})
 #end
 #set($restUrl=$restUrl.toLowerCase())
 #set($entryLower=$entity.toLowerCase())
-#set($viewModuleNameLower=$cfg.viewModuleName.toLowerCase())
+#set($viewModuleNameLower=$viewModuleName.toLowerCase())
 export default {
-  // 添加
-  add4${entryLower}: obj => {
-    return Vue.axios.post('${restUrl}', obj)
-  },
-  // 修改
-  update4${entryLower}: (id, obj) => {
-    return Vue.axios.put(`${restUrl}/${s}{id}`, obj)
-  },
-  // 删除单条
-  del4${entryLower}: id => {
-    return Vue.axios.delete(`${restUrl}/${s}{id}`)
-  },
-  // 删除多条
-  dels4${entryLower}: ids => {
-    return Vue.axios.post('${restUrl}/dels', ids)
-  },
-  // 查询单条
-  sel4${entryLower}: id => {
-    return Vue.axios.get(`${restUrl}/${s}{id}`)
-  },
-  // 分页查询
-  selpage4${entryLower}: params => {
-    return Vue.axios.post('${restUrl}/selpage', params)
-  },
-  // 导出Excel
-  excelData4${entryLower}: params => {
-    return Vue.axios.post('${restUrl}/excel', params, { responseType: 'arraybuffer' })
-  }
+  // 添加$viewModuleNameLower
+  save${entryLower}: (params = {}) => request.post(`${restUrl}`, { params }),
+  // 修改$viewModuleNameLower
+  update${entryLower}: (params = {}) => request.put(`${restUrl}`, { params }),
+  // 删除单条$viewModuleNameLower
+  delete${entryLower}: id => request.delete(`${restUrl}/${s}{id}`),
+  // 删除多条$viewModuleNameLower
+  deletes${entryLower}: ids => request.post('${restUrl}/deletes', ids),
+  // 查询单条$viewModuleNameLower
+  list${entryLower}: id => request.get(`${restUrl}/${s}{id}`),
+  // 分页查询$viewModuleNameLower
+  page${entryLower}: params => request.post('${restUrl}/page', params),
+  // 导出Excel$viewModuleNameLower
+  excel${entryLower}: params => request.post('${restUrl}/excel', params, { responseType: 'arraybuffer' })
 
 }

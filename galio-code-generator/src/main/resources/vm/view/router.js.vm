@@ -1,5 +1,6 @@
+const Layout = () => import('@/layout/index.vue')
 #set($entryLower=$entity.toLowerCase())
-#set($viewModuleNameLower=$cfg.viewModuleName.toLowerCase())
+#set($viewModuleNameLower=$viewModuleName.toLowerCase())
 const ${entity}Item = () => import('../views/${entryLower}/Item.vue')
 const ${entity}Index = () => import('../views/${entryLower}/Index.vue')
 
