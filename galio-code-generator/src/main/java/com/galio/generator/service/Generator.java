@@ -4,7 +4,7 @@ import com.galio.core.text.CharsetKit;
 import com.galio.core.utils.DateTimeUtil;
 import com.galio.core.utils.StringUtil;
 import com.galio.generator.config.BaseConfig;
-import com.galio.generator.config.ElementConfig;
+import com.galio.generator.config.TableConfig;
 import com.galio.generator.config.GeneratorConfig;
 import com.galio.generator.config.ThirdPartyToolsConfig;
 import com.galio.generator.constants.GenConstants;
@@ -24,9 +24,6 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
-import org.apache.velocity.app.VelocityEngine;
-import org.apache.velocity.runtime.RuntimeConstants;
-import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -50,7 +47,7 @@ public class Generator {
     @Autowired
     GeneratorConfig generatorConfig;
     @Autowired
-    ElementConfig elementConfig;
+    TableConfig tableConfig;
     @Autowired
     TemplateService templateService;
     @Resource
@@ -296,7 +293,7 @@ public class Generator {
         List<TableInfo> result = new ArrayList<>();
         try {
             List<TableInfo> tableList = generatorMapper.selectDbTableListByNames(List.of(tableNames));
-            Map<String, String> temp = elementConfig.getConfigMap();
+            Map<String, String> temp = tableConfig.getConfigMap();
             for (TableInfo table : tableList) {
                 String tableName = table.getTableName();
                 table.setTplCategory(temp.getOrDefault(tableName+".tplCategory", "crud"));
