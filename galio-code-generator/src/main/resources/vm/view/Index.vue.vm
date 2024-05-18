@@ -14,7 +14,7 @@
                 #foreach($column in $columns)
                     #if($column.query)
                         #set($dictType=$column.dictType)
-                        #set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
+                        #set($AttrName=$column.fieldName.substring(0,1).toUpperCase() + ${column.fieldName.substring(1)})
                         #set($parentheseIndex=$column.columnComment.indexOf("（"))
                         #if($parentheseIndex != -1)
                             #set($comment=$column.columnComment.substring(0, $parentheseIndex))
@@ -22,22 +22,22 @@
                             #set($comment=$column.columnComment)
                         #end
                         #if($column.htmlType == "input" || $column.htmlType == "textarea")
-                          <n-form-item-gi label="${comment}" path="${column.javaField}">
+                          <n-form-item-gi label="${comment}" path="${column.fieldName}">
                             <n-input
-                                v-model="queryItems.${column.javaField}"
+                                v-model="queryItems.${column.fieldName}"
                                 placeholder="请输入${comment}"
                                 clearable
                                 @keypress.enter="${s}table?.handleSearch"
                             />
                           </n-form-item-gi>
                         #elseif(($column.htmlType == "select") && "" != $dictType)
-                          <n-form-item-gi label="${comment}" path="${column.javaField}">
+                          <n-form-item-gi label="${comment}" path="${column.fieldName}">
                             <dict-select dictKey="$dictType"></dict-select>
                           </n-form-item-gi>
                         #elseif($column.htmlType == "datetime" && $column.queryType != "BETWEEN")
-                          <n-form-item-gi label="${comment}" path="${column.javaField}">
+                          <n-form-item-gi label="${comment}" path="${column.fieldName}">
                             <n-date-picker clearable
-                                           v-model="queryItems.${column.javaField}"
+                                           v-model="queryItems.${column.fieldName}"
                                            type="datetime"
                                            value-format="yyyy-MM-dd HH:mm:ss"
                                            placeholder="请选择${comment}">
@@ -83,7 +83,7 @@
             :extra-params="extraParams"
             :scroll-x="1200"
             :columns="columns"
-            :rowKey="${pkColumn.javaField}"
+            :rowKey="${pkColumn.fieldName}"
             :get-data="api.${businessName}Page"
             @on-checked="onChecked"
             @on-data-change="(data) => (tableData = data)"
@@ -105,7 +105,7 @@
               :disabled="modalAction === 'view'"
           >
               #foreach($column in $columns)
-                  #set($field=$column.javaField)
+                  #set($field=$column.fieldName)
                   #if($column.insert && !$column.pk)
                       #set($parentheseIndex=$column.columnComment.indexOf("（"))
                       #if($parentheseIndex != -1)
@@ -216,7 +216,7 @@
   const columns = [
       { type: 'selection', fixed: 'left' },
       #foreach($column in $columns)
-          #set($javaField=$column.javaField)
+          #set($fieldName=$column.fieldName)
           #set($parentheseIndex=$column.columnComment.indexOf("（"))
           #if($parentheseIndex != -1)
               #set($comment=$column.columnComment.substring(0, $parentheseIndex))
@@ -226,28 +226,28 @@
           #if($column.pk)
             {
               title: '${comment}',
-              key: '${javaField}',
+              key: '${fieldName}',
               width: 60,
               align: 'center',
               fixed: 'left',
-              sortOrder: sortKeyMapOrderRef.value.${javaField} || false,
+              sortOrder: sortKeyMapOrderRef.value.${fieldName} || false,
               sorter(rowA, rowB) {
-                return rowA.${javaField} - rowB.${javaField}
+                return rowA.${fieldName} - rowB.${fieldName}
               },
             },
           #elseif($column.list && $column.htmlType == "datetime")
             {
               title: '${comment}',
-              key: '${javaField}',
+              key: '${fieldName}',
               width: 150,
               render(row) {
-                return h('span', formatDateTime(row['${javaField}']))
+                return h('span', formatDateTime(row['${fieldName}']))
               },
             },
           #elseif($column.list && $column.htmlType == "imageUpload")
             {
               title: '${comment}',
-              key: '${javaField}',
+              key: '${fieldName}',
               width: 80,
               align: 'center',
               fixed: 'right',
@@ -256,14 +256,14 @@
                 h(NImage, {
                   width: 50,
                   height: 50,
-                  src: "'" + row['${javaField}'] + "'",
+                  src: "'" + row['${fieldName}'] + "'",
                 })
               },
             },
           #elseif($column.list && $column.dictType && "" != $column.dictType)
             {
               title: '${comment}',
-              key: '${javaField}',
+              key: '${fieldName}',
               width: 80,
               align: 'center',
               fixed: 'right',
@@ -271,12 +271,12 @@
               render(row) {
                 h('dict-tag', {
                   dictKey: '${column.dictType}',
-                  dictItemValue: $column.htmlType == "checkbox" ? (row.${javaField} ? row.${javaField}.split(',') : []) : row.${javaField}
+                  dictItemValue: $column.htmlType == "checkbox" ? (row.${fieldName} ? row.${fieldName}.split(',') : []) : row.${fieldName}
                 })
               },
             },
-          #elseif($column.list && "" != $javaField)
-            { title: '${comment}', key: '${javaField}', width: 150, ellipsis: { tooltip: true } },
+          #elseif($column.list && "" != $fieldName)
+            { title: '${comment}', key: '${fieldName}', width: 150, ellipsis: { tooltip: true } },
           #end
       #end
     {

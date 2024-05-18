@@ -1,12 +1,12 @@
 import { request } from '@/utils'
 
 #if(${prePath})
-    #set($restUrl="/"+$moduleName+"/"+$prePath+"/"+${entityPath})
+    #set($restUrl="/"+$moduleName+"/"+$prePath+"/"+$businessName)
 #else
-    #set($restUrl="/"+$moduleName+"/"+${table.entityPath})
+    #set($restUrl="/"+$moduleName+"/"+$businessName)
 #end
 #set($restUrl=$restUrl.toLowerCase())
-#set($entryLower=$entity.toLowerCase())
+#set($entryLower=$BusinessName)
 #set($viewModuleNameLower=$viewModuleName.toLowerCase())
 export default {
   // 添加$viewModuleNameLower
