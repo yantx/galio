@@ -50,25 +50,25 @@ public class MybatisPageConvertHelper {
      * 构建排序
      *
      * 支持的用法如下:
-     * {isAsc:"asc",orderByColumn:"id"} order by id asc
-     * {isAsc:"asc",orderByColumn:"id,createTime"} order by id asc,create_time asc
-     * {isAsc:"desc",orderByColumn:"id,createTime"} order by id desc,create_time desc
-     * {isAsc:"asc,desc",orderByColumn:"id,createTime"} order by id asc,create_time desc
+     * {sortOrder:"asc",sortColumn:"id"} order by id asc
+     * {sortOrder:"asc",sortColumn:"id,createTime"} order by id asc,create_time asc
+     * {sortOrder:"desc",sortColumn:"id,createTime"} order by id desc,create_time desc
+     * {sortOrder:"asc,desc",sortColumn:"id,createTime"} order by id asc,create_time desc
      */
     private static List<OrderItem> buildOrderItem(PageRequestDTO pageRequestDTO) {
-        if (StringUtils.isBlank(pageRequestDTO.getOrderByColumn()) || StringUtils.isBlank(pageRequestDTO.getIsAsc())) {
+        if (StringUtils.isBlank(pageRequestDTO.getSortColumn()) || StringUtils.isBlank(pageRequestDTO.getSortOrder())) {
             return null;
         }
-        String orderBy = SqlUtil.escapeOrderBySql(pageRequestDTO.getOrderByColumn());
+        String orderBy = SqlUtil.escapeOrderBySql(pageRequestDTO.getSortColumn());
         orderBy = StringUtil.humpToLine(orderBy);
 
-        String isAsc;
+        String sortOrder;
         // 兼容前端排序类型
-        isAsc = StringUtils.replaceEach(pageRequestDTO.getIsAsc(), new String[]{"ascending", "descending"}, new String[]{"asc", "desc"});
-        pageRequestDTO.setIsAsc(isAsc);
+        sortOrder = StringUtils.replaceEach(pageRequestDTO.getSortOrder(), new String[]{"ascend", "descend"}, new String[]{"asc", "desc"});
+        pageRequestDTO.setSortOrder(sortOrder);
         String[] orderByArr = orderBy.split(",");
-        String[] isAscArr = pageRequestDTO.getIsAsc().split(",");
-        if (isAscArr.length != 1 && isAscArr.length != orderByArr.length) {
+        String[] sortOrderArr = pageRequestDTO.getSortOrder().split(",");
+        if (sortOrderArr.length != 1 && sortOrderArr.length != orderByArr.length) {
             throw new CustomException(ResponseEnum.VALIDATE_ERROR);
         }
 
@@ -76,10 +76,10 @@ public class MybatisPageConvertHelper {
         // 每个字段各自排序
         for (int i = 0; i < orderByArr.length; i++) {
             String orderByStr = orderByArr[i];
-            String isAscStr = isAscArr.length == 1 ? isAscArr[0] : isAscArr[i];
-            if (CommonConstants.ORDER_ASC.equals(isAscStr)) {
+            String sortOrderStr = sortOrderArr.length == 1 ? sortOrderArr[0] : sortOrderArr[i];
+            if (CommonConstants.ORDER_ASC.equals(sortOrderStr)) {
                 list.add(OrderItem.asc(orderByStr));
-            } else if (CommonConstants.ORDER_DESC.equals(isAscStr)) {
+            } else if (CommonConstants.ORDER_DESC.equals(sortOrderStr)) {
                 list.add(OrderItem.desc(orderByStr));
             } else {
                 throw new CustomException(ResponseEnum.ORDER_VALIDATE_ERROR);

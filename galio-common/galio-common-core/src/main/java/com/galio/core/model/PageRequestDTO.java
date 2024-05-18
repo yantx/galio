@@ -3,6 +3,7 @@ package com.galio.core.model;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -14,6 +15,7 @@ import java.io.Serializable;
 @Schema(description = "分页查询参数" )
 public class PageRequestDTO implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**
@@ -32,12 +34,12 @@ public class PageRequestDTO implements Serializable {
      * 排序列
      */
     @Schema(description = "排序字段")
-    private String orderByColumn;
+    private String sortColumn;
 
     /**
      * 排序的方式desc或者asc
      */
     @Schema(description = "排序方式desc或者asc")
-    private String isAsc;
+    private String sortOrder;
 
 }
