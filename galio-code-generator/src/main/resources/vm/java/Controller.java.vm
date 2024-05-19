@@ -15,9 +15,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ${packageName}.model.entiry.${ClassName};
+import ${packageName}.model.entity.${ClassName};
 import ${packageName}.model.vo.${ClassName}VO;
-import ${packageName}.model.dto.${ClassName}DTO;
+import ${packageName}.model.dto.${ClassName}SaveDTO;
 import ${packageName}.model.converter.${ClassName}Converter;
 import ${packageName}.service.${ClassName}Service;
 
@@ -50,16 +50,16 @@ public class ${ClassName}Controller {
     @Operation(summary = "分页查询${functionName}列表")
     @SaCheckPermission("${permissionPrefix}:page")
     @PostMapping("/page")
-    public PageVo findPage(@RequestBody ${ClassName}PageReqDTO dto) {
+    public PageVO findPage(@RequestBody ${ClassName}PageRequestDTO dto) {
         IPage<${ClassName}> pageData = ${className}Service.listPage(dto);
-        return PageVo.build(pageData);
+        return PageVO.build(pageData);
     }
 #elseif($table.tree)
     @OperLog(operModul = "查询${functionName}列表", operType = OperTypeEnum.SELECT)
     @Operation(summary = "查询${functionName}列表")
     @SaCheckPermission("${permissionPrefix}:list")
     @PostMapping("/list")
-    public List<${ClassName}VO> findList(${ClassName}ListReqDTO dto) {
+    public List<${ClassName}VO> findList(${ClassName}ListRequestDTO dto) {
         List<${ClassName}> ${className}List = ${className}Service.list(dto);
         return ${className}Converter.entitysToVOs(${className}List);
     }

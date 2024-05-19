@@ -1,12 +1,12 @@
 package ${packageName}.service;
 
-import ${packageName}.model.dto.${ClassName}DTO;
+import ${packageName}.model.dto.${ClassName}SaveDTO;
 import ${packageName}.model.entity.${ClassName};
 #if($table.crud || $table.sub)
-import com.galio.core.model.PageRequestDto;
+import ${packageName}.model.dto.${ClassName}PageRequestDTO;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 #end
-
+import ${packageName}.model.dto.${ClassName}ListRequestDTO;
 import java.util.Collection;
 import java.util.List;
 
@@ -26,13 +26,13 @@ public interface ${ClassName}Service {
     /**
      * 查询${functionName}列表
      */
-    Page<${ClassName}> listPage(${ClassName}PageReqDTO pageRequestDTO);
+    Page<${ClassName}> listPage(${ClassName}PageRequestDTO dto);
 #end
 
     /**
      * 查询${functionName}列表
      */
-    List<${ClassName}> list(${ClassName}ListReqDTO dto);
+    List<${ClassName}> list(${ClassName}ListRequestDTO dto);
 
     /**
      * 新增${functionName}

@@ -1,12 +1,14 @@
 package ${packageName}.service.impl;
 
 #if($table.crud || $table.sub)
-import com.galio.core.model.PageRequestDto;
+import ${packageName}.model.dto.${ClassName}PageRequestDTO;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 #end
+import ${packageName}.model.dto.${ClassName}ListRequestDTO;
+import com.galio.mybatis.page.MybatisPageConvertHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ${packageName}.model.dto.${ClassName}DTO;
+import ${packageName}.model.dto.${ClassName}SaveDTO;
 import ${packageName}.model.converter.${ClassName}Converter;
 import ${packageName}.model.entity.${ClassName};
 import ${packageName}.repository.${ClassName}Repository;
@@ -36,21 +38,21 @@ public class ${ClassName}ServiceImpl implements ${ClassName}Service {
     }
 
     #if($table.crud || $table.sub)
-        /**
-         * 查询${functionName}列表
-         */
-        @Override
-        public Page<${ClassName}> listPage(${ClassName}PageReqDTO pageRequestDto) {
-            return ${className}Repository.selectPage(pageRequestDto.build());
-        }
+    /**
+     * 查询${functionName}列表
+     */
+    @Override
+    public Page<${ClassName}> listPage(${ClassName}PageRequestDTO dto) {
+        return ${className}Repository.selectPage(MybatisPageConvertHelper.build(dto));
+    }
     #end
 
     /**
      * 查询${functionName}列表
      */
     @Override
-    public List<${ClassName}> list(${ClassName}ListReqDTO dto) {
-        ${ClassName} entity = ${className}Converter.dtoToEntity(dto);
+    public List<${ClassName}> list(${ClassName}ListRequestDTO dto) {
+        ${ClassName} entity = ${className}Converter.listRequestDTOToEntity(dto);
         return ${className}Repository.selectList(entity);
     }
 
@@ -59,7 +61,7 @@ public class ${ClassName}ServiceImpl implements ${ClassName}Service {
      */
     @Override
     public Boolean save(${ClassName}SaveDTO dto) {
-        ${ClassName} add = ${className}Converter.dtoToEntity(dto);
+        ${ClassName} add = ${className}Converter.saveDTOToEntity(dto);
         validEntityBeforeSave(add);
         boolean flag = ${className}Repository.insert(add) > 0;
         #set($pk=$pkColumn.fieldName.substring(0,1).toUpperCase() + ${pkColumn.fieldName.substring(1)})
@@ -74,7 +76,7 @@ public class ${ClassName}ServiceImpl implements ${ClassName}Service {
      */
     @Override
     public Boolean update(${ClassName}SaveDTO dto) {
-        ${ClassName} update = ${className}Converter.dtoToEntity(dto);
+        ${ClassName} update = ${className}Converter.saveDTOToEntity(dto);
         validEntityBeforeSave(update);
         return ${className}Repository.updateById(update) > 0;
     }

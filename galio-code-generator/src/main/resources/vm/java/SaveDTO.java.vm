@@ -19,12 +19,12 @@ import com.galio.core.model.BaseEntity;
 #if($table.crud || $table.sub)
 #set($Entity="BaseEntity")
 #elseif($table.tree)
-#set($Entity="TreeEntity<${ClassName}DTO>")
+#set($Entity="TreeEntity<${ClassName}SaveDTO>")
 #end
 
 @Data
 @Schema(description = "${functionName}业务对象")
-public class ${ClassName}DTO extends BaseEntity {
+public class ${ClassName}SaveDTO extends BaseEntity {
 
 #foreach ($column in $columns)
 #if(!$table.isSuperColumn($column.fieldName) && ($column.query || $column.isInsert || $column.isEdit))

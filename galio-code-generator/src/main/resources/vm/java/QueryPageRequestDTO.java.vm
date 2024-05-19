@@ -1,9 +1,11 @@
 package ${packageName}.model.dto;
 
+import com.galio.core.model.PageRequestDTO;
 import com.galio.core.validate.SelectGroup;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import jakarta.validation.constraints.*;
+import lombok.EqualsAndHashCode;
 
 #foreach ($import in $importList)
 import ${import};
@@ -17,7 +19,9 @@ import ${import};
 
 @Data
 @Schema(description = "${functionName}查询入参")
-public class ${ClassName}ListReqDTO {
+@EqualsAndHashCode(callSuper = true)
+public class ${ClassName}PageRequestDTO extends PageRequestDTO {
+
 #foreach ($column in $columns)
 #if(!$table.isSuperColumn($column.fieldName) && $column.query)
     /**

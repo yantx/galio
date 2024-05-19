@@ -48,16 +48,16 @@
     "outFileName": "${ClassName}SaveDTO.java"
   },
   {
-    "name": "QueryListReqDTO.java.vm",
+    "name": "QueryListRequestDTO.java.vm",
     "relativePath": "java",
     "outPath": "/${moduleName}/src/main/java/${packagePath}/model/dto",
-    "outFileName": "${ClassName}ListReqDTO.java"
+    "outFileName": "${ClassName}ListRequestDTO.java"
   },
   {
-    "name": "QueryPageReqDTO.java.vm",
+    "name": "QueryPageRequestDTO.java.vm",
     "relativePath": "java",
     "outPath": "/${moduleName}/src/main/java/${packagePath}/model/dto",
-    "outFileName": "${ClassName}PageReqDTO.java"
+    "outFileName": "${ClassName}PageRequestDTO.java"
   },
   {
     "name": "VO.java.vm",
