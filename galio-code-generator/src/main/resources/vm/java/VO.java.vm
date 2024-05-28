@@ -1,5 +1,6 @@
 package ${packageName}.model.vo;
 
+import java.io.Serializable;
 #foreach ($import in $importList)
 import ${import};
 #end
