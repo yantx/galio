@@ -129,7 +129,7 @@
     "name": "api.js.vm",
     "relativePath": "view",
     "outPath": "/${viewModuleName}/api",
-    "outFileName": "api_${entityLower}.js"
+    "outFileName": "${entityLower}.js"
   },
   {
     "name": "proxy.js.vm",
