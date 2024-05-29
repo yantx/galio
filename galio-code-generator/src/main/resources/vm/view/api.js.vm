@@ -16,7 +16,7 @@ export default {
   // 删除单条$viewModuleNameLower
   delete${entryLower}: (id) => request.delete(`${restUrl}/${s}{id}`),
   // 删除多条$viewModuleNameLower
-  deletes${entryLower}: (ids) => request.post('${restUrl}/deletes', ids),
+  delete${entryLower}s: (ids) => request.post('${restUrl}/deletes', ids),
   // 查询单条$viewModuleNameLower
   list${entryLower}: (id) => request.get(`${restUrl}/${s}{id}`),
   // 分页查询$viewModuleNameLower

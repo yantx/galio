@@ -84,7 +84,7 @@
             :scroll-x="1200"
             :columns="columns"
             :rowKey="${pkColumn.fieldName}"
-            :get-data="api.${businessName}Page"
+            :get-data="api.page${BusinessName}"
             @on-checked="onChecked"
             @on-data-change="(data) => (tableData = data)"
         ></CrudTable>
@@ -353,10 +353,10 @@
   } = useCRUD({
     name: '${functionName}',
     initForm: {author: ${author}},
-    doCreate: api.${businessName}Add,
-    doDelete: api.${businessName}Del,
-    doDeletes: api.${businessName}Dels,
-    doUpdate: api.${businessName}Update,
+    doCreate: api.save${BusinessName},
+    doDelete: api.delete${BusinessName},
+    doDeletes: api.delete${BusinessName}s,
+    doUpdate: api.update${BusinessName},
     refresh: () => ${s}table.value?.handleSearch(),
   })
 </script>
