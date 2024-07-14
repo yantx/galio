@@ -15,7 +15,7 @@ import { useCssVar } from '@vueuse/core'
 import { kebabCase } from 'lodash-es'
 import { zhCN, dateZhCN, darkTheme } from 'naive-ui'
 import { useAppStore } from '@/store'
-
+import { lStorage } from '@/utils'
 const appStore = useAppStore()
 // function setupCssVar() {
 //   const naiveThemeOverrides = appStore.themeOverrides()
@@ -26,4 +26,7 @@ const appStore = useAppStore()
 //   }
 // }
 // setupCssVar()
+window.addEventListener('beforeunload', function () {
+  lStorage.clear()
+})
 </script>
