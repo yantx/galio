@@ -5,11 +5,12 @@ import com.galio.common.log.annotation.OperLog;
 import com.galio.common.log.enums.OperTypeEnum;
 import com.galio.core.validate.InsertGroup;
 import com.galio.core.validate.UpdateGroup;
-    #if($table.crud || $table.sub)
-    import ${packageName}.model.dto.${ClassName}PageRequestDTO;
-    import com.galio.mybatis.page.PageVO;
-    import com.baomidou.mybatisplus.core.metadata.IPage;
-    #end
+import ${packageName}.model.dto.${ClassName}ListRequestDTO;
+#if($table.crud || $table.sub)
+import ${packageName}.model.dto.${ClassName}PageRequestDTO;
+import com.galio.mybatis.page.PageVO;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+#end
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -66,11 +67,11 @@ public class ${ClassName}Controller {
     @Operation(summary = "查询${functionName}列表")
     @SaCheckPermission("${permissionPrefix}:list")
     @PostMapping("/list")
-    public List<${ClassName}VO> findList(${ClassName}ListRequestDTO dto) {
+    public List<${ClassName}VO> findList(@RequestBody ${ClassName}ListRequestDTO dto) {
         List<${ClassName}> ${className}List = ${className}Service.list(dto);
-        return ${className}Converter.entitysToVOs(${className}List);
+        return ${className}Converter.entitiesToVOs(${className}List);
     }
-#end
+
 
     /**
      * 获取${functionName}详细信息
