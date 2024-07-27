@@ -39,22 +39,27 @@
     </resultMap>
 
     <select id="selectDbTableListByNames" resultMap="BaseResultMap">
-            select table_name, table_comment
-            from (
-            SELECT c.relname AS table_name,
-            obj_description(c.oid) AS table_comment
-            FROM pg_class c
-            LEFT JOIN pg_namespace n ON n.oid = c.relnamespace
-            WHERE (c.relkind = ANY (ARRAY ['r'::"char", 'p'::"char"]))
-            AND c.relname != 'spatial_%'::text
-            AND n.nspname = 'galio_sys'::name
-            AND n.nspname <![CDATA[ <> ]]> ''::name
-            ) list_table
-            where table_name NOT LIKE 'gen_%'
-            and table_name in
-            <foreach collection="tableNames" item="name" open="(" separator="," close=")">
-                #{name}
-            </foreach>
+        select table_name, table_comment
+        from (
+        SELECT c.relname AS table_name,
+        obj_description(c.oid) AS table_comment
+        FROM pg_class c
+        LEFT JOIN pg_namespace n ON n.oid = c.relnamespace
+        WHERE (c.relkind = ANY (ARRAY ['r'::"char", 'p'::"char"]))
+        AND c.relname != 'spatial_%'::text
+        AND n.nspname = 'public'::name
+        AND n.nspname <![CDATA[ <> ]]> ''::name
+        ) list_table
+        <where>
+            table_name not like 'gen_%'
+            <if test="tableNames != null and tableNames.size() > 0">
+                and table_name in
+                <foreach collection="tableNames" item="name" open="(" separator="," close=")">
+                    #{name}
+                </foreach>
+            </if>
+        </where>
+
     </select>
 
     <select id="selectTableByName" parameterType="String" resultMap="BaseResultMap">
@@ -66,7 +71,7 @@
             LEFT JOIN pg_namespace n ON n.oid = c.relnamespace
             WHERE (c.relkind = ANY (ARRAY ['r'::"char", 'p'::"char"]))
             AND c.relname != 'spatial_%'::text
-            AND n.nspname = 'galio_sys'::name
+            AND n.nspname = 'public'::name
             AND n.nspname <![CDATA[ <> ]]> ''::name
             ) list_table
             where table_name NOT LIKE 'gen_%'
@@ -100,7 +105,7 @@
         LEFT JOIN pg_type t ON a.atttypid = t.oid
         WHERE (c.relkind = ANY (ARRAY ['r'::"char", 'p'::"char"]))
         AND a.attnum > 0
-        AND n.nspname = 'galio_sys'::name
+        AND n.nspname = 'public'::name
         ORDER BY c.relname, a.attnum
         ) temp
         WHERE table_name = (#{tableName})

@@ -32,6 +32,7 @@ import org.springframework.util.NumberUtils;
 import java.io.File;
 import java.io.StringWriter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Erwin Feng
@@ -235,15 +236,15 @@ public class Generator {
     }
 
     private int getKeyFieldNum(List<TableColumn> fields, String tableName) {
-        StringBuffer buffer = new StringBuffer();
-        buffer.append(String.format("please select one field as Primary for the table %s\n", tableName));
+        StringBuilder builder = new StringBuilder();
+        builder.append(String.format("please select one field as Primary for the table %s\n", tableName));
         int i = 0;
         for (TableColumn field : fields) {
-            buffer.append(String.format("%d : %s\n", i++, field.getColumnName()));
+            builder.append(String.format("%d : %s\n", i++, field.getColumnName()));
         }
-        buffer.append(String.format("please select the field num between 0 and %s : ", fields.size() - 1));
+        builder.append(String.format("please select the field num between 0 and %s : ", fields.size() - 1));
         for (int loopNum = 0; loopNum < 3; loopNum++) {
-            String ret = ConsoleUtil.readConsole(buffer.toString());
+            String ret = ConsoleUtil.readConsole(builder.toString());
 //            log.info("read from console value: {}", ret);
             int fildNum = NumberUtils.parseNumber(ret,Integer.class);
             if (fildNum >= 0 && fildNum < fields.size()) {
@@ -292,7 +293,8 @@ public class Generator {
     public List<TableInfo> initTable(String[] tableNames) {
         List<TableInfo> result = new ArrayList<>();
         try {
-            List<TableInfo> tableList = generatorMapper.selectDbTableListByNames(List.of(tableNames));
+            List<String> tableNameList = Arrays.stream(tableNames).filter(table -> !StringUtil.isEmpty(table)).collect(Collectors.toList());
+            List<TableInfo> tableList = generatorMapper.selectDbTableListByNames(tableNameList);
             Map<String, String> temp = tableConfig.getConfigMap();
             for (TableInfo table : tableList) {
                 String tableName = table.getTableName();
