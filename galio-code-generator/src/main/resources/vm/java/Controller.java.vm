@@ -6,10 +6,10 @@ import com.galio.common.log.enums.OperTypeEnum;
 import com.galio.core.validate.InsertGroup;
 import com.galio.core.validate.UpdateGroup;
     #if($table.crud || $table.sub)
-import ${packageName}.model.dto.${ClassName}PageRequestDTO;
-import com.galio.mybatis.page.PageVO;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-#end
+    import ${packageName}.model.dto.${ClassName}PageRequestDTO;
+    import com.galio.mybatis.page.PageVO;
+    import com.baomidou.mybatisplus.core.metadata.IPage;
+    #end
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +23,7 @@ import ${packageName}.service.${ClassName}Service;
 
 import java.util.List;
 import java.util.Arrays;
+
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
@@ -42,11 +43,11 @@ public class ${ClassName}Controller {
     private final ${ClassName}Service ${className}Service;
     private final ${ClassName}Converter ${className}Converter;
 
+    #if($table.crud || $table.sub)
     /**
-     * 查询${functionName}列表
+     * 分页查询${functionName}列表
      */
-#if($table.crud || $table.sub)
-    @OperLog(operModul = "分页查询${functionName}列表", operType = OperTypeEnum.SELECT)
+    @OperLog(operModul = "分页查询${functionName}列表" , operType = OperTypeEnum.SELECT)
     @Operation(summary = "分页查询${functionName}列表")
     @SaCheckPermission("${permissionPrefix}:page")
     @PostMapping("/page")
@@ -54,8 +55,14 @@ public class ${ClassName}Controller {
         IPage<${ClassName}> pageData = ${className}Service.listPage(dto);
         return PageVO.build(pageData);
     }
-#elseif($table.tree)
-    @OperLog(operModul = "查询${functionName}列表", operType = OperTypeEnum.SELECT)
+    #end
+
+    /**
+    * 查询${functionName}列表
+    * @param ${ClassName}ListRequestDTO
+    * @return List<${ClassName}VO>
+    */
+    @OperLog(operModul = "查询${functionName}列表" , operType = OperTypeEnum.SELECT)
     @Operation(summary = "查询${functionName}列表")
     @SaCheckPermission("${permissionPrefix}:list")
     @PostMapping("/list")
@@ -70,12 +77,12 @@ public class ${ClassName}Controller {
      *
      * @param ${pkColumn.fieldName} 主键
      */
-    @OperLog(operModul = "查询${functionName}详情", operType = OperTypeEnum.SELECT)
+    @OperLog(operModul = "查询${functionName}详情" , operType = OperTypeEnum.SELECT)
     @Operation(summary = "查询${functionName}详情")
     @SaCheckPermission("${permissionPrefix}:query")
     @GetMapping("/{${pkColumn.fieldName}}")
     public ${ClassName}VO getInfo(@NotNull(message = "主键不能为空") @PathVariable ${pkColumn.fieldType} ${pkColumn.fieldName}) {
-        ${ClassName} ${className} = ${className}Service.getById(${pkColumn.fieldName});
+        ${ClassName} ${className} =${className}Service.getById(${pkColumn.fieldName});
         return ${className}Converter.entityToVO(${className});
 
     }
@@ -83,7 +90,7 @@ public class ${ClassName}Controller {
     /**
      * 新增${functionName}
      */
-    @OperLog(operModul = "新增${functionName}", operType = OperTypeEnum.INSERT)
+    @OperLog(operModul = "新增${functionName}" , operType = OperTypeEnum.INSERT)
     @Operation(summary = "新增${functionName}")
     @SaCheckPermission("${permissionPrefix}:add")
     @PostMapping()
@@ -94,7 +101,7 @@ public class ${ClassName}Controller {
     /**
      * 修改${functionName}
      */
-    @OperLog(operModul = "修改${functionName}", operType = OperTypeEnum.UPDATE)
+    @OperLog(operModul = "修改${functionName}" , operType = OperTypeEnum.UPDATE)
     @Operation(summary = "修改${functionName}")
     @SaCheckPermission("${permissionPrefix}:edit")
     @PutMapping()
@@ -107,7 +114,7 @@ public class ${ClassName}Controller {
      *
      * @param ${pkColumn.fieldName}s 主键串
      */
-    @OperLog(operModul = "删除${functionName}", operType = OperTypeEnum.DELETE)
+    @OperLog(operModul = "删除${functionName}" , operType = OperTypeEnum.DELETE)
     @Operation(summary = "删除${functionName}")
     @SaCheckPermission("${permissionPrefix}:remove")
     @DeleteMapping("/{${pkColumn.fieldName}s}")
