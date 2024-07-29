@@ -21,7 +21,6 @@ public class GeneratorConfig extends AbsConfig {
     private Map<String, String> generator;
 
     // 表前缀，生成的实体类
-
     @Value("#{'${code.generator.table.tablePrefixes}'.split(',')}")
     public String[] tablePrefixes;
     @Value("${code.generator.table.autoRemovePrefix}")

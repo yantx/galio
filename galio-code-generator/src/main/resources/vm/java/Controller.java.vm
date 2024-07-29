@@ -32,7 +32,7 @@ import jakarta.validation.constraints.NotNull;
  * @Author: ${author}
  * @Date: ${datetime}
  * @Description: ${functionName}接口
- * 前端访问路由地址为:/${moduleName}/${businessName}
+ * 前端访问路由地址为:/${moduleAlias}/${businessName}
  */
 @Validated
 @RestController

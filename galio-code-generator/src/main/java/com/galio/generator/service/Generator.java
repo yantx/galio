@@ -96,24 +96,23 @@ public class Generator {
      */
     private VelocityContext prepareContext(final TableInfo tableInfo) {
 
-        String moduleName = generatorConfig.getValue("moduleName");
+        String moduleAlias = generatorConfig.getValue("moduleAlias");
         String businessName = tableInfo.getBusinessName();
         String functionName = tableInfo.getFunctionName();
-        String packageName = generatorConfig.getValue("packageName");
-        String packagePath = packageName.replace('.', '/');
-        String appClassName = StringHelper.toCamelCase(generatorConfig.getValue("moduleName"), true) + "App";
+        String packagePath = tableInfo.getPackageName().replace('.', '/');
+        String appClassName = StringHelper.toCamelCase(tableInfo.getModuleName(), true) + "App";
 
         VelocityContext velocityContext = new VelocityContext();
         // 项目整体相关配置
         velocityContext.put("s", "$");
         velocityContext.put("a", "@");
         velocityContext.put("varDescriptor", "$");
-        velocityContext.put("author", baseConfig.getValue("AUTHOR"));
+        velocityContext.put("author", tableInfo.getAuthor());
         velocityContext.put("datetime", DateTimeUtil.getLocalDateStr());
         velocityContext.put("moduleName", tableInfo.getModuleName());
-        velocityContext.put("viewModuleName", tableInfo.getModuleName());
+        velocityContext.put("viewModuleName", generatorConfig.getValue("viewModuleName"));
         velocityContext.put("appClassName", appClassName);
-        velocityContext.put("appModule", generatorConfig.getValue("moduleName"));
+        velocityContext.put("appModule", tableInfo.getModuleName());
         velocityContext.put("appVersion", generatorConfig.getValue("moduleVersion"));
         velocityContext.put("dbType", toolsConfig.getValue("datasource_dbType").trim().toLowerCase());
 
@@ -127,11 +126,11 @@ public class Generator {
         velocityContext.put("entityLower", StringUtil.uncapitalize(tableInfo.getClassName()));
         velocityContext.put("BusinessName", StringUtil.capitalize(tableInfo.getBusinessName()));
         velocityContext.put("businessName", tableInfo.getBusinessName());
-        velocityContext.put("packageName", packageName);
+        velocityContext.put("packageName", tableInfo.getPackageName());
         velocityContext.put("packagePath", packagePath);
         velocityContext.put("pkColumn", tableInfo.getPrimaryKeyField());
         velocityContext.put("importList", getImportList(tableInfo));
-        velocityContext.put("permissionPrefix", getPermissionPrefix(moduleName, businessName));
+        velocityContext.put("permissionPrefix", getPermissionPrefix(moduleAlias, businessName));
         velocityContext.put("columns", tableInfo.getColumns());
         velocityContext.put("table", tableInfo);
         velocityContext.put("dicts", getDicts(tableInfo));
