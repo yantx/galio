@@ -3,7 +3,7 @@ package com.galio.common.log.event;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 操作日志事件
@@ -12,14 +12,14 @@ import java.util.Date;
  */
 
 @Data
-public class OperLogEvent implements Serializable {
+public class OperationLogEvent implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
      * 日志主键
      */
-    private Long operId;
+    private Long operationId;
 
     /**
      * 操作模块
@@ -29,12 +29,12 @@ public class OperLogEvent implements Serializable {
     /**
      * 业务类型（0其它 1新增 2修改 3删除）
      */
-    private Integer operType;
+    private Integer operationType;
 
     /**
      * 业务类型数组
      */
-    private Integer[] operTypes;
+    private Integer[] operationTypes;
 
     /**
      * 请求方法
@@ -49,7 +49,7 @@ public class OperLogEvent implements Serializable {
     /**
      * 操作人员
      */
-    private String operName;
+    private String operator;
 
     /**
      * 机构名称
@@ -59,22 +59,22 @@ public class OperLogEvent implements Serializable {
     /**
      * 请求url
      */
-    private String operUrl;
+    private String operationUrl;
 
     /**
      * 操作地址
      */
-    private String operIp;
+    private String operationIp;
 
     /**
      * 操作地点
      */
-    private String operLocation;
+    private String operationLocation;
 
     /**
      * 请求参数
      */
-    private String operParam;
+    private String operationParam;
 
     /**
      * 返回参数
@@ -94,6 +94,6 @@ public class OperLogEvent implements Serializable {
     /**
      * 操作时间
      */
-    private Date operTime;
+    private LocalDateTime operationTime;
 
 }

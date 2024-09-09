@@ -27,8 +27,8 @@ public class LogEventListener {
      */
     @Async
     @EventListener
-    public void saveLog(OperLogEvent operLogEvent) {
-        OperLogDTO operLogDTO = ObjectUtil.copyObject(operLogEvent, OperLogDTO.class);
+    public void saveLog(OperationLogEvent operationLogEvent) {
+        OperLogDTO operLogDTO = ObjectUtil.copyObject(operationLogEvent, OperLogDTO.class);
         operLogExchange.add(operLogDTO);
     }
 

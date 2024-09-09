@@ -1,8 +1,8 @@
 package com.galio.common.log.aspect;
 
-import com.galio.common.log.annotation.OperLog;
+import com.galio.common.log.annotation.OperateLog;
 import com.galio.common.log.enums.OperStatus;
-import com.galio.common.log.event.OperLogEvent;
+import com.galio.common.log.event.OperationLogEvent;
 import com.galio.core.utils.*;
 import com.galio.satoken.tools.helper.MemberContextHelper;
 import io.netty.handler.codec.http.HttpMethod;
@@ -17,6 +17,7 @@ import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -40,7 +41,7 @@ public class LogAspect {
      * @param joinPoint 切点
      */
     @AfterReturning(pointcut = "@annotation(controllerLog)", returning = "jsonResult")
-    public void doAfterReturning(JoinPoint joinPoint, OperLog controllerLog, Object jsonResult) {
+    public void doAfterReturning(JoinPoint joinPoint, OperateLog controllerLog, Object jsonResult) {
         handleLog(joinPoint, controllerLog, null, jsonResult);
     }
 
@@ -51,37 +52,39 @@ public class LogAspect {
      * @param e         异常
      */
     @AfterThrowing(value = "@annotation(controllerLog)", throwing = "e")
-    public void doAfterThrowing(JoinPoint joinPoint, OperLog controllerLog, Exception e) {
+    public void doAfterThrowing(JoinPoint joinPoint, OperateLog controllerLog, Exception e) {
         handleLog(joinPoint, controllerLog, e, null);
     }
 
-    protected void handleLog(final JoinPoint joinPoint, OperLog controllerLog, final Exception e, Object jsonResult) {
+    protected void handleLog(final JoinPoint joinPoint, OperateLog controllerLog, final Exception e, Object jsonResult) {
         try {
             // *========数据库日志=========*//
-            OperLogEvent operLog = new OperLogEvent();
-            operLog.setStatus(OperStatus.SUCCESS.ordinal());
+            OperationLogEvent operationLog = new OperationLogEvent();
+            operationLog.setStatus(OperStatus.SUCCESS.ordinal());
+
             // 请求的地址
-            operLog.setOperIp(ServletUtils.getClientIP());
-            operLog.setOperUrl(StringUtil.substring(Objects.requireNonNull(ServletUtils.getRequest()).getRequestURI(), 0, 255));
+            operationLog.setOperationIp(ServletUtils.getClientIP());
+            operationLog.setOperationUrl(StringUtil.substring(Objects.requireNonNull(ServletUtils.getRequest()).getRequestURI(), 0, 255));
             String username = MemberContextHelper.getUsername();
             if (StringUtil.isNotBlank(username)) {
-                operLog.setOperName(username);
+                operationLog.setOperator(username);
             }
 
             if (e != null) {
-                operLog.setStatus(OperStatus.FAIL.ordinal());
-                operLog.setErrorMsg(StringUtil.substring(e.getMessage(), 0, 2000));
+                operationLog.setStatus(OperStatus.FAIL.ordinal());
+                operationLog.setErrorMsg(StringUtil.substring(e.getMessage(), 0, 2000));
             }
             // 设置方法名称
             String className = joinPoint.getTarget().getClass().getName();
             String methodName = joinPoint.getSignature().getName();
-            operLog.setMethod(className + "." + methodName + "()");
+            operationLog.setMethod(className + "." + methodName + "()");
             // 设置请求方式
-            operLog.setRequestMethod(ServletUtils.getRequest().getMethod());
+            operationLog.setRequestMethod(ServletUtils.getRequest().getMethod());
+            operationLog.setOperationTime(LocalDateTime.now());
             // 处理设置注解上的参数
-            getControllerMethodDescription(joinPoint, controllerLog, operLog, jsonResult);
+            getControllerMethodDescription(joinPoint, controllerLog, operationLog, jsonResult);
             // 发布事件保存数据库
-            SpringUtils.getContext().publishEvent(operLog);
+            SpringUtils.getContext().publishEvent(operationLog);
         } catch (Exception exp) {
             // 记录本地异常日志
             log.error("异常信息:{}", exp.getMessage(), e);
@@ -94,9 +97,9 @@ public class LogAspect {
      * @param log     日志
      * @param operLog 操作日志
      */
-    public void getControllerMethodDescription(JoinPoint joinPoint, OperLog log, OperLogEvent operLog, Object jsonResult) {
+    public void getControllerMethodDescription(JoinPoint joinPoint, OperateLog log, OperationLogEvent operLog, Object jsonResult) {
         // 设置action动作
-        operLog.setOperType(log.operType().ordinal());
+        operLog.setOperationType(log.operType().ordinal());
         // 设置模块
         operLog.setModel(log.operModul());
         // 是否需要保存request，参数和值
@@ -115,15 +118,15 @@ public class LogAspect {
      *
      * @param operLog 操作日志
      */
-    private void setRequestValue(JoinPoint joinPoint, OperLogEvent operLog) {
+    private void setRequestValue(JoinPoint joinPoint, OperationLogEvent operLog) {
         String requestMethod = operLog.getRequestMethod();
         if (HttpMethod.PUT.name().equals(requestMethod) || HttpMethod.POST.name().equals(requestMethod)) {
             String params = argsArrayToString(joinPoint.getArgs());
-            operLog.setOperParam(StringUtil.substring(params, 0, 2000));
+            operLog.setOperationParam(StringUtil.substring(params, 0, 2000));
         } else {
             Map<String, String> paramsMap = ServletUtils.getParamMap(ServletUtils.getRequest());
             paramsMap.keySet().removeIf(key -> Arrays.asList(EXCLUDE_PROPERTIES).contains(key));
-            operLog.setOperParam(StringUtil.substring(JsonUtils.toString(paramsMap), 0, 2000));
+            operLog.setOperationParam(StringUtil.substring(JsonUtils.toString(paramsMap), 0, 2000));
         }
     }
 
