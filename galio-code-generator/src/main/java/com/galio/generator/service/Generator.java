@@ -309,6 +309,7 @@ public class Generator {
                 List<TableColumn> saveColumns = new ArrayList<>();
                 for (TableColumn column : tableColumns) {
                     initColumnField(column);
+                    log.info("isRequired: {}",column.isRequired());
                     saveColumns.add(column);
                 }
                 table.setColumns(saveColumns);
@@ -369,10 +370,6 @@ public class Generator {
         // BO对象 默认编辑勾选
         if (!GeneratorUtils.arraysContains(GenConstants.COLUMNNAME_NOT_EDIT, columnName)) {
             column.setIsEdit(GenConstants.REQUIRE);
-        }
-        // BO对象 默认是否必填勾选
-        if (!GeneratorUtils.arraysContains(GenConstants.COLUMNNAME_NOT_EDIT, columnName)) {
-            column.setIsRequired(GenConstants.REQUIRE);
         }
         // VO对象 默认返回勾选
         if (!GeneratorUtils.arraysContains(GenConstants.COLUMNNAME_NOT_LIST, columnName)) {
