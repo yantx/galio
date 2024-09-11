@@ -1,6 +1,7 @@
 package ${packageName}.model.converter;
 
 import ${packageName}.model.dto.${ClassName}SaveDTO;
+import ${packageName}.model.dto.${ClassName}EditDTO;
 import ${packageName}.model.vo.${ClassName}VO;
 import ${packageName}.model.entity.${ClassName};
 #if($table.crud || $table.sub)
@@ -21,6 +22,7 @@ public interface ${ClassName}Converter {
 
     ${ClassName}VO entityToVO(${ClassName} entity);
     ${ClassName} saveDTOToEntity(${ClassName}SaveDTO dto);
+    ${ClassName} editDTOToEntity(${ClassName}EditDTO dto);
     ${ClassName} pageRequestDTOToEntity(${ClassName}PageRequestDTO dto);
     ${ClassName} listRequestDTOToEntity(${ClassName}ListRequestDTO dto);
     List<${ClassName}VO> entitiesToVOs(List<${ClassName}> entities);

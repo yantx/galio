@@ -48,6 +48,12 @@
     "outFileName": "${ClassName}SaveDTO.java"
   },
   {
+    "name": "EditDTO.java.vm",
+    "relativePath": "java",
+    "outPath": "/${moduleName}/src/main/java/${packagePath}/model/dto",
+    "outFileName": "${ClassName}EditDTO.java"
+  },
+  {
     "name": "QueryListRequestDTO.java.vm",
     "relativePath": "java",
     "outPath": "/${moduleName}/src/main/java/${packagePath}/model/dto",

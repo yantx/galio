@@ -1,6 +1,7 @@
 package ${packageName}.service;
 
 import ${packageName}.model.dto.${ClassName}SaveDTO;
+import ${packageName}.model.dto.${ClassName}EditDTO;
 import ${packageName}.model.entity.${ClassName};
 #if($table.crud || $table.sub)
 import ${packageName}.model.dto.${ClassName}PageRequestDTO;
@@ -42,7 +43,7 @@ public interface ${ClassName}Service {
     /**
      * 修改${functionName}
      */
-    Boolean update(${ClassName}SaveDTO dto);
+    Boolean update(${ClassName}EditDTO dto);
 
     /**
      * 校验并批量删除${functionName}信息

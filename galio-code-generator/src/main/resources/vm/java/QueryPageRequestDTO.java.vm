@@ -27,9 +27,6 @@ public class ${ClassName}PageRequestDTO extends PageRequestDTO {
     /**
      * $column.columnComment
      */
-#if($column.isRequired == 1)
-    @NotBlank(message = "$column.columnComment不能为空", groups = { SelectGroup.class })
-#end
     @Schema(description = "$column.columnComment")
     private $column.fieldType $column.fieldName;
 

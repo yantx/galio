@@ -1,6 +1,5 @@
 package ${packageName}.model.dto;
 
-import com.galio.core.validate.InsertGroup;
 import com.galio.core.validate.UpdateGroup;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -18,19 +17,19 @@ import com.galio.core.model.BaseEntity;
  */
 @Data
 @Schema(description = "${functionName}业务对象")
-public class ${ClassName}SaveDTO extends BaseEntity {
+public class ${ClassName}EditDTO extends BaseEntity {
 
 #foreach ($column in $columns)
 #if(!$table.isSuperColumn($column.fieldName) && ($column.query || $column.isInsert || $column.isEdit))
     /**
      * $column.columnComment
      */
-#if($column.isRequired())
-#if($column.fieldType == 'String')
-    @NotBlank(message = "$column.columnComment不能为空", groups = { InsertGroup.class })
-#else
-    @NotNull(message = "$column.columnComment不能为空", groups = { InsertGroup.class })
-#end
+#if($column.isPk())
+    #if($column.fieldType == 'String')
+    @NotBlank(message = "$column.columnComment不能为空", groups = { UpdateGroup.class })
+    #else
+    @NotNull(message = "$column.columnComment不能为空", groups = { UpdateGroup.class })
+    #end
 #end
     @Schema(description = "$column.columnComment")
     private $column.fieldType $column.fieldName;

@@ -9,6 +9,7 @@ import com.galio.mybatis.page.MybatisPageConvertHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ${packageName}.model.dto.${ClassName}SaveDTO;
+import ${packageName}.model.dto.${ClassName}EditDTO;
 import ${packageName}.model.converter.${ClassName}Converter;
 import ${packageName}.model.entity.${ClassName};
 import ${packageName}.repository.${ClassName}Repository;
@@ -75,8 +76,8 @@ public class ${ClassName}ServiceImpl implements ${ClassName}Service {
      * 修改${functionName}
      */
     @Override
-    public Boolean update(${ClassName}SaveDTO dto) {
-        ${ClassName} update = ${className}Converter.saveDTOToEntity(dto);
+    public Boolean update(${ClassName}EditDTO dto) {
+        ${ClassName} update = ${className}Converter.editDTOToEntity(dto);
         validEntityBeforeSave(update);
         return ${className}Repository.updateById(update) > 0;
     }
