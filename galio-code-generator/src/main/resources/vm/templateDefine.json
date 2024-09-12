@@ -102,6 +102,12 @@
     "outFileName": "application-test.yml"
   },
   {
+    "name": "mapper.xml.vm",
+    "relativePath": "resource",
+    "outPath": "/${moduleName}/src/main/resources/mapper",
+    "outFileName": "${ClassName}Mapper.xml"
+  },
+  {
     "name": "logback.xml.vm",
     "relativePath": "resource",
     "outPath": "/${moduleName}/src/main/resources",
