@@ -18,13 +18,13 @@ export function createAxios(defaultConfig) {
    */
   async function asyncRequest(option) {
     const { method, url, data, axiosConfig } = option
-    let res
+    let resBody
     if (method === 'get' || method === 'delete') {
-      res = await service[method](url, axiosConfig)
+      resBody = await service[method](url, axiosConfig)
     } else {
-      res = await service[method](url, data, axiosConfig)
+      resBody = await service[method](url, data, axiosConfig)
     }
-    return res
+    return resBody
   }
   /**
    * get请求

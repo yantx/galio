@@ -69,27 +69,28 @@ export function transformAuthRouteToVueRoutes(routes = []) {
 function dynamicRouteFormat(item) {
   const resultRoute = []
   let itemRoute = {
-    name: item.name,
+    name: item.functionName,
     path: item.path.indexOf('/') !== 0 && item.functionType === '1' ? `/${item.path}` : item.path,
-    isHidden: isNullOrUndef(item.visible) ? false : item.visible,
+    isHidden: !!(isNullOrUndef(item.visible) || item.visible === '0'),
     children: item.children,
     singleLayout: item.singleLayout,
     meta: {
-      title: item.title,
+      title: item.functionTitle,
       icon: item.icon,
-      order: item.order,
+      order: item.orderNum,
       keepAlive: Boolean(item.isCache),
-      functionPerms: item.functionPerms,
+      functionPerms: item.perms,
     },
   }
-
-  if (item.isFrame) {
+  if (item.component) {
+    itemRoute.component = item.component
+  } else if (item.isFrame === '1') {
     itemRoute.component = IframePage
     itemRoute.meta.externalUrl = item.externalUrl
   } else if (item.functionType === '1' && !isExternal(item.path)) {
     itemRoute.component = Layout
   } else if (!isExternal(item.path)) {
-    itemRoute.component = getViewComponent(item.name)
+    itemRoute.component = getViewComponent(item.functionName)
   }
   return itemRoute
 }
